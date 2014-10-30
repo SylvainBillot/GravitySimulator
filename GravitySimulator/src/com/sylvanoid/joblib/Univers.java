@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import com.sylvanoid.common.HelperVariable;
 
 public class Univers {
-	private TreeMap<Matiere, Matiere> listMatiere;
+	private TreeMap<Matter, Matter> listMatiere;
 	private double gx;
 	private double gy;
 	private double masse;
@@ -24,11 +24,11 @@ public class Univers {
 	}
 
 	public Univers() {
-		listMatiere = new TreeMap<Matiere, Matiere>();
+		listMatiere = new TreeMap<Matter, Matter>();
 		masse = 0;
 		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
 			double angle = Math.random() * Math.PI * 2;
-			Matiere m = new Matiere(
+			Matter m = new Matter(
 					Math.cos(angle) * Math.random()
 							* HelperVariable.nebulaRadius,
 					Math.sin(angle) * Math.random()
@@ -52,9 +52,9 @@ public class Univers {
 		this.minY = minY;
 		this.maxX = maxX;
 		this.maxY = maxY;
-		listMatiere = new TreeMap<Matiere, Matiere>();
+		listMatiere = new TreeMap<Matter, Matter>();
 		masse = 0;
-		for (Matiere m : father.getListMatiere().values()) {
+		for (Matter m : father.getListMatiere().values()) {
 			if (m.getX() >= minX && m.getX() <= maxX && m.getY() >= minY
 					&& m.getY() <= maxY) {
 				listMatiere.put(m, m);
@@ -65,7 +65,7 @@ public class Univers {
 
 	public void computeLimits() {
 		boolean firstTime = true;
-		for (Matiere o : listMatiere.values()) {
+		for (Matter o : listMatiere.values()) {
 			if (!firstTime) {
 				if (minX > o.getX()) {
 					minX = o.getX();
@@ -92,7 +92,7 @@ public class Univers {
 	public void computeCentroidOfUnivers() {
 		double tmpGx = 0;
 		double tmpGy = 0;
-		for (Matiere m : getListMatiere().values()) {
+		for (Matter m : getListMatiere().values()) {
 			tmpGx += (m.getX() * m.getMasse());
 			tmpGy += (m.getY() * m.getMasse());
 		}
@@ -115,17 +115,17 @@ public class Univers {
 			Univers subd = new Univers(this, minX, cy, cx, maxY);
 			subUnivers.add(subd);
 
-			listMatiere = new TreeMap<Matiere, Matiere>();
+			listMatiere = new TreeMap<Matter, Matter>();
 			masse = 0;
 			for (Univers u : subUnivers) {
 				u.compute();
 				for (Univers uvoisin : subUnivers) {
 					if (u != uvoisin && uvoisin.getListMatiere().size() > 0) {
 						uvoisin.computeCentroidOfUnivers();
-						TreeMap<Matiere, Matiere> sortByMass = new TreeMap<Matiere, Matiere>(
+						TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 								new MassComparator());
 						sortByMass.putAll(u.listMatiere);
-						for (Matiere m : sortByMass.values()) {
+						for (Matter m : sortByMass.values()) {
 							double distance = Math.pow(
 									Math.pow(m.getX() - uvoisin.getGx(), 2)
 											+ Math.pow(
@@ -157,7 +157,7 @@ public class Univers {
 						}
 					}
 				}
-				for (Matiere m : u.getListMatiere().values()) {
+				for (Matter m : u.getListMatiere().values()) {
 					listMatiere.put(m, m);
 					masse += m.getMasse();
 				}
@@ -165,7 +165,7 @@ public class Univers {
 		}
 	}
 
-	private Matiere origine(HashMap<Matiere, Matiere> aVirer, Matiere m) {
+	private Matter origine(HashMap<Matter, Matter> aVirer, Matter m) {
 		if (aVirer.get(m) == null) {
 			return m;
 		} else {
@@ -175,23 +175,23 @@ public class Univers {
 
 	public void manageImpact() {
 		// On recheche les collisions
-		HashMap<Matiere, Matiere> aVirer = new HashMap<Matiere, Matiere>();
-		HashMap<Matiere, Matiere> traite = new HashMap<Matiere, Matiere>();
-		TreeMap<Matiere, Matiere> sortX = new TreeMap<Matiere, Matiere>(
+		HashMap<Matter, Matter> aVirer = new HashMap<Matter, Matter>();
+		HashMap<Matter, Matter> traite = new HashMap<Matter, Matter>();
+		TreeMap<Matter, Matter> sortX = new TreeMap<Matter, Matter>(
 				new XComparator());
 		sortX.putAll(listMatiere);
-		TreeMap<Matiere, Matiere> sortByMass = new TreeMap<Matiere, Matiere>(
+		TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 				new MassComparator());
 		sortByMass.putAll(listMatiere);
-		for (Matiere m1 : sortByMass.values()) {
-			SortedMap<Matiere, Matiere> selectX = sortX.subMap(
-					new Matiere(m1.minX(), 0), new Matiere(m1.maxX(), 0));
-			TreeMap<Matiere, Matiere> sortY = new TreeMap<Matiere, Matiere>(
+		for (Matter m1 : sortByMass.values()) {
+			SortedMap<Matter, Matter> selectX = sortX.subMap(
+					new Matter(m1.minX(), 0), new Matter(m1.maxX(), 0));
+			TreeMap<Matter, Matter> sortY = new TreeMap<Matter, Matter>(
 					new YComparator());
 			sortY.putAll(selectX);
-			SortedMap<Matiere, Matiere> selectY = sortY.subMap(new Matiere(0,
-					m1.minY()), new Matiere(0, m1.maxY()));
-			for (Matiere m2 : selectY.values()) {
+			SortedMap<Matter, Matter> selectY = sortY.subMap(new Matter(0,
+					m1.minY()), new Matter(0, m1.maxY()));
+			for (Matter m2 : selectY.values()) {
 				traite.put(m1, m1);
 				// if (traite.get(m2) == null && m1.collision(m2)) {
 				if (traite.get(m2) == null) {
@@ -204,7 +204,7 @@ public class Univers {
 				}
 			}
 		}
-		for (Matiere m : aVirer.keySet()) {
+		for (Matter m : aVirer.keySet()) {
 			listMatiere.remove(m);
 		}
 	}
@@ -215,7 +215,7 @@ public class Univers {
 		// Barycentre au centre de l'écran
 		computeCentroidOfUnivers();
 		if (HelperVariable.centerOnCentroid) {
-			for (Matiere m : listMatiere.values()) {
+			for (Matter m : listMatiere.values()) {
 				m.setX(m.getX() - gx);
 				m.setY(m.getY() - gy);
 			}
@@ -224,7 +224,7 @@ public class Univers {
 		// Centre l'ecran
 		if (HelperVariable.centerOnScreen) {
 			computeLimits();
-			for (Matiere m : listMatiere.values()) {
+			for (Matter m : listMatiere.values()) {
 				m.setX(m.getX() - (maxX + minX) / 2);
 				m.setY(m.getY() - (maxY + minY) / 2);
 			}
@@ -232,17 +232,17 @@ public class Univers {
 
 		// Centre sur le plus massif
 		if (HelperVariable.centerOnMassMax) {
-			TreeMap<Matiere, Matiere> sortByMass = new TreeMap<Matiere, Matiere>(
+			TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 					new MassComparator());
 			sortByMass.putAll(listMatiere);
-			for (Matiere m : listMatiere.values()) {
+			for (Matter m : listMatiere.values()) {
 				m.setX(m.getX() - sortByMass.firstEntry().getValue().getX());
 				m.setY(m.getY() - sortByMass.firstEntry().getValue().getY());
 			}
 		}
 
 		if (HelperVariable.timeFactorChangeX10) {
-			for (Matiere m : listMatiere.values()) {
+			for (Matter m : listMatiere.values()) {
 				m.setVitessex(m.getVitessex() * 2);
 				m.setVitessey(m.getVitessey() * 2);
 			}
@@ -250,19 +250,19 @@ public class Univers {
 		}
 
 		if (HelperVariable.timeFactorChangeDiv10) {
-			for (Matiere m : listMatiere.values()) {
+			for (Matter m : listMatiere.values()) {
 				m.setVitessex(m.getVitessex() / 2);
 				m.setVitessey(m.getVitessey() / 2);
 			}
 			HelperVariable.timeFactorChangeDiv10 = false;
 		}
 
-		for (Matiere m : listMatiere.values()) {
+		for (Matter m : listMatiere.values()) {
 			m.move();
 		}
 	}
 
-	public TreeMap<Matiere, Matiere> getListMatiere() {
+	public TreeMap<Matter, Matter> getListMatiere() {
 		return listMatiere;
 	}
 

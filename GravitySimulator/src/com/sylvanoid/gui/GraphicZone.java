@@ -7,7 +7,7 @@ import java.util.ConcurrentModificationException;
 import javax.swing.JPanel;
 
 import com.sylvanoid.common.HelperVariable;
-import com.sylvanoid.joblib.Matiere;
+import com.sylvanoid.joblib.Matter;
 
 public class GraphicZone extends JPanel {
 	/**
@@ -38,7 +38,7 @@ public class GraphicZone extends JPanel {
 					.getHeight());
 		}
 		try {
-			for (Matiere m : guiProgram.getUnivers().getListMatiere().values()) {
+			for (Matter m : guiProgram.getUnivers().getListMatiere().values()) {
 				if (m.getX() > -cw / HelperVariable.scala
 						&& m.getX() < cw / HelperVariable.scala
 						&& m.getY() > -ch / HelperVariable.scala

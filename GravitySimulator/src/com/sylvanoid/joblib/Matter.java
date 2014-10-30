@@ -2,7 +2,7 @@ package com.sylvanoid.joblib;
 
 import com.sylvanoid.common.HelperVariable;
 
-public class Matiere implements Comparable<Matiere> {
+public class Matter implements Comparable<Matter> {
 	private double x;
 	private double y;
 	private double masse;
@@ -12,7 +12,7 @@ public class Matiere implements Comparable<Matiere> {
 	private double rayon;
 
 	@Override
-	public int compareTo(Matiere o) {
+	public int compareTo(Matter o) {
 		// TODO Auto-generated method stub
 		if (masse < o.getMasse()) {
 			return 1;
@@ -30,18 +30,18 @@ public class Matiere implements Comparable<Matiere> {
 	}
 
 
-	public Matiere() {
+	public Matter() {
 
 	}
 
-	public Matiere(double x, double y) {
+	public Matter(double x, double y) {
 		this.x=x;
 		this.y=y;
 	}
 
 	
 	
-	public Matiere(double x, double y, double masse, double vitessex,
+	public Matter(double x, double y, double masse, double vitessex,
 			double vitessey, double densite) {
 		this.x = x;
 		this.y = y;
@@ -134,7 +134,7 @@ public class Matiere implements Comparable<Matiere> {
 		y = getYplusV();
 	}
 
-	public void fusion(Matiere m2) {
+	public void fusion(Matter m2) {
 		if (this != m2) {
 			x = (x * masse + m2.getX() * m2.getMasse())
 					/ (masse + m2.getMasse());
@@ -151,7 +151,7 @@ public class Matiere implements Comparable<Matiere> {
 		}
 	}
 
-	public void impact(Matiere m2) {
+	public void impact(Matter m2) {
 		if (this != m2) {
 			double Cr = HelperVariable.typeOfImpact;
 			double v1x = (Cr * m2.getMasse() * (m2.getVitessex() - vitessex)
@@ -175,7 +175,7 @@ public class Matiere implements Comparable<Matiere> {
 		}
 	}
 
-	public boolean collision(Matiere m2) {
+	public boolean collision(Matter m2) {
 		if (this == m2) {
 			return false;
 		}
