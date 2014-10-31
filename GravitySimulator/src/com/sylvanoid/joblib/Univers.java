@@ -7,9 +7,10 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import com.sylvanoid.common.HelperVariable;
+import com.sylvanoid.common.TypeOfUnivers;
 
 public class Univers {
-	private TreeMap<Matter, Matter> listMatiere;
+	private TreeMap<Matter, Matter> listMatter;
 	private double gx;
 	private double gy;
 	private double masse;
@@ -23,26 +24,12 @@ public class Univers {
 		return ("m:" + masse + " gx:" + gy + " gy:" + gy);
 	}
 
-	public Univers() {
-		listMatiere = new TreeMap<Matter, Matter>();
-		masse = 0;
-		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
-			double angle = Math.random() * Math.PI * 2;
-			Matter m = new Matter(
-					Math.cos(angle) * Math.random()
-							* HelperVariable.nebulaRadius,
-					Math.sin(angle) * Math.random()
-							* HelperVariable.nebulaRadius,
-					HelperVariable.massObjectMin
-							+ Math.random()
-							* (HelperVariable.massObjectMax - HelperVariable.massObjectMin),
-					0,
-					0,
-					HelperVariable.dentityMin
-							+ Math.random()
-							* (HelperVariable.densityMax - HelperVariable.dentityMin));
-			listMatiere.put(m, m);
-			masse += m.getMass();
+	public Univers(TypeOfUnivers typeOfUnivers) {
+		if (typeOfUnivers == TypeOfUnivers.Random) {
+			createRandomUvivers();
+		}
+		if (typeOfUnivers == TypeOfUnivers.Galaxy) {
+			createRandomGalaxy();
 		}
 	}
 
@@ -52,12 +39,12 @@ public class Univers {
 		this.minY = minY;
 		this.maxX = maxX;
 		this.maxY = maxY;
-		listMatiere = new TreeMap<Matter, Matter>();
+		listMatter = new TreeMap<Matter, Matter>();
 		masse = 0;
 		for (Matter m : father.getListMatiere().values()) {
 			if (m.getX() >= minX && m.getX() <= maxX && m.getY() >= minY
 					&& m.getY() <= maxY) {
-				listMatiere.put(m, m);
+				listMatter.put(m, m);
 				masse += m.getMass();
 			}
 		}
@@ -65,7 +52,7 @@ public class Univers {
 
 	public void computeLimits() {
 		boolean firstTime = true;
-		for (Matter o : listMatiere.values()) {
+		for (Matter o : listMatter.values()) {
 			if (!firstTime) {
 				if (minX > o.getX()) {
 					minX = o.getX();
@@ -101,7 +88,7 @@ public class Univers {
 	}
 
 	public void compute() {
-		if (listMatiere.size() > 1) {
+		if (listMatter.size() > 1) {
 			// Découpage en 4 et compute de chacun
 			double cx = minX + (maxX - minX) / 2;
 			double cy = minY + (maxY - minY) / 2;
@@ -115,7 +102,7 @@ public class Univers {
 			Univers subd = new Univers(this, minX, cy, cx, maxY);
 			subUnivers.add(subd);
 
-			listMatiere = new TreeMap<Matter, Matter>();
+			listMatter = new TreeMap<Matter, Matter>();
 			masse = 0;
 			for (Univers u : subUnivers) {
 				u.compute();
@@ -124,7 +111,7 @@ public class Univers {
 						uvoisin.computeCentroidOfUnivers();
 						TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 								new MassComparator());
-						sortByMass.putAll(u.listMatiere);
+						sortByMass.putAll(u.listMatter);
 						for (Matter m : sortByMass.values()) {
 							double distance = Math.pow(
 									Math.pow(m.getX() - uvoisin.getGx(), 2)
@@ -148,17 +135,17 @@ public class Univers {
 									uvoisin.getGy() - m.getY(), uvoisin.getGx()
 											- m.getX());
 
-							m.setSpeedX(m.getSpeedX()
-									+ attractionDeUvoisinSurM * Math.cos(angle)
+							m.setSpeedX(m.getSpeedX() + attractionDeUvoisinSurM
+									* Math.cos(angle)
 									* HelperVariable.timeFactor);
-							m.setSpeedY(m.getSpeedY()
-									+ attractionDeUvoisinSurM * Math.sin(angle)
+							m.setSpeedY(m.getSpeedY() + attractionDeUvoisinSurM
+									* Math.sin(angle)
 									* HelperVariable.timeFactor);
 						}
 					}
 				}
 				for (Matter m : u.getListMatiere().values()) {
-					listMatiere.put(m, m);
+					listMatter.put(m, m);
 					masse += m.getMass();
 				}
 			}
@@ -179,10 +166,10 @@ public class Univers {
 		HashMap<Matter, Matter> traite = new HashMap<Matter, Matter>();
 		TreeMap<Matter, Matter> sortX = new TreeMap<Matter, Matter>(
 				new XComparator());
-		sortX.putAll(listMatiere);
+		sortX.putAll(listMatter);
 		TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 				new MassComparator());
-		sortByMass.putAll(listMatiere);
+		sortByMass.putAll(listMatter);
 		for (Matter m1 : sortByMass.values()) {
 			SortedMap<Matter, Matter> selectX = sortX.subMap(
 					new Matter(m1.minX(), 0), new Matter(m1.maxX(), 0));
@@ -195,8 +182,8 @@ public class Univers {
 			for (Matter m2 : selectY.values()) {
 				if (aVirer.get(m2) == null) {
 					traite.put(m1, m1);
-					// if (traite.get(m2) == null)) {
-					if (traite.get(m2) == null && m1.collision(m2)) {
+					// if (traite.get(m2) == null && m1.collision(m2)) {
+					if (traite.get(m2) == null) {
 						if (HelperVariable.probFusion < Math.random()) {
 							m1.impact(m2);
 						} else {
@@ -208,7 +195,7 @@ public class Univers {
 			}
 		}
 		for (Matter m : aVirer.keySet()) {
-			listMatiere.remove(m);
+			listMatter.remove(m);
 		}
 	}
 
@@ -218,7 +205,7 @@ public class Univers {
 		// Barycentre au centre de l'écran
 		computeCentroidOfUnivers();
 		if (HelperVariable.centerOnCentroid) {
-			for (Matter m : listMatiere.values()) {
+			for (Matter m : listMatter.values()) {
 				m.setX(m.getX() - gx);
 				m.setY(m.getY() - gy);
 			}
@@ -227,7 +214,7 @@ public class Univers {
 		// Centre l'ecran
 		if (HelperVariable.centerOnScreen) {
 			computeLimits();
-			for (Matter m : listMatiere.values()) {
+			for (Matter m : listMatter.values()) {
 				m.setX(m.getX() - (maxX + minX) / 2);
 				m.setY(m.getY() - (maxY + minY) / 2);
 			}
@@ -237,15 +224,18 @@ public class Univers {
 		if (HelperVariable.centerOnMassMax) {
 			TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 					new MassComparator());
-			sortByMass.putAll(listMatiere);
-			for (Matter m : listMatiere.values()) {
-				m.setX(m.getX() - sortByMass.firstEntry().getValue().getX());
-				m.setY(m.getY() - sortByMass.firstEntry().getValue().getY());
+			sortByMass.putAll(listMatter);
+			Matter maxMass = sortByMass.firstEntry().getValue();
+			double cmaxX =maxMass.getX();
+			double cmaxY =maxMass.getY();
+			for (Matter m : sortByMass.values()) {
+				m.setX(m.getX() - cmaxX);
+				m.setY(m.getY() - cmaxY);
 			}
 		}
 
 		if (HelperVariable.timeFactorChangeX10) {
-			for (Matter m : listMatiere.values()) {
+			for (Matter m : listMatter.values()) {
 				m.setSpeedX(m.getSpeedX() * 2);
 				m.setSpeedY(m.getSpeedY() * 2);
 			}
@@ -253,20 +243,20 @@ public class Univers {
 		}
 
 		if (HelperVariable.timeFactorChangeDiv10) {
-			for (Matter m : listMatiere.values()) {
+			for (Matter m : listMatter.values()) {
 				m.setSpeedX(m.getSpeedX() / 2);
 				m.setSpeedY(m.getSpeedY() / 2);
 			}
 			HelperVariable.timeFactorChangeDiv10 = false;
 		}
 
-		for (Matter m : listMatiere.values()) {
+		for (Matter m : listMatter.values()) {
 			m.move();
 		}
 	}
 
 	public TreeMap<Matter, Matter> getListMatiere() {
-		return listMatiere;
+		return listMatter;
 	}
 
 	public double getMinX() {
@@ -299,6 +289,41 @@ public class Univers {
 
 	public void setMasse(double masse) {
 		this.masse = masse;
+	}
+
+	private void createRandomUvivers() {
+		listMatter = new TreeMap<Matter, Matter>();
+		masse = 0;
+		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
+			double angle = Math.random() * Math.PI * 2;
+			Matter m = new Matter(
+					Math.cos(angle) * Math.random()
+							* HelperVariable.nebulaRadius,
+					Math.sin(angle) * Math.random()
+							* HelperVariable.nebulaRadius,
+					HelperVariable.massObjectMin
+							+ Math.random()
+							* (HelperVariable.massObjectMax - HelperVariable.massObjectMin),
+					0,
+					0,
+					HelperVariable.dentityMin
+							+ Math.random()
+							* (HelperVariable.densityMax - HelperVariable.dentityMin));
+			listMatter.put(m, m);
+			masse += m.getMass();
+		}
+	}
+
+	private void createRandomGalaxy() {
+		createRandomUvivers();
+		double delta = Math.PI * 2 / 360 / 20;
+		for (Matter m : listMatter.values()) {
+			double distance = Math.pow(
+					Math.pow(m.getX(), 2) + Math.pow(m.getY(), 2), 0.5);
+			double angle = Math.atan2(m.getY(), m.getX());
+			m.setSpeedX(m.getX() - Math.cos(angle + delta) * distance);
+			m.setSpeedY(m.getY() - Math.sin(angle + delta) * distance);
+		}
 	}
 
 }

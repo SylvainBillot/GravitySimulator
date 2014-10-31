@@ -38,7 +38,7 @@ public class GUIProgram extends JFrame {
 		setSize((int) dimension.getWidth(), (int) dimension.getHeight());
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		univers = new Univers();
+		univers = new Univers(HelperVariable.typeOfUnivers);
 		p = new GraphicZone(me);
 		JScrollPane picturePane = new JScrollPane(p, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -344,7 +344,7 @@ public class GUIProgram extends JFrame {
 		HelperVariable.traceCourbe = false;
 		HelperVariable.scala = 1;
 		HelperVariable.timeFactor = 1;
-		univers = new Univers();
+		univers = new Univers(HelperVariable.typeOfUnivers);
 		p.repaint();
 		t = new Thread(new SimpleThread(this));
 	}
