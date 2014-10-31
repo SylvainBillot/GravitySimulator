@@ -13,8 +13,7 @@ import javax.swing.JFormattedTextField;
 
 import com.sylvanoid.common.HelperVariable;
 
-
-public class GUIParam extends JDialog{
+public class GUIParam extends JDialog {
 	/**
 	 * 
 	 */
@@ -30,21 +29,23 @@ public class GUIParam extends JDialog{
 	private JFormattedTextField probFusion;
 	private JFormattedTextField typeChoc;
 
-	public GUIParam(GUIProgram mother){
-		this.me=this;
+	public GUIParam(GUIProgram mother) {
+		this.me = this;
 		this.mother = mother;
 		setTitle("Parameters");
-		//setModal(true);
+		setModal(true);
 		int w = 500;
 		int h = 300;
-		setLocation(new Point((mother.getWidth()-w)/2, (mother.getHeight()-h)/2));
-		setSize(new Dimension(w,h));
+		setLocation(new Point((mother.getWidth() - w) / 2,
+				(mother.getHeight() - h) / 2));
+		setSize(new Dimension(w, h));
 		setLayout(new GridLayout(9, 2));
 		add(new Label("Number of object:"));
 		nbrObject = new JFormattedTextField(HelperVariable.numberOfObjects);
 		add(nbrObject);
 		add(new Label("Nebula radius:"));
-		rayonDeLaNebuleusePrimitive = new JFormattedTextField(HelperVariable.nebulaRadius);
+		rayonDeLaNebuleusePrimitive = new JFormattedTextField(
+				HelperVariable.nebulaRadius);
 		add(rayonDeLaNebuleusePrimitive);
 		add(new Label("Density min:"));
 		densiteMin = new JFormattedTextField(HelperVariable.dentityMin);
@@ -59,12 +60,12 @@ public class GUIParam extends JDialog{
 		massBaseObjetMax = new JFormattedTextField(HelperVariable.massObjectMax);
 		add(massBaseObjetMax);
 		add(new Label("Fusion probability (1-0):"));
-		probFusion= new JFormattedTextField(HelperVariable.probFusion);
+		probFusion = new JFormattedTextField(HelperVariable.probFusion);
 		add(probFusion);
 		add(new Label("Type of impact (1-elastic 0-inelastic):"));
-		typeChoc= new JFormattedTextField(HelperVariable.typeOfImpact);
+		typeChoc = new JFormattedTextField(HelperVariable.typeOfImpact);
 		add(typeChoc);
-		
+
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -79,25 +80,42 @@ public class GUIParam extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				HelperVariable.numberOfObjects = Integer.parseInt(me.nbrObject.getValue().toString());
-				HelperVariable.nebulaRadius = Double.parseDouble(me.rayonDeLaNebuleusePrimitive.getValue().toString());
-				HelperVariable.dentityMin = Double.parseDouble(me.densiteMin.getValue().toString());
-				HelperVariable.densityMax = Double.parseDouble(me.densiteMax.getValue().toString());
-				HelperVariable.massObjectMin = Double.parseDouble(me.massBaseObjetMin.getValue().toString());
-				HelperVariable.massObjectMax = Double.parseDouble(me.massBaseObjetMax.getValue().toString());
-				HelperVariable.probFusion = Double.parseDouble(me.probFusion.getValue().toString());
-				HelperVariable.typeOfImpact = Double.parseDouble(me.typeChoc.getValue().toString());
-				
-				me.getMother().reset();
-				
-				me.setVisible(false);
+				try {
+					HelperVariable.numberOfObjects = Integer
+							.parseInt(me.nbrObject.getValue().toString());
+					HelperVariable.nebulaRadius = Double
+							.parseDouble(me.rayonDeLaNebuleusePrimitive
+									.getValue().toString());
+					HelperVariable.dentityMin = Double
+							.parseDouble(me.densiteMin.getValue().toString());
+					HelperVariable.densityMax = Double
+							.parseDouble(me.densiteMax.getValue().toString());
+					HelperVariable.massObjectMin = Double
+							.parseDouble(me.massBaseObjetMin.getValue()
+									.toString());
+					HelperVariable.massObjectMax = Double
+							.parseDouble(me.massBaseObjetMax.getValue()
+									.toString());
+					HelperVariable.probFusion = Double
+							.parseDouble(me.probFusion.getValue().toString());
+					HelperVariable.typeOfImpact = Double
+							.parseDouble(me.typeChoc.getValue().toString());
+					me.getMother().reset();
+					me.setVisible(false);
+
+				} catch (Exception em) {
+					JDialog d = new JDialog();
+					d.add(new Label("Error: " + em.getMessage()));
+					d.setVisible(true);
+					d.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+				}
 			}
 		});
 		add(btnOK);
 	}
-	
-	public GUIProgram getMother(){
+
+	public GUIProgram getMother() {
 		return mother;
 	}
-	
+
 }

@@ -12,6 +12,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.joblib.SimpleThread;
@@ -39,7 +40,9 @@ public class GUIProgram extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		univers = new Univers();
 		p = new GraphicZone(me);
-		me.add(p, BorderLayout.CENTER);
+		JScrollPane picturePane = new JScrollPane(p, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		me.add(picturePane, BorderLayout.CENTER);
 
 		JMenuBar menuBar = new JMenuBar();
 		add(menuBar, BorderLayout.NORTH);
@@ -59,7 +62,7 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(me.getThread()!=null){
+				if (me.getThread() != null) {
 					me.getThread().interrupt();
 				}
 				me.dispose();
@@ -119,7 +122,7 @@ public class GUIProgram extends JFrame {
 				}
 				HelperVariable.stepByStep = !HelperVariable.stepByStep;
 			}
-		});		
+		});
 		menuProcess.add(menuItemStart);
 		menuProcess.add(menuItemStop);
 		menuProcess.add(menuItemReset);
@@ -176,9 +179,8 @@ public class GUIProgram extends JFrame {
 				HelperVariable.centerOnCentroid = false;
 				HelperVariable.centerOnMassMax = false;
 				me.getUnivers().computeLimits();
-				HelperVariable.scala = ((double) me.getSize().height
-						/ (me.getUnivers().getMaxY() - me.getUnivers()
-								.getMinY()));
+				HelperVariable.scala = ((double) me.getSize().height / (me
+						.getUnivers().getMaxY() - me.getUnivers().getMinY()));
 			}
 		});
 		JMenuItem menuItemplusMassif = new JMenuItem("Center on maximum mass");

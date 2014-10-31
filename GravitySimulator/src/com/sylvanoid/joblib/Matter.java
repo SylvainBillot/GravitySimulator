@@ -5,19 +5,19 @@ import com.sylvanoid.common.HelperVariable;
 public class Matter implements Comparable<Matter> {
 	private double x;
 	private double y;
-	private double masse;
-	private double vitessex;
-	private double vitessey;
-	private double densite;
+	private double mass;
+	private double speedX;
+	private double speedY;
+	private double density;
 	private double rayon;
 
 	@Override
 	public int compareTo(Matter o) {
 		// TODO Auto-generated method stub
-		if (masse < o.getMasse()) {
+		if (mass < o.getMass()) {
 			return 1;
 		}
-		if (masse > o.getMasse()) {
+		if (mass > o.getMass()) {
 			return -1;
 		}
 		return 0;
@@ -25,8 +25,8 @@ public class Matter implements Comparable<Matter> {
 
 	@Override
 	public String toString() {
-		return "m:" + masse + " x:" + x + " y:" + y + " vx:" + vitessex
-				+ " vy:" + vitessey;
+		return "m:" + mass + " x:" + x + " y:" + y + " vx:" + speedX
+				+ " vy:" + speedY;
 	}
 
 
@@ -41,15 +41,15 @@ public class Matter implements Comparable<Matter> {
 
 	
 	
-	public Matter(double x, double y, double masse, double vitessex,
-			double vitessey, double densite) {
+	public Matter(double x, double y, double mass, double speedX,
+			double speedY, double density) {
 		this.x = x;
 		this.y = y;
-		this.masse = masse;
-		this.vitessex = vitessex;
-		this.vitessey = vitessey;
-		this.densite = densite;
-		this.rayon = Math.pow(masse, (double) 1 / (double) 3) / densite;
+		this.mass = mass;
+		this.speedX = speedX;
+		this.speedY = speedY;
+		this.density = density;
+		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
 	public double getX() {
@@ -68,37 +68,37 @@ public class Matter implements Comparable<Matter> {
 		this.y = y;
 	}
 
-	public double getMasse() {
-		return masse;
+	public double getMass() {
+		return mass;
 	}
 
-	public void setMasse(double masse) {
-		rayon = Math.pow(masse, (double) 1 / (double) 3) / densite;
-		this.masse = masse;
+	public void setMass(double mass) {
+		rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
+		this.mass = mass;
 	}
 
-	public double getVitessex() {
-		return vitessex;
+	public double getSpeedX() {
+		return speedX;
 	}
 
-	public void setVitessex(double vitessex) {
-		this.vitessex = vitessex;
+	public void setSpeedX(double speedX) {
+		this.speedX = speedX;
 	}
 
-	public double getVitessey() {
-		return vitessey;
+	public double getSpeedY() {
+		return speedY;
 	}
 
-	public void setVitessey(double vitessey) {
-		this.vitessey = vitessey;
+	public void setSpeedY(double speedY) {
+		this.speedY = speedY;
 	}
 
-	public double getDensite() {
-		return densite;
+	public double getDensity() {
+		return density;
 	}
 
-	public void setDensite(double densite) {
-		this.densite = densite;
+	public void setDensity(double density) {
+		this.density = density;
 	}
 
 	public double getRayon() {
@@ -106,11 +106,11 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public double getXplusV() {
-		return x + vitessex;
+		return x + speedX;
 	}
 
 	public double getYplusV() {
-		return y + vitessey;
+		return y + speedY;
 	}
 
 	public double maxX() {
@@ -136,42 +136,42 @@ public class Matter implements Comparable<Matter> {
 
 	public void fusion(Matter m2) {
 		if (this != m2) {
-			x = (x * masse + m2.getX() * m2.getMasse())
-					/ (masse + m2.getMasse());
-			y = (y * masse + m2.getY() * m2.getMasse())
-					/ (masse + m2.getMasse());
-			vitessex = (vitessex * masse + m2.getVitessex() * m2.getMasse())
-					/ (masse + m2.getMasse());
-			vitessey = (vitessey * masse + m2.getVitessey() * m2.getMasse())
-					/ (masse + m2.getMasse());
-			densite = (densite * masse + m2.getDensite() * m2.getMasse())
-					/ (masse + m2.getMasse());
-			masse += m2.getMasse();
-			rayon = Math.pow(masse, (double) 1 / (double) 3) / densite;
+			x = (x * mass + m2.getX() * m2.getMass())
+					/ (mass + m2.getMass());
+			y = (y * mass + m2.getY() * m2.getMass())
+					/ (mass + m2.getMass());
+			speedX = (speedX * mass + m2.getSpeedX() * m2.getMass())
+					/ (mass + m2.getMass());
+			speedY = (speedY * mass + m2.getSpeedY() * m2.getMass())
+					/ (mass + m2.getMass());
+			density = (density * mass + m2.getDensity() * m2.getMass())
+					/ (mass + m2.getMass());
+			mass += m2.getMass();
+			rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 		}
 	}
 
 	public void impact(Matter m2) {
 		if (this != m2) {
 			double Cr = HelperVariable.typeOfImpact;
-			double v1x = (Cr * m2.getMasse() * (m2.getVitessex() - vitessex)
-					+ masse * vitessex + m2.getMasse() * m2.getVitessex())
-					/ (masse + m2.getMasse());
-			double v1y = (Cr * m2.getMasse() * (m2.getVitessey() - vitessey)
-					+ masse * vitessey + m2.getMasse() * m2.getVitessey())
-					/ (masse + m2.getMasse());
+			double v1x = (Cr * m2.getMass() * (m2.getSpeedX() - speedX)
+					+ mass * speedX + m2.getMass() * m2.getSpeedX())
+					/ (mass + m2.getMass());
+			double v1y = (Cr * m2.getMass() * (m2.getSpeedY() - speedY)
+					+ mass * speedY + m2.getMass() * m2.getSpeedY())
+					/ (mass + m2.getMass());
 
-			double v2x = (Cr * masse * (vitessex - m2.getVitessex())
-					+ m2.getMasse() * m2.getVitessex() + masse * vitessex)
-					/ (m2.getMasse() + masse);
-			double v2y = (Cr * masse * (vitessey - m2.getVitessey())
-					+ m2.getMasse() * m2.getVitessey() + masse * vitessey)
-					/ (m2.getMasse() + masse);
+			double v2x = (Cr * mass * (speedX - m2.getSpeedX())
+					+ m2.getMass() * m2.getSpeedX() + mass * speedX)
+					/ (m2.getMass() + mass);
+			double v2y = (Cr * mass * (speedY - m2.getSpeedY())
+					+ m2.getMass() * m2.getSpeedY() + mass * speedY)
+					/ (m2.getMass() + mass);
 
-			vitessex = v1x;
-			vitessey = v1y;
-			m2.setVitessex(v2x);
-			m2.setVitessey(v2y);
+			speedX = v1x;
+			speedY = v1y;
+			m2.setSpeedX(v2x);
+			m2.setSpeedY(v2y);
 		}
 	}
 

@@ -42,7 +42,7 @@ public class Univers {
 							+ Math.random()
 							* (HelperVariable.densityMax - HelperVariable.dentityMin));
 			listMatiere.put(m, m);
-			masse += m.getMasse();
+			masse += m.getMass();
 		}
 	}
 
@@ -58,7 +58,7 @@ public class Univers {
 			if (m.getX() >= minX && m.getX() <= maxX && m.getY() >= minY
 					&& m.getY() <= maxY) {
 				listMatiere.put(m, m);
-				masse += m.getMasse();
+				masse += m.getMass();
 			}
 		}
 	}
@@ -93,8 +93,8 @@ public class Univers {
 		double tmpGx = 0;
 		double tmpGy = 0;
 		for (Matter m : getListMatiere().values()) {
-			tmpGx += (m.getX() * m.getMasse());
-			tmpGy += (m.getY() * m.getMasse());
+			tmpGx += (m.getX() * m.getMass());
+			tmpGy += (m.getY() * m.getMass());
 		}
 		gx = tmpGx / getMasse();
 		gy = tmpGy / getMasse();
@@ -131,27 +131,27 @@ public class Univers {
 											+ Math.pow(
 													m.getY() - uvoisin.getGy(),
 													2), 0.5);
-							// To avoid aberated acceleration 
-							if(distance<m.getRayon()){
-								distance=m.getRayon();
+							// To avoid aberated acceleration
+							if (distance < m.getRayon()) {
+								distance = m.getRayon();
 							}
-							
+
 							double attraction = HelperVariable.GRAVITY
-									* (((m.getMasse() * uvoisin.getMasse()) / Math
+									* (((m.getMass() * uvoisin.getMasse()) / Math
 											.pow(distance, 2)));
 
 							double attractionDeUvoisinSurM = attraction
 									* uvoisin.getMasse()
-									/ (m.getMasse() + uvoisin.getMasse());
+									/ (m.getMass() + uvoisin.getMasse());
 
 							double angle = Math.atan2(
 									uvoisin.getGy() - m.getY(), uvoisin.getGx()
 											- m.getX());
 
-							m.setVitessex(m.getVitessex()
+							m.setSpeedX(m.getSpeedX()
 									+ attractionDeUvoisinSurM * Math.cos(angle)
 									* HelperVariable.timeFactor);
-							m.setVitessey(m.getVitessey()
+							m.setSpeedY(m.getSpeedY()
 									+ attractionDeUvoisinSurM * Math.sin(angle)
 									* HelperVariable.timeFactor);
 						}
@@ -159,7 +159,7 @@ public class Univers {
 				}
 				for (Matter m : u.getListMatiere().values()) {
 					listMatiere.put(m, m);
-					masse += m.getMasse();
+					masse += m.getMass();
 				}
 			}
 		}
@@ -189,17 +189,20 @@ public class Univers {
 			TreeMap<Matter, Matter> sortY = new TreeMap<Matter, Matter>(
 					new YComparator());
 			sortY.putAll(selectX);
-			SortedMap<Matter, Matter> selectY = sortY.subMap(new Matter(0,
-					m1.minY()), new Matter(0, m1.maxY()));
+			SortedMap<Matter, Matter> selectY = sortY.subMap(
+					new Matter(0, m1.minY()), new Matter(0, m1.maxY()));
+
 			for (Matter m2 : selectY.values()) {
-				traite.put(m1, m1);
-				// if (traite.get(m2) == null && m1.collision(m2)) {
-				if (traite.get(m2) == null) {
-					if (HelperVariable.probFusion < Math.random()) {
-						m1.impact(m2);
-					} else {
-						origine(aVirer, m1).fusion(m2);
-						aVirer.put(m2, m1);
+				if (aVirer.get(m2) == null) {
+					traite.put(m1, m1);
+					// if (traite.get(m2) == null)) {
+					if (traite.get(m2) == null && m1.collision(m2)) {
+						if (HelperVariable.probFusion < Math.random()) {
+							m1.impact(m2);
+						} else {
+							origine(aVirer, m1).fusion(m2);
+							aVirer.put(m2, m1);
+						}
 					}
 				}
 			}
@@ -243,16 +246,16 @@ public class Univers {
 
 		if (HelperVariable.timeFactorChangeX10) {
 			for (Matter m : listMatiere.values()) {
-				m.setVitessex(m.getVitessex() * 2);
-				m.setVitessey(m.getVitessey() * 2);
+				m.setSpeedX(m.getSpeedX() * 2);
+				m.setSpeedY(m.getSpeedY() * 2);
 			}
 			HelperVariable.timeFactorChangeX10 = false;
 		}
 
 		if (HelperVariable.timeFactorChangeDiv10) {
 			for (Matter m : listMatiere.values()) {
-				m.setVitessex(m.getVitessex() / 2);
-				m.setVitessey(m.getVitessey() / 2);
+				m.setSpeedX(m.getSpeedX() / 2);
+				m.setSpeedY(m.getSpeedY() / 2);
 			}
 			HelperVariable.timeFactorChangeDiv10 = false;
 		}
