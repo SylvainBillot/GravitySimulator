@@ -13,7 +13,7 @@ public class Univers {
 	private TreeMap<Matter, Matter> listMatter;
 	private double gx;
 	private double gy;
-	private double masse;
+	private double mass;
 	private double minX;
 	private double minY;
 	private double maxX;
@@ -21,7 +21,7 @@ public class Univers {
 
 	@Override
 	public String toString() {
-		return ("m:" + masse + " gx:" + gy + " gy:" + gy);
+		return ("m:" + mass + " gx:" + gy + " gy:" + gy);
 	}
 
 	public Univers(TypeOfUnivers typeOfUnivers) {
@@ -40,12 +40,12 @@ public class Univers {
 		this.maxX = maxX;
 		this.maxY = maxY;
 		listMatter = new TreeMap<Matter, Matter>();
-		masse = 0;
+		mass = 0;
 		for (Matter m : father.getListMatiere().values()) {
 			if (m.getX() >= minX && m.getX() <= maxX && m.getY() >= minY
 					&& m.getY() <= maxY) {
 				listMatter.put(m, m);
-				masse += m.getMass();
+				mass += m.getMass();
 			}
 		}
 	}
@@ -83,8 +83,8 @@ public class Univers {
 			tmpGx += (m.getX() * m.getMass());
 			tmpGy += (m.getY() * m.getMass());
 		}
-		gx = tmpGx / getMasse();
-		gy = tmpGy / getMasse();
+		gx = tmpGx / getMass();
+		gy = tmpGy / getMass();
 	}
 
 	public void compute() {
@@ -103,7 +103,7 @@ public class Univers {
 			subUnivers.add(subd);
 
 			listMatter = new TreeMap<Matter, Matter>();
-			masse = 0;
+			mass = 0;
 			for (Univers u : subUnivers) {
 				u.compute();
 				for (Univers uvoisin : subUnivers) {
@@ -118,18 +118,19 @@ public class Univers {
 											+ Math.pow(
 													m.getY() - uvoisin.getGy(),
 													2), 0.5);
+
 							// To avoid aberated acceleration
 							if (distance < m.getRayon()) {
 								distance = m.getRayon();
 							}
 
 							double attraction = HelperVariable.GRAVITY
-									* (((m.getMass() * uvoisin.getMasse()) / Math
+									* (((m.getMass() * uvoisin.getMass()) / Math
 											.pow(distance, 2)));
 
 							double attractionDeUvoisinSurM = attraction
-									* uvoisin.getMasse()
-									/ (m.getMass() + uvoisin.getMasse());
+									* uvoisin.getMass()
+									/ (m.getMass() + uvoisin.getMass());
 
 							double angle = Math.atan2(
 									uvoisin.getGy() - m.getY(), uvoisin.getGx()
@@ -146,61 +147,70 @@ public class Univers {
 				}
 				for (Matter m : u.getListMatiere().values()) {
 					listMatter.put(m, m);
-					masse += m.getMass();
+					mass += m.getMass();
 				}
 			}
-		}
-	}
-
-	private Matter origine(HashMap<Matter, Matter> aVirer, Matter m) {
-		if (aVirer.get(m) == null) {
-			return m;
-		} else {
-			return origine(aVirer, aVirer.get(m));
 		}
 	}
 
 	public void manageImpact() {
 		// On recheche les collisions
-		HashMap<Matter, Matter> aVirer = new HashMap<Matter, Matter>();
-		HashMap<Matter, Matter> traite = new HashMap<Matter, Matter>();
+		List<Matter[]> toTreat = new ArrayList<Matter[]>();
+		HashMap<Matter, String> treated = new HashMap<Matter, String>();
 		TreeMap<Matter, Matter> sortX = new TreeMap<Matter, Matter>(
 				new XComparator());
 		sortX.putAll(listMatter);
-		TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
-				new MassComparator());
-		sortByMass.putAll(listMatter);
-		for (Matter m1 : sortByMass.values()) {
-			SortedMap<Matter, Matter> selectX = sortX.subMap(
-					new Matter(m1.minX(), 0), new Matter(m1.maxX(), 0));
-			TreeMap<Matter, Matter> sortY = new TreeMap<Matter, Matter>(
-					new YComparator());
-			sortY.putAll(selectX);
-			SortedMap<Matter, Matter> selectY = sortY.subMap(
-					new Matter(0, m1.minY()), new Matter(0, m1.maxY()));
-
-			for (Matter m2 : selectY.values()) {
-				if (aVirer.get(m2) == null) {
-					traite.put(m1, m1);
-					// if (traite.get(m2) == null && m1.collision(m2)) {
-					if (traite.get(m2) == null) {
-						if (HelperVariable.probFusion < Math.random()) {
-							m1.impact(m2);
-						} else {
-							origine(aVirer, m1).fusion(m2);
-							aVirer.put(m2, m1);
-						}
+		for (Matter m1 : listMatter.values()) {
+			if (treated.get(m1) == null) {
+				treated.put(m1, "");
+				SortedMap<Matter, Matter> selectX = sortX.subMap(
+						new Matter(m1.minX(), 0), true,
+						new Matter(m1.maxX(), 0), true);
+				TreeMap<Matter, Matter> sortY = new TreeMap<Matter, Matter>(
+						new YComparator());
+				sortY.putAll(selectX);
+				SortedMap<Matter, Matter> selectY = sortY.subMap(new Matter(0,
+						m1.minY()), true, new Matter(0, m1.maxY()), true);
+				for (Matter m2 : selectY.values()) {
+					if (treated.get(m2) == null) {
+						treated.put(m2, "");
+						Matter element[] = new Matter[2];
+						element[0] = m1;
+						element[1] = m2;
+						toTreat.add(element);
 					}
 				}
 			}
 		}
-		for (Matter m : aVirer.keySet()) {
-			listMatter.remove(m);
+		HashMap<Matter, String> toDelete = new HashMap<Matter, String>();
+		for (Matter[] element : toTreat) {
+			if (HelperVariable.probFusion < Math.random()) {
+				element[0].impact(element[1]);
+			} else {
+				element[0].fusion(element[1]);
+				listMatter.remove(element[1]);
+			}
 		}
+
+		mass = 0;
+		for (Matter m : listMatter.values()) {
+			if (m.getMass() == 0) {
+				toDelete.put(m, "");
+			}
+			mass += m.getMass();
+		}
+
 	}
 
 	public void move() {
-		manageImpact();
+		if (HelperVariable.manageImpact) {
+			double oldMass = mass;
+			manageImpact();
+			if (Math.abs(mass - oldMass) > 1) {
+				System.out.println("wtf :" + (int) mass + " - " + (int) oldMass
+						+ " = " + (int) (mass - oldMass));
+			}
+		}
 
 		// Barycentre au centre de l'écran
 		computeCentroidOfUnivers();
@@ -226,8 +236,8 @@ public class Univers {
 					new MassComparator());
 			sortByMass.putAll(listMatter);
 			Matter maxMass = sortByMass.firstEntry().getValue();
-			double cmaxX =maxMass.getX();
-			double cmaxY =maxMass.getY();
+			double cmaxX = maxMass.getX();
+			double cmaxY = maxMass.getY();
 			for (Matter m : sortByMass.values()) {
 				m.setX(m.getX() - cmaxX);
 				m.setY(m.getY() - cmaxY);
@@ -283,17 +293,13 @@ public class Univers {
 		return gy;
 	}
 
-	public double getMasse() {
-		return masse;
-	}
-
-	public void setMasse(double masse) {
-		this.masse = masse;
+	public double getMass() {
+		return mass;
 	}
 
 	private void createRandomUvivers() {
 		listMatter = new TreeMap<Matter, Matter>();
-		masse = 0;
+		mass = 0;
 		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
 			double angle = Math.random() * Math.PI * 2;
 			Matter m = new Matter(
@@ -310,13 +316,19 @@ public class Univers {
 							+ Math.random()
 							* (HelperVariable.densityMax - HelperVariable.dentityMin));
 			listMatter.put(m, m);
-			masse += m.getMass();
+			mass += m.getMass();
 		}
 	}
 
 	private void createRandomGalaxy() {
+		HelperVariable.probFusion = 1;
+		HelperVariable.dentityMin = 50;
+		HelperVariable.densityMax = 50;
+		HelperVariable.nebulaRadius = 200;
+		HelperVariable.massObjectMin = 10E3;
+		HelperVariable.massObjectMax = 10E4;
+		double delta = Math.PI * 2 / 360;
 		createRandomUvivers();
-		double delta = Math.PI * 2 / 360 / 20;
 		for (Matter m : listMatter.values()) {
 			double distance = Math.pow(
 					Math.pow(m.getX(), 2) + Math.pow(m.getY(), 2), 0.5);

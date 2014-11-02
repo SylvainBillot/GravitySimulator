@@ -7,6 +7,7 @@ public abstract class HelperVariable {
 	public static final double GRAVITY = 6.67384 * Math.pow(10, -11);
 	public static final long MINSLEEPTIME = 10;
 	
+	public static boolean manageImpact = true;
 	public static TypeOfUnivers typeOfUnivers = TypeOfUnivers.Random;
 	public static boolean stepByStep = false;
 	public static boolean traceCourbe = false;

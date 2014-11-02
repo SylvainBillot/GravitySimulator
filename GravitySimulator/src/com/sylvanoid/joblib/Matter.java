@@ -10,7 +10,7 @@ public class Matter implements Comparable<Matter> {
 	private double speedY;
 	private double density;
 	private double rayon;
-
+	
 	@Override
 	public int compareTo(Matter o) {
 		// TODO Auto-generated method stub
@@ -25,21 +25,24 @@ public class Matter implements Comparable<Matter> {
 
 	@Override
 	public String toString() {
-		return "m:" + mass + " x:" + x + " y:" + y + " vx:" + speedX
-				+ " vy:" + speedY;
+		return "m:" + mass + " x:" + x + " y:" + y + " vx:" + speedX + " vy:"
+				+ speedY;
 	}
-
 
 	public Matter() {
 
 	}
 
 	public Matter(double x, double y) {
-		this.x=x;
-		this.y=y;
+		this.x = x;
+		this.y = y;
 	}
 
-	
+	public Matter(double x, double y, double mass){
+		this.x = x;
+		this.y = y;
+		this.mass = mass;
+	}
 	
 	public Matter(double x, double y, double mass, double speedX,
 			double speedY, double density) {
@@ -135,44 +138,38 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public void fusion(Matter m2) {
-		if (this != m2) {
-			x = (x * mass + m2.getX() * m2.getMass())
-					/ (mass + m2.getMass());
-			y = (y * mass + m2.getY() * m2.getMass())
-					/ (mass + m2.getMass());
-			speedX = (speedX * mass + m2.getSpeedX() * m2.getMass())
-					/ (mass + m2.getMass());
-			speedY = (speedY * mass + m2.getSpeedY() * m2.getMass())
-					/ (mass + m2.getMass());
-			density = (density * mass + m2.getDensity() * m2.getMass())
-					/ (mass + m2.getMass());
-			mass += m2.getMass();
-			rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
-		}
+		x = (x * mass + m2.getX() * m2.getMass()) / (mass + m2.getMass());
+		y = (y * mass + m2.getY() * m2.getMass()) / (mass + m2.getMass());
+		speedX = (speedX * mass + m2.getSpeedX() * m2.getMass())
+				/ (mass + m2.getMass());
+		speedY = (speedY * mass + m2.getSpeedY() * m2.getMass())
+				/ (mass + m2.getMass());
+		density = (density * mass + m2.getDensity() * m2.getMass())
+				/ (mass + m2.getMass());
+		mass += m2.getMass();
+		rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
 	public void impact(Matter m2) {
-		if (this != m2) {
-			double Cr = HelperVariable.typeOfImpact;
-			double v1x = (Cr * m2.getMass() * (m2.getSpeedX() - speedX)
-					+ mass * speedX + m2.getMass() * m2.getSpeedX())
-					/ (mass + m2.getMass());
-			double v1y = (Cr * m2.getMass() * (m2.getSpeedY() - speedY)
-					+ mass * speedY + m2.getMass() * m2.getSpeedY())
-					/ (mass + m2.getMass());
+		double Cr = HelperVariable.typeOfImpact;
+		double v1x = (Cr * m2.getMass() * (m2.getSpeedX() - speedX) + mass
+				* speedX + m2.getMass() * m2.getSpeedX())
+				/ (mass + m2.getMass());
+		double v1y = (Cr * m2.getMass() * (m2.getSpeedY() - speedY) + mass
+				* speedY + m2.getMass() * m2.getSpeedY())
+				/ (mass + m2.getMass());
 
-			double v2x = (Cr * mass * (speedX - m2.getSpeedX())
-					+ m2.getMass() * m2.getSpeedX() + mass * speedX)
-					/ (m2.getMass() + mass);
-			double v2y = (Cr * mass * (speedY - m2.getSpeedY())
-					+ m2.getMass() * m2.getSpeedY() + mass * speedY)
-					/ (m2.getMass() + mass);
+		double v2x = (Cr * mass * (speedX - m2.getSpeedX()) + m2.getMass()
+				* m2.getSpeedX() + mass * speedX)
+				/ (m2.getMass() + mass);
+		double v2y = (Cr * mass * (speedY - m2.getSpeedY()) + m2.getMass()
+				* m2.getSpeedY() + mass * speedY)
+				/ (m2.getMass() + mass);
 
-			speedX = v1x;
-			speedY = v1y;
-			m2.setSpeedX(v2x);
-			m2.setSpeedY(v2y);
-		}
+		speedX = v1x;
+		speedY = v1y;
+		m2.setSpeedX(v2x);
+		m2.setSpeedY(v2y);
 	}
 
 	public boolean collision(Matter m2) {

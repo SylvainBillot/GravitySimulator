@@ -57,19 +57,7 @@ public class GUIProgram extends JFrame {
 				guiParam.setVisible(true);
 			}
 		});
-		JMenuItem menuItemQuitter = new JMenuItem("Quit");
-		menuItemQuitter.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				if (me.getThread() != null) {
-					me.getThread().interrupt();
-				}
-				me.dispose();
-			}
-		});
 		menuFichier.add(menuItemBaseParam);
-		menuFichier.add(menuItemQuitter);
 
 		JMenu menuProcess = new JMenu("Process");
 		menuBar.add(menuProcess);
