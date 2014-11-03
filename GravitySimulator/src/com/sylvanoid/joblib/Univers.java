@@ -120,9 +120,10 @@ public class Univers {
 													2), 0.5);
 
 							// To avoid aberated acceleration
-							if (distance < m.getRayon()) {
-								distance = m.getRayon();
-							}
+							// not a good idea
+							//if (distance < m.getRayon()) {
+								//distance = m.getRayon();
+							//}
 
 							double attraction = HelperVariable.GRAVITY
 									* (((m.getMass() * uvoisin.getMass()) / Math
@@ -325,9 +326,9 @@ public class Univers {
 		HelperVariable.dentityMin = 50;
 		HelperVariable.densityMax = 50;
 		HelperVariable.nebulaRadius = 200;
-		HelperVariable.massObjectMin = 10E3;
-		HelperVariable.massObjectMax = 10E4;
-		double delta = Math.PI * 2 / 360;
+		HelperVariable.massObjectMin = 1E4;
+		HelperVariable.massObjectMax = 1E4+1;
+		double delta = Math.PI * 2 / 360/20;
 		createRandomUvivers();
 		for (Matter m : listMatter.values()) {
 			double distance = Math.pow(
