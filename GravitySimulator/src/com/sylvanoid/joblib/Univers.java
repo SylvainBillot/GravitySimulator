@@ -2,6 +2,7 @@ package com.sylvanoid.joblib;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -25,11 +26,16 @@ public class Univers {
 	}
 
 	public Univers(TypeOfUnivers typeOfUnivers) {
+		listMatter = new TreeMap<Matter, Matter>();
+		mass = 0;
 		if (typeOfUnivers == TypeOfUnivers.Random) {
-			createRandomUvivers();
+			createRandomUvivers(0, 0);
 		}
 		if (typeOfUnivers == TypeOfUnivers.Galaxy) {
 			createRandomGalaxy();
+		}
+		if (typeOfUnivers == TypeOfUnivers.Planetary) {
+			createPlanetary();
 		}
 	}
 
@@ -119,12 +125,6 @@ public class Univers {
 													m.getY() - uvoisin.getGy(),
 													2), 0.5);
 
-							// To avoid aberated acceleration
-							// not a good idea
-							//if (distance < m.getRayon()) {
-								//distance = m.getRayon();
-							//}
-
 							double attraction = HelperVariable.GRAVITY
 									* (((m.getMass() * uvoisin.getMass()) / Math
 											.pow(distance, 2)));
@@ -154,37 +154,67 @@ public class Univers {
 		}
 	}
 
+	private void darkMatterSimulation(double darkMatterX, double darkMatterY,
+			double darkMatterMass) {
+		for (Matter m : listMatter.values()) {
+			double distance = Math.pow(Math.pow(m.getX() - darkMatterX, 2)
+					+ Math.pow(m.getY() - darkMatterY, 2), 0.5);
+
+			double attraction = HelperVariable.GRAVITY
+					* (((m.getMass() * darkMatterMass) / Math.pow(distance, 2)));
+
+			double attractionDeUvoisinSurM = attraction * darkMatterMass
+					/ (m.getMass() + darkMatterMass);
+
+			double angle = Math.atan2(darkMatterY - m.getY(),
+					darkMatterY - m.getX());
+
+			m.setSpeedX(m.getSpeedX() + attractionDeUvoisinSurM
+					* Math.cos(angle) * HelperVariable.timeFactor);
+			m.setSpeedY(m.getSpeedY() + attractionDeUvoisinSurM
+					* Math.sin(angle) * HelperVariable.timeFactor);
+		}
+	}
+
+	private void treatNeighbor(Matter m1, TreeMap<Matter, Matter> sortX,
+			HashMap<Matter, String> treated, List<Matter[]> toTreat) {
+		if (treated.get(m1) == null) {
+			treated.put(m1, "");
+			SortedMap<Matter, Matter> selectX = sortX.subMap(
+					new Matter(m1.minX(), 0), true, new Matter(m1.maxX(), 0),
+					false);
+			TreeMap<Matter, Matter> sortY = new TreeMap<Matter, Matter>(
+					new YComparator());
+			sortY.putAll(selectX);
+			SortedMap<Matter, Matter> selectY = sortY.subMap(
+					new Matter(0, m1.minY()), true, new Matter(0, m1.maxY()),
+					false);
+			for (Matter m2 : selectY.values()) {
+				if (treated.get(m2) == null) {
+					// treatNeighbor(m2, sortX, treated, toTreat);
+					treated.put(m2, "");
+					Matter element[] = new Matter[2];
+					element[0] = m1;
+					element[1] = m2;
+					toTreat.add(element);
+				}
+			}
+		}
+	}
+
 	public void manageImpact() {
 		// On recheche les collisions
-		List<Matter[]> toTreat = new ArrayList<Matter[]>();
+		LinkedList<Matter[]> toTreat = new LinkedList<Matter[]>();
 		HashMap<Matter, String> treated = new HashMap<Matter, String>();
 		TreeMap<Matter, Matter> sortX = new TreeMap<Matter, Matter>(
 				new XComparator());
 		sortX.putAll(listMatter);
 		for (Matter m1 : listMatter.values()) {
-			if (treated.get(m1) == null) {
-				treated.put(m1, "");
-				SortedMap<Matter, Matter> selectX = sortX.subMap(
-						new Matter(m1.minX(), 0), true,
-						new Matter(m1.maxX(), 0), true);
-				TreeMap<Matter, Matter> sortY = new TreeMap<Matter, Matter>(
-						new YComparator());
-				sortY.putAll(selectX);
-				SortedMap<Matter, Matter> selectY = sortY.subMap(new Matter(0,
-						m1.minY()), true, new Matter(0, m1.maxY()), true);
-				for (Matter m2 : selectY.values()) {
-					if (treated.get(m2) == null) {
-						treated.put(m2, "");
-						Matter element[] = new Matter[2];
-						element[0] = m1;
-						element[1] = m2;
-						toTreat.add(element);
-					}
-				}
-			}
+			treatNeighbor(m1, sortX, treated, toTreat);
 		}
-		HashMap<Matter, String> toDelete = new HashMap<Matter, String>();
-		for (Matter[] element : toTreat) {
+
+		for (int cpt = 0; cpt < toTreat.size(); cpt++) {
+			Matter[] element = toTreat.get(cpt);
 			if (HelperVariable.probFusion < Math.random()) {
 				element[0].impact(element[1]);
 			} else {
@@ -195,15 +225,16 @@ public class Univers {
 
 		mass = 0;
 		for (Matter m : listMatter.values()) {
-			if (m.getMass() == 0) {
-				toDelete.put(m, "");
-			}
 			mass += m.getMass();
 		}
 
 	}
 
 	public void move() {
+		if (HelperVariable.darkMatterSimulation) {
+			darkMatterSimulation(0, 0, mass * 10);
+		}
+
 		if (HelperVariable.manageImpact) {
 			double oldMass = mass;
 			manageImpact();
@@ -298,15 +329,13 @@ public class Univers {
 		return mass;
 	}
 
-	private void createRandomUvivers() {
-		listMatter = new TreeMap<Matter, Matter>();
-		mass = 0;
+	private void createRandomUvivers(double ox, double oy) {
 		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
 			double angle = Math.random() * Math.PI * 2;
 			Matter m = new Matter(
-					Math.cos(angle) * Math.random()
+					ox + Math.cos(angle) * Math.random()
 							* HelperVariable.nebulaRadius,
-					Math.sin(angle) * Math.random()
+					oy + Math.sin(angle) * Math.random()
 							* HelperVariable.nebulaRadius,
 					HelperVariable.massObjectMin
 							+ Math.random()
@@ -322,21 +351,55 @@ public class Univers {
 	}
 
 	private void createRandomGalaxy() {
+		HelperVariable.numberOfObjects = 2000;
 		HelperVariable.probFusion = 1;
-		HelperVariable.dentityMin = 50;
-		HelperVariable.densityMax = 50;
+		HelperVariable.dentityMin = 100;
+		HelperVariable.densityMax = 100;
 		HelperVariable.nebulaRadius = 200;
 		HelperVariable.massObjectMin = 1E4;
-		HelperVariable.massObjectMax = 1E4+1;
-		double delta = Math.PI * 2 / 360/20;
-		createRandomUvivers();
+		HelperVariable.massObjectMax = 2E4 + 1;
+		double delta = Math.PI * 2 / 360 / 50;
+		double speedTrans = 0.2;
+		createRandomUvivers(-600, 0);
+		computeCentroidOfUnivers();
 		for (Matter m : listMatter.values()) {
 			double distance = Math.pow(
-					Math.pow(m.getX(), 2) + Math.pow(m.getY(), 2), 0.5);
-			double angle = Math.atan2(m.getY(), m.getX());
-			m.setSpeedX(m.getX() - Math.cos(angle + delta) * distance);
-			m.setSpeedY(m.getY() - Math.sin(angle + delta) * distance);
+					Math.pow(m.getX() - gx, 2) + Math.pow(m.getY() - gy, 2),
+					0.5);
+			double angle = Math.atan2(m.getY() - gy, m.getX() - gx);
+			m.setSpeedX(m.getX() - gx - Math.cos(angle - delta) * distance
+					+ speedTrans);
+			m.setSpeedY(m.getY() - gy - Math.sin(angle - delta) * distance);
 		}
+		createRandomUvivers(0, 0);
+		createRandomUvivers(600, 0);
+	}
+
+	private void createPlanetary() {
+		HelperVariable.scala = 1;
+		Matter m1 = new Matter(Math.random(), Math.random(),
+				1E10 + Math.random(), 0, 0, 300);
+		listMatter.put(m1, m1);
+		Matter m2 = new Matter(200, Math.random(), 1E2 + Math.random(), 0, 0.6,
+				2);
+		listMatter.put(m2, m2);
+		Matter m3 = new Matter(-300, Math.random(), 1E3 + Math.random(), 0,
+				-1.5, 2);
+		listMatter.put(m3, m3);
+		Matter m4 = new Matter(-100, Math.random(), 100 + Math.random(), 0,
+				-0.8, 2);
+		listMatter.put(m4, m4);
+		Matter m5 = new Matter(Math.random(), -400, 100 + Math.random(), 0.4,
+				0, 2);
+		listMatter.put(m5, m5);
+		Matter m6 = new Matter(Math.random(), -30, 50 + Math.random(), 1.1,
+				0, 2);
+		listMatter.put(m6, m6);
+
+		for (Matter m : listMatter.values()) {
+			mass += m.getMass();
+		}
+
 	}
 
 }
