@@ -158,18 +158,18 @@ public class Matter implements Comparable<Matter> {
 		double v1y = (Cr * m2.getMass() * (m2.getSpeedY() - speedY) + mass
 				* speedY + m2.getMass() * m2.getSpeedY())
 				/ (mass + m2.getMass());
-
+/*
 		double v2x = (Cr * mass * (speedX - m2.getSpeedX()) + m2.getMass()
 				* m2.getSpeedX() + mass * speedX)
 				/ (m2.getMass() + mass);
 		double v2y = (Cr * mass * (speedY - m2.getSpeedY()) + m2.getMass()
 				* m2.getSpeedY() + mass * speedY)
 				/ (m2.getMass() + mass);
-
+*/
 		speedX = v1x;
 		speedY = v1y;
-		m2.setSpeedX(v2x);
-		m2.setSpeedY(v2y);
+//		m2.setSpeedX(v2x);
+//		m2.setSpeedY(v2y);
 	}
 
 	public boolean collision(Matter m2) {
