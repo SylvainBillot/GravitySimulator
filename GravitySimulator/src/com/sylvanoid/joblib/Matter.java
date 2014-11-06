@@ -6,6 +6,8 @@ public class Matter implements Comparable<Matter> {
 	private double x;
 	private double y;
 	private double mass;
+	private double aX;
+	private double aY;
 	private double speedX;
 	private double speedY;
 	private double density;
@@ -16,8 +18,7 @@ public class Matter implements Comparable<Matter> {
 		// TODO Auto-generated method stub
 		if (mass < o.getMass()) {
 			return 1;
-		}
-		if (mass > o.getMass()) {
+		} else if (mass > o.getMass()) {
 			return -1;
 		}
 		return 0;
@@ -80,6 +81,22 @@ public class Matter implements Comparable<Matter> {
 		this.mass = mass;
 	}
 
+	public double getaX() {
+		return aX;
+	}
+
+	public void setaX(double aX) {
+		this.aX = aX;
+	}
+
+	public double getaY() {
+		return aY;
+	}
+
+	public void setaY(double aY) {
+		this.aY = aY;
+	}
+
 	public double getSpeedX() {
 		return speedX;
 	}
@@ -133,6 +150,8 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public void move() {
+		speedX += aX;
+		speedY += aY;
 		x = getXplusV();
 		y = getYplusV();
 	}

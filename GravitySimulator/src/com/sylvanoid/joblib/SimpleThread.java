@@ -16,6 +16,7 @@ public class SimpleThread implements Runnable {
 		try {
 			while (true) {
 				long start = System.currentTimeMillis();
+				guiProgram.getUnivers().resetAcceleration();
 				guiProgram.getUnivers().computeLimits();
 				guiProgram.getUnivers().compute();
 				guiProgram.getUnivers().move();

@@ -8,10 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 
 import com.sylvanoid.common.HelperVariable;
+import com.sylvanoid.common.TypeOfUnivers;
 
 public class GUIParam extends JDialog {
 	/**
@@ -20,6 +22,7 @@ public class GUIParam extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private GUIParam me;
 	private GUIProgram mother;
+	JComboBox typeOfUnivers;
 	private JFormattedTextField nbrObject;
 	private JFormattedTextField rayonDeLaNebuleusePrimitive;
 	private JFormattedTextField densiteMin;
@@ -35,11 +38,18 @@ public class GUIParam extends JDialog {
 		setTitle("Parameters");
 		setModal(true);
 		int w = 500;
-		int h = 300;
+		int h = 400;
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(9, 2));
+		setLayout(new GridLayout(10, 2));
+		add(new Label("Type of Univers:"));
+		typeOfUnivers = new JComboBox();
+		for(TypeOfUnivers tou:TypeOfUnivers.values()){
+			typeOfUnivers.addItem(tou.getLabel());
+		}
+		typeOfUnivers.setSelectedItem(HelperVariable.typeOfUnivers.getLabel());
+		add(typeOfUnivers);
 		add(new Label("Number of object:"));
 		nbrObject = new JFormattedTextField(HelperVariable.numberOfObjects);
 		add(nbrObject);
@@ -81,6 +91,17 @@ public class GUIParam extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
+					switch(typeOfUnivers.getSelectedIndex()){
+					case 0:
+						HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
+						break;
+					case 1:
+						HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
+						break;
+					case 2:
+						HelperVariable.typeOfUnivers = TypeOfUnivers.Galaxy;
+						break;
+					}
 					HelperVariable.numberOfObjects = Integer
 							.parseInt(me.nbrObject.getValue().toString());
 					HelperVariable.nebulaRadius = Double
