@@ -99,6 +99,9 @@ public class GUIParam extends JDialog {
 						HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
 						break;
 					case 2:
+						HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxyWithBackHole;
+						break;
+					case 3:
 						HelperVariable.typeOfUnivers = TypeOfUnivers.Galaxy;
 						break;
 					}

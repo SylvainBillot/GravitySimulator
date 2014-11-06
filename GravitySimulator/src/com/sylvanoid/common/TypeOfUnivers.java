@@ -1,9 +1,10 @@
 package com.sylvanoid.common;
 
 public enum TypeOfUnivers {
-	Planetary	("Planetary System"),
-	Random		("Random Univers"),
-	Galaxy		("Galaxies Collision");
+	Planetary			("Planetary System"),
+	Random				("Random Univers"),
+	GalaxyWithBackHole	("Galaxy with black hole"),
+	Galaxy				("Galaxies Collision");
 
 	private final String label;
 	
