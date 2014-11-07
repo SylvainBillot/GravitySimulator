@@ -40,6 +40,9 @@ public class Univers {
 		if (typeOfUnivers == TypeOfUnivers.Planetary) {
 			createPlanetary();
 		}
+		if (typeOfUnivers == TypeOfUnivers.PlanetaryRandom) {
+			createPlanetaryRandom();
+		}
 	}
 
 	public Univers(Univers father, double minX, double minY, double maxX,
@@ -148,11 +151,9 @@ public class Univers {
 											- m.getX());
 
 							m.setaX(m.getaX() + attractionDeUvoisinSurM
-									* Math.cos(angle)
-									* HelperVariable.timeFactor);
+									* Math.cos(angle));
 							m.setaY(m.getaY() + attractionDeUvoisinSurM
-									* Math.sin(angle)
-									* HelperVariable.timeFactor);
+									* Math.sin(angle));
 						}
 					}
 				}
@@ -179,10 +180,8 @@ public class Univers {
 			double angle = Math.atan2(darkMatterY - m.getY(),
 					darkMatterY - m.getX());
 
-			m.setaY(m.getaX() + attractionDeUvoisinSurM * Math.cos(angle)
-					* HelperVariable.timeFactor);
-			m.setaY(m.getaY() + attractionDeUvoisinSurM * Math.sin(angle)
-					* HelperVariable.timeFactor);
+			m.setaY(m.getaX() + attractionDeUvoisinSurM * Math.cos(angle));
+			m.setaY(m.getaY() + attractionDeUvoisinSurM * Math.sin(angle));
 		}
 	}
 
@@ -338,18 +337,11 @@ public class Univers {
 	public double getMass() {
 		return mass;
 	}
-	private void createRandomUvivers(){
-		HelperVariable.numberOfObjects = 1000;
-		HelperVariable.probFusion = 1;
-		HelperVariable.dentityMin = 30;
-		HelperVariable.densityMax = 30;
-		HelperVariable.nebulaRadius = 600;
-		HelperVariable.massObjectMin = 1E4;
-		HelperVariable.massObjectMax = 1E5 + 1;	
-		
+
+	private void createRandomUvivers() {
 		createUvivers(0, 0, 0, 0);
 	}
-	
+
 	private void createUvivers(double ox, double oy, double delta,
 			double speedTrans) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
@@ -362,7 +354,8 @@ public class Univers {
 					oy + Math.sin(angle) * r * HelperVariable.nebulaRadius,
 					HelperVariable.massObjectMin
 							+ Math.random()
-							* (HelperVariable.massObjectMax - HelperVariable.massObjectMin),
+							* (HelperVariable.massObjectMax - HelperVariable.massObjectMin)
+							+ Math.random(),
 					0,
 					0,
 					HelperVariable.dentityMin
@@ -388,16 +381,9 @@ public class Univers {
 	}
 
 	private void createRandomGalaxyWithBlackHole() {
-		HelperVariable.numberOfObjects = 500;
-		HelperVariable.probFusion = 1;
-		HelperVariable.dentityMin = 30;
-		HelperVariable.densityMax = 30;
-		HelperVariable.nebulaRadius = 300;
-		HelperVariable.massObjectMin = 1E3;
-		HelperVariable.massObjectMax = 1E3 + 1;
 		createUvivers(0, 0, 0, 0);
-		Matter m1 = new Matter(Math.random(), -Math.random(), mass * 10, 0, 0,
-				500);
+		Matter m1 = new Matter(Math.random(), -Math.random(), mass * 1000000,
+				0, 0, 500);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 		computeCentroidOfUnivers();
@@ -407,28 +393,19 @@ public class Univers {
 						.pow(Math.pow(m.getX() - gx, 2)
 								+ Math.pow(m.getY() - gy, 2), 0.5);
 				double a = Math.atan2(m.getY() - gy, m.getX() - gx);
-				double speed = Math.pow(mass * HelperVariable.GRAVITY
-						/ distance, 0.5);
-				m.setSpeedX(10*speed * Math.cos(a + Math.PI / 2));
-				m.setSpeedY(10*speed * Math.sin(a + Math.PI / 2));
+				double speed = Math.pow(Math.pow(m1.getMass(),2) * HelperVariable.GRAVITY
+						/ ((m1.getMass()+m.getMass())*distance), 0.5);
+				m.setSpeedX(10 * speed * Math.cos(a + Math.PI / 2));
+				m.setSpeedY(10 * speed * Math.sin(a + Math.PI / 2));
 			}
 		}
 
 	}
 
 	private void createRandomGalaxy() {
-		HelperVariable.scala = 1;
-		HelperVariable.numberOfObjects = 500;
-		HelperVariable.probFusion = 1;
-		HelperVariable.dentityMin = 30;
-		HelperVariable.densityMax = 30;
-		HelperVariable.nebulaRadius = 300;
-		HelperVariable.massObjectMin = 1E4;
-		HelperVariable.massObjectMax = 1E4 + 1;
-		double delta = Math.PI * 2 / 360;
 		double speedTrans = 0.1;
-		createUvivers(-500, -100, delta / 20, speedTrans);
-		createUvivers(500, 100, -delta / 20, -speedTrans);
+		createUvivers(-500, -100, 0, speedTrans);
+		createUvivers(500, 100, 0, -speedTrans);
 
 		Matter m1 = new Matter(-500 + Math.random(), -100 + Math.random(),
 				1E6 + Math.random(), speedTrans, 0, 30);
@@ -467,4 +444,24 @@ public class Univers {
 		}
 	}
 
+	private void createPlanetaryRandom() {
+		createUvivers(0, 0, 0, 0);
+		Matter m1 = new Matter(Math.random(), -Math.random(), mass * 1000000,
+				0, 0, 100);
+		listMatter.put(m1, m1);
+		mass += m1.getMass();
+		computeCentroidOfUnivers();
+		for (Matter m : listMatter.values()) {
+			if (m != m1) {
+				double distance = Math.pow(Math.pow(m.getX() - m1.getX(), 2)
+						+ Math.pow(m.getY() - m1.getY(), 2), 0.5);
+				double a = Math.atan2(m.getY() - m1.getY(),
+						m.getX() - m1.getX());
+				double speed = Math.pow(Math.pow(m1.getMass(),2) * HelperVariable.GRAVITY
+						/ ((m1.getMass()+m.getMass())*distance), 0.5);
+				m.setSpeedX(10 * speed * Math.cos(a + Math.PI / 2));
+				m.setSpeedY(10 * speed * Math.sin(a + Math.PI / 2));
+			}
+		}
+	}
 }

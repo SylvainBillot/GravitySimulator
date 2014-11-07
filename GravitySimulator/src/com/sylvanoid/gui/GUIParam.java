@@ -23,14 +23,15 @@ public class GUIParam extends JDialog {
 	private GUIParam me;
 	private GUIProgram mother;
 	JComboBox typeOfUnivers;
-	private JFormattedTextField nbrObject;
-	private JFormattedTextField rayonDeLaNebuleusePrimitive;
+	private JFormattedTextField scala;
+	private JFormattedTextField numberOfObjects;
+	private JFormattedTextField nebulaRadius;
 	private JFormattedTextField densiteMin;
 	private JFormattedTextField densiteMax;
-	private JFormattedTextField massBaseObjetMin;
-	private JFormattedTextField massBaseObjetMax;
+	private JFormattedTextField massObjectMin;
+	private JFormattedTextField massObjectMax;
 	private JFormattedTextField probFusion;
-	private JFormattedTextField typeChoc;
+	private JFormattedTextField typeOfImpact;
 
 	public GUIParam(GUIProgram mother) {
 		this.me = this;
@@ -42,21 +43,79 @@ public class GUIParam extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(10, 2));
+		setLayout(new GridLayout(11, 2));
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox();
-		for(TypeOfUnivers tou:TypeOfUnivers.values()){
+		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
 			typeOfUnivers.addItem(tou.getLabel());
 		}
 		typeOfUnivers.setSelectedItem(HelperVariable.typeOfUnivers.getLabel());
+		typeOfUnivers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switch (typeOfUnivers.getSelectedIndex()) {
+				case 0:
+					HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
+					scala.setValue(1);
+					break;
+				case 1:
+					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
+					scala.setValue(1);
+					numberOfObjects.setValue(20);
+					probFusion.setValue(1);
+					densiteMin.setValue(30);
+					densiteMax.setValue(30);
+					nebulaRadius.setValue(500);
+					massObjectMin.setValue(100);
+					massObjectMax.setValue(100);
+					break;
+				case 2:
+					HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
+					scala.setValue(1);
+					numberOfObjects.setValue(1000);
+					probFusion.setValue(1);
+					densiteMin.setValue(30);
+					densiteMax.setValue(30);
+					nebulaRadius.setValue(600);
+					massObjectMin.setValue(10000);
+					massObjectMax.setValue(100000);
+					break;
+				case 3:
+					HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxyWithBackHole;
+					scala.setValue(1);
+					numberOfObjects.setValue(1000);
+					probFusion.setValue(1);
+					densiteMin.setValue(30);
+					densiteMax.setValue(30);
+					nebulaRadius.setValue(600);
+					massObjectMin.setValue(100);
+					massObjectMax.setValue(100);
+					break;
+				case 4:
+					HelperVariable.typeOfUnivers = TypeOfUnivers.Galaxy;
+					scala.setValue(1);
+					numberOfObjects.setValue(500);
+					probFusion.setValue(1);
+					densiteMin.setValue(30);
+					densiteMax.setValue(30);
+					nebulaRadius.setValue(300);
+					massObjectMin.setValue(10000);
+					massObjectMax.setValue(10000);
+					break;
+				}
+			}
+		});
 		add(typeOfUnivers);
+		add(new Label("Scala:"));
+		scala = new JFormattedTextField(HelperVariable.scala);
+		add(scala);
+		
 		add(new Label("Number of object:"));
-		nbrObject = new JFormattedTextField(HelperVariable.numberOfObjects);
-		add(nbrObject);
+		numberOfObjects = new JFormattedTextField(HelperVariable.numberOfObjects);
+		add(numberOfObjects);
 		add(new Label("Nebula radius:"));
-		rayonDeLaNebuleusePrimitive = new JFormattedTextField(
+		nebulaRadius = new JFormattedTextField(
 				HelperVariable.nebulaRadius);
-		add(rayonDeLaNebuleusePrimitive);
+		add(nebulaRadius);
 		add(new Label("Density min:"));
 		densiteMin = new JFormattedTextField(HelperVariable.dentityMin);
 		add(densiteMin);
@@ -64,17 +123,17 @@ public class GUIParam extends JDialog {
 		densiteMax = new JFormattedTextField(HelperVariable.densityMax);
 		add(densiteMax);
 		add(new Label("Mass object min:"));
-		massBaseObjetMin = new JFormattedTextField(HelperVariable.massObjectMin);
-		add(massBaseObjetMin);
+		massObjectMin = new JFormattedTextField(HelperVariable.massObjectMin);
+		add(massObjectMin);
 		add(new Label("Mass object max:"));
-		massBaseObjetMax = new JFormattedTextField(HelperVariable.massObjectMax);
-		add(massBaseObjetMax);
+		massObjectMax = new JFormattedTextField(HelperVariable.massObjectMax);
+		add(massObjectMax);
 		add(new Label("Fusion probability (1-0):"));
 		probFusion = new JFormattedTextField(HelperVariable.probFusion);
 		add(probFusion);
 		add(new Label("Type of impact (1-elastic 0-inelastic):"));
-		typeChoc = new JFormattedTextField(HelperVariable.typeOfImpact);
-		add(typeChoc);
+		typeOfImpact = new JFormattedTextField(HelperVariable.typeOfImpact);
+		add(typeOfImpact);
 
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
@@ -91,39 +150,27 @@ public class GUIParam extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					switch(typeOfUnivers.getSelectedIndex()){
-					case 0:
-						HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
-						break;
-					case 1:
-						HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
-						break;
-					case 2:
-						HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxyWithBackHole;
-						break;
-					case 3:
-						HelperVariable.typeOfUnivers = TypeOfUnivers.Galaxy;
-						break;
-					}
+					HelperVariable.scala = Double
+							.parseDouble(me.scala.getValue().toString());
 					HelperVariable.numberOfObjects = Integer
-							.parseInt(me.nbrObject.getValue().toString());
+							.parseInt(me.numberOfObjects.getValue().toString());
 					HelperVariable.nebulaRadius = Double
-							.parseDouble(me.rayonDeLaNebuleusePrimitive
+							.parseDouble(me.nebulaRadius
 									.getValue().toString());
 					HelperVariable.dentityMin = Double
 							.parseDouble(me.densiteMin.getValue().toString());
 					HelperVariable.densityMax = Double
 							.parseDouble(me.densiteMax.getValue().toString());
 					HelperVariable.massObjectMin = Double
-							.parseDouble(me.massBaseObjetMin.getValue()
+							.parseDouble(me.massObjectMin.getValue()
 									.toString());
 					HelperVariable.massObjectMax = Double
-							.parseDouble(me.massBaseObjetMax.getValue()
+							.parseDouble(me.massObjectMax.getValue()
 									.toString());
 					HelperVariable.probFusion = Double
 							.parseDouble(me.probFusion.getValue().toString());
 					HelperVariable.typeOfImpact = Double
-							.parseDouble(me.typeChoc.getValue().toString());
+							.parseDouble(me.typeOfImpact.getValue().toString());
 					me.getMother().reset();
 					me.setVisible(false);
 

@@ -116,30 +116,6 @@ public class GUIProgram extends JFrame {
 		menuProcess.add(menuItemReset);
 		menuProcess.add(menuItemByStep);
 
-		JMenu menuTime = new JMenu("Time factor");
-		menuBar.add(menuTime);
-		menuTime.setVisible(false);
-		JMenuItem menuItemTempsXDix = new JMenuItem("x 2");
-		menuItemTempsXDix.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.timeFactor *= 2;
-				HelperVariable.timeFactorChangeX10 = true;
-			}
-		});
-		JMenuItem menuItemTempsDivDix = new JMenuItem("/ 2");
-		menuItemTempsDivDix.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.timeFactor /= 2;
-				HelperVariable.timeFactorChangeDiv10 = true;
-			}
-		});
-		menuTime.add(menuItemTempsXDix);
-		menuTime.add(menuItemTempsDivDix);
-
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
 		JMenuItem menuItemTraceOn = new JMenuItem("Trace On");
@@ -331,7 +307,6 @@ public class GUIProgram extends JFrame {
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.traceCourbe = false;
 		HelperVariable.scala = 1;
-		HelperVariable.timeFactor = 1;
 		univers = new Univers(HelperVariable.typeOfUnivers);
 		p.repaint();
 		t = new Thread(new SimpleThread(this));
