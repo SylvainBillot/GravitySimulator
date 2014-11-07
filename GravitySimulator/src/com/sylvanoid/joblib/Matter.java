@@ -125,6 +125,15 @@ public class Matter implements Comparable<Matter> {
 		return rayon;
 	}
 
+	public double getXplusA() {
+		return x + aX;
+	}
+
+	public double getYplusA() {
+		return y + aY;
+	}
+
+	
 	public double getXplusV() {
 		return x + speedX;
 	}

@@ -59,16 +59,6 @@ public class GraphicZone extends JPanel {
 										.getRayon() * HelperVariable.scala),
 								(int) (m.getRayon() * HelperVariable.scala * 2),
 								(int) (m.getRayon() * HelperVariable.scala * 2));
-
-						g.setColor(Color.RED);
-						g.drawLine(
-								(int) (cw + m.getX() * HelperVariable.scala),
-								(int) (ch + m.getY() * HelperVariable.scala),
-								(int) (cw + m.getXplusV()
-										* HelperVariable.scala),
-								(int) (ch + m.getYplusV()
-										* HelperVariable.scala));
-
 					} else {
 						g.setColor(Color.BLACK);
 						int rayonMin = 2;
@@ -77,6 +67,17 @@ public class GraphicZone extends JPanel {
 								(int) (ch + m.getY() * HelperVariable.scala - rayonMin),
 								rayonMin, rayonMin);
 					}
+					g.setColor(Color.RED);
+					g.drawLine((int) (cw + m.getX() * HelperVariable.scala),
+							(int) (ch + m.getY() * HelperVariable.scala),
+							(int) (cw + m.getXplusV() * HelperVariable.scala),
+							(int) (ch + m.getYplusV() * HelperVariable.scala));
+
+					g.setColor(Color.BLUE);
+					g.drawLine((int) (cw + m.getX() * HelperVariable.scala),
+							(int) (ch + m.getY() * HelperVariable.scala),
+							(int) (cw + m.getXplusA() * HelperVariable.scala),
+							(int) (ch + m.getYplusA() * HelperVariable.scala));
 				}
 			}
 			g.setColor(Color.RED);

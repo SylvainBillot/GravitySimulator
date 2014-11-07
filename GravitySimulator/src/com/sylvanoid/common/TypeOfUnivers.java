@@ -3,8 +3,8 @@ package com.sylvanoid.common;
 public enum TypeOfUnivers {
 	Planetary			("Planetary System"),
 	PlanetaryRandom		("Random Planetary System"),
-	Random				("Random Univers"),
-	GalaxyWithBackHole	("Galaxy with black hole"),
+	Random				("Random Static Univers"),
+	RandomRotateUnivers	("Random Rotate Univers"),
 	Galaxy				("Galaxies Collision");
 
 	private final String label;

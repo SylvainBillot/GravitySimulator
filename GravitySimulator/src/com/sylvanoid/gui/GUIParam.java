@@ -80,13 +80,13 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(100000);
 					break;
 				case 3:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxyWithBackHole;
+					HelperVariable.typeOfUnivers = TypeOfUnivers.RandomRotateUnivers;
 					scala.setValue(1);
 					numberOfObjects.setValue(1000);
 					probFusion.setValue(1);
-					densiteMin.setValue(30);
-					densiteMax.setValue(30);
-					nebulaRadius.setValue(600);
+					densiteMin.setValue(50);
+					densiteMax.setValue(50);
+					nebulaRadius.setValue(300);
 					massObjectMin.setValue(100);
 					massObjectMax.setValue(100);
 					break;
