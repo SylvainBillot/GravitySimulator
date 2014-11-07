@@ -34,7 +34,7 @@ public class Univers {
 		if (typeOfUnivers == TypeOfUnivers.RandomRotateUnivers) {
 			createRandomRotateUnivers();
 		}
-		if (typeOfUnivers == TypeOfUnivers.Galaxy) {
+		if (typeOfUnivers == TypeOfUnivers.GalaxiesCollision) {
 			createGalaxiesCollision();
 		}
 		if (typeOfUnivers == TypeOfUnivers.Planetary) {
@@ -140,20 +140,14 @@ public class Univers {
 
 							double attraction = HelperVariable.GRAVITY
 									* (((m.getMass() * uvoisin.getMass()) / Math
-											.pow(distance, 2)));
-
-							double attractionDeUvoisinSurM = attraction
-									* uvoisin.getMass()
-									/ (m.getMass() + uvoisin.getMass());
+											.pow(distance, 2))) / m.getMass();
 
 							double angle = Math.atan2(
 									uvoisin.getGy() - m.getY(), uvoisin.getGx()
 											- m.getX());
 
-							m.setaX(m.getaX() + attractionDeUvoisinSurM
-									* Math.cos(angle));
-							m.setaY(m.getaY() + attractionDeUvoisinSurM
-									* Math.sin(angle));
+							m.setaX(m.getaX() + attraction * Math.cos(angle));
+							m.setaY(m.getaY() + attraction * Math.sin(angle));
 						}
 					}
 				}
@@ -303,8 +297,8 @@ public class Univers {
 		createUvivers(0, 0, 0, 0);
 	}
 
-	private void createUvivers(double ox, double oy, double delta,
-			double speedTrans) {
+	private TreeMap<Matter, Matter> createUvivers(double ox, double oy,
+			double delta, double speedTrans) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
@@ -339,89 +333,112 @@ public class Univers {
 		listMatter.putAll(miniListMatter);
 		mass += miniMass;
 
+		return miniListMatter;
 	}
 
 	private void createRandomRotateUnivers() {
 		createUvivers(0, 0, 0, 0);
-		Matter m1 = new Matter(Math.random(), Math.random(), mass * 100000,
-				0, 0, 50000);
+		Matter m1 = new Matter(Math.random(), Math.random(), mass * 100000, 0,
+				0, 50000);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
-		computeCentroidOfUnivers();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				double distance = Math
-						.pow(Math.pow(m.getX() - gx, 2)
-								+ Math.pow(m.getY() - gy, 2), 0.5);
-				double a = Math.atan2(m.getY() - gy, m.getX() - gx);
-				double speed = Math.pow(mass * HelperVariable.GRAVITY
-						/ distance, 0.5);
-				m.setSpeedX(10 * speed * Math.cos(a + Math.PI / 2));
-				m.setSpeedY(10 * speed * Math.sin(a + Math.PI / 2));
+				double a = Math.atan2(m.getY() - m1.getY(), m.getX() - m1.getX());
+				m.setSpeedX(m.orbitalSpeed(m1) * Math.cos(a + Math.PI / 2));
+				m.setSpeedY(m.orbitalSpeed(m1) * Math.sin(a + Math.PI / 2));
 			}
 		}
-
 	}
 
 	private void createGalaxiesCollision() {
-		double speedTrans = 0.1;
-		createUvivers(-500, -100, 0, speedTrans);
-		createUvivers(500, 100, 0, -speedTrans);
+		TreeMap<Matter, Matter> subu01 = createUvivers(-400, -100, 0, 0);
+		TreeMap<Matter, Matter> subu02 = createUvivers(400, 100, 0, 0);
 
-		Matter m1 = new Matter(-500 + Math.random(), -100 + Math.random(),
-				1E6 + Math.random(), speedTrans, 0, 30);
+		Matter m1 = new Matter(-400 + Math.random(), -100 + Math.random(),
+				1E12 + Math.random(), 0, 0, 30000);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
-		Matter m2 = new Matter(500 + Math.random(), 100 + Math.random(),
-				1E6 + Math.random(), -speedTrans, 0, 30);
+		Matter m2 = new Matter(400 + Math.random(), 100 + Math.random(),
+				1E12 + Math.random(), 0, 0, 30000);
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
+
+		for (Matter m : subu01.values()) {
+			if (m != m1) {
+				double a = Math.atan2(m.getY() - m1.getY(), m.getX() - m1.getX());
+				m.setSpeedX(m.orbitalSpeed(m1) * Math.cos(a + Math.PI / 2));
+				m.setSpeedY(m.orbitalSpeed(m1) * Math.sin(a + Math.PI / 2));
+			}
+		}
+
+		for (Matter m : subu02.values()) {
+			if (m != m2) {
+				double a = Math.atan2(m.getY() - m2.getY(), m.getX() - m2.getX());
+				m.setSpeedX(m.orbitalSpeed(m2) * Math.cos(a - Math.PI / 2));
+				m.setSpeedY(m.orbitalSpeed(m2) * Math.sin(a - Math.PI / 2));
+			}
+		}
+		
+		listMatter.putAll(subu01);
+		listMatter.putAll(subu02);
+
+		
+		
+		
 	}
 
 	private void createPlanetary() {
-		HelperVariable.scala = 1;
 		Matter m1 = new Matter(Math.random(), Math.random(),
 				1E10 + Math.random(), 0, 0, 300);
 		listMatter.put(m1, m1);
-		Matter m2 = new Matter(200, Math.random(), 1E2 + Math.random(), 0, 0.6,
-				2);
+		Matter m2 = new Matter(100 + Math.random(), 25 + Math.random(),
+				1E4 + Math.random(), 0, 0, 300);
 		listMatter.put(m2, m2);
-		Matter m3 = new Matter(-300, Math.random(), 1E3 + Math.random(), 0,
-				-1.5, 2);
+		Matter m3 = new Matter(-120 + Math.random(), 30 + Math.random(),
+				1E9 + Math.random(), 0, 0, 300);
 		listMatter.put(m3, m3);
-		Matter m4 = new Matter(-100, Math.random(), 100 + Math.random(), 0,
-				-0.8, 2);
+		Matter m4 = new Matter(-140 + Math.random(), -90 + Math.random(),
+				1E6 + Math.random(), 0, 0, 300);
 		listMatter.put(m4, m4);
-		Matter m5 = new Matter(Math.random(), -400, 100 + Math.random(), 0.4,
-				0, 2);
+		Matter m5 = new Matter(100 + Math.random(), -200 + Math.random(),
+				1E3 + Math.random(), 0, 0, 300);
 		listMatter.put(m5, m5);
-		Matter m6 = new Matter(Math.random(), -30, 50 + Math.random(), 1.1, 0,
-				2);
+		Matter m6 = new Matter(-50 + Math.random(), -30 + Math.random(),
+				1E7 + Math.random(), 0, 0, 300);
 		listMatter.put(m6, m6);
-
+		Matter m7 = new Matter(-110 + Math.random(), 30 + Math.random(),
+				1E2 + Math.random(), 0, 0, 300);
 		for (Matter m : listMatter.values()) {
+			if (m != m1) {
+				double a = Math.atan2(m.getY() - m1.getY(),
+						m.getX() - m1.getX());
+				m.setSpeedX(m.orbitalSpeed(m1) * Math.cos(a + Math.PI / 2));
+				m.setSpeedY(m.orbitalSpeed(m1) * Math.sin(a + Math.PI / 2));
+			}
 			mass += m.getMass();
 		}
+		double a = Math.atan2(m7.getY() - m3.getY(), m7.getX() - m3.getX());
+		m7.setSpeedX(m3.getSpeedX() + m7.orbitalSpeed(m3)
+				* Math.cos(a + Math.PI / 2));
+		m7.setSpeedY(m3.getSpeedY() + m7.orbitalSpeed(m3)
+				* Math.sin(a + Math.PI / 2));
+		listMatter.put(m7, m7);
+
 	}
 
 	private void createPlanetaryRandom() {
 		createUvivers(0, 0, 0, 0);
-		Matter m1 = new Matter(Math.random(), Math.random(), mass * 1000000,
-				0, 0, 100);
+		Matter m1 = new Matter(Math.random(), Math.random(), 1E10, 0, 0, 500);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
-		computeCentroidOfUnivers();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				double distance = Math.pow(Math.pow(m.getX() - gx, 2)
-						+ Math.pow(m.getY() - gy, 2), 0.5);
-				double a = Math.atan2(m.getY() - gy,
-						m.getX() - gx);
-				double speed = Math.pow(mass * HelperVariable.GRAVITY
-						/ distance, 0.5);
-				m.setSpeedX(10 * speed * Math.cos(a + Math.PI / 2));
-				m.setSpeedY(10 * speed * Math.sin(a + Math.PI / 2));
+				double a = Math.atan2(m.getY() - m1.getY(),
+						m.getX() - m1.getX());
+				m.setSpeedX(m.orbitalSpeed(m1) * Math.cos(a + Math.PI / 2));
+				m.setSpeedY(m.orbitalSpeed(m1) * Math.sin(a + Math.PI / 2));
 			}
 		}
 	}

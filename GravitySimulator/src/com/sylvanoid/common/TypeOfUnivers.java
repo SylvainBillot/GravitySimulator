@@ -4,8 +4,8 @@ public enum TypeOfUnivers {
 	Planetary			("Planetary System"),
 	PlanetaryRandom		("Random Planetary System"),
 	Random				("Random Static Univers"),
-	RandomRotateUnivers	("Random Rotate Univers"),
-	Galaxy				("Galaxies Collision");
+	RandomRotateUnivers	("Random Rotate Univers (With Dark Mass)"),
+	GalaxiesCollision	("Galaxies Collision");
 
 	private final String label;
 	

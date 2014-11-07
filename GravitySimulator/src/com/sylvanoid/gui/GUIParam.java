@@ -65,19 +65,19 @@ public class GUIParam extends JDialog {
 					densiteMin.setValue(30);
 					densiteMax.setValue(30);
 					nebulaRadius.setValue(500);
-					massObjectMin.setValue(100);
-					massObjectMax.setValue(100);
+					massObjectMin.setValue(10000);
+					massObjectMax.setValue(1000000);
 					break;
 				case 2:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
 					scala.setValue(1);
 					numberOfObjects.setValue(1000);
 					probFusion.setValue(1);
-					densiteMin.setValue(30);
-					densiteMax.setValue(30);
+					densiteMin.setValue(500);
+					densiteMax.setValue(500);
 					nebulaRadius.setValue(600);
-					massObjectMin.setValue(10000);
-					massObjectMax.setValue(100000);
+					massObjectMin.setValue(100000000);
+					massObjectMax.setValue(1000000000);
 					break;
 				case 3:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.RandomRotateUnivers;
@@ -87,19 +87,19 @@ public class GUIParam extends JDialog {
 					densiteMin.setValue(50);
 					densiteMax.setValue(50);
 					nebulaRadius.setValue(300);
-					massObjectMin.setValue(100);
-					massObjectMax.setValue(100);
+					massObjectMin.setValue(10000);
+					massObjectMax.setValue(100000);
 					break;
 				case 4:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.Galaxy;
+					HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxiesCollision;
 					scala.setValue(1);
-					numberOfObjects.setValue(500);
+					numberOfObjects.setValue(800);
 					probFusion.setValue(1);
-					densiteMin.setValue(30);
-					densiteMax.setValue(30);
+					densiteMin.setValue(800);
+					densiteMax.setValue(800);
 					nebulaRadius.setValue(300);
-					massObjectMin.setValue(10000);
-					massObjectMax.setValue(10000);
+					massObjectMin.setValue(10000000);
+					massObjectMax.setValue(100000000);
 					break;
 				}
 			}

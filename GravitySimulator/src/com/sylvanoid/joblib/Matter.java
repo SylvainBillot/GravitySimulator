@@ -133,7 +133,6 @@ public class Matter implements Comparable<Matter> {
 		return y + aY;
 	}
 
-	
 	public double getXplusV() {
 		return x + speedX;
 	}
@@ -205,5 +204,13 @@ public class Matter implements Comparable<Matter> {
 		double distance = Math.pow(
 				Math.pow(x - m2.getX(), 2) + Math.pow(y - m2.getY(), 2), 0.5);
 		return distance < rMax;
+	}
+
+	public double orbitalSpeed(Matter m) {
+		double distance = Math.pow(
+				Math.pow(x - m.getX(), 2) + Math.pow(y - m.getY(), 2), 0.5);
+		double orbitalSpeed = Math.pow(HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
+				/ ((mass + m.getMass()) * distance), 0.5);
+		return orbitalSpeed;
 	}
 }
