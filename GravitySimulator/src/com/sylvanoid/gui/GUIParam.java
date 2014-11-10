@@ -22,7 +22,8 @@ public class GUIParam extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private GUIParam me;
 	private GUIProgram mother;
-	JComboBox typeOfUnivers;
+	private JComboBox typeOfUnivers;
+	private JFormattedTextField timeFactor;
 	private JFormattedTextField scala;
 	private JFormattedTextField numberOfObjects;
 	private JFormattedTextField nebulaRadius;
@@ -32,18 +33,20 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField massObjectMax;
 	private JFormattedTextField probFusion;
 	private JFormattedTextField typeOfImpact;
+	private JFormattedTextField darkMatterMass;
+	private JFormattedTextField darkMatterDensity;
 
 	public GUIParam(GUIProgram mother) {
 		this.me = this;
 		this.mother = mother;
 		setTitle("Parameters");
 		setModal(true);
-		int w = 500;
-		int h = 400;
+		int w = 600;
+		int h = 500;
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(11, 2));
+		setLayout(new GridLayout(14, 2));
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
@@ -56,10 +59,12 @@ public class GUIParam extends JDialog {
 				case 0:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
 					scala.setValue(1);
+					timeFactor.setValue(1);
 					break;
 				case 1:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
 					scala.setValue(1);
+					timeFactor.setValue(1);
 					numberOfObjects.setValue(20);
 					probFusion.setValue(1);
 					densiteMin.setValue(30);
@@ -71,6 +76,7 @@ public class GUIParam extends JDialog {
 				case 2:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
 					scala.setValue(1);
+					timeFactor.setValue(1);
 					numberOfObjects.setValue(1000);
 					probFusion.setValue(1);
 					densiteMin.setValue(500);
@@ -82,6 +88,7 @@ public class GUIParam extends JDialog {
 				case 3:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.RandomRotateUnivers;
 					scala.setValue(1);
+					timeFactor.setValue(1);
 					numberOfObjects.setValue(1000);
 					probFusion.setValue(1);
 					densiteMin.setValue(50);
@@ -89,10 +96,13 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(10000);
 					massObjectMax.setValue(100000);
+					darkMatterMass.setValue(1E12);
+					darkMatterDensity.setValue(1E10);
 					break;
 				case 4:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxiesCollision;
 					scala.setValue(1);
+					timeFactor.setValue(1);
 					numberOfObjects.setValue(800);
 					probFusion.setValue(1);
 					densiteMin.setValue(800);
@@ -100,6 +110,8 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(10000000);
 					massObjectMax.setValue(100000000);
+					darkMatterMass.setValue(1E12);
+					darkMatterDensity.setValue(1E10);
 					break;
 				}
 			}
@@ -108,13 +120,15 @@ public class GUIParam extends JDialog {
 		add(new Label("Scala:"));
 		scala = new JFormattedTextField(HelperVariable.scala);
 		add(scala);
-		
+		add(new Label("Time factor:"));
+		timeFactor = new JFormattedTextField(HelperVariable.timeFactor);
+		add(timeFactor);
 		add(new Label("Number of object:"));
-		numberOfObjects = new JFormattedTextField(HelperVariable.numberOfObjects);
+		numberOfObjects = new JFormattedTextField(
+				HelperVariable.numberOfObjects);
 		add(numberOfObjects);
 		add(new Label("Nebula radius:"));
-		nebulaRadius = new JFormattedTextField(
-				HelperVariable.nebulaRadius);
+		nebulaRadius = new JFormattedTextField(HelperVariable.nebulaRadius);
 		add(nebulaRadius);
 		add(new Label("Density min:"));
 		densiteMin = new JFormattedTextField(HelperVariable.dentityMin);
@@ -134,6 +148,13 @@ public class GUIParam extends JDialog {
 		add(new Label("Type of impact (1-elastic 0-inelastic):"));
 		typeOfImpact = new JFormattedTextField(HelperVariable.typeOfImpact);
 		add(typeOfImpact);
+		add(new Label("Dark Matter Mass:"));
+		darkMatterMass = new JFormattedTextField(HelperVariable.darkMatterMass);
+		add(darkMatterMass);
+		add(new Label("Darkk Matter Density:"));
+		darkMatterDensity = new JFormattedTextField(
+				HelperVariable.darkMatterDensity);
+		add(darkMatterDensity);
 
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
@@ -150,27 +171,32 @@ public class GUIParam extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					HelperVariable.scala = Double
-							.parseDouble(me.scala.getValue().toString());
+					HelperVariable.scala = Double.parseDouble(me.scala
+							.getValue().toString());
+					HelperVariable.timeFactor = Double.parseDouble(me.timeFactor
+							.getValue().toString());
 					HelperVariable.numberOfObjects = Integer
 							.parseInt(me.numberOfObjects.getValue().toString());
 					HelperVariable.nebulaRadius = Double
-							.parseDouble(me.nebulaRadius
-									.getValue().toString());
+							.parseDouble(me.nebulaRadius.getValue().toString());
 					HelperVariable.dentityMin = Double
 							.parseDouble(me.densiteMin.getValue().toString());
 					HelperVariable.densityMax = Double
 							.parseDouble(me.densiteMax.getValue().toString());
 					HelperVariable.massObjectMin = Double
-							.parseDouble(me.massObjectMin.getValue()
-									.toString());
+							.parseDouble(me.massObjectMin.getValue().toString());
 					HelperVariable.massObjectMax = Double
-							.parseDouble(me.massObjectMax.getValue()
-									.toString());
+							.parseDouble(me.massObjectMax.getValue().toString());
 					HelperVariable.probFusion = Double
 							.parseDouble(me.probFusion.getValue().toString());
 					HelperVariable.typeOfImpact = Double
 							.parseDouble(me.typeOfImpact.getValue().toString());
+					HelperVariable.darkMatterMass = Double
+							.parseDouble(me.darkMatterMass.getValue()
+									.toString());
+					HelperVariable.darkMatterDensity = Double
+							.parseDouble(me.darkMatterDensity.getValue()
+									.toString());
 					me.getMother().reset();
 					me.setVisible(false);
 

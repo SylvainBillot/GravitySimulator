@@ -6,14 +6,19 @@ public abstract class HelperVariable {
 	 */
 	public static final double GRAVITY = 6.67234 * Math.pow(10, -11);
 	public static final long MINSLEEPTIME = 10;
-	
+
+	public static double timeFactor = 1;
+	public static double darkMatterMass = 1E12;
+	public static double darkMatterDensity = 1E10;
 	public static boolean manageImpact = true;
 	public static TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
 	public static boolean stepByStep = false;
 	public static boolean traceCourbe = false;
 	public static double scala = 1;
-	public static double probFusion = 1; // 0 = 100% choc  1 = 100% fusion
-	public static double typeOfImpact = 0.2; // 1=collision elastique 0=collision parfaitement inélastique
+	public static double probFusion = 1; // 0 = 100% choc 1 = 100% fusion
+	public static double typeOfImpact = 0.2; // 1=collision elastique
+												// 0=collision parfaitement
+												// inélastique
 	public static boolean centerOnCentroid = false;
 	public static boolean centerOnMassMax = false;
 	public static boolean centerOnScreen = false;

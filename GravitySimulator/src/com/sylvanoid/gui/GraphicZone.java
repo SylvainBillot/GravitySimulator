@@ -39,45 +39,53 @@ public class GraphicZone extends JPanel {
 		}
 		try {
 			for (Matter m : guiProgram.getUnivers().getListMatiere().values()) {
-				if (m.getX() > -cw / HelperVariable.scala
-						&& m.getX() < cw / HelperVariable.scala
-						&& m.getY() > -ch / HelperVariable.scala
-						&& m.getY() < ch / HelperVariable.scala) {
-					/*
-					 * g.setColor(Color.GREEN); g.drawRect((int) (cw + m.minX()
-					 * HelperVariable.scala), (int) (ch + m.minY() *
-					 * HelperVariable.scala), (int)((m.maxX()-m.minX()) *
-					 * HelperVariable.scala), (int) ((m.maxY()-m.minY()) *
-					 * HelperVariable.scala));
-					 */
-					if (m.getRayon() * HelperVariable.scala > 1) {
-						g.setColor(Color.BLACK);
-						g.drawOval(
-								(int) (cw + m.getX() * HelperVariable.scala - m
-										.getRayon() * HelperVariable.scala),
-								(int) (ch + m.getY() * HelperVariable.scala - m
-										.getRayon() * HelperVariable.scala),
-								(int) (m.getRayon() * HelperVariable.scala * 2),
-								(int) (m.getRayon() * HelperVariable.scala * 2));
-					} else {
-						g.setColor(Color.BLACK);
-						int rayonMin = 2;
-						g.drawOval(
-								(int) (cw + m.getX() * HelperVariable.scala - rayonMin),
-								(int) (ch + m.getY() * HelperVariable.scala - rayonMin),
-								rayonMin, rayonMin);
-					}
-					g.setColor(Color.RED);
-					g.drawLine((int) (cw + m.getX() * HelperVariable.scala),
-							(int) (ch + m.getY() * HelperVariable.scala),
-							(int) (cw + m.getXplusV() * HelperVariable.scala),
-							(int) (ch + m.getYplusV() * HelperVariable.scala));
+				if (!m.isDark()) {
+					if (m.getX() > -cw / HelperVariable.scala
+							&& m.getX() < cw / HelperVariable.scala
+							&& m.getY() > -ch / HelperVariable.scala
+							&& m.getY() < ch / HelperVariable.scala) {
+						/*
+						 * g.setColor(Color.GREEN); g.drawRect((int) (cw +
+						 * m.minX() HelperVariable.scala), (int) (ch + m.minY()
+						 * * HelperVariable.scala), (int)((m.maxX()-m.minX()) *
+						 * HelperVariable.scala), (int) ((m.maxY()-m.minY()) *
+						 * HelperVariable.scala));
+						 */
+						if (m.getRayon() * HelperVariable.scala > 1) {
+							g.setColor(Color.BLACK);
+							g.drawOval(
+									(int) (cw + m.getX() * HelperVariable.scala - m
+											.getRayon() * HelperVariable.scala),
+									(int) (ch + m.getY() * HelperVariable.scala - m
+											.getRayon() * HelperVariable.scala),
+									(int) (m.getRayon() * HelperVariable.scala * 2),
+									(int) (m.getRayon() * HelperVariable.scala * 2));
+						} else {
+							g.setColor(Color.BLACK);
+							int rayonMin = 2;
+							g.drawOval(
+									(int) (cw + m.getX() * HelperVariable.scala - rayonMin),
+									(int) (ch + m.getY() * HelperVariable.scala - rayonMin),
+									rayonMin, rayonMin);
+						}
+						g.setColor(Color.RED);
+						g.drawLine(
+								(int) (cw + m.getX() * HelperVariable.scala),
+								(int) (ch + m.getY() * HelperVariable.scala),
+								(int) (cw + m.getXplusV()
+										* HelperVariable.scala),
+								(int) (ch + m.getYplusV()
+										* HelperVariable.scala));
 
-					g.setColor(Color.BLUE);
-					g.drawLine((int) (cw + m.getX() * HelperVariable.scala),
-							(int) (ch + m.getY() * HelperVariable.scala),
-							(int) (cw + m.getXplusA() * HelperVariable.scala),
-							(int) (ch + m.getYplusA() * HelperVariable.scala));
+						g.setColor(Color.BLUE);
+						g.drawLine(
+								(int) (cw + m.getX() * HelperVariable.scala),
+								(int) (ch + m.getY() * HelperVariable.scala),
+								(int) (cw + m.getXplusA()
+										* HelperVariable.scala),
+								(int) (ch + m.getYplusA()
+										* HelperVariable.scala));
+					}
 				}
 			}
 			g.setColor(Color.RED);

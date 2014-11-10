@@ -11,6 +11,7 @@ public class Matter implements Comparable<Matter> {
 	private double speedX;
 	private double speedY;
 	private double density;
+	private boolean isDark;
 	private double rayon;
 
 	@Override
@@ -46,13 +47,14 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public Matter(double x, double y, double mass, double speedX,
-			double speedY, double density) {
+			double speedY, double density, boolean isDark) {
 		this.x = x;
 		this.y = y;
 		this.mass = mass;
 		this.speedX = speedX;
 		this.speedY = speedY;
 		this.density = density;
+		this.isDark =isDark;
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
@@ -119,6 +121,14 @@ public class Matter implements Comparable<Matter> {
 
 	public void setDensity(double density) {
 		this.density = density;
+	}
+
+	public boolean isDark() {
+		return isDark;
+	}
+
+	public void setDark(boolean isDark) {
+		this.isDark = isDark;
 	}
 
 	public double getRayon() {
@@ -209,7 +219,7 @@ public class Matter implements Comparable<Matter> {
 	public double orbitalSpeed(Matter m) {
 		double distance = Math.pow(
 				Math.pow(x - m.getX(), 2) + Math.pow(y - m.getY(), 2), 0.5);
-		double orbitalSpeed = Math.pow(HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
+		double orbitalSpeed = Math.pow(HelperVariable.timeFactor * HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
 				/ ((mass + m.getMass()) * distance), 0.5);
 		return orbitalSpeed;
 	}
