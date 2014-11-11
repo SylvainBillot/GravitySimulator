@@ -255,6 +255,21 @@ public class GUIProgram extends JFrame {
 		menuVisu.add(menuItemEchelleDeux);
 		menuVisu.add(menuItemEchelleQuatre);
 
+		
+		JMenu menuAbout = new JMenu("?");
+		JMenuItem menuItemAbout = new JMenuItem("About");
+		menuBar.add(menuAbout);
+		menuItemAbout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				GUIAbout guiAbout = new GUIAbout(me);
+				guiAbout.setVisible(true);
+			}
+		});
+		menuAbout.add(menuItemAbout);
+		
+		
 		JPanel outPanel = new JPanel(new BorderLayout());
 		add(outPanel, BorderLayout.SOUTH);
 		status = new Label("");

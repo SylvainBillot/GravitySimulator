@@ -59,7 +59,7 @@ public class GUIParam extends JDialog {
 				case 0:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
 					scala.setValue(1);
-					timeFactor.setValue(1);
+					timeFactor.setValue(100);
 					break;
 				case 1:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;

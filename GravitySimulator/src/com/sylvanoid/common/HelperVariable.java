@@ -7,7 +7,7 @@ public abstract class HelperVariable {
 	public static final double GRAVITY = 6.67234 * Math.pow(10, -11);
 	public static final long MINSLEEPTIME = 10;
 
-	public static double timeFactor = 1;
+	public static double timeFactor = 100;
 	public static double darkMatterMass = 1E12;
 	public static double darkMatterDensity = 1E10;
 	public static boolean manageImpact = true;

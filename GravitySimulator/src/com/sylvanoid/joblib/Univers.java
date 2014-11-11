@@ -399,22 +399,22 @@ public class Univers {
 		Matter m1 = new Matter(Math.random(), Math.random(),
 				1E10 + Math.random(), 0, 0, 300, false);
 		listMatter.put(m1, m1);
-		Matter m2 = new Matter(100 + Math.random(), 25 + Math.random(),
+		Matter m2 = new Matter(50 + Math.random(), 10 + Math.random(),
 				1E4 + Math.random(), 0, 0, 300, false);
 		listMatter.put(m2, m2);
-		Matter m3 = new Matter(-120 + Math.random(), 30 + Math.random(),
+		Matter m3 = new Matter(-320 + Math.random(), 30 + Math.random(),
 				1E9 + Math.random(), 0, 0, 300, false);
 		listMatter.put(m3, m3);
-		Matter m4 = new Matter(-140 + Math.random(), -90 + Math.random(),
-				1E6 + Math.random(), 0, 0, 300, false);
+		Matter m4 = new Matter(-100 + Math.random(), -10 + Math.random(),
+				1E2 + Math.random(), 0, 0, 300, false);
 		listMatter.put(m4, m4);
-		Matter m5 = new Matter(100 + Math.random(), -200 + Math.random(),
+		Matter m5 = new Matter(90 + Math.random(), -20 + Math.random(),
 				1E3 + Math.random(), 0, 0, 300, false);
 		listMatter.put(m5, m5);
-		Matter m6 = new Matter(-50 + Math.random(), -30 + Math.random(),
-				1E7 + Math.random(), 0, 0, 300, false);
+		Matter m6 = new Matter(-20 + Math.random(), -10 + Math.random(),
+				1E2 + Math.random(), 0, 0, 300, false);
 		listMatter.put(m6, m6);
-		Matter m7 = new Matter(-110 + Math.random(), 30 + Math.random(),
+		Matter m7 = new Matter(-312 + Math.random(), 30 + Math.random(),
 				1E2 + Math.random(), 0, 0, 300, false);
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
