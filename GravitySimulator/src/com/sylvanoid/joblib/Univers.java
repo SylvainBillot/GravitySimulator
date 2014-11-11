@@ -175,7 +175,7 @@ public class Univers {
 					false);
 			for (Matter m2 : selectY.values()) {
 				if (treated.get(m2) == null) {
-					// treatNeighbor(m2, sortX, treated, toTreat);
+					//treatNeighbor(m2, sortX, treated, toTreat);
 					treated.put(m2, "");
 					Matter element[] = new Matter[2];
 					element[0] = m1;
@@ -206,16 +206,13 @@ public class Univers {
 				listMatter.remove(element[1]);
 			}
 		}
-
 		mass = 0;
 		for (Matter m : listMatter.values()) {
 			mass += m.getMass();
 		}
-
 	}
 
 	public void move() {
-
 		for (Matter m : listMatter.values()) {
 			m.move();
 		}
@@ -224,8 +221,8 @@ public class Univers {
 			double oldMass = mass;
 			manageImpact();
 			if (Math.abs(mass - oldMass) > 1) {
-				System.out.println("wtf :" + (int) mass + " - " + (int) oldMass
-						+ " = " + (int) (mass - oldMass));
+				System.out.println("wtf :" + mass + " - " + oldMass
+						+ " = " +  (mass - oldMass));
 			}
 		}
 

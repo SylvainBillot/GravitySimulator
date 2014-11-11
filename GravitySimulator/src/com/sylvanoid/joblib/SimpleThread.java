@@ -30,7 +30,7 @@ public class SimpleThread implements Runnable {
 				guiProgram.getStatus().setText("Number of object: "
 								+ guiProgram.getUnivers().getListMatiere()
 										.size() + " fps: "
-								+ (1000 / -executionTime) + " m:"+(int)guiProgram.getUnivers().getMass());
+								+ (1000 / -executionTime));
 				
 				if(HelperVariable.stepByStep){
 					Thread.sleep(1000);

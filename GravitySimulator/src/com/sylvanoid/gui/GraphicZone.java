@@ -86,6 +86,17 @@ public class GraphicZone extends JPanel {
 								(int) (ch + m.getYplusA()
 										* HelperVariable.scala));
 					}
+				} else {
+					g.setColor(Color.GRAY);
+					g.drawLine(
+							(int) (cw + m.getX() * HelperVariable.scala) - 5,
+							(int) (ch + m.getY() * HelperVariable.scala),
+							(int) (cw + m.getX() * HelperVariable.scala) + 5,
+							(int) (ch + m.getY() * HelperVariable.scala));
+					g.drawLine((int) (cw + m.getX() * HelperVariable.scala),
+							(int) (ch + m.getY() * HelperVariable.scala) - 5,
+							(int) (cw + m.getX() * HelperVariable.scala),
+							(int) (ch + m.getY() * HelperVariable.scala) + 5);
 				}
 			}
 			g.setColor(Color.RED);
