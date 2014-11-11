@@ -64,7 +64,7 @@ public class GUIParam extends JDialog {
 				case 1:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
 					scala.setValue(1);
-					timeFactor.setValue(1);
+					timeFactor.setValue(20);
 					numberOfObjects.setValue(20);
 					probFusion.setValue(1);
 					densiteMin.setValue(30);
@@ -110,6 +110,20 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(10000000);
 					massObjectMax.setValue(100000000);
+					darkMatterMass.setValue(1E12);
+					darkMatterDensity.setValue(1E10);
+					break;
+				case 5:
+					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetariesGenesis;
+					scala.setValue(1);
+					timeFactor.setValue(10000);
+					numberOfObjects.setValue(500);
+					probFusion.setValue(1);
+					densiteMin.setValue(50);
+					densiteMax.setValue(50);
+					nebulaRadius.setValue(300);
+					massObjectMin.setValue(1000);
+					massObjectMax.setValue(100000);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1E10);
 					break;
@@ -173,8 +187,8 @@ public class GUIParam extends JDialog {
 				try {
 					HelperVariable.scala = Double.parseDouble(me.scala
 							.getValue().toString());
-					HelperVariable.timeFactor = Double.parseDouble(me.timeFactor
-							.getValue().toString());
+					HelperVariable.timeFactor = Double
+							.parseDouble(me.timeFactor.getValue().toString());
 					HelperVariable.numberOfObjects = Integer
 							.parseInt(me.numberOfObjects.getValue().toString());
 					HelperVariable.nebulaRadius = Double
