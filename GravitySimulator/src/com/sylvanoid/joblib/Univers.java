@@ -216,9 +216,6 @@ public class Univers {
 	}
 
 	public void move() {
-		for (Matter m : listMatter.values()) {
-			m.move();
-		}
 
 		if (HelperVariable.manageImpact) {
 			double oldMass = mass;
@@ -227,6 +224,10 @@ public class Univers {
 				System.out.println("wtf :" + mass + " - " + oldMass + " = "
 						+ (mass - oldMass));
 			}
+		}
+
+		for (Matter m : listMatter.values()) {
+			m.move();
 		}
 
 		// Barycentre au centre de l'écran

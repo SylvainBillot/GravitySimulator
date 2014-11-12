@@ -22,7 +22,7 @@ public class GUIParam extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private GUIParam me;
 	private GUIProgram mother;
-	private JComboBox typeOfUnivers;
+	private JComboBox<String> typeOfUnivers;
 	private JFormattedTextField timeFactor;
 	private JFormattedTextField scala;
 	private JFormattedTextField numberOfObjects;
@@ -48,7 +48,7 @@ public class GUIParam extends JDialog {
 		setSize(new Dimension(w, h));
 		setLayout(new GridLayout(14, 2));
 		add(new Label("Type of Univers:"));
-		typeOfUnivers = new JComboBox();
+		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
 			typeOfUnivers.addItem(tou.getLabel());
 		}
