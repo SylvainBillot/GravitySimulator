@@ -9,8 +9,10 @@ import java.util.TreeMap;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
+import com.sylvanoid.gui.GUIProgram;
 
 public class Univers {
+	private GUIProgram guiProgram;
 	private TreeMap<Matter, Matter> listMatter;
 	private double gx;
 	private double gy;
@@ -25,7 +27,8 @@ public class Univers {
 		return ("m:" + mass + " gx:" + gy + " gy:" + gy);
 	}
 
-	public Univers(TypeOfUnivers typeOfUnivers) {
+	public Univers(TypeOfUnivers typeOfUnivers, GUIProgram guiProgram) {
+		this.guiProgram = guiProgram;
 		listMatter = new TreeMap<Matter, Matter>();
 		mass = 0;
 		if (typeOfUnivers == TypeOfUnivers.Random) {
@@ -140,7 +143,6 @@ public class Univers {
 											+ Math.pow(
 													m.getY() - uvoisin.getGy(),
 													2), 0.5);
-
 							double attraction = HelperVariable.timeFactor
 									* HelperVariable.GRAVITY
 									* (((m.getMass() * uvoisin.getMass()) / Math
@@ -250,6 +252,7 @@ public class Univers {
 				m.setX(m.getX() - (maxX + minX) / 2);
 				m.setY(m.getY() - (maxY + minY) / 2);
 			}
+			HelperVariable.scala = 0.75*((double) guiProgram.getSize().height / (maxY - minY));
 		}
 
 		// Centre sur le plus massif
@@ -463,6 +466,8 @@ public class Univers {
 		createUvivers(0, 0, 0, 0, 100, 110);
 		createUvivers(0, 0, 0, 0, 200, 220);
 		createUvivers(0, 0, 0, 0, 300, 330);
+		createUvivers(0, 0, 0, 0, 400, 450);
+		createUvivers(0, 0, 0, 0, 400, 450);
 		createUvivers(0, 0, 0, 0, 400, 450);
 		Matter m1 = new Matter(Math.random(), Math.random(), 1E8, 0, 0,
 				HelperVariable.dentityMin, false);

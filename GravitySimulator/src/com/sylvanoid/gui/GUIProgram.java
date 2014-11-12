@@ -38,7 +38,7 @@ public class GUIProgram extends JFrame {
 		setSize((int) dimension.getWidth(), (int) dimension.getHeight());
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		univers = new Univers(HelperVariable.typeOfUnivers);
+		univers = new Univers(HelperVariable.typeOfUnivers, this);
 		p = new GraphicZone(me);
 		JScrollPane picturePane = new JScrollPane(p, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -142,9 +142,6 @@ public class GUIProgram extends JFrame {
 				HelperVariable.centerOnScreen = true;
 				HelperVariable.centerOnCentroid = false;
 				HelperVariable.centerOnMassMax = false;
-				me.getUnivers().computeLimits();
-				HelperVariable.scala = ((double) me.getSize().height / (me
-						.getUnivers().getMaxY() - me.getUnivers().getMinY()));
 			}
 		});
 		JMenuItem menuItemplusMassif = new JMenuItem("Center on maximum mass");
@@ -322,7 +319,7 @@ public class GUIProgram extends JFrame {
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.traceCourbe = false;
 		HelperVariable.scala = 1;
-		univers = new Univers(HelperVariable.typeOfUnivers);
+		univers = new Univers(HelperVariable.typeOfUnivers, this);
 		p.repaint();
 		t = new Thread(new SimpleThread(this));
 	}
