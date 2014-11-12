@@ -163,19 +163,20 @@ public class Univers {
 		}
 	}
 
-	private void treatNeighbor(Matter m1, TreeMap<Matter, Matter> sortX,
+	private void treatNeighbor(Matter m1, TreeMap<Double, Matter> sortX,
 			HashMap<Matter, String> treated, List<Matter[]> toTreat) {
 		if (treated.get(m1) == null) {
 			treated.put(m1, "");
-			SortedMap<Matter, Matter> selectX = sortX.subMap(
-					new Matter(m1.minX(), 0), true, new Matter(m1.maxX(), 0),
-					false);
-			TreeMap<Matter, Matter> sortY = new TreeMap<Matter, Matter>(
-					new YComparator());
-			sortY.putAll(selectX);
-			SortedMap<Matter, Matter> selectY = sortY.subMap(
-					new Matter(0, m1.minY()), true, new Matter(0, m1.maxY()),
-					false);
+			SortedMap<Double, Matter> selectX = sortX.subMap(m1.minX(), true,
+					m1.maxX(), false);
+			TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
+			for (Matter m : selectX.values()) {
+				for (double delta = m.minY(); delta <= m.maxY(); delta++) {
+					sortY.put(delta, m);
+				}
+			}
+			SortedMap<Double, Matter> selectY = sortY.subMap(m1.minY(), true,
+					m1.maxY(), false);
 			for (Matter m2 : selectY.values()) {
 				if (treated.get(m2) == null) {
 					// treatNeighbor(m2, sortX, treated, toTreat);
@@ -193,9 +194,12 @@ public class Univers {
 		// On recheche les collisions
 		LinkedList<Matter[]> toTreat = new LinkedList<Matter[]>();
 		HashMap<Matter, String> treated = new HashMap<Matter, String>();
-		TreeMap<Matter, Matter> sortX = new TreeMap<Matter, Matter>(
-				new XComparator());
-		sortX.putAll(listMatter);
+		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
+		for (Matter m : listMatter.values()) {
+			for (double delta = m.minX(); delta <= m.maxX(); delta++) {
+				sortX.put(delta, m);
+			}
+		}
 		for (Matter m1 : listMatter.values()) {
 			treatNeighbor(m1, sortX, treated, toTreat);
 		}
