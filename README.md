@@ -2,4 +2,4 @@ Gravity Simulator
 ================
 
 Simple Java Gravity Simulator
-Version Alpha
+Version 0.9 Beta
