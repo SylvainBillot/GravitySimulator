@@ -49,6 +49,9 @@ public class Univers {
 		if (typeOfUnivers == TypeOfUnivers.PlanetariesGenesis) {
 			createPlanetariesGenesis();
 		}
+		if (typeOfUnivers == TypeOfUnivers.DoubleStars) {
+			createDoubleStars();
+		}
 	}
 
 	public Univers(Univers father, double minX, double minY, double maxX,
@@ -252,7 +255,7 @@ public class Univers {
 				m.setX(m.getX() - (maxX + minX) / 2);
 				m.setY(m.getY() - (maxY + minY) / 2);
 			}
-			HelperVariable.scala = 0.75*((double) guiProgram.getSize().height / (maxY - minY));
+			HelperVariable.scala = 0.75 * ((double) guiProgram.getSize().height / (maxY - minY));
 		}
 
 		// Centre sur le plus massif
@@ -481,6 +484,28 @@ public class Univers {
 				m.setSpeedY(m.orbitalSpeed(m1) * Math.sin(a + Math.PI / 2));
 			}
 		}
+	}
+
+	private void createDoubleStars() {
+		Matter m1 = new Matter(Math.random()-50, Math.random()-90, 5E9+1E10+Math.random(), 0, 0,
+				HelperVariable.dentityMin, false);
+		listMatter.put(m1, m1);
+		mass += m1.getMass();
+
+		Matter m2 = new Matter(Math.random()+50, Math.random()+90, 1E10+Math.random(), 0, 0,
+				HelperVariable.dentityMin, false);
+		listMatter.put(m2, m2);
+		mass += m2.getMass();
+
+		double a = Math.atan2(m2.getY() - m1.getY(), m2.getX() - m1.getX());
+		m1.setSpeedX(m2.orbitalSpeed(m1) * Math.cos(a + Math.PI / 2));
+		m1.setSpeedY(m2.orbitalSpeed(m1) * Math.sin(a + Math.PI / 2));
+
+		a = Math.atan2(m1.getY() - m2.getY(), m1.getX() - m2.getX());
+		m2.setSpeedX(m1.orbitalSpeed(m2) * Math.cos(a + Math.PI / 2));
+		m2.setSpeedY(m1.orbitalSpeed(m2) * Math.sin(a + Math.PI / 2));
+
+		
 	}
 
 }

@@ -127,6 +127,21 @@ public class GUIParam extends JDialog {
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1E10);
 					break;
+
+				case 6:
+					HelperVariable.typeOfUnivers = TypeOfUnivers.DoubleStars;
+					scala.setValue(1);
+					timeFactor.setValue(50);
+					numberOfObjects.setValue(1000);
+					probFusion.setValue(1);
+					densiteMin.setValue(100);
+					densiteMax.setValue(100);
+					nebulaRadius.setValue(300);
+					massObjectMin.setValue(100000000);
+					massObjectMax.setValue(100000000);
+					darkMatterMass.setValue(1E12);
+					darkMatterDensity.setValue(1E10);
+					break;
 				}
 			}
 		});
