@@ -176,7 +176,7 @@ public class Univers {
 					m1.maxX(), false);
 			TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
 			for (Matter m : selectX.values()) {
-				for (double delta = m.minY(); delta <= m.maxY(); delta+=m.getRayon()) {
+				for (double delta = m.minY(); delta <= m.maxY(); delta++) {
 					sortY.put(delta, m);
 				}
 			}
@@ -201,8 +201,7 @@ public class Univers {
 		HashMap<Matter, String> treated = new HashMap<Matter, String>();
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : listMatter.values()) {
-			for (double delta = m.minX(); delta <= m.maxX(); delta += m
-					.getRayon()) {
+			for (double delta = m.minX(); delta <= m.maxX(); delta++) {
 				sortX.put(delta, m);
 			}
 		}

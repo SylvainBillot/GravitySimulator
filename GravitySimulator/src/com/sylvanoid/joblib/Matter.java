@@ -207,6 +207,10 @@ public class Matter implements Comparable<Matter> {
 		speedY = v1y;
 		m2.setSpeedX(v2x);
 		m2.setSpeedY(v2y);
+		aX=0;
+		aY=0;
+		m2.setaX(0);
+		m2.setaY(0);
 	}
 
 	public boolean collision(Matter m2) {
