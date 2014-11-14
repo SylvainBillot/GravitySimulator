@@ -10,7 +10,7 @@ public abstract class HelperVariable {
 	public static double timeFactor = 100;
 	public static double darkMatterMass = 1E12;
 	public static double darkMatterDensity = 1E10;
-	public static boolean manageImpact = true;
+	public static boolean manageImpact = false;
 	public static TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
 	public static boolean stepByStep = false;
 	public static boolean traceCourbe = false;

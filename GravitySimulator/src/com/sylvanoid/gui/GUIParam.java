@@ -8,9 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JSlider;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
@@ -25,15 +27,15 @@ public class GUIParam extends JDialog {
 	private JComboBox<String> typeOfUnivers;
 	private JFormattedTextField timeFactor;
 	private JFormattedTextField scala;
-	private JFormattedTextField manageImpact;
+	private JCheckBox manageImpact;
 	private JFormattedTextField numberOfObjects;
 	private JFormattedTextField nebulaRadius;
 	private JFormattedTextField densiteMin;
 	private JFormattedTextField densiteMax;
 	private JFormattedTextField massObjectMin;
 	private JFormattedTextField massObjectMax;
-	private JFormattedTextField probFusion;
-	private JFormattedTextField typeOfImpact;
+	private JSlider probFusion;
+	private JSlider typeOfImpact;
 	private JFormattedTextField darkMatterMass;
 	private JFormattedTextField darkMatterDensity;
 
@@ -59,17 +61,18 @@ public class GUIParam extends JDialog {
 				switch (typeOfUnivers.getSelectedIndex()) {
 				case 0:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
-					manageImpact.setValue(true);
+					manageImpact.setSelected(false);
 					scala.setValue(1);
 					timeFactor.setValue(100);
+					probFusion.setValue(100);
 					break;
 				case 1:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
-					manageImpact.setValue(true);
+					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(20);
 					numberOfObjects.setValue(20);
-					probFusion.setValue(1);
+					probFusion.setValue(100);
 					densiteMin.setValue(30);
 					densiteMax.setValue(30);
 					nebulaRadius.setValue(500);
@@ -78,9 +81,10 @@ public class GUIParam extends JDialog {
 					break;
 				case 2:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
-					manageImpact.setValue(true);
+					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(10);
+					probFusion.setValue(100);
 					numberOfObjects.setValue(1000);
 					probFusion.setValue(1);
 					densiteMin.setValue(500);
@@ -91,11 +95,11 @@ public class GUIParam extends JDialog {
 					break;
 				case 3:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.RandomRotateUnivers;
-					manageImpact.setValue(false);
+					manageImpact.setSelected(false);
 					scala.setValue(1);
 					timeFactor.setValue(1);
+					probFusion.setValue(100);
 					numberOfObjects.setValue(1000);
-					probFusion.setValue(1);
 					densiteMin.setValue(5000);
 					densiteMax.setValue(5000);
 					nebulaRadius.setValue(300);
@@ -106,11 +110,11 @@ public class GUIParam extends JDialog {
 					break;
 				case 4:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxiesCollision;
-					manageImpact.setValue(false);
+					manageImpact.setSelected(false);
 					scala.setValue(1);
 					timeFactor.setValue(1);
+					probFusion.setValue(100);
 					numberOfObjects.setValue(400);
-					probFusion.setValue(1);
 					densiteMin.setValue(5000);
 					densiteMax.setValue(5000);
 					nebulaRadius.setValue(300);
@@ -121,11 +125,11 @@ public class GUIParam extends JDialog {
 					break;
 				case 5:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetariesGenesis;
-					manageImpact.setValue(true);
+					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(10000);
+					probFusion.setValue(100);
 					numberOfObjects.setValue(500);
-					probFusion.setValue(1);
 					densiteMin.setValue(50);
 					densiteMax.setValue(50);
 					nebulaRadius.setValue(300);
@@ -137,11 +141,11 @@ public class GUIParam extends JDialog {
 
 				case 6:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.DoubleStars;
-					manageImpact.setValue(true);
+					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(50);
+					probFusion.setValue(100);
 					numberOfObjects.setValue(1000);
-					probFusion.setValue(1);
 					densiteMin.setValue(100);
 					densiteMax.setValue(100);
 					nebulaRadius.setValue(300);
@@ -187,13 +191,16 @@ public class GUIParam extends JDialog {
 				HelperVariable.darkMatterDensity);
 		add(darkMatterDensity);
 		add(new Label("Manage Impact:"));
-		manageImpact = new JFormattedTextField(HelperVariable.manageImpact);
+		manageImpact = new JCheckBox();
+		manageImpact.setSelected(HelperVariable.manageImpact);
 		add(manageImpact);
 		add(new Label("Fusion probability (1-0):"));
-		probFusion = new JFormattedTextField(HelperVariable.probFusion);
+		probFusion = new JSlider(0, 100,
+				(int) (HelperVariable.probFusion * 100));
 		add(probFusion);
 		add(new Label("Type of impact (1-elastic 0-inelastic):"));
-		typeOfImpact = new JFormattedTextField(HelperVariable.typeOfImpact);
+		typeOfImpact = new JSlider(0, 100,
+				(int) (HelperVariable.typeOfImpact * 100));
 		add(typeOfImpact);
 
 		JButton btnCancel = new JButton("Cancel");
@@ -227,12 +234,11 @@ public class GUIParam extends JDialog {
 							.parseDouble(me.massObjectMin.getValue().toString());
 					HelperVariable.massObjectMax = Double
 							.parseDouble(me.massObjectMax.getValue().toString());
-					HelperVariable.manageImpact = Boolean
-							.parseBoolean(me.manageImpact.getValue().toString());
-					HelperVariable.probFusion = Double
-							.parseDouble(me.probFusion.getValue().toString());
-					HelperVariable.typeOfImpact = Double
-							.parseDouble(me.typeOfImpact.getValue().toString());
+					HelperVariable.manageImpact = me.manageImpact.isSelected();
+					HelperVariable.probFusion = (double) me.probFusion
+							.getValue() / 100;
+					HelperVariable.typeOfImpact = (double) me.typeOfImpact
+							.getValue() / 100;
 					HelperVariable.darkMatterMass = Double
 							.parseDouble(me.darkMatterMass.getValue()
 									.toString());

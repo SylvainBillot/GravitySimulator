@@ -176,9 +176,11 @@ public class Univers {
 					m1.maxX(), false);
 			TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
 			for (Matter m : selectX.values()) {
-				for (double delta = m.minY(); delta <= m.maxY(); delta++) {
+				for (double delta = m.minY(); delta <= m.maxY(); delta += m
+						.getRayon()) {
 					sortY.put(delta, m);
 				}
+				sortY.put(m.maxY(), m);
 			}
 			SortedMap<Double, Matter> selectY = sortY.subMap(m1.minY(), true,
 					m1.maxY(), false);
@@ -201,9 +203,11 @@ public class Univers {
 		HashMap<Matter, String> treated = new HashMap<Matter, String>();
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : listMatter.values()) {
-			for (double delta = m.minX(); delta <= m.maxX(); delta++) {
+			for (double delta = m.minX(); delta <= m.maxX(); delta += m
+					.getRayon()) {
 				sortX.put(delta, m);
 			}
+			sortX.put(m.maxX(), m);
 		}
 		for (Matter m1 : listMatter.values()) {
 			treatNeighbor(m1, sortX, treated, toTreat);
@@ -469,9 +473,7 @@ public class Univers {
 		createUvivers(0, 0, 0, 0, 100, 110);
 		createUvivers(0, 0, 0, 0, 200, 220);
 		createUvivers(0, 0, 0, 0, 300, 330);
-		createUvivers(0, 0, 0, 0, 400, 450);
-		createUvivers(0, 0, 0, 0, 400, 450);
-		createUvivers(0, 0, 0, 0, 400, 450);
+		
 		Matter m1 = new Matter(Math.random(), Math.random(), 1E8, 0, 0,
 				HelperVariable.dentityMin, false);
 		listMatter.put(m1, m1);
