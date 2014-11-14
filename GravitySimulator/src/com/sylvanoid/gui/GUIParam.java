@@ -86,7 +86,6 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(10);
 					probFusion.setValue(100);
 					numberOfObjects.setValue(1000);
-					probFusion.setValue(1);
 					densiteMin.setValue(500);
 					densiteMax.setValue(500);
 					nebulaRadius.setValue(600);
