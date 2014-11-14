@@ -176,7 +176,7 @@ public class Univers {
 					m1.maxX(), false);
 			TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
 			for (Matter m : selectX.values()) {
-				for (double delta = m.minY(); delta <= m.maxY(); delta++) {
+				for (double delta = m.minY(); delta <= m.maxY(); delta+=m.getRayon()) {
 					sortY.put(delta, m);
 				}
 			}
@@ -201,7 +201,8 @@ public class Univers {
 		HashMap<Matter, String> treated = new HashMap<Matter, String>();
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : listMatter.values()) {
-			for (double delta = m.minX(); delta <= m.maxX(); delta++) {
+			for (double delta = m.minX(); delta <= m.maxX(); delta += m
+					.getRayon()) {
 				sortX.put(delta, m);
 			}
 		}
@@ -487,13 +488,14 @@ public class Univers {
 	}
 
 	private void createDoubleStars() {
-		Matter m1 = new Matter(Math.random()-50, Math.random()-90, 5E9+1E10+Math.random(), 0, 0,
-				HelperVariable.dentityMin, false);
+		Matter m1 = new Matter(Math.random() - 50, Math.random() - 90,
+				5E9 + 1E10 + Math.random(), 0, 0, HelperVariable.dentityMin,
+				false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
-		Matter m2 = new Matter(Math.random()+50, Math.random()+90, 1E10+Math.random(), 0, 0,
-				HelperVariable.dentityMin, false);
+		Matter m2 = new Matter(Math.random() + 50, Math.random() + 90,
+				1E10 + Math.random(), 0, 0, HelperVariable.dentityMin, false);
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
 
@@ -505,7 +507,6 @@ public class Univers {
 		m2.setSpeedX(m1.orbitalSpeed(m2) * Math.cos(a + Math.PI / 2));
 		m2.setSpeedY(m1.orbitalSpeed(m2) * Math.sin(a + Math.PI / 2));
 
-		
 	}
 
 }
