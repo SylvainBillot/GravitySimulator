@@ -54,7 +54,7 @@ public class Matter implements Comparable<Matter> {
 		this.speedX = speedX;
 		this.speedY = speedY;
 		this.density = density;
-		this.isDark =isDark;
+		this.isDark = isDark;
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
@@ -185,6 +185,8 @@ public class Matter implements Comparable<Matter> {
 				/ (mass + m2.getMass());
 		mass += m2.getMass();
 		rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
+		aX = 0;
+		aY = 0;
 	}
 
 	public void impact(Matter m2) {
@@ -207,23 +209,23 @@ public class Matter implements Comparable<Matter> {
 		speedY = v1y;
 		m2.setSpeedX(v2x);
 		m2.setSpeedY(v2y);
-		aX=0;
-		aY=0;
+		aX = 0;
+		aY = 0;
 		m2.setaX(0);
 		m2.setaY(0);
 	}
 
 	public boolean collision(Matter m2) {
-		double rMax = rayon > m2.getRayon() ? rayon : m2.getRayon();
 		double distance = Math.pow(
 				Math.pow(x - m2.getX(), 2) + Math.pow(y - m2.getY(), 2), 0.5);
-		return distance < rMax;
+		return distance < rayon + m2.rayon;
 	}
 
 	public double orbitalSpeed(Matter m) {
 		double distance = Math.pow(
 				Math.pow(x - m.getX(), 2) + Math.pow(y - m.getY(), 2), 0.5);
-		double orbitalSpeed = Math.pow(HelperVariable.timeFactor * HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
+		double orbitalSpeed = Math.pow(HelperVariable.timeFactor
+				* HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
 				/ ((mass + m.getMass()) * distance), 0.5);
 		return orbitalSpeed;
 	}

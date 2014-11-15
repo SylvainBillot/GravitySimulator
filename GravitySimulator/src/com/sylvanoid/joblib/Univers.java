@@ -168,7 +168,7 @@ public class Univers {
 		}
 	}
 
-	private void treatNeighbor(Matter m1, TreeMap<Double, Matter> sortX,
+	private void treatNeighborFusion(Matter m1, TreeMap<Double, Matter> sortX,
 			HashMap<Matter, String> treated, List<Matter[]> toTreat) {
 		if (treated.get(m1) == null) {
 			treated.put(m1, "");
@@ -186,7 +186,6 @@ public class Univers {
 					m1.maxY(), false);
 			for (Matter m2 : selectY.values()) {
 				if (treated.get(m2) == null) {
-					// treatNeighbor(m2, sortX, treated, toTreat);
 					treated.put(m2, "");
 					Matter element[] = new Matter[2];
 					element[0] = m1;
@@ -197,10 +196,43 @@ public class Univers {
 		}
 	}
 
+	private void treatNeighborImpact(Matter m1, TreeMap<Double, Matter> sortX,
+			List<Matter[]> toTreat) {
+		SortedMap<Double, Matter> selectX = sortX.subMap(m1.minX(), true,
+				m1.maxX(), false);
+		TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
+		for (Matter m : selectX.values()) {
+			for (double delta = m.minY(); delta <= m.maxY(); delta += m
+					.getRayon()) {
+				sortY.put(delta, m);
+			}
+			sortY.put(m.maxY(), m);
+		}
+		SortedMap<Double, Matter> selectY = sortY.subMap(m1.minY(), true,
+				m1.maxY(), false);
+		for (Matter m2 : selectY.values()) {
+			if (m1 != m2) {
+				Matter element[] = new Matter[2];
+				element[0] = m1;
+				element[1] = m2;
+				boolean toadd = true;
+				for (Matter e[] : toTreat) {
+					if (e[0] == m1 && e[1] == m2 && e[0] == m2 && e[1] == m1) {
+						toadd = false;
+						break;
+					}
+				}
+				if (toadd) {
+					toTreat.add(element);
+				}
+			}
+		}
+	}
+
 	public void manageImpact() {
 		// On recheche les collisions
 		LinkedList<Matter[]> toTreat = new LinkedList<Matter[]>();
-		HashMap<Matter, String> treated = new HashMap<Matter, String>();
+		HashMap<Matter, String> treatedFusion = new HashMap<Matter, String>();
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : listMatter.values()) {
 			for (double delta = m.minX(); delta <= m.maxX(); delta += m
@@ -209,17 +241,21 @@ public class Univers {
 			}
 			sortX.put(m.maxX(), m);
 		}
-		for (Matter m1 : listMatter.values()) {
-			treatNeighbor(m1, sortX, treated, toTreat);
-		}
 
+		for (Matter m1 : listMatter.values()) {
+			if (HelperVariable.fusion) {
+				treatNeighborFusion(m1, sortX, treatedFusion, toTreat);
+			} else {
+				treatNeighborImpact(m1, sortX, toTreat);
+			}
+		}
 		for (int cpt = 0; cpt < toTreat.size(); cpt++) {
 			Matter[] element = toTreat.get(cpt);
-			if (HelperVariable.probFusion < Math.random()) {
-				element[0].impact(element[1]);
-			} else {
+			if (HelperVariable.fusion) {
 				element[0].fusion(element[1]);
 				listMatter.remove(element[1]);
+			} else {
+				element[0].impact(element[1]);
 			}
 		}
 		mass = 0;
@@ -314,23 +350,34 @@ public class Univers {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
-			double angle = Math.random() * Math.PI * 2;
-			double r = Math.log10(Math.random());
-			Matter m = new Matter(
-					ox + Math.cos(angle)
-							* (r * (radiusMax - radiusMin) + radiusMin),
-					oy + Math.sin(angle)
-							* (r * (radiusMax - radiusMin) + radiusMin),
-					HelperVariable.massObjectMin
-							+ Math.random()
-							* (HelperVariable.massObjectMax - HelperVariable.massObjectMin)
-							+ Math.random(),
-					0,
-					0,
-					HelperVariable.dentityMin
-							+ Math.random()
-							* (HelperVariable.densityMax - HelperVariable.dentityMin),
-					false);
+			Matter m;
+			boolean cont = false;
+			do {
+				double angle = Math.random() * Math.PI * 2;
+				double r = Math.log10(Math.random());
+				m = new Matter(
+						ox + Math.cos(angle)
+								* (r * (radiusMax - radiusMin) + radiusMin),
+						oy + Math.sin(angle)
+								* (r * (radiusMax - radiusMin) + radiusMin),
+						HelperVariable.massObjectMin
+								+ Math.random()
+								* (HelperVariable.massObjectMax - HelperVariable.massObjectMin)
+								+ Math.random(),
+						0,
+						0,
+						HelperVariable.dentityMin
+								+ Math.random()
+								* (HelperVariable.densityMax - HelperVariable.dentityMin),
+						false);
+				cont = false;
+				for (Matter m2 : miniListMatter.values()) {
+					if (m.collision(m2)) {
+						cont = true;
+						break;
+					}
+				}
+			} while (cont);
 			miniListMatter.put(m, m);
 			miniMass += m.getMass();
 		}
@@ -470,10 +517,7 @@ public class Univers {
 	}
 
 	private void createPlanetariesGenesis() {
-		createUvivers(0, 0, 0, 0, 100, 110);
-		createUvivers(0, 0, 0, 0, 200, 220);
-		createUvivers(0, 0, 0, 0, 300, 330);
-		
+		createUvivers(0, 0, 0, 0, 250, 200);
 		Matter m1 = new Matter(Math.random(), Math.random(), 1E8, 0, 0,
 				HelperVariable.dentityMin, false);
 		listMatter.put(m1, m1);

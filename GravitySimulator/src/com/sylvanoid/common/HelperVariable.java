@@ -15,7 +15,7 @@ public abstract class HelperVariable {
 	public static boolean stepByStep = false;
 	public static boolean traceCourbe = false;
 	public static double scala = 1;
-	public static double probFusion = 1; // 0 = 100% choc 1 = 100% fusion
+	public static boolean fusion = true; 
 	public static double typeOfImpact = 0.2; // 1=collision elastique
 												// 0=collision parfaitement
 												// inélastique

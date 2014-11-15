@@ -34,7 +34,7 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField densiteMax;
 	private JFormattedTextField massObjectMin;
 	private JFormattedTextField massObjectMax;
-	private JSlider probFusion;
+	private JCheckBox fusion;
 	private JSlider typeOfImpact;
 	private JFormattedTextField darkMatterMass;
 	private JFormattedTextField darkMatterDensity;
@@ -64,15 +64,17 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(false);
 					scala.setValue(1);
 					timeFactor.setValue(100);
-					probFusion.setValue(100);
+					fusion.setSelected(true);
+					typeOfImpact.setValue(20);
 					break;
 				case 1:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
 					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(20);
+					typeOfImpact.setValue(20);
 					numberOfObjects.setValue(20);
-					probFusion.setValue(100);
+					fusion.setSelected(true);
 					densiteMin.setValue(30);
 					densiteMax.setValue(30);
 					nebulaRadius.setValue(500);
@@ -84,7 +86,8 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(10);
-					probFusion.setValue(100);
+					fusion.setSelected(true);
+					typeOfImpact.setValue(20);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(500);
 					densiteMax.setValue(500);
@@ -97,7 +100,8 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(false);
 					scala.setValue(1);
 					timeFactor.setValue(1);
-					probFusion.setValue(100);
+					fusion.setSelected(true);
+					typeOfImpact.setValue(20);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(5000);
 					densiteMax.setValue(5000);
@@ -112,8 +116,9 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(false);
 					scala.setValue(1);
 					timeFactor.setValue(1);
-					probFusion.setValue(100);
-					numberOfObjects.setValue(400);
+					fusion.setSelected(true);
+					typeOfImpact.setValue(20);
+					numberOfObjects.setValue(500);
 					densiteMin.setValue(5000);
 					densiteMax.setValue(5000);
 					nebulaRadius.setValue(300);
@@ -127,12 +132,13 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(10000);
-					probFusion.setValue(100);
-					numberOfObjects.setValue(500);
+					fusion.setSelected(true);
+					typeOfImpact.setValue(20);
+					numberOfObjects.setValue(1000);
 					densiteMin.setValue(50);
 					densiteMax.setValue(50);
 					nebulaRadius.setValue(300);
-					massObjectMin.setValue(1000);
+					massObjectMin.setValue(10000);
 					massObjectMax.setValue(100000);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1E10);
@@ -143,7 +149,8 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(50);
-					probFusion.setValue(100);
+					fusion.setSelected(true);
+					typeOfImpact.setValue(20);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(100);
 					densiteMax.setValue(100);
@@ -193,10 +200,10 @@ public class GUIParam extends JDialog {
 		manageImpact = new JCheckBox();
 		manageImpact.setSelected(HelperVariable.manageImpact);
 		add(manageImpact);
-		add(new Label("Fusion probability (1-0):"));
-		probFusion = new JSlider(0, 100,
-				(int) (HelperVariable.probFusion * 100));
-		add(probFusion);
+		add(new Label("Fusion (or impact) :"));
+		fusion = new JCheckBox();
+		fusion.setSelected(HelperVariable.fusion);
+		add(fusion);
 		add(new Label("Type of impact (1-elastic 0-inelastic):"));
 		typeOfImpact = new JSlider(0, 100,
 				(int) (HelperVariable.typeOfImpact * 100));
@@ -234,8 +241,7 @@ public class GUIParam extends JDialog {
 					HelperVariable.massObjectMax = Double
 							.parseDouble(me.massObjectMax.getValue().toString());
 					HelperVariable.manageImpact = me.manageImpact.isSelected();
-					HelperVariable.probFusion = (double) me.probFusion
-							.getValue() / 100;
+					HelperVariable.fusion =  me.fusion.isSelected();
 					HelperVariable.typeOfImpact = (double) me.typeOfImpact
 							.getValue() / 100;
 					HelperVariable.darkMatterMass = Double
