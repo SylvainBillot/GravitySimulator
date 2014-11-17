@@ -12,7 +12,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.joblib.SimpleThread;
@@ -40,9 +39,7 @@ public class GUIProgram extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		univers = new Univers(HelperVariable.typeOfUnivers, this);
 		p = new GraphicZone(me);
-		JScrollPane picturePane = new JScrollPane(p, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		me.add(picturePane, BorderLayout.CENTER);
+		me.add(p, BorderLayout.CENTER);
 
 		JMenuBar menuBar = new JMenuBar();
 		add(menuBar, BorderLayout.NORTH);

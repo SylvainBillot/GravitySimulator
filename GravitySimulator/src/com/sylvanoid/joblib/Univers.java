@@ -420,7 +420,7 @@ public class Univers {
 	}
 
 	private void createGalaxiesCollision() {
-		double transSpeed = 0.2;
+		double transSpeed = 0.3;
 		TreeMap<Matter, Matter> subu01 = createUvivers(-400, -100, 0, 0, 0,
 				HelperVariable.nebulaRadius);
 		TreeMap<Matter, Matter> subu02 = createUvivers(400, 100, 0, 0, 0,

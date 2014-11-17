@@ -65,14 +65,14 @@ public class GUIParam extends JDialog {
 					scala.setValue(1);
 					timeFactor.setValue(100);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(20);
+					typeOfImpact.setValue(100);
 					break;
 				case 1:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
 					manageImpact.setSelected(true);
 					scala.setValue(1);
 					timeFactor.setValue(20);
-					typeOfImpact.setValue(20);
+					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(20);
 					fusion.setSelected(true);
 					densiteMin.setValue(30);
@@ -87,7 +87,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(1);
 					timeFactor.setValue(10);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(20);
+					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(500);
 					densiteMax.setValue(500);
@@ -101,7 +101,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(1);
 					timeFactor.setValue(1);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(20);
+					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(5000);
 					densiteMax.setValue(5000);
@@ -117,7 +117,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(1);
 					timeFactor.setValue(1);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(20);
+					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
 					densiteMin.setValue(5000);
 					densiteMax.setValue(5000);
@@ -133,7 +133,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(1);
 					timeFactor.setValue(10000);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(20);
+					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(50);
 					densiteMax.setValue(50);
@@ -150,11 +150,11 @@ public class GUIParam extends JDialog {
 					scala.setValue(1);
 					timeFactor.setValue(50);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(20);
+					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(100);
 					densiteMax.setValue(100);
-					nebulaRadius.setValue(300);
+					nebulaRadius.setValue(200);
 					massObjectMin.setValue(100000000);
 					massObjectMax.setValue(100000000);
 					darkMatterMass.setValue(1E12);
