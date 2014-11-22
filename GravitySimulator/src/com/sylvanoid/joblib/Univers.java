@@ -185,7 +185,7 @@ public class Univers {
 			SortedMap<Double, Matter> selectY = sortY.subMap(m1.minY(), true,
 					m1.maxY(), false);
 			for (Matter m2 : selectY.values()) {
-				if (treated.get(m2) == null) {
+				if (treated.get(m2) == null && m1.collision(m2)) {
 					treated.put(m2, "");
 					Matter element[] = new Matter[2];
 					element[0] = m1;
@@ -211,7 +211,7 @@ public class Univers {
 		SortedMap<Double, Matter> selectY = sortY.subMap(m1.minY(), true,
 				m1.maxY(), false);
 		for (Matter m2 : selectY.values()) {
-			if (m1 != m2) {
+			if (m1 != m2 && m1.collision(m2)) {
 				Matter element[] = new Matter[2];
 				element[0] = m1;
 				element[1] = m2;

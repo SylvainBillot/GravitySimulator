@@ -152,23 +152,23 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public double maxX() {
-		//return x + rayon;
+		// return x + rayon;
 		return (x > getXplusV()) ? (x + rayon) : (getXplusV() + rayon);
 
 	}
 
 	public double maxY() {
-		//return y + rayon;
+		// return y + rayon;
 		return (y > getYplusV()) ? (y + rayon) : (getYplusV() + rayon);
 	}
 
 	public double minX() {
-		//return x - rayon;
+		// return x - rayon;
 		return (x > getXplusV()) ? (getXplusV() - rayon) : (x - rayon);
 	}
 
 	public double minY() {
-		//return y - rayon;
+		// return y - rayon;
 		return (y > getYplusV()) ? (getYplusV() - rayon) : (y - rayon);
 	}
 
@@ -179,6 +179,8 @@ public class Matter implements Comparable<Matter> {
 		y = getYplusV();
 	}
 
+	
+	
 	public void fusion(Matter m2) {
 		x = (x * mass + m2.getX() * m2.getMass()) / (mass + m2.getMass());
 		y = (y * mass + m2.getY() * m2.getMass()) / (mass + m2.getMass());
@@ -186,8 +188,8 @@ public class Matter implements Comparable<Matter> {
 				/ (mass + m2.getMass());
 		speedY = (speedY * mass + m2.getSpeedY() * m2.getMass())
 				/ (mass + m2.getMass());
-		aX = 0;
-		aY = 0;
+		aX = (aX * mass + m2.getaX() * m2.getMass()) / (mass + m2.getMass());
+		aY = (aY * mass + m2.getaY() * m2.getMass()) / (mass + m2.getMass());
 		density = (density * mass + m2.getDensity() * m2.getMass())
 				/ (mass + m2.getMass());
 		mass += m2.getMass();
@@ -223,7 +225,25 @@ public class Matter implements Comparable<Matter> {
 	public boolean collision(Matter m2) {
 		double distance = Math.pow(
 				Math.pow(x - m2.getX(), 2) + Math.pow(y - m2.getY(), 2), 0.5);
-		return distance < rayon + m2.rayon;
+		
+		if(distance < rayon + m2.rayon){
+			return true;
+		} else {
+			double a1 = (y - getYplusV() ) / (x - getXplusV());
+			double b1 = y - a1*x;
+			double a2 = (m2.getY() - m2.getYplusV() ) / (m2.getX() - m2.getXplusV());
+			double b2 = m2.getY() - a2*m2.getX();
+			if(a1==a2){
+				return false;
+			} else {
+				double xres = (b2 - b1) / (a1 - a2);
+				if(xres>=x && xres<=m2.getX() || xres>=m2.getX() && xres<=x){
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
 	}
 
 	public double orbitalSpeed(Matter m) {
