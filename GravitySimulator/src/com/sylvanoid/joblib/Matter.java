@@ -152,18 +152,23 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public double maxX() {
+		//return x + rayon;
 		return (x > getXplusV()) ? (x + rayon) : (getXplusV() + rayon);
+
 	}
 
 	public double maxY() {
+		//return y + rayon;
 		return (y > getYplusV()) ? (y + rayon) : (getYplusV() + rayon);
 	}
 
 	public double minX() {
+		//return x - rayon;
 		return (x > getXplusV()) ? (getXplusV() - rayon) : (x - rayon);
 	}
 
 	public double minY() {
+		//return y - rayon;
 		return (y > getYplusV()) ? (getYplusV() - rayon) : (y - rayon);
 	}
 
@@ -181,12 +186,12 @@ public class Matter implements Comparable<Matter> {
 				/ (mass + m2.getMass());
 		speedY = (speedY * mass + m2.getSpeedY() * m2.getMass())
 				/ (mass + m2.getMass());
+		aX = 0;
+		aY = 0;
 		density = (density * mass + m2.getDensity() * m2.getMass())
 				/ (mass + m2.getMass());
 		mass += m2.getMass();
 		rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
-		aX = 0;
-		aY = 0;
 	}
 
 	public void impact(Matter m2) {

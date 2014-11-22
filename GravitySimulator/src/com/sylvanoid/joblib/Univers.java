@@ -502,8 +502,9 @@ public class Univers {
 
 	private void createPlanetaryRandom() {
 		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius);
-		Matter m1 = new Matter(Math.random(), Math.random(), 1E10, 0, 0, 500,
-				false);
+		Matter m1 = new Matter(Math.random(), Math.random(),
+				HelperVariable.darkMatterMass, 0, 0,
+				HelperVariable.darkMatterDensity, false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
@@ -518,8 +519,9 @@ public class Univers {
 
 	private void createPlanetariesGenesis() {
 		createUvivers(0, 0, 0, 0, 250, 200);
-		Matter m1 = new Matter(Math.random(), Math.random(), 1E8, 0, 0,
-				HelperVariable.dentityMin, false);
+		Matter m1 = new Matter(Math.random(), Math.random(),
+				HelperVariable.darkMatterMass, 0, 0,
+				HelperVariable.darkMatterDensity, false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {

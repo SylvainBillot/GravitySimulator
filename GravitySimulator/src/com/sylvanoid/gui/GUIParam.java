@@ -78,8 +78,10 @@ public class GUIParam extends JDialog {
 					densiteMin.setValue(30);
 					densiteMax.setValue(30);
 					nebulaRadius.setValue(500);
-					massObjectMin.setValue(10000);
-					massObjectMax.setValue(1000000);
+					massObjectMin.setValue(1E4);
+					massObjectMax.setValue(1E6);
+					darkMatterMass.setValue(1E10);
+					darkMatterDensity.setValue(200);
 					break;
 				case 2:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
@@ -142,6 +144,8 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(100000);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1E10);
+					darkMatterMass.setValue(1E10);
+					darkMatterDensity.setValue(200);
 					break;
 
 				case 6:
@@ -189,10 +193,10 @@ public class GUIParam extends JDialog {
 		add(new Label("Mass object max:"));
 		massObjectMax = new JFormattedTextField(HelperVariable.massObjectMax);
 		add(massObjectMax);
-		add(new Label("Dark Matter Mass:"));
+		add(new Label("Dark Matter or central star Mass:"));
 		darkMatterMass = new JFormattedTextField(HelperVariable.darkMatterMass);
 		add(darkMatterMass);
-		add(new Label("Darkk Matter Density:"));
+		add(new Label("Dark Matter or central star Density:"));
 		darkMatterDensity = new JFormattedTextField(
 				HelperVariable.darkMatterDensity);
 		add(darkMatterDensity);
