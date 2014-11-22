@@ -346,7 +346,8 @@ public class Univers {
 	}
 
 	private TreeMap<Matter, Matter> createUvivers(double ox, double oy,
-			double delta, double speedTrans, double radiusMin, double radiusMax) {
+			double delta, double speedTrans, double radiusMin,
+			double radiusMax, double ratioxy) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
@@ -356,8 +357,9 @@ public class Univers {
 				double angle = Math.random() * Math.PI * 2;
 				double r = Math.log10(Math.random());
 				m = new Matter(
-						ox + Math.cos(angle)
-								* (r * (radiusMax - radiusMin) + radiusMin),
+						ox
+								+ Math.cos(angle)
+								* (r * ratioxy * (radiusMax - radiusMin) + radiusMin),
 						oy + Math.sin(angle)
 								* (r * (radiusMax - radiusMin) + radiusMin),
 						HelperVariable.massObjectMin
@@ -399,11 +401,11 @@ public class Univers {
 	}
 
 	private void createRandomStaticUvivers() {
-		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius);
+		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius, 1);
 	}
 
 	private void createRandomRotateUnivers() {
-		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius);
+		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius, 0.25);
 		Matter m1 = new Matter(Math.random(), Math.random(),
 				HelperVariable.darkMatterMass, 0, 0,
 				HelperVariable.darkMatterDensity, true);
@@ -422,9 +424,9 @@ public class Univers {
 	private void createGalaxiesCollision() {
 		double transSpeed = 0.3;
 		TreeMap<Matter, Matter> subu01 = createUvivers(-400, -100, 0, 0, 0,
-				HelperVariable.nebulaRadius);
+				HelperVariable.nebulaRadius, 0.25);
 		TreeMap<Matter, Matter> subu02 = createUvivers(400, 100, 0, 0, 0,
-				HelperVariable.nebulaRadius);
+				HelperVariable.nebulaRadius, 0.25);
 
 		Matter m1 = new Matter(-400 + Math.random(), -100 + Math.random(),
 				HelperVariable.darkMatterMass + Math.random(), transSpeed, 0,
@@ -501,7 +503,7 @@ public class Univers {
 	}
 
 	private void createPlanetaryRandom() {
-		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius);
+		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius, 1);
 		Matter m1 = new Matter(Math.random(), Math.random(),
 				HelperVariable.darkMatterMass, 0, 0,
 				HelperVariable.darkMatterDensity, false);
@@ -518,7 +520,7 @@ public class Univers {
 	}
 
 	private void createPlanetariesGenesis() {
-		createUvivers(0, 0, 0, 0, 250, 200);
+		createUvivers(0, 0, 0, 0, 250, 200, 1);
 		Matter m1 = new Matter(Math.random(), Math.random(),
 				HelperVariable.darkMatterMass, 0, 0,
 				HelperVariable.darkMatterDensity, false);
