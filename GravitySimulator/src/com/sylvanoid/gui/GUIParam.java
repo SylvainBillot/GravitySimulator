@@ -165,6 +165,7 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1E10);
 					break;
 				}
+				enableDisableParam();
 			}
 		});
 		add(typeOfUnivers);
@@ -245,7 +246,7 @@ public class GUIParam extends JDialog {
 					HelperVariable.massObjectMax = Double
 							.parseDouble(me.massObjectMax.getValue().toString());
 					HelperVariable.manageImpact = me.manageImpact.isSelected();
-					HelperVariable.fusion =  me.fusion.isSelected();
+					HelperVariable.fusion = me.fusion.isSelected();
 					HelperVariable.typeOfImpact = (double) me.typeOfImpact
 							.getValue() / 100;
 					HelperVariable.darkMatterMass = Double
@@ -266,10 +267,120 @@ public class GUIParam extends JDialog {
 			}
 		});
 		add(btnOK);
+		
+		enableDisableParam();
 	}
 
 	public GUIProgram getMother() {
 		return mother;
 	}
 
+	private void enableDisableParam(){
+		timeFactor.setEnabled(false);
+		scala.setEnabled(false);
+		manageImpact.setEnabled(false);
+		numberOfObjects.setEnabled(false);
+		nebulaRadius.setEnabled(false);
+		densiteMin.setEnabled(false);
+		densiteMax.setEnabled(false);
+		massObjectMin.setEnabled(false);
+		massObjectMax.setEnabled(false);
+		fusion.setEnabled(false);
+		typeOfImpact.setEnabled(false);
+		darkMatterMass.setEnabled(false);
+		darkMatterDensity.setEnabled(false);
+		switch (typeOfUnivers.getSelectedIndex()) {
+		case 0:
+			//TypeOfUnivers.Planetary;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			break;
+		case 1:
+			//TypeOfUnivers.PlanetaryRandom;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			fusion.setEnabled(true);
+			densiteMin.setEnabled(true);
+			densiteMax.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			break;
+		case 2:
+			//TypeOfUnivers.Random;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			densiteMax.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			break;
+		case 3:
+			//TypeOfUnivers.RandomRotateUnivers;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			densiteMax.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			break;
+		case 4:
+			//TypeOfUnivers.GalaxiesCollision;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			densiteMax.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			break;
+		case 5:
+			//TypeOfUnivers.PlanetariesGenesis;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			densiteMax.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			break;
+		case 6:
+			//TypeOfUnivers.DoubleStars;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			densiteMin.setEnabled(true);
+			break;
+		}
+	}
+	
 }

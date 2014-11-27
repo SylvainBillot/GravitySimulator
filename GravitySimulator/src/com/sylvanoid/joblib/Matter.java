@@ -151,6 +151,14 @@ public class Matter implements Comparable<Matter> {
 		return y + speedY;
 	}
 
+	public double getXminusV() {
+		return x - speedX;
+	}
+
+	public double getYminusV() {
+		return y - speedY;
+	}
+
 	public double maxX() {
 		// return x + rayon;
 		return (x > getXplusV()) ? (x + rayon) : (getXplusV() + rayon);
@@ -223,8 +231,10 @@ public class Matter implements Comparable<Matter> {
 	public boolean collision(Matter m2) {
 		double distance = Math.pow(
 				Math.pow(x - m2.getX(), 2) + Math.pow(y - m2.getY(), 2), 0.5);
+		double distance2 = Math.pow(Math.pow(getXplusV() - m2.getXplusV(), 2)
+				+ Math.pow(getYplusV() - m2.getYplusV(), 2), 0.5);
 
-		if (distance < rayon + m2.rayon) {
+		if (distance < rayon + m2.rayon || distance2 < rayon + m2.rayon) {
 			return true;
 		} else {
 			double a1 = (y - getYplusV()) / (x - getXplusV());

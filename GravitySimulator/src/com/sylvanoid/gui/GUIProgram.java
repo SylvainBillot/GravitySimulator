@@ -7,6 +7,7 @@ import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -93,7 +94,8 @@ public class GUIProgram extends JFrame {
 				me.reset();
 			}
 		});
-		JMenuItem menuItemByStep = new JMenuItem("Step By Step");
+		
+		JCheckBoxMenuItem menuItemByStep = new JCheckBoxMenuItem("Step By Step",HelperVariable.stepByStep);
 		menuItemByStep.addActionListener(new ActionListener() {
 
 			@Override
