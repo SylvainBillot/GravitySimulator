@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -13,6 +17,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+
+import org.jcodec.api.SequenceEncoder;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.joblib.SimpleThread;
@@ -29,15 +35,35 @@ public class GUIProgram extends JFrame {
 	private GraphicZone p;
 	private Thread t;
 	private Label status;
+	private SequenceEncoder out;
 
 	public GUIProgram() {
 		this.me = this;
+		File directory = new File(System.getProperty("user.home"));
+		try {
+			out = new SequenceEncoder(new File(directory.getPath()
+					+ "/out.mpeg"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		setTitle("Gravity Simulator");
 		Dimension dimension = java.awt.Toolkit.getDefaultToolkit()
 				.getScreenSize();
 		setSize((int) dimension.getWidth(), (int) dimension.getHeight());
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				try {
+					me.getOut().finish();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				System.exit(0);
+			}
+		});
+
 		univers = new Univers(HelperVariable.typeOfUnivers, this);
 		p = new GraphicZone(me);
 		me.add(p, BorderLayout.CENTER);
@@ -94,8 +120,9 @@ public class GUIProgram extends JFrame {
 				me.reset();
 			}
 		});
-		
-		JCheckBoxMenuItem menuItemByStep = new JCheckBoxMenuItem("Step By Step",HelperVariable.stepByStep);
+
+		JCheckBoxMenuItem menuItemByStep = new JCheckBoxMenuItem(
+				"Step By Step", HelperVariable.stepByStep);
 		menuItemByStep.addActionListener(new ActionListener() {
 
 			@Override
@@ -117,7 +144,8 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
-		JCheckBoxMenuItem menuItemDisplayVectors = new JCheckBoxMenuItem("Display Vectors",HelperVariable.displayVectors);
+		JCheckBoxMenuItem menuItemDisplayVectors = new JCheckBoxMenuItem(
+				"Display Vectors", HelperVariable.displayVectors);
 		menuItemDisplayVectors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -125,7 +153,8 @@ public class GUIProgram extends JFrame {
 				HelperVariable.displayVectors = !HelperVariable.displayVectors;
 			}
 		});
-		JCheckBoxMenuItem menuItemTrace = new JCheckBoxMenuItem("Trace",HelperVariable.traceCourbe);
+		JCheckBoxMenuItem menuItemTrace = new JCheckBoxMenuItem("Trace",
+				HelperVariable.traceCourbe);
 		menuItemTrace.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -251,7 +280,20 @@ public class GUIProgram extends JFrame {
 		menuVisu.add(menuItemEchelleDeux);
 		menuVisu.add(menuItemEchelleQuatre);
 
-		
+		JMenu menuVideo = new JMenu("Video");
+		JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
+				"Record to [home directory/out.mpeg]",
+				HelperVariable.exportToVideo);
+		menuItemExportVideo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				HelperVariable.exportToVideo = !HelperVariable.exportToVideo;
+			}
+		});
+		menuBar.add(menuVideo);
+		menuVideo.add(menuItemExportVideo);
+
 		JMenu menuAbout = new JMenu("?");
 		JMenuItem menuItemAbout = new JMenuItem("About");
 		menuBar.add(menuAbout);
@@ -264,8 +306,7 @@ public class GUIProgram extends JFrame {
 			}
 		});
 		menuAbout.add(menuItemAbout);
-		
-		
+
 		JPanel outPanel = new JPanel(new BorderLayout());
 		add(outPanel, BorderLayout.SOUTH);
 		status = new Label("");
@@ -320,5 +361,13 @@ public class GUIProgram extends JFrame {
 		univers = new Univers(HelperVariable.typeOfUnivers, this);
 		p.repaint();
 		t = new Thread(new SimpleThread(this));
+	}
+
+	public SequenceEncoder getOut() {
+		return out;
+	}
+
+	public void setOut(SequenceEncoder out) {
+		this.out = out;
 	}
 }

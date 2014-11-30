@@ -1,7 +1,9 @@
 package com.sylvanoid.joblib;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.gui.GUIProgram;
-
 
 public class SimpleThread implements Runnable {
 
@@ -21,18 +23,34 @@ public class SimpleThread implements Runnable {
 				guiProgram.getUnivers().compute();
 				guiProgram.getUnivers().move();
 				guiProgram.getGraphicZone().repaint();
+
+				if (HelperVariable.exportToVideo) {
+					BufferedImage img = new BufferedImage(guiProgram
+							.getGraphicZone().getWidth(), guiProgram
+							.getGraphicZone().getHeight(),
+							BufferedImage.TYPE_USHORT_555_RGB);
+					guiProgram.getGraphicZone().paint(img.getGraphics());
+					try {
+						guiProgram.getOut().encodeImage(img);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
 				long executionTime = start - System.currentTimeMillis();
 				if (executionTime < HelperVariable.MINSLEEPTIME) {
 					Thread.sleep(HelperVariable.MINSLEEPTIME - executionTime);
 				}
-				
+
 				executionTime = start - System.currentTimeMillis();
-				guiProgram.getStatus().setText("Number of object: "
+				guiProgram.getStatus().setText(
+						"Number of object: "
 								+ guiProgram.getUnivers().getListMatiere()
 										.size() + " cps: "
 								+ (1000 / -executionTime));
-				
-				if(HelperVariable.stepByStep){
+
+				if (HelperVariable.stepByStep) {
 					Thread.sleep(1000);
 				}
 			}

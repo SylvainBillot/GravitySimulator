@@ -15,6 +15,7 @@ public abstract class HelperVariable {
 	public static boolean stepByStep = false;
 	public static boolean traceCourbe = false;
 	public static boolean displayVectors = false;
+	public static boolean exportToVideo = false;
 	public static double scala = 1;
 	public static boolean fusion = true; 
 	public static double typeOfImpact = 1; // 1=collision elastique

@@ -22,19 +22,23 @@ public class GraphicZone extends JPanel {
 		this.guiProgram = guiProgram;
 	}
 
-	public void init() {
-
+	public void init(Graphics g) {
+		g.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize()
+				.getHeight());
 	}
 
 	public void paint(Graphics g) {
 		double cw = getSize().getWidth() / 2;
 		double ch = getSize().getHeight() / 2;
 		if (firstTime) {
-			init();
+			init(g);
 			firstTime = false;
 		}
 		if (!HelperVariable.traceCourbe) {
 			g.clearRect(0, 0, (int) getSize().getWidth(), (int) getSize()
+					.getHeight());
+			g.setColor(Color.WHITE);
+			g.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize()
 					.getHeight());
 		}
 		try {
