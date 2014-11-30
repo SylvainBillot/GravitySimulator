@@ -59,8 +59,9 @@ public class GUIProgram extends JFrame {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} finally {
+					System.exit(0);
 				}
-				System.exit(0);
 			}
 		});
 
