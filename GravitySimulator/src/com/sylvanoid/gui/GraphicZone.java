@@ -80,23 +80,27 @@ public class GraphicZone extends JPanel {
 									(int) (cw + m.getX() * HelperVariable.scala),
 									(int) (ch + m.getY() * HelperVariable.scala));
 						}
-						if (!HelperVariable.traceCourbe) {
+						if (!HelperVariable.traceCourbe
+								&& HelperVariable.displayVectors) {
 							g.setColor(Color.RED);
 							g.drawLine(
-									(int) (cw + m.getXminusV() * HelperVariable.scala),
-									(int) (ch + m.getYminusV() * HelperVariable.scala),
-									(int) (cw + m.getX()
+									(int) (cw + m.getXminusV()
 											* HelperVariable.scala),
-									(int) (ch + m.getY()
+									(int) (ch + m.getYminusV()
+											* HelperVariable.scala),
+									(int) (cw + (m.getXminusV() + m.getSpeedX() * 5)
+											* HelperVariable.scala),
+									(int) (ch + (m.getYminusV() + m.getSpeedY() * 5)
 											* HelperVariable.scala));
 
 							g.setColor(Color.BLUE);
-							g.drawLine(
-									(int) (cw + m.getX() * HelperVariable.scala),
-									(int) (ch + m.getY() * HelperVariable.scala),
-									(int) (cw + m.getXplusA()
+							g.drawLine((int) (cw + m.getXminusV()
+									* HelperVariable.scala),
+									(int) (ch + m.getYminusV()
 											* HelperVariable.scala),
-									(int) (ch + m.getYplusA()
+									(int) (cw + (m.getXminusV() + m.getaX()*5)
+											* HelperVariable.scala),
+									(int) (ch + (m.getYminusV() + m.getaY()*5)
 											* HelperVariable.scala));
 						}
 					}

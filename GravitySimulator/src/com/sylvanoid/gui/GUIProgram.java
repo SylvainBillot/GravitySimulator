@@ -117,20 +117,20 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
-		JMenuItem menuItemTraceOn = new JMenuItem("Trace On");
-		menuItemTraceOn.addActionListener(new ActionListener() {
+		JCheckBoxMenuItem menuItemDisplayVectors = new JCheckBoxMenuItem("Display Vectors",HelperVariable.displayVectors);
+		menuItemDisplayVectors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				HelperVariable.traceCourbe = true;
+				HelperVariable.displayVectors = !HelperVariable.displayVectors;
 			}
 		});
-		JMenuItem menuItemTraceOff = new JMenuItem("Trace Off");
-		menuItemTraceOff.addActionListener(new ActionListener() {
+		JCheckBoxMenuItem menuItemTrace = new JCheckBoxMenuItem("Trace",HelperVariable.traceCourbe);
+		menuItemTrace.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				HelperVariable.traceCourbe = false;
+				HelperVariable.traceCourbe = !HelperVariable.traceCourbe;
 			}
 		});
 		JMenuItem menuItemCentreEcran = new JMenuItem("All univers on screen");
@@ -238,8 +238,8 @@ public class GUIProgram extends JFrame {
 				p.updateUI();
 			}
 		});
-		menuVisu.add(menuItemTraceOn);
-		menuVisu.add(menuItemTraceOff);
+		menuVisu.add(menuItemDisplayVectors);
+		menuVisu.add(menuItemTrace);
 		menuVisu.add(menuItemCentreEcran);
 		menuVisu.add(menuItemplusMassif);
 		menuVisu.add(menuItemBarycentre);
@@ -316,7 +316,6 @@ public class GUIProgram extends JFrame {
 		HelperVariable.centerOnMassMax = false;
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.centerOnCentroid = false;
-		HelperVariable.traceCourbe = false;
 		HelperVariable.scala = 1;
 		univers = new Univers(HelperVariable.typeOfUnivers, this);
 		p.repaint();
