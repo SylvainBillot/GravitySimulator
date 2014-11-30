@@ -148,8 +148,8 @@ public class Univers {
 													2), 0.5);
 							double attraction = HelperVariable.timeFactor
 									* HelperVariable.GRAVITY
-									* (((m.getMass() * uvoisin.getMass()) / Math
-											.pow(distance, 2))) / m.getMass();
+									* (((uvoisin.getMass()) / Math
+											.pow(distance, 2)));
 
 							double angle = Math.atan2(
 									uvoisin.getGy() - m.getY(), uvoisin.getGx()
