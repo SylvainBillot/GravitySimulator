@@ -15,6 +15,9 @@ public class GraphicZone extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private Color bgColor = Color.WHITE;
+	private Color fgColor = Color.BLACK;
+	
 	private boolean firstTime = true;
 	private GUIProgram guiProgram;
 
@@ -23,6 +26,7 @@ public class GraphicZone extends JPanel {
 	}
 
 	public void init(Graphics g) {
+		g.setColor(bgColor);
 		g.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize()
 				.getHeight());
 	}
@@ -37,7 +41,7 @@ public class GraphicZone extends JPanel {
 		if (!HelperVariable.traceCourbe) {
 			g.clearRect(0, 0, (int) getSize().getWidth(), (int) getSize()
 					.getHeight());
-			g.setColor(Color.WHITE);
+			g.setColor(bgColor);
 			g.fillRect(0, 0, (int) getSize().getWidth(), (int) getSize()
 					.getHeight());
 		}
@@ -50,7 +54,7 @@ public class GraphicZone extends JPanel {
 							&& m.getY() < ch / HelperVariable.scala) {
 						if (!HelperVariable.traceCourbe) {
 							if (m.getRayon() * HelperVariable.scala > 1) {
-								g.setColor(Color.BLACK);
+								g.setColor(fgColor);
 								g.drawOval(
 										(int) (cw + m.getXminusV()
 												* HelperVariable.scala - m
@@ -65,7 +69,7 @@ public class GraphicZone extends JPanel {
 										(int) (m.getRayon()
 												* HelperVariable.scala * 2));
 							} else {
-								g.setColor(Color.BLACK);
+								g.setColor(fgColor);
 								int rayonMin = 2;
 								g.drawOval(
 										(int) (cw + m.getXminusV()
@@ -75,7 +79,7 @@ public class GraphicZone extends JPanel {
 										rayonMin, rayonMin);
 							}
 						} else {
-							g.setColor(Color.BLACK);
+							g.setColor(fgColor);
 							g.drawLine(
 									(int) (cw + m.getXminusV()
 											* HelperVariable.scala),
