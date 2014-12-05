@@ -16,8 +16,7 @@ import com.sylvanoid.gui.GUIProgram;
 public class Univers {
 	private GUIProgram guiProgram;
 	private TreeMap<Matter, Matter> listMatter;
-	private double gx;
-	private double gy;
+	private Point2d gPoint = new Point2d(0, 0);
 	private double mass;
 	private double minX;
 	private double minY;
@@ -26,7 +25,7 @@ public class Univers {
 
 	@Override
 	public String toString() {
-		return ("m:" + mass + " gx:" + gy + " gy:" + gy);
+		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y);
 	}
 
 	public Univers(TypeOfUnivers typeOfUnivers, GUIProgram guiProgram) {
@@ -107,8 +106,8 @@ public class Univers {
 			tmpGx += (m.getPoint().getX() * m.getMass());
 			tmpGy += (m.getPoint().getY() * m.getMass());
 		}
-		gx = tmpGx / getMass();
-		gy = tmpGy / getMass();
+		gPoint.x = tmpGx / getMass();
+		gPoint.y = tmpGy / getMass();
 	}
 
 	public void resetAcceleration() {
@@ -144,20 +143,18 @@ public class Univers {
 								new MassComparator());
 						sortByMass.putAll(u.listMatter);
 						for (Matter m : sortByMass.values()) {
-							double distance = Math.pow(
-									Math.pow(
-											m.getPoint().getX()
-													- uvoisin.getGx(), 2)
-											+ Math.pow(m.getPoint().getY()
-													- uvoisin.getGy(), 2), 0.5);
+							double distance = m.getPoint().distance(
+									uvoisin.getGPoint());
 							double attraction = HelperVariable.timeFactor
 									* HelperVariable.GRAVITY
 									* (((uvoisin.getMass()) / Math.pow(
 											distance, 2)));
 
-							double angle = Math.atan2(uvoisin.getGy()
-									- m.getPoint().getY(), uvoisin.getGx()
-									- m.getPoint().getX());
+							double angle = Math
+									.atan2(uvoisin.getGPoint().y
+											- m.getPoint().getY(),
+											uvoisin.getGPoint().x
+													- m.getPoint().getX());
 
 							m.setaX(m.getaX() + attraction * Math.cos(angle));
 							m.setaY(m.getaY() + attraction * Math.sin(angle));
@@ -287,8 +284,8 @@ public class Univers {
 		computeCentroidOfUnivers();
 		if (HelperVariable.centerOnCentroid) {
 			for (Matter m : listMatter.values()) {
-				m.getPoint().setX(m.getPoint().getX() - gx);
-				m.getPoint().setY(m.getPoint().getY() - gy);
+				m.getPoint().setX(m.getPoint().getX() - gPoint.x);
+				m.getPoint().setY(m.getPoint().getY() - gPoint.y);
 			}
 		}
 
@@ -337,12 +334,8 @@ public class Univers {
 		return maxY;
 	}
 
-	public double getGx() {
-		return gx;
-	}
-
-	public double getGy() {
-		return gy;
+	public Point2d getGPoint() {
+		return gPoint;
 	}
 
 	public double getMass() {
@@ -394,8 +387,8 @@ public class Univers {
 		for (Matter m : miniListMatter.values()) {
 			double distance = Math.pow(Math.pow(m.getPoint().getX() - ox, 2)
 					+ Math.pow(m.getPoint().getY() - oy, 2), 0.5);
-			double angle = Math.atan2(m.getPoint().getY() - oy, m
-					.getPoint().getX() - ox);
+			double angle = Math.atan2(m.getPoint().getY() - oy, m.getPoint()
+					.getX() - ox);
 			m.setSpeedX(m.getPoint().getX() - ox - Math.cos(angle - delta)
 					* distance + speedTrans);
 			m.setSpeedY(m.getPoint().getY() - oy - Math.sin(angle - delta)
@@ -507,8 +500,8 @@ public class Univers {
 			}
 			mass += m.getMass();
 		}
-		double a = Math.atan2(m7.getPoint().getY() - m3.getPoint().getY(),
-				m7.getPoint().getX() - m3.getPoint().getX());
+		double a = Math.atan2(m7.getPoint().getY() - m3.getPoint().getY(), m7
+				.getPoint().getX() - m3.getPoint().getX());
 		m7.setSpeedX(m3.getSpeedX() + m7.orbitalSpeed(m3)
 				* Math.cos(a + Math.PI / 2));
 		m7.setSpeedY(m3.getSpeedY() + m7.orbitalSpeed(m3)
@@ -566,8 +559,8 @@ public class Univers {
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
 
-		double a = Math.atan2(m2.getPoint().getY() - m1.getPoint().getY(),
-				m2.getPoint().getX() - m1.getPoint().getX());
+		double a = Math.atan2(m2.getPoint().getY() - m1.getPoint().getY(), m2
+				.getPoint().getX() - m1.getPoint().getX());
 		m1.setSpeedX(m2.orbitalSpeed(m1) * Math.cos(a + Math.PI / 2));
 		m1.setSpeedY(m2.orbitalSpeed(m1) * Math.sin(a + Math.PI / 2));
 

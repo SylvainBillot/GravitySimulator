@@ -130,19 +130,19 @@ public class GraphicZone extends JPanel {
 			}
 			if (!HelperVariable.traceCourbe) {
 				g.setColor(Color.RED);
-				g.drawLine((int) (cw + guiProgram.getUnivers().getGx()
+				g.drawLine((int) (cw + guiProgram.getUnivers().getGPoint().x
 						* HelperVariable.scala - 5), (int) (ch + guiProgram
-						.getUnivers().getGy() * HelperVariable.scala),
-						(int) (cw + guiProgram.getUnivers().getGx()
+						.getUnivers().getGPoint().y * HelperVariable.scala),
+						(int) (cw + guiProgram.getUnivers().getGPoint().x
 								* HelperVariable.scala + 5),
-						(int) (ch + guiProgram.getUnivers().getGy()
+						(int) (ch + guiProgram.getUnivers().getGPoint().y
 								* HelperVariable.scala));
-				g.drawLine((int) (cw + guiProgram.getUnivers().getGx()
+				g.drawLine((int) (cw + guiProgram.getUnivers().getGPoint().x
 						* HelperVariable.scala), (int) (ch
-						+ guiProgram.getUnivers().getGy()
+						+ guiProgram.getUnivers().getGPoint().y
 						* HelperVariable.scala - 5), (int) (cw + guiProgram
-						.getUnivers().getGx() * HelperVariable.scala),
-						(int) (ch + guiProgram.getUnivers().getGy()
+						.getUnivers().getGPoint().x * HelperVariable.scala),
+						(int) (ch + guiProgram.getUnivers().getGPoint().y
 								* HelperVariable.scala + 5));
 			}
 		} catch (ConcurrentModificationException e) {
