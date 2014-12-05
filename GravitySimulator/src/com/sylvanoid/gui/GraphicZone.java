@@ -48,10 +48,10 @@ public class GraphicZone extends JPanel {
 		try {
 			for (Matter m : guiProgram.getUnivers().getListMatiere().values()) {
 				if (!m.isDark()) {
-					if (m.getX() > -cw / HelperVariable.scala
-							&& m.getX() < cw / HelperVariable.scala
-							&& m.getY() > -ch / HelperVariable.scala
-							&& m.getY() < ch / HelperVariable.scala) {
+					if (m.getPoint().getX() > -cw / HelperVariable.scala
+							&& m.getPoint().getX() < cw / HelperVariable.scala
+							&& m.getPoint().getY() > -ch / HelperVariable.scala
+							&& m.getPoint().getY() < ch / HelperVariable.scala) {
 						if (!HelperVariable.traceCourbe) {
 							if (m.getRayon() * HelperVariable.scala > 1) {
 								g.setColor(fgColor);
@@ -85,8 +85,8 @@ public class GraphicZone extends JPanel {
 											* HelperVariable.scala),
 									(int) (ch + m.getYminusV()
 											* HelperVariable.scala),
-									(int) (cw + m.getX() * HelperVariable.scala),
-									(int) (ch + m.getY() * HelperVariable.scala));
+									(int) (cw + m.getPoint().getX() * HelperVariable.scala),
+									(int) (ch + m.getPoint().getY() * HelperVariable.scala));
 						}
 						if (!HelperVariable.traceCourbe
 								&& HelperVariable.displayVectors) {
@@ -116,15 +116,15 @@ public class GraphicZone extends JPanel {
 					if (!HelperVariable.traceCourbe) {
 						g.setColor(Color.GRAY);
 						g.drawLine(
-								(int) (cw + m.getX() * HelperVariable.scala) - 5,
-								(int) (ch + m.getY() * HelperVariable.scala),
-								(int) (cw + m.getX() * HelperVariable.scala) + 5,
-								(int) (ch + m.getY() * HelperVariable.scala));
+								(int) (cw + m.getPoint().getX() * HelperVariable.scala) - 5,
+								(int) (ch + m.getPoint().getY() * HelperVariable.scala),
+								(int) (cw + m.getPoint().getX() * HelperVariable.scala) + 5,
+								(int) (ch + m.getPoint().getY() * HelperVariable.scala));
 						g.drawLine(
-								(int) (cw + m.getX() * HelperVariable.scala),
-								(int) (ch + m.getY() * HelperVariable.scala) - 5,
-								(int) (cw + m.getX() * HelperVariable.scala),
-								(int) (ch + m.getY() * HelperVariable.scala) + 5);
+								(int) (cw + m.getPoint().getX() * HelperVariable.scala),
+								(int) (ch + m.getPoint().getY() * HelperVariable.scala) - 5,
+								(int) (cw + m.getPoint().getX() * HelperVariable.scala),
+								(int) (ch + m.getPoint().getY() * HelperVariable.scala) + 5);
 					}
 				}
 			}

@@ -21,16 +21,16 @@ public class GUIAbout extends JDialog {
 		me = this;
 		setTitle("About");
 		setModal(true);
-		int w = 300;
+		int w = 400;
 		int h = 300;
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
 		setLayout(new BorderLayout());
-		String text = "<html><body>Gravity Simulator<br/>V0.9 Beta</body></html>";
+		String text = "<html><body>Gravity Simulator<br/>V0.9 Beta<br/>GNU GENERAL PUBLIC LICENSE<br/>Credit: Sylvain Billot<br/>https://github.com/SylvainBillot/GravitySimulator</body></html>";
 		JLabel content = new JLabel(text);
 		content.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		add(content,BorderLayout.CENTER);
+		add(content, BorderLayout.CENTER);
 		JButton btnCancel = new JButton("OK");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
