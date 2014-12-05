@@ -3,7 +3,6 @@ package com.sylvanoid.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -16,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
 import org.jcodec.api.SequenceEncoder;
 
@@ -34,7 +32,6 @@ public class GUIProgram extends JFrame {
 	private Univers univers;
 	private GraphicZone p;
 	private Thread t;
-	private Label status;
 	private SequenceEncoder out;
 
 	public GUIProgram() {
@@ -307,12 +304,6 @@ public class GUIProgram extends JFrame {
 			}
 		});
 		menuAbout.add(menuItemAbout);
-
-		JPanel outPanel = new JPanel(new BorderLayout());
-		add(outPanel, BorderLayout.SOUTH);
-		status = new Label("");
-		outPanel.add(status);
-
 	}
 
 	public static void main(String[] args) {
@@ -324,10 +315,6 @@ public class GUIProgram extends JFrame {
 				ex.setVisible(true);
 			}
 		});
-	}
-
-	public Label getStatus() {
-		return status;
 	}
 
 	public void setGraphicZone(GraphicZone p) {

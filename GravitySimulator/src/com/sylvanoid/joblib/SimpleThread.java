@@ -40,13 +40,6 @@ public class SimpleThread implements Runnable {
 					Thread.sleep(HelperVariable.MINSLEEPTIME - executionTime);
 				}
 
-				executionTime = start - System.currentTimeMillis();
-				guiProgram.getStatus().setText(
-						"Number of object: "
-								+ guiProgram.getUnivers().getListMatiere()
-										.size() + " cps: "
-								+ (1000 / -executionTime));
-
 				if (HelperVariable.stepByStep) {
 					Thread.sleep(1000);
 				}
