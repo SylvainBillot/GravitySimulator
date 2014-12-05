@@ -314,6 +314,13 @@ public class Univers {
 		}
 	}
 
+	public void process() {
+		resetAcceleration();
+		computeLimits();
+		compute();
+		move();
+	}
+	
 	public TreeMap<Matter, Matter> getListMatiere() {
 		return listMatter;
 	}
