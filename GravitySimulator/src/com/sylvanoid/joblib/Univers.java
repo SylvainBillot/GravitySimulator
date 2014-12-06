@@ -574,7 +574,6 @@ public class Univers {
 		m1.setSpeed(new Vector2d(m2.orbitalSpeed(m1)
 				* Math.cos(a + Math.PI / 2), m2.orbitalSpeed(m1)
 				* Math.sin(a + Math.PI / 2)));
-
 		a = Math.atan2(m1.getPoint().getY() - m2.getPoint().getY(), m1
 				.getPoint().getX() - m2.getPoint().getX());
 		m2.setSpeed(new Vector2d(m1.orbitalSpeed(m2)

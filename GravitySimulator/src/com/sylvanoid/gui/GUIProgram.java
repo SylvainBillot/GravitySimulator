@@ -17,6 +17,9 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
+import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.GLUquadric;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -40,6 +43,7 @@ public class GUIProgram extends JFrame {
 	private Univers univers;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
+	private GLU glu = new GLU();
 
 	public GUIProgram() {
 		this.me = this;
@@ -69,42 +73,7 @@ public class GUIProgram extends JFrame {
 				}
 			}
 		});
-
 		univers = new Univers(HelperVariable.typeOfUnivers, this);
-		GLProfile glp = GLProfile.getDefault();
-		GLCapabilities caps = new GLCapabilities(glp);
-		GLJPanel gljpanel = new GLJPanel(caps);
-		gljpanel.addGLEventListener(new GLEventListener() {
-
-			@Override
-			public void reshape(GLAutoDrawable arg0, int arg1, int arg2,
-					int arg3, int arg4) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void init(GLAutoDrawable arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void dispose(GLAutoDrawable arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void display(GLAutoDrawable drawable) {
-				// TODO Auto-generated method stub
-				render(drawable);
-				update();
-			}
-		});
-		me.add(gljpanel, BorderLayout.CENTER);
-		// Create a animator that drives canvas' display() at the specified FPS.
-		animator = new FPSAnimator(gljpanel, 60, true);
 
 		JMenuBar menuBar = new JMenuBar();
 		add(menuBar, BorderLayout.NORTH);
@@ -322,6 +291,59 @@ public class GUIProgram extends JFrame {
 			}
 		});
 		menuAbout.add(menuItemAbout);
+		
+		GLProfile glp = GLProfile.getDefault();
+		GLCapabilities caps = new GLCapabilities(glp);
+		GLJPanel gljpanel = new GLJPanel(caps);
+		InputHandler inputHandler = new InputHandler(this);
+		gljpanel.addKeyListener(inputHandler);
+		gljpanel.addGLEventListener(new GLEventListener() {
+
+			@Override
+			public void reshape(GLAutoDrawable drawable, int xstart,
+					int ystart, int width, int height) {
+				// TODO Auto-generated method stub
+				final GL2 gl = drawable.getGL().getGL2();
+
+				if (height <= 0) // avoid a divide by zero error!
+					height = 1;
+				final float h = (float) width / (float) height;
+				gl.glViewport(0, 0, width, height);
+				gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
+				gl.glLoadIdentity();
+				glu.gluPerspective(45, h, 1.0, 1000.0);
+				glu.gluLookAt(0, 0, 900, 0, 0, 0, 0, 1, 0);
+				gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+				gl.glLoadIdentity();
+			}
+
+			@Override
+			public void init(GLAutoDrawable drawable) {
+				// TODO Auto-generated method stub
+				GL2 gl = drawable.getGL().getGL2();
+				gl.glClearColor(0, 0, 0, 0);
+				gl.glShadeModel(GL2.GL_SMOOTH); // try setting this to GL_FLAT
+												// and see what happens.
+			}
+
+			@Override
+			public void dispose(GLAutoDrawable arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void display(GLAutoDrawable drawable) {
+				// TODO Auto-generated method stub
+				render(drawable);
+				update();
+			}
+		});
+		me.add(gljpanel, BorderLayout.CENTER);
+		// Create a animator that drives canvas' display() at the specified FPS.
+		animator = new FPSAnimator(gljpanel, 60, true);
+
+		
 	}
 
 	public static void main(String[] args) {
@@ -365,15 +387,24 @@ public class GUIProgram extends JFrame {
 
 	private void render(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		// Draw a triangle
-
-		gl.glBegin(GL.GL_POINTS);
+		if (!HelperVariable.traceCourbe) {
+			gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		}
+		
+		GLUquadric sun = glu.gluNewQuadric();
 		for (Matter m : univers.getListMatiere().values()) {
-			gl.glVertex3d(m.getPoint().x / 1000, m.getPoint().y / 1000, 2);
+			if (!m.isDark()) {
+				gl.glLoadIdentity();
+				gl.glTranslated(m.getPoint().x, m.getPoint().y, 0);
+				gl.glPushMatrix();
+				gl.glColor3d(0.9, 1, 1);
+				glu.gluSphere(sun, m.getRayon() > 1 ? m.getRayon() : 1, 6, 6);
+				gl.glPopMatrix();
+			}
 		}
 
 		gl.glEnd();
+		gl.glFlush();
 	}
 
 	private void update() {
