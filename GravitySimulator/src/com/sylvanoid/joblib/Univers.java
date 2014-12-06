@@ -155,9 +155,9 @@ public class Univers {
 											uvoisin.getGPoint().x
 													- m.getPoint().getX());
 							
-							m.setA(new Vector2d((m.getA().x + attraction
-									* Math.cos(angle)),
-									(m.getA().y + attraction * Math.sin(angle))));
+							m.getA().add(new Vector2d(attraction
+									* Math.cos(angle),
+									attraction * Math.sin(angle)));
 						}
 					}
 				}
