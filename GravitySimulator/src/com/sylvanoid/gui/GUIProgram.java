@@ -10,6 +10,13 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLJPanel;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -18,8 +25,9 @@ import javax.swing.JMenuItem;
 
 import org.jcodec.api.SequenceEncoder;
 
+import com.jogamp.opengl.util.FPSAnimator;
 import com.sylvanoid.common.HelperVariable;
-import com.sylvanoid.joblib.SimpleThread;
+import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Univers;
 
 public class GUIProgram extends JFrame {
@@ -30,8 +38,7 @@ public class GUIProgram extends JFrame {
 
 	private GUIProgram me;
 	private Univers univers;
-	private GraphicZone p;
-	private Thread t;
+	private final FPSAnimator animator;
 	private SequenceEncoder out;
 
 	public GUIProgram() {
@@ -57,14 +64,47 @@ public class GUIProgram extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} finally {
+					animator.stop();
 					System.exit(0);
 				}
 			}
 		});
 
 		univers = new Univers(HelperVariable.typeOfUnivers, this);
-		p = new GraphicZone(me);
-		me.add(p, BorderLayout.CENTER);
+		GLProfile glp = GLProfile.getDefault();
+		GLCapabilities caps = new GLCapabilities(glp);
+		GLJPanel gljpanel = new GLJPanel(caps);
+		gljpanel.addGLEventListener(new GLEventListener() {
+
+			@Override
+			public void reshape(GLAutoDrawable arg0, int arg1, int arg2,
+					int arg3, int arg4) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void init(GLAutoDrawable arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void dispose(GLAutoDrawable arg0) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void display(GLAutoDrawable drawable) {
+				// TODO Auto-generated method stub
+				render(drawable);
+				update();
+			}
+		});
+		me.add(gljpanel, BorderLayout.CENTER);
+		// Create a animator that drives canvas' display() at the specified FPS.
+		animator = new FPSAnimator(gljpanel, 60, true);
 
 		JMenuBar menuBar = new JMenuBar();
 		add(menuBar, BorderLayout.NORTH);
@@ -88,12 +128,7 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (t == null) {
-					t = new Thread(new SimpleThread(me));
-				}
-				if (!t.isAlive()) {
-					t.start();
-				}
+				animator.start();
 			}
 		});
 		JMenuItem menuItemStop = new JMenuItem("Stop");
@@ -102,11 +137,7 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (t == null) {
-					t = new Thread(new SimpleThread(me));
-				}
-				t.interrupt();
-				t = new Thread(new SimpleThread(me));
+				animator.stop();
 			}
 		});
 		JMenuItem menuItemReset = new JMenuItem("Reset");
@@ -126,12 +157,6 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (t == null) {
-					t = new Thread(new SimpleThread(me));
-				}
-				if (!t.isAlive()) {
-					t.start();
-				}
 				HelperVariable.stepByStep = !HelperVariable.stepByStep;
 			}
 		});
@@ -201,7 +226,6 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				HelperVariable.scala /= 2;
-				p.updateUI();
 			}
 		});
 
@@ -212,7 +236,6 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				HelperVariable.scala *= 2;
-				p.updateUI();
 			}
 		});
 		JMenuItem menuItemEchelleUnQuart = new JMenuItem("Zoom 25%");
@@ -222,7 +245,6 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				HelperVariable.scala = 0.25;
-				p.updateUI();
 			}
 		});
 		JMenuItem menuItemEchelleUnDemi = new JMenuItem("Zoom 50%");
@@ -232,7 +254,6 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				HelperVariable.scala = 0.5;
-				p.updateUI();
 			}
 		});
 		JMenuItem menuItemEchelleUn = new JMenuItem("Zoom 100%");
@@ -242,7 +263,6 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				HelperVariable.scala = 1;
-				p.updateUI();
 			}
 		});
 		JMenuItem menuItemEchelleDeux = new JMenuItem("Zoom 200%");
@@ -252,7 +272,6 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				HelperVariable.scala = 2;
-				p.updateUI();
 			}
 		});
 		JMenuItem menuItemEchelleQuatre = new JMenuItem("Zoom 400%");
@@ -262,7 +281,6 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				HelperVariable.scala = 4;
-				p.updateUI();
 			}
 		});
 		menuVisu.add(menuItemDisplayVectors);
@@ -317,12 +335,8 @@ public class GUIProgram extends JFrame {
 		});
 	}
 
-	public void setGraphicZone(GraphicZone p) {
-		this.p = p;
-	}
-
-	public GraphicZone getGraphicZone() {
-		return p;
+	public FPSAnimator getAnimator() {
+		return animator;
 	}
 
 	public void setUnivers(Univers univers) {
@@ -333,22 +347,12 @@ public class GUIProgram extends JFrame {
 		return univers;
 	}
 
-	public Thread getThread() {
-		return t;
-	}
-
 	public void reset() {
-		if (t == null) {
-			t = new Thread(new SimpleThread(this));
-		}
-		t.interrupt();
 		HelperVariable.centerOnMassMax = false;
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.scala = 1;
 		univers = new Univers(HelperVariable.typeOfUnivers, this);
-		p.repaint();
-		t = new Thread(new SimpleThread(this));
 	}
 
 	public SequenceEncoder getOut() {
@@ -358,4 +362,22 @@ public class GUIProgram extends JFrame {
 	public void setOut(SequenceEncoder out) {
 		this.out = out;
 	}
+
+	private void render(GLAutoDrawable drawable) {
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		// Draw a triangle
+
+		gl.glBegin(GL.GL_POINTS);
+		for (Matter m : univers.getListMatiere().values()) {
+			gl.glVertex3d(m.getPoint().x / 1000, m.getPoint().y / 1000, 2);
+		}
+
+		gl.glEnd();
+	}
+
+	private void update() {
+		univers.process();
+	}
+
 }
