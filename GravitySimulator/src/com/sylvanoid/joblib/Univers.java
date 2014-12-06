@@ -12,10 +12,8 @@ import javax.vecmath.Vector2d;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
-import com.sylvanoid.gui.GUIProgram;
 
 public class Univers {
-	private GUIProgram guiProgram;
 	private double mass;
 	private TreeMap<Matter, Matter> listMatter;
 	private Point2d gPoint = new Point2d(0, 0);
@@ -29,8 +27,7 @@ public class Univers {
 		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y);
 	}
 
-	public Univers(TypeOfUnivers typeOfUnivers, GUIProgram guiProgram) {
-		this.guiProgram = guiProgram;
+	public Univers(TypeOfUnivers typeOfUnivers) {
 		listMatter = new TreeMap<Matter, Matter>();
 		mass = 0;
 		if (typeOfUnivers == TypeOfUnivers.Random) {
@@ -289,7 +286,6 @@ public class Univers {
 				m.getPoint().setX(m.getPoint().getX() - (maxX + minX) / 2);
 				m.getPoint().setY(m.getPoint().getY() - (maxY + minY) / 2);
 			}
-			HelperVariable.scala = 0.75 * ((double) guiProgram.getSize().height / (maxY - minY));
 		}
 
 		// Centre sur le plus massif

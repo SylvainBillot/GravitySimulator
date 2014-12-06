@@ -60,6 +60,8 @@ public class GUIProgram extends JFrame {
 				.getScreenSize();
 		setSize((int) dimension.getWidth(), (int) dimension.getHeight());
 		setLocationRelativeTo(null);
+		InputHandler inputHandler = new InputHandler(this);
+		addKeyListener(inputHandler);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				try {
@@ -73,7 +75,7 @@ public class GUIProgram extends JFrame {
 				}
 			}
 		});
-		univers = new Univers(HelperVariable.typeOfUnivers, this);
+		univers = new Univers(HelperVariable.typeOfUnivers);
 
 		JMenuBar menuBar = new JMenuBar();
 		add(menuBar, BorderLayout.NORTH);
@@ -188,82 +190,11 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
-		JMenuItem menuItemEchelleMoins = new JMenuItem("Zoom -");
-		menuItemEchelleMoins.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.scala /= 2;
-			}
-		});
-
-		JMenuItem menuItemEchellePlus = new JMenuItem("Zoom +");
-		menuItemEchellePlus.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.scala *= 2;
-			}
-		});
-		JMenuItem menuItemEchelleUnQuart = new JMenuItem("Zoom 25%");
-		menuItemEchelleUnQuart.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.scala = 0.25;
-			}
-		});
-		JMenuItem menuItemEchelleUnDemi = new JMenuItem("Zoom 50%");
-		menuItemEchelleUnDemi.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.scala = 0.5;
-			}
-		});
-		JMenuItem menuItemEchelleUn = new JMenuItem("Zoom 100%");
-		menuItemEchelleUn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.scala = 1;
-			}
-		});
-		JMenuItem menuItemEchelleDeux = new JMenuItem("Zoom 200%");
-		menuItemEchelleDeux.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.scala = 2;
-			}
-		});
-		JMenuItem menuItemEchelleQuatre = new JMenuItem("Zoom 400%");
-		menuItemEchelleQuatre.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.scala = 4;
-			}
-		});
 		menuVisu.add(menuItemDisplayVectors);
 		menuVisu.add(menuItemTrace);
 		menuVisu.add(menuItemCentreEcran);
 		menuVisu.add(menuItemplusMassif);
 		menuVisu.add(menuItemBarycentre);
-		menuVisu.add(menuItemEchelleMoins);
-		menuVisu.add(menuItemEchellePlus);
-		menuVisu.add(menuItemEchelleUnQuart);
-		menuVisu.add(menuItemEchelleUnDemi);
-		menuVisu.add(menuItemEchelleUn);
-		menuVisu.add(menuItemEchelleDeux);
-		menuVisu.add(menuItemEchelleQuatre);
 
 		JMenu menuVideo = new JMenu("Video");
 		JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
@@ -295,8 +226,6 @@ public class GUIProgram extends JFrame {
 		GLProfile glp = GLProfile.getDefault();
 		GLCapabilities caps = new GLCapabilities(glp);
 		GLJPanel gljpanel = new GLJPanel(caps);
-		InputHandler inputHandler = new InputHandler(this);
-		gljpanel.addKeyListener(inputHandler);
 		gljpanel.addGLEventListener(new GLEventListener() {
 
 			@Override
@@ -373,8 +302,7 @@ public class GUIProgram extends JFrame {
 		HelperVariable.centerOnMassMax = false;
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.centerOnCentroid = false;
-		HelperVariable.scala = 1;
-		univers = new Univers(HelperVariable.typeOfUnivers, this);
+		univers = new Univers(HelperVariable.typeOfUnivers);
 	}
 
 	public SequenceEncoder getOut() {

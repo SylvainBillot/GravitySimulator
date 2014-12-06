@@ -49,7 +49,7 @@ public class GUIParam extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(15, 2));
+		setLayout(new GridLayout(14, 2));
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
@@ -169,9 +169,6 @@ public class GUIParam extends JDialog {
 			}
 		});
 		add(typeOfUnivers);
-		add(new Label("Scala:"));
-		scala = new JFormattedTextField(HelperVariable.scala);
-		add(scala);
 		add(new Label("Time factor:"));
 		timeFactor = new JFormattedTextField(HelperVariable.timeFactor);
 		add(timeFactor);
@@ -229,8 +226,6 @@ public class GUIParam extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					HelperVariable.scala = Double.parseDouble(me.scala
-							.getValue().toString());
 					HelperVariable.timeFactor = Double
 							.parseDouble(me.timeFactor.getValue().toString());
 					HelperVariable.numberOfObjects = Integer
