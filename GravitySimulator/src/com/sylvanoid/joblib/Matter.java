@@ -120,6 +120,13 @@ public class Matter implements Comparable<Matter> {
 
 	public void move() {
 		speed.add(a);
+		// Relativity effet
+		double gamma = Math.pow(
+				1 - Math.pow(Math.pow(speed.x, 2) + Math.pow(speed.y, 2), 0.5)
+						/ Math.pow(HelperVariable.C, 2), 0.5);
+		speed = new Vector2d(speed.x*gamma,speed.y*gamma);
+		// End of
+
 		point.add(new Vector2d(speed.x * HelperVariable.timeFactor, speed.y
 				* HelperVariable.timeFactor));
 	}
