@@ -56,11 +56,11 @@ public class GraphicZone extends JPanel {
 							if (m.getRayon() * HelperVariable.scala > 1) {
 								g.setColor(fgColor);
 								g.drawOval(
-										(int) (cw + m.getXminusV()
+										(int) (cw + m.getMinusV().x
 												* HelperVariable.scala - m
 												.getRayon()
 												* HelperVariable.scala),
-										(int) (ch + m.getYminusV()
+										(int) (ch + m.getMinusV().y
 												* HelperVariable.scala - m
 												.getRayon()
 												* HelperVariable.scala),
@@ -72,17 +72,17 @@ public class GraphicZone extends JPanel {
 								g.setColor(fgColor);
 								int rayonMin = 2;
 								g.drawOval(
-										(int) (cw + m.getXminusV()
+										(int) (cw + m.getMinusV().x
 												* HelperVariable.scala - rayonMin),
-										(int) (ch + m.getYminusV()
+										(int) (ch + m.getMinusV().y
 												* HelperVariable.scala - rayonMin),
 										rayonMin, rayonMin);
 							}
 						} else {
 							g.setColor(fgColor);
-							g.drawLine((int) (cw + m.getXminusV()
+							g.drawLine((int) (cw + m.getMinusV().x
 									* HelperVariable.scala),
-									(int) (ch + m.getYminusV()
+									(int) (ch + m.getMinusV().y
 											* HelperVariable.scala),
 									(int) (cw + m.getPoint().getX()
 											* HelperVariable.scala),
@@ -93,24 +93,27 @@ public class GraphicZone extends JPanel {
 								&& HelperVariable.displayVectors) {
 							g.setColor(Color.RED);
 							g.drawLine(
-									(int) (cw + m.getXminusV()
+									(int) (cw + m.getMinusV().x
 											* HelperVariable.scala),
-									(int) (ch + m.getYminusV()
+									(int) (ch + m.getMinusV().y
 											* HelperVariable.scala),
-									(int) (cw + (m.getXminusV() + m.getSpeed().x * 5)
+									(int) (cw + (m.getMinusV().x + m.getSpeed().x
+											* HelperVariable.timeFactor * 5)
 											* HelperVariable.scala),
-									(int) (ch + (m.getYminusV() + m.getSpeed().y * 5)
+									(int) (ch + (m.getMinusV().y + m.getSpeed().y
+											* HelperVariable.timeFactor * 5)
 											* HelperVariable.scala));
 
 							g.setColor(Color.BLUE);
-							g.drawLine(
-									(int) (cw + m.getXminusV()
+							g.drawLine((int) (cw + m.getMinusV().x
+									* HelperVariable.scala),
+									(int) (ch + m.getMinusV().y
 											* HelperVariable.scala),
-									(int) (ch + m.getYminusV()
+									(int) (cw + (m.getMinusV().x + m.getA().x
+											* HelperVariable.timeFactor * 5)
 											* HelperVariable.scala),
-									(int) (cw + (m.getXminusV() + m.getA().x * 5)
-											* HelperVariable.scala),
-									(int) (ch + (m.getYminusV() + m.getA().y * 5)
+									(int) (ch + (m.getMinusV().y + m.getA().y
+											* HelperVariable.timeFactor * 5)
 											* HelperVariable.scala));
 						}
 					}

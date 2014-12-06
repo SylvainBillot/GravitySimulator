@@ -63,7 +63,7 @@ public class GUIParam extends JDialog {
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
 					manageImpact.setSelected(false);
 					scala.setValue(1);
-					timeFactor.setValue(100);
+					timeFactor.setValue(5);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					break;
@@ -71,7 +71,7 @@ public class GUIParam extends JDialog {
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
 					manageImpact.setSelected(true);
 					scala.setValue(1);
-					timeFactor.setValue(20);
+					timeFactor.setValue(10);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(20);
 					fusion.setSelected(true);
@@ -87,7 +87,7 @@ public class GUIParam extends JDialog {
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
 					manageImpact.setSelected(true);
 					scala.setValue(1);
-					timeFactor.setValue(10);
+					timeFactor.setValue(2);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
@@ -133,7 +133,7 @@ public class GUIParam extends JDialog {
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetariesGenesis;
 					manageImpact.setSelected(true);
 					scala.setValue(1);
-					timeFactor.setValue(10000);
+					timeFactor.setValue(50);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
@@ -152,7 +152,7 @@ public class GUIParam extends JDialog {
 					HelperVariable.typeOfUnivers = TypeOfUnivers.DoubleStars;
 					manageImpact.setSelected(true);
 					scala.setValue(1);
-					timeFactor.setValue(50);
+					timeFactor.setValue(5);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);

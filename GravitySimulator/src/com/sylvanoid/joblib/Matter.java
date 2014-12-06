@@ -95,15 +95,13 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public Point2d getPlusV() {
-		return new Point2d(point.x + speed.x, point.y + speed.y);
+		return new Point2d(point.x + speed.x * HelperVariable.timeFactor,
+				point.y + speed.y * HelperVariable.timeFactor);
 	}
 
-	public double getXminusV() {
-		return point.x - speed.x;
-	}
-
-	public double getYminusV() {
-		return point.y - speed.y;
+	public Point2d getMinusV() {
+		return new Point2d(point.x - speed.x * HelperVariable.timeFactor,
+				point.y - speed.y * HelperVariable.timeFactor);
 	}
 
 	public Point2d max() {
@@ -115,13 +113,15 @@ public class Matter implements Comparable<Matter> {
 
 	public Point2d min() {
 		return new Point2d((point.x > getPlusV().x) ? (getPlusV().x - rayon)
-				: (point.x - rayon),(point.y > getPlusV().y) ? (getPlusV().y - rayon)
+				: (point.x - rayon),
+				(point.y > getPlusV().y) ? (getPlusV().y - rayon)
 						: (point.y - rayon));
 	}
 
 	public void move() {
 		speed.add(a);
-		point.add(speed);
+		point.add(new Vector2d(speed.x * HelperVariable.timeFactor, speed.y
+				* HelperVariable.timeFactor));
 	}
 
 	public void fusion(Matter m) {
@@ -190,9 +190,10 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public double orbitalSpeed(Matter m) {
-		double orbitalSpeed = Math.pow(HelperVariable.timeFactor
-				* HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
-				/ ((mass + m.getMass()) * point.distance(m.getPoint())), 0.5);
+		double orbitalSpeed = Math
+				.pow(HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
+						/ ((mass + m.getMass()) * point.distance(m.getPoint())),
+						0.5);
 		return orbitalSpeed;
 	}
 
