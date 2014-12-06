@@ -8,6 +8,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
@@ -15,9 +16,9 @@ import com.sylvanoid.gui.GUIProgram;
 
 public class Univers {
 	private GUIProgram guiProgram;
+	private double mass;
 	private TreeMap<Matter, Matter> listMatter;
 	private Point2d gPoint = new Point2d(0, 0);
-	private double mass;
 	private double minX;
 	private double minY;
 	private double maxX;
@@ -112,8 +113,7 @@ public class Univers {
 
 	public void resetAcceleration() {
 		for (Matter m : listMatter.values()) {
-			m.setaX(0);
-			m.setaY(0);
+			m.setA(new Vector2d(0,0));
 		}
 	}
 
@@ -156,8 +156,9 @@ public class Univers {
 											uvoisin.getGPoint().x
 													- m.getPoint().getX());
 
-							m.setaX(m.getaX() + attraction * Math.cos(angle));
-							m.setaY(m.getaY() + attraction * Math.sin(angle));
+							m.setA(new Vector2d((m.getA().x + attraction
+									* Math.cos(angle)),
+									(m.getA().y + attraction * Math.sin(angle))));
 						}
 					}
 				}
@@ -178,10 +179,9 @@ public class Univers {
 			TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
 			for (Matter m : selectX.values()) {
 				/*
-				for (double delta = m.minY(); delta <= m.maxY(); delta ++) {
-					sortY.put(delta, m);
-				}
-				*/
+				 * for (double delta = m.minY(); delta <= m.maxY(); delta ++) {
+				 * sortY.put(delta, m); }
+				 */
 				sortY.put(m.minY(), m);
 				sortY.put(m.getPoint().y, m);
 				sortY.put(m.maxY(), m);
@@ -207,9 +207,9 @@ public class Univers {
 		TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
 		for (Matter m : selectX.values()) {
 			/*
-			for (double delta = m.minY(); delta <= m.maxY(); delta ++) {
-				sortY.put(delta, m);
-			}*/
+			 * for (double delta = m.minY(); delta <= m.maxY(); delta ++) {
+			 * sortY.put(delta, m); }
+			 */
 			sortY.put(m.minY(), m);
 			sortY.put(m.getPoint().y, m);
 			sortY.put(m.maxY(), m);
@@ -242,10 +242,9 @@ public class Univers {
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : listMatter.values()) {
 			/*
-			for (double delta = m.minX(); delta <= m.maxX(); delta ++) {
-				sortX.put(delta, m);
-			}
-			*/
+			 * for (double delta = m.minX(); delta <= m.maxX(); delta ++) {
+			 * sortX.put(delta, m); }
+			 */
 			sortX.put(m.minX(), m);
 			sortX.put(m.getPoint().x, m);
 			sortX.put(m.maxX(), m);
@@ -328,7 +327,7 @@ public class Univers {
 		compute();
 		move();
 	}
-	
+
 	public TreeMap<Matter, Matter> getListMatiere() {
 		return listMatter;
 	}

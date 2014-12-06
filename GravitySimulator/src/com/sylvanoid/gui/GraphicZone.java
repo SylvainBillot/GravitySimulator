@@ -106,9 +106,9 @@ public class GraphicZone extends JPanel {
 									* HelperVariable.scala),
 									(int) (ch + m.getYminusV()
 											* HelperVariable.scala),
-									(int) (cw + (m.getXminusV() + m.getaX()*5)
+									(int) (cw + (m.getXminusV() + m.getA().x*5)
 											* HelperVariable.scala),
-									(int) (ch + (m.getYminusV() + m.getaY()*5)
+									(int) (ch + (m.getYminusV() + m.getA().y*5)
 											* HelperVariable.scala));
 						}
 					}

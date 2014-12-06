@@ -1,14 +1,14 @@
 package com.sylvanoid.joblib;
 
 import javax.vecmath.Point2d;
+import javax.vecmath.Vector2d;
 
 import com.sylvanoid.common.HelperVariable;
 
 public class Matter implements Comparable<Matter> {
 	private Point2d point;
 	private double mass;
-	private double aX;
-	private double aY;
+	private Vector2d a;
 	private double speedX;
 	private double speedY;
 	private double density;
@@ -51,6 +51,14 @@ public class Matter implements Comparable<Matter> {
 		this.point = point;
 	}
 
+	public Vector2d getA() {
+		return a;
+	}
+
+	public void setA(Vector2d a) {
+		this.a = a;
+	}
+
 	public double getMass() {
 		return mass;
 	}
@@ -58,22 +66,6 @@ public class Matter implements Comparable<Matter> {
 	public void setMass(double mass) {
 		rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 		this.mass = mass;
-	}
-
-	public double getaX() {
-		return aX;
-	}
-
-	public void setaX(double aX) {
-		this.aX = aX;
-	}
-
-	public double getaY() {
-		return aY;
-	}
-
-	public void setaY(double aY) {
-		this.aY = aY;
 	}
 
 	public double getSpeedX() {
@@ -113,11 +105,11 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public double getXplusA() {
-		return point.x + aX;
+		return point.x + a.x;
 	}
 
 	public double getYplusA() {
-		return point.y + aY;
+		return point.y + a.y;
 	}
 
 	public double getXplusV() {
@@ -162,8 +154,8 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public void move() {
-		speedX += aX;
-		speedY += aY;
+		speedX += a.x;
+		speedY += a.y;
 		point.x = getXplusV();
 		point.y = getYplusV();
 	}
@@ -177,8 +169,8 @@ public class Matter implements Comparable<Matter> {
 				/ (mass + m.getMass());
 		speedY = (speedY * mass + m.getSpeedY() * m.getMass())
 				/ (mass + m.getMass());
-		aX = (aX * mass + m.getaX() * m.getMass()) / (mass + m.getMass());
-		aY = (aY * mass + m.getaY() * m.getMass()) / (mass + m.getMass());
+		a.x = (a.x * mass + m.getA().x * m.getMass()) / (mass + m.getMass());
+		a.y = (a.y * mass + m.getA().y * m.getMass()) / (mass + m.getMass());
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
 		mass += m.getMass();
@@ -205,10 +197,8 @@ public class Matter implements Comparable<Matter> {
 		speedY = v1y;
 		m.setSpeedX(v2x);
 		m.setSpeedY(v2y);
-		aX = 0;
-		aY = 0;
-		m.setaX(0);
-		m.setaY(0);
+		setA(new Vector2d(0,0));
+		m.setA(new Vector2d(0,0));
 	}
 
 	public boolean collision(Matter m) {
