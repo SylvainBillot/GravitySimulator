@@ -17,7 +17,7 @@ public class GraphicZone extends JPanel {
 
 	private Color bgColor = Color.WHITE;
 	private Color fgColor = Color.BLACK;
-	
+
 	private boolean firstTime = true;
 	private GUIProgram guiProgram;
 
@@ -80,13 +80,14 @@ public class GraphicZone extends JPanel {
 							}
 						} else {
 							g.setColor(fgColor);
-							g.drawLine(
-									(int) (cw + m.getXminusV()
-											* HelperVariable.scala),
+							g.drawLine((int) (cw + m.getXminusV()
+									* HelperVariable.scala),
 									(int) (ch + m.getYminusV()
 											* HelperVariable.scala),
-									(int) (cw + m.getPoint().getX() * HelperVariable.scala),
-									(int) (ch + m.getPoint().getY() * HelperVariable.scala));
+									(int) (cw + m.getPoint().getX()
+											* HelperVariable.scala),
+									(int) (ch + m.getPoint().getY()
+											* HelperVariable.scala));
 						}
 						if (!HelperVariable.traceCourbe
 								&& HelperVariable.displayVectors) {
@@ -96,35 +97,40 @@ public class GraphicZone extends JPanel {
 											* HelperVariable.scala),
 									(int) (ch + m.getYminusV()
 											* HelperVariable.scala),
-									(int) (cw + (m.getXminusV() + m.getSpeedX() * 5)
+									(int) (cw + (m.getXminusV() + m.getSpeed().x * 5)
 											* HelperVariable.scala),
-									(int) (ch + (m.getYminusV() + m.getSpeedY() * 5)
+									(int) (ch + (m.getYminusV() + m.getSpeed().y * 5)
 											* HelperVariable.scala));
 
 							g.setColor(Color.BLUE);
-							g.drawLine((int) (cw + m.getXminusV()
-									* HelperVariable.scala),
+							g.drawLine(
+									(int) (cw + m.getXminusV()
+											* HelperVariable.scala),
 									(int) (ch + m.getYminusV()
 											* HelperVariable.scala),
-									(int) (cw + (m.getXminusV() + m.getA().x*5)
+									(int) (cw + (m.getXminusV() + m.getA().x * 5)
 											* HelperVariable.scala),
-									(int) (ch + (m.getYminusV() + m.getA().y*5)
+									(int) (ch + (m.getYminusV() + m.getA().y * 5)
 											* HelperVariable.scala));
 						}
 					}
 				} else {
 					if (!HelperVariable.traceCourbe) {
 						g.setColor(Color.GRAY);
-						g.drawLine(
-								(int) (cw + m.getPoint().getX() * HelperVariable.scala) - 5,
-								(int) (ch + m.getPoint().getY() * HelperVariable.scala),
-								(int) (cw + m.getPoint().getX() * HelperVariable.scala) + 5,
-								(int) (ch + m.getPoint().getY() * HelperVariable.scala));
-						g.drawLine(
-								(int) (cw + m.getPoint().getX() * HelperVariable.scala),
-								(int) (ch + m.getPoint().getY() * HelperVariable.scala) - 5,
-								(int) (cw + m.getPoint().getX() * HelperVariable.scala),
-								(int) (ch + m.getPoint().getY() * HelperVariable.scala) + 5);
+						g.drawLine((int) (cw + m.getPoint().getX()
+								* HelperVariable.scala) - 5, (int) (ch + m
+								.getPoint().getY() * HelperVariable.scala),
+								(int) (cw + m.getPoint().getX()
+										* HelperVariable.scala) + 5,
+								(int) (ch + m.getPoint().getY()
+										* HelperVariable.scala));
+						g.drawLine((int) (cw + m.getPoint().getX()
+								* HelperVariable.scala), (int) (ch + m
+								.getPoint().getY() * HelperVariable.scala) - 5,
+								(int) (cw + m.getPoint().getX()
+										* HelperVariable.scala), (int) (ch + m
+										.getPoint().getY()
+										* HelperVariable.scala) + 5);
 					}
 				}
 			}

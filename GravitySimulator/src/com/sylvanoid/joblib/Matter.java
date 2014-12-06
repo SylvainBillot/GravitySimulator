@@ -9,8 +9,7 @@ public class Matter implements Comparable<Matter> {
 	private Point2d point;
 	private double mass;
 	private Vector2d a;
-	private double speedX;
-	private double speedY;
+	private Vector2d speed;
 	private double density;
 	private boolean isDark;
 	private double rayon;
@@ -29,15 +28,14 @@ public class Matter implements Comparable<Matter> {
 	@Override
 	public String toString() {
 		return "m:" + mass + " x:" + point.x + " y:" + point.y + " vx:"
-				+ speedX + " vy:" + speedY;
+				+ speed.x + " vy:" + speed.y;
 	}
 
-	public Matter(Point2d point, double mass, double speedX, double speedY,
-			double density, boolean isDark) {
+	public Matter(Point2d point, double mass, Vector2d speed, double density,
+			boolean isDark) {
 		this.setPoint(point);
 		this.mass = mass;
-		this.speedX = speedX;
-		this.speedY = speedY;
+		this.speed = speed;
 		this.density = density;
 		this.isDark = isDark;
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
@@ -59,6 +57,14 @@ public class Matter implements Comparable<Matter> {
 		this.a = a;
 	}
 
+	public Vector2d getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(Vector2d speed) {
+		this.speed = speed;
+	}
+
 	public double getMass() {
 		return mass;
 	}
@@ -66,22 +72,6 @@ public class Matter implements Comparable<Matter> {
 	public void setMass(double mass) {
 		rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 		this.mass = mass;
-	}
-
-	public double getSpeedX() {
-		return speedX;
-	}
-
-	public void setSpeedX(double speedX) {
-		this.speedX = speedX;
-	}
-
-	public double getSpeedY() {
-		return speedY;
-	}
-
-	public void setSpeedY(double speedY) {
-		this.speedY = speedY;
 	}
 
 	public double getDensity() {
@@ -104,73 +94,49 @@ public class Matter implements Comparable<Matter> {
 		return rayon;
 	}
 
-	public double getXplusA() {
-		return point.x + a.x;
-	}
-
-	public double getYplusA() {
-		return point.y + a.y;
-	}
-
-	public double getXplusV() {
-		return point.x + speedX;
-	}
-
-	public double getYplusV() {
-		return point.y + speedY;
+	public Point2d getPlusV() {
+		return new Point2d(point.x + speed.x, point.y + speed.y);
 	}
 
 	public double getXminusV() {
-		return point.x - speedX;
+		return point.x - speed.x;
 	}
 
 	public double getYminusV() {
-		return point.y - speedY;
+		return point.y - speed.y;
 	}
 
-	public double maxX() {
-		// return x + rayon;
-		return (point.x > getXplusV()) ? (point.x + rayon)
-				: (getXplusV() + rayon);
-
+	public Point2d max() {
+		return new Point2d((point.x > getPlusV().x) ? (point.x + rayon)
+				: (getPlusV().x + rayon),
+				(point.y > getPlusV().y) ? (point.y + rayon)
+						: (getPlusV().y + rayon));
 	}
 
-	public double maxY() {
-		// return y + rayon;
-		return (point.y > getYplusV()) ? (point.y + rayon)
-				: (getYplusV() + rayon);
-	}
-
-	public double minX() {
-		// return x - rayon;
-		return (point.x > getXplusV()) ? (getXplusV() - rayon)
-				: (point.x - rayon);
-	}
-
-	public double minY() {
-		// return y - rayon;
-		return (point.y > getYplusV()) ? (getYplusV() - rayon)
-				: (point.y - rayon);
+	public Point2d min() {
+		return new Point2d((point.x > getPlusV().x) ? (getPlusV().x - rayon)
+				: (point.x - rayon),(point.y > getPlusV().y) ? (getPlusV().y - rayon)
+						: (point.y - rayon));
 	}
 
 	public void move() {
-		speedX += a.x;
-		speedY += a.y;
-		point.x = getXplusV();
-		point.y = getYplusV();
+		speed.add(a);
+		point.add(speed);
 	}
 
 	public void fusion(Matter m) {
-		point.x = (point.x * mass + m.getPoint().getX() * m.getMass())
-				/ (mass + m.getMass());
-		point.y = (point.y * mass + m.getPoint().getY() * m.getMass())
-				/ (mass + m.getMass());
-		speedX = (speedX * mass + m.getSpeedX() * m.getMass())
-				/ (mass + m.getMass());
-		speedY = (speedY * mass + m.getSpeedY() * m.getMass())
-				/ (mass + m.getMass());
-		a.x = (a.x * mass + m.getA().x * m.getMass()) / (mass + m.getMass());
-		a.y = (a.y * mass + m.getA().y * m.getMass()) / (mass + m.getMass());
+		point = new Point2d(
+				(point.x * mass + m.getPoint().getX() * m.getMass())
+						/ (mass + m.getMass()), (point.y * mass + m.getPoint()
+						.getY() * m.getMass())
+						/ (mass + m.getMass()));
+		speed = new Vector2d((speed.x * mass + m.getSpeed().x * m.getMass())
+				/ (mass + m.getMass()), (speed.y * mass + m.getSpeed().y
+				* m.getMass())
+				/ (mass + m.getMass()));
+		a = new Vector2d((a.x * mass + m.getA().x * m.getMass())
+				/ (mass + m.getMass()), (a.y * mass + m.getA().y * m.getMass())
+				/ (mass + m.getMass()));
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
 		mass += m.getMass();
@@ -179,40 +145,35 @@ public class Matter implements Comparable<Matter> {
 
 	public void impact(Matter m) {
 		double Cr = HelperVariable.typeOfImpact;
-		double v1x = (Cr * m.getMass() * (m.getSpeedX() - speedX) + mass
-				* speedX + m.getMass() * m.getSpeedX())
+		double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
+				* speed.x + m.getMass() * m.getSpeed().x)
 				/ (mass + m.getMass());
-		double v1y = (Cr * m.getMass() * (m.getSpeedY() - speedY) + mass
-				* speedY + m.getMass() * m.getSpeedY())
+		double v1y = (Cr * m.getMass() * (m.getSpeed().y - speed.y) + mass
+				* speed.y + m.getMass() * m.getSpeed().y)
 				/ (mass + m.getMass());
 
-		double v2x = (Cr * mass * (speedX - m.getSpeedX()) + m.getMass()
-				* m.getSpeedX() + mass * speedX)
+		double v2x = (Cr * mass * (speed.x - m.getSpeed().x) + m.getMass()
+				* m.getSpeed().x + mass * speed.x)
 				/ (m.getMass() + mass);
-		double v2y = (Cr * mass * (speedY - m.getSpeedY()) + m.getMass()
-				* m.getSpeedY() + mass * speedY)
+		double v2y = (Cr * mass * (speed.y - m.getSpeed().y) + m.getMass()
+				* m.getSpeed().y + mass * speed.y)
 				/ (m.getMass() + mass);
 
-		speedX = v1x;
-		speedY = v1y;
-		m.setSpeedX(v2x);
-		m.setSpeedY(v2y);
-		setA(new Vector2d(0,0));
-		m.setA(new Vector2d(0,0));
+		speed = new Vector2d(v1x, v1y);
+		m.setSpeed(new Vector2d(v2x, v2y));
+		setA(new Vector2d(0, 0));
+		m.setA(new Vector2d(0, 0));
 	}
 
 	public boolean collision(Matter m) {
-		double distance = point.distance(m.getPoint());
-		double distance2 = Math.pow(Math.pow(getXplusV() - m.getXplusV(), 2)
-				+ Math.pow(getYplusV() - m.getYplusV(), 2), 0.5);
-
-		if (distance < rayon + m.rayon || distance2 < rayon + m.rayon) {
+		if (point.distance(m.getPoint()) < rayon + m.rayon
+				|| getPlusV().distance(m.getPlusV()) < rayon + m.rayon) {
 			return true;
 		} else {
-			double a1 = (point.y - getYplusV()) / (point.x - getXplusV());
+			double a1 = (point.y - getPlusV().y) / (point.x - getPlusV().x);
 			double b1 = point.y - a1 * point.x;
-			double a2 = (m.getPoint().getY() - m.getYplusV())
-					/ (m.getPoint().getX() - m.getXplusV());
+			double a2 = (m.getPoint().getY() - m.getPlusV().y)
+					/ (m.getPoint().getX() - m.getPlusV().x);
 			double b2 = m.getPoint().getY() - a2 * m.getPoint().getX();
 			if (a1 == a2) {
 				return false;
@@ -229,10 +190,9 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public double orbitalSpeed(Matter m) {
-		double distance = point.distance(m.getPoint());
 		double orbitalSpeed = Math.pow(HelperVariable.timeFactor
 				* HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
-				/ ((mass + m.getMass()) * distance), 0.5);
+				/ ((mass + m.getMass()) * point.distance(m.getPoint())), 0.5);
 		return orbitalSpeed;
 	}
 
