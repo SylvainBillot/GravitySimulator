@@ -107,7 +107,7 @@ public class Univers {
 			tmpGx += (m.getPoint().getX() * m.getMass());
 			tmpGy += (m.getPoint().getY() * m.getMass());
 		}
-		gPoint = new Point2d(tmpGx / getMass(),tmpGy / getMass());
+		gPoint = new Point2d(tmpGx / getMass(), tmpGy / getMass());
 	}
 
 	public void resetAcceleration() {
@@ -154,10 +154,9 @@ public class Univers {
 											- m.getPoint().getY(),
 											uvoisin.getGPoint().x
 													- m.getPoint().getX());
-							
-							m.getA().add(new Vector2d(attraction
-									* Math.cos(angle),
-									attraction * Math.sin(angle)));
+							m.getA().add(
+									new Vector2d(attraction * Math.cos(angle),
+											attraction * Math.sin(angle)));
 						}
 					}
 				}
