@@ -6,10 +6,10 @@ import javax.vecmath.Vector2d;
 import com.sylvanoid.common.HelperVariable;
 
 public class Matter implements Comparable<Matter> {
-	private Point2d point;
+	private Point2d point = new Point2d(0,0);
 	private double mass;
-	private Vector2d a;
-	private Vector2d speed;
+	private Vector2d a = new Vector2d(0,0);
+	private Vector2d speed = new Vector2d(0,0);
 	private double density;
 	private boolean isDark;
 	private double rayon;
