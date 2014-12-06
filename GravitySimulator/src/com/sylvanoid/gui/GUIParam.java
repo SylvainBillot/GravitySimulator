@@ -26,7 +26,6 @@ public class GUIParam extends JDialog {
 	private GUIProgram mother;
 	private JComboBox<String> typeOfUnivers;
 	private JFormattedTextField timeFactor;
-	private JFormattedTextField scala;
 	private JCheckBox manageImpact;
 	private JFormattedTextField numberOfObjects;
 	private JFormattedTextField nebulaRadius;
@@ -62,7 +61,6 @@ public class GUIParam extends JDialog {
 				case 0:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
 					manageImpact.setSelected(false);
-					scala.setValue(1);
 					timeFactor.setValue(5);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -70,7 +68,6 @@ public class GUIParam extends JDialog {
 				case 1:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
 					manageImpact.setSelected(true);
-					scala.setValue(1);
 					timeFactor.setValue(10);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(20);
@@ -86,7 +83,6 @@ public class GUIParam extends JDialog {
 				case 2:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
 					manageImpact.setSelected(true);
-					scala.setValue(1);
 					timeFactor.setValue(2);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -100,7 +96,6 @@ public class GUIParam extends JDialog {
 				case 3:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.RandomRotateUnivers;
 					manageImpact.setSelected(false);
-					scala.setValue(1);
 					timeFactor.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -116,7 +111,6 @@ public class GUIParam extends JDialog {
 				case 4:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxiesCollision;
 					manageImpact.setSelected(false);
-					scala.setValue(1);
 					timeFactor.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -132,7 +126,6 @@ public class GUIParam extends JDialog {
 				case 5:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetariesGenesis;
 					manageImpact.setSelected(true);
-					scala.setValue(1);
 					timeFactor.setValue(50);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -151,7 +144,6 @@ public class GUIParam extends JDialog {
 				case 6:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.DoubleStars;
 					manageImpact.setSelected(true);
-					scala.setValue(1);
 					timeFactor.setValue(5);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -272,7 +264,6 @@ public class GUIParam extends JDialog {
 
 	private void enableDisableParam(){
 		timeFactor.setEnabled(false);
-		scala.setEnabled(false);
 		manageImpact.setEnabled(false);
 		numberOfObjects.setEnabled(false);
 		nebulaRadius.setEnabled(false);
