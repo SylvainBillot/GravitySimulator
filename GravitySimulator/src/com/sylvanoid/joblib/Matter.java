@@ -1,15 +1,15 @@
 package com.sylvanoid.joblib;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
 
 public class Matter implements Comparable<Matter> {
-	private Point2d point = new Point2d(0,0);
+	private Point3d point = new Point3d(0, 0, 0);
 	private double mass;
-	private Vector2d a = new Vector2d(0,0);
-	private Vector2d speed = new Vector2d(0,0);
+	private Vector3d a = new Vector3d(0, 0, 0);
+	private Vector3d speed = new Vector3d(0, 0, 0);
 	private double density;
 	private boolean isDark;
 	private double rayon;
@@ -31,7 +31,7 @@ public class Matter implements Comparable<Matter> {
 				+ speed.x + " vy:" + speed.y;
 	}
 
-	public Matter(Point2d point, double mass, Vector2d speed, double density,
+	public Matter(Point3d point, double mass, Vector3d speed, double density,
 			boolean isDark) {
 		this.setPoint(point);
 		this.mass = mass;
@@ -41,27 +41,27 @@ public class Matter implements Comparable<Matter> {
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
-	public Point2d getPoint() {
+	public Point3d getPoint() {
 		return point;
 	}
 
-	public void setPoint(Point2d point) {
+	public void setPoint(Point3d point) {
 		this.point = point;
 	}
 
-	public Vector2d getA() {
+	public Vector3d getA() {
 		return a;
 	}
 
-	public void setA(Vector2d a) {
+	public void setA(Vector3d a) {
 		this.a = a;
 	}
 
-	public Vector2d getSpeed() {
+	public Vector3d getSpeed() {
 		return speed;
 	}
 
-	public void setSpeed(Vector2d speed) {
+	public void setSpeed(Vector3d speed) {
 		this.speed = speed;
 	}
 
@@ -94,28 +94,34 @@ public class Matter implements Comparable<Matter> {
 		return rayon;
 	}
 
-	public Point2d getPlusV() {
-		return new Point2d(point.x + speed.x * HelperVariable.timeFactor,
-				point.y + speed.y * HelperVariable.timeFactor);
+	public Point3d getPlusV() {
+		return new Point3d(point.x + speed.x * HelperVariable.timeFactor,
+				point.y + speed.y * HelperVariable.timeFactor, point.z
+						+ speed.z * HelperVariable.timeFactor);
 	}
 
-	public Point2d getMinusV() {
-		return new Point2d(point.x - speed.x * HelperVariable.timeFactor,
-				point.y - speed.y * HelperVariable.timeFactor);
+	public Point3d getMinusV() {
+		return new Point3d(point.x - speed.x * HelperVariable.timeFactor,
+				point.y - speed.y * HelperVariable.timeFactor, point.z
+						- speed.z * HelperVariable.timeFactor);
 	}
 
-	public Point2d max() {
-		return new Point2d((point.x > getPlusV().x) ? (point.x + rayon)
+	public Point3d max() {
+		return new Point3d((point.x > getPlusV().x) ? (point.x + rayon)
 				: (getPlusV().x + rayon),
 				(point.y > getPlusV().y) ? (point.y + rayon)
-						: (getPlusV().y + rayon));
+						: (getPlusV().y + rayon),
+				(point.z > getPlusV().z) ? (point.z + rayon)
+						: (getPlusV().z + rayon));
 	}
 
-	public Point2d min() {
-		return new Point2d((point.x > getPlusV().x) ? (getPlusV().x - rayon)
+	public Point3d min() {
+		return new Point3d((point.x > getPlusV().x) ? (getPlusV().x - rayon)
 				: (point.x - rayon),
 				(point.y > getPlusV().y) ? (getPlusV().y - rayon)
-						: (point.y - rayon));
+						: (point.y - rayon),
+				(point.z > getPlusV().z) ? (getPlusV().z - rayon)
+						: (point.z - rayon));
 	}
 
 	public void move() {
@@ -123,26 +129,26 @@ public class Matter implements Comparable<Matter> {
 		// Relativity effet
 		double gamma = Math.pow(
 				1 - speed.length() / Math.pow(HelperVariable.C, 2), 0.5);
-		speed = new Vector2d(speed.x * gamma, speed.y * gamma);
+		speed = new Vector3d(speed.x * gamma, speed.y * gamma, 0);
 		// End of
 
-		point.add(new Vector2d(speed.x * HelperVariable.timeFactor, speed.y
-				* HelperVariable.timeFactor));
+		point.add(new Vector3d(speed.x * HelperVariable.timeFactor, speed.y
+				* HelperVariable.timeFactor, 0));
 	}
 
 	public void fusion(Matter m) {
-		point = new Point2d(
+		point = new Point3d(
 				(point.x * mass + m.getPoint().getX() * m.getMass())
 						/ (mass + m.getMass()), (point.y * mass + m.getPoint()
 						.getY() * m.getMass())
-						/ (mass + m.getMass()));
-		speed = new Vector2d((speed.x * mass + m.getSpeed().x * m.getMass())
+						/ (mass + m.getMass()), 0);
+		speed = new Vector3d((speed.x * mass + m.getSpeed().x * m.getMass())
 				/ (mass + m.getMass()), (speed.y * mass + m.getSpeed().y
 				* m.getMass())
-				/ (mass + m.getMass()));
-		a = new Vector2d((a.x * mass + m.getA().x * m.getMass())
+				/ (mass + m.getMass()), 0);
+		a = new Vector3d((a.x * mass + m.getA().x * m.getMass())
 				/ (mass + m.getMass()), (a.y * mass + m.getA().y * m.getMass())
-				/ (mass + m.getMass()));
+				/ (mass + m.getMass()), 0);
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
 		mass += m.getMass();
@@ -165,10 +171,10 @@ public class Matter implements Comparable<Matter> {
 				* m.getSpeed().y + mass * speed.y)
 				/ (m.getMass() + mass);
 
-		speed = new Vector2d(v1x, v1y);
-		m.setSpeed(new Vector2d(v2x, v2y));
-		setA(new Vector2d(0, 0));
-		m.setA(new Vector2d(0, 0));
+		speed = new Vector3d(v1x, v1y, 0);
+		m.setSpeed(new Vector3d(v2x, v2y, 0));
+		setA(new Vector3d(0, 0, 0));
+		m.setA(new Vector3d(0, 0, 0));
 	}
 
 	public boolean collision(Matter m) {

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.vecmath.Point2d;
-import javax.vecmath.Vector2d;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
@@ -16,7 +16,7 @@ import com.sylvanoid.common.TypeOfUnivers;
 public class Univers {
 	private double mass;
 	private TreeMap<Matter, Matter> listMatter;
-	private Point2d gPoint = new Point2d(0, 0);
+	private Point3d gPoint = new Point3d(0, 0, 0);
 	private double minX;
 	private double minY;
 	private double maxX;
@@ -104,12 +104,12 @@ public class Univers {
 			tmpGx += (m.getPoint().getX() * m.getMass());
 			tmpGy += (m.getPoint().getY() * m.getMass());
 		}
-		gPoint = new Point2d(tmpGx / getMass(), tmpGy / getMass());
+		gPoint = new Point3d(tmpGx / getMass(), tmpGy / getMass(), 0);
 	}
 
 	public void resetAcceleration() {
 		for (Matter m : listMatter.values()) {
-			m.setA(new Vector2d(0, 0));
+			m.setA(new Vector3d(0, 0, 0));
 		}
 	}
 
@@ -152,8 +152,8 @@ public class Univers {
 											uvoisin.getGPoint().x
 													- m.getPoint().getX());
 							m.getA().add(
-									new Vector2d(attraction * Math.cos(angle),
-											attraction * Math.sin(angle)));
+									new Vector3d(attraction * Math.cos(angle),
+											attraction * Math.sin(angle), 0));
 						}
 					}
 				}
@@ -330,7 +330,7 @@ public class Univers {
 		return maxY;
 	}
 
-	public Point2d getGPoint() {
+	public Point3d getGPoint() {
 		return gPoint;
 	}
 
@@ -350,19 +350,20 @@ public class Univers {
 				double angle = Math.random() * Math.PI * 2;
 				double r = Math.log10(Math.random());
 				m = new Matter(
-						new Point2d(
+						new Point3d(
 								ox
 										+ Math.cos(angle)
 										* (r * ratioxy
 												* (radiusMax - radiusMin) + radiusMin),
 								oy
 										+ Math.sin(angle)
-										* (r * (radiusMax - radiusMin) + radiusMin)),
+										* (r * (radiusMax - radiusMin) + radiusMin),
+								0),
 						HelperVariable.massObjectMin
 								+ Math.random()
 								* (HelperVariable.massObjectMax - HelperVariable.massObjectMin)
 								+ Math.random(),
-						new Vector2d(0, 0),
+						new Vector3d(0, 0, 0),
 						HelperVariable.dentityMin
 								+ Math.random()
 								* (HelperVariable.densityMax - HelperVariable.dentityMin),
@@ -384,12 +385,12 @@ public class Univers {
 					+ Math.pow(m.getPoint().getY() - oy, 2), 0.5);
 			double angle = Math.atan2(m.getPoint().getY() - oy, m.getPoint()
 					.getX() - ox);
-			m.setSpeed(new Vector2d(m.getPoint().getX() - ox
+			m.setSpeed(new Vector3d(m.getPoint().getX() - ox
 					- Math.cos(angle - delta) * distance + speedTrans, m
 					.getPoint().getY()
 					- oy
 					- Math.sin(angle - delta)
-					* distance));
+					* distance,0));
 		}
 
 		listMatter.putAll(miniListMatter);
@@ -404,8 +405,8 @@ public class Univers {
 
 	private void createRandomRotateUnivers() {
 		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius, 0.25);
-		Matter m1 = new Matter(new Point2d(Math.random(), Math.random()),
-				HelperVariable.darkMatterMass, new Vector2d(0, 0),
+		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(), 0),
+				HelperVariable.darkMatterMass, new Vector3d(0, 0,0),
 				HelperVariable.darkMatterDensity, true);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
@@ -414,9 +415,9 @@ public class Univers {
 				double a = Math.atan2(m.getPoint().getY()
 						- m1.getPoint().getY(), m.getPoint().getX()
 						- m1.getPoint().getX());
-				m.setSpeed(new Vector2d(m.orbitalSpeed(m1)
+				m.setSpeed(new Vector3d(m.orbitalSpeed(m1)
 						* Math.cos(a + Math.PI / 2), m.orbitalSpeed(m1)
-						* Math.sin(a + Math.PI / 2)));
+						* Math.sin(a + Math.PI / 2),0));
 			}
 		}
 	}
@@ -428,16 +429,16 @@ public class Univers {
 		TreeMap<Matter, Matter> subu02 = createUvivers(400, 100, 0, 0, 0,
 				HelperVariable.nebulaRadius, 0.25);
 
-		Matter m1 = new Matter(new Point2d(-400 + Math.random(), -100
-				+ Math.random()),
-				HelperVariable.darkMatterMass + Math.random(), new Vector2d(
-						transSpeed, 0), HelperVariable.darkMatterDensity, true);
+		Matter m1 = new Matter(new Point3d(-400 + Math.random(), -100
+				+ Math.random(), 0), HelperVariable.darkMatterMass
+				+ Math.random(), new Vector3d(transSpeed, 0,0),
+				HelperVariable.darkMatterDensity, true);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
-		Matter m2 = new Matter(new Point2d(400 + Math.random(),
-				100 + Math.random()), HelperVariable.darkMatterMass
-				+ Math.random(), new Vector2d(-transSpeed, 0),
+		Matter m2 = new Matter(new Point3d(400 + Math.random(),
+				100 + Math.random(), 3), HelperVariable.darkMatterMass
+				+ Math.random(), new Vector3d(-transSpeed, 0,0),
 				HelperVariable.darkMatterDensity, true);
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
@@ -447,9 +448,9 @@ public class Univers {
 				double a = Math.atan2(m.getPoint().getY()
 						- m1.getPoint().getY(), m.getPoint().getX()
 						- m1.getPoint().getX());
-				m.setSpeed(new Vector2d(transSpeed + m.orbitalSpeed(m1)
+				m.setSpeed(new Vector3d(transSpeed + m.orbitalSpeed(m1)
 						* Math.cos(a + Math.PI / 2), m.orbitalSpeed(m1)
-						* Math.sin(a + Math.PI / 2)));
+						* Math.sin(a + Math.PI / 2),0));
 			}
 		}
 
@@ -458,9 +459,9 @@ public class Univers {
 				double a = Math.atan2(m.getPoint().getY()
 						- m2.getPoint().getY(), m.getPoint().getX()
 						- m2.getPoint().getX());
-				m.setSpeed(new Vector2d(-transSpeed + m.orbitalSpeed(m2)
+				m.setSpeed(new Vector3d(-transSpeed + m.orbitalSpeed(m2)
 						* Math.cos(a - Math.PI / 2), m.orbitalSpeed(m2)
-						* Math.sin(a - Math.PI / 2)));
+						* Math.sin(a - Math.PI / 2),0));
 			}
 		}
 		listMatter.putAll(subu01);
@@ -468,56 +469,56 @@ public class Univers {
 	}
 
 	private void createPlanetary() {
-		Matter m1 = new Matter(new Point2d(Math.random(), Math.random()),
-				1E10 + Math.random(), new Vector2d(0, 0), 300, false);
+		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(), 0),
+				1E10 + Math.random(), new Vector3d(0, 0,0), 300, false);
 		listMatter.put(m1, m1);
-		Matter m2 = new Matter(new Point2d(50 + Math.random(),
-				10 + Math.random()), 1E4 + Math.random(), new Vector2d(0, 0),
-				300, false);
+		Matter m2 = new Matter(new Point3d(50 + Math.random(),
+				10 + Math.random(), 0), 1E4 + Math.random(),
+				new Vector3d(0, 0,0), 300, false);
 		listMatter.put(m2, m2);
-		Matter m3 = new Matter(new Point2d(-320 + Math.random(),
-				30 + Math.random()), 1E9 + Math.random(), new Vector2d(0, 0),
-				300, false);
+		Matter m3 = new Matter(new Point3d(-320 + Math.random(),
+				30 + Math.random(), 0), 1E9 + Math.random(),
+				new Vector3d(0, 0,0), 300, false);
 		listMatter.put(m3, m3);
-		Matter m4 = new Matter(new Point2d(-100 + Math.random(), -10
-				+ Math.random()), 1E2 + Math.random(), new Vector2d(0, 0), 300,
-				false);
-		listMatter.put(m4, m4);
-		Matter m5 = new Matter(new Point2d(90 + Math.random(), -20
-				+ Math.random()), 1E3 + Math.random(), new Vector2d(0, 0), 300,
-				false);
-		listMatter.put(m5, m5);
-		Matter m6 = new Matter(new Point2d(-20 + Math.random(), -10
-				+ Math.random()), 1E2 + Math.random(), new Vector2d(0, 0), 300,
-				false);
-		listMatter.put(m6, m6);
-		Matter m7 = new Matter(new Point2d(-312 + Math.random(),
-				30 + Math.random()), 1E2 + Math.random(), new Vector2d(0, 0),
+		Matter m4 = new Matter(new Point3d(-100 + Math.random(), -10
+				+ Math.random(), 0), 1E2 + Math.random(), new Vector3d(0, 0,0),
 				300, false);
+		listMatter.put(m4, m4);
+		Matter m5 = new Matter(new Point3d(90 + Math.random(), -20
+				+ Math.random(), 0), 1E3 + Math.random(), new Vector3d(0, 0,0),
+				300, false);
+		listMatter.put(m5, m5);
+		Matter m6 = new Matter(new Point3d(-20 + Math.random(), -10
+				+ Math.random(), 0), 1E2 + Math.random(), new Vector3d(0, 0,0),
+				300, false);
+		listMatter.put(m6, m6);
+		Matter m7 = new Matter(new Point3d(-312 + Math.random(),
+				30 + Math.random(), 0), 1E2 + Math.random(),
+				new Vector3d(0, 0,0), 300, false);
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				double a = Math.atan2(m.getPoint().getY()
 						- m1.getPoint().getY(), m.getPoint().getX()
 						- m1.getPoint().getX());
-				m.setSpeed(new Vector2d(m.orbitalSpeed(m1)
+				m.setSpeed(new Vector3d(m.orbitalSpeed(m1)
 						* Math.cos(a + Math.PI / 2), m.orbitalSpeed(m1)
-						* Math.sin(a + Math.PI / 2)));
+						* Math.sin(a + Math.PI / 2),0));
 			}
 			mass += m.getMass();
 		}
 		double a = Math.atan2(m7.getPoint().getY() - m3.getPoint().getY(), m7
 				.getPoint().getX() - m3.getPoint().getX());
-		m7.setSpeed(new Vector2d(m3.getSpeed().x + m7.orbitalSpeed(m3)
+		m7.setSpeed(new Vector3d(m3.getSpeed().x + m7.orbitalSpeed(m3)
 				* Math.cos(a + Math.PI / 2), m3.getSpeed().y
-				+ m7.orbitalSpeed(m3) * Math.sin(a + Math.PI / 2)));
+				+ m7.orbitalSpeed(m3) * Math.sin(a + Math.PI / 2),0));
 		listMatter.put(m7, m7);
 
 	}
 
 	private void createPlanetaryRandom() {
 		createUvivers(0, 0, 0, 0, 0, HelperVariable.nebulaRadius, 1);
-		Matter m1 = new Matter(new Point2d(Math.random(), Math.random()),
-				HelperVariable.darkMatterMass, new Vector2d(0, 0),
+		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(), 0),
+				HelperVariable.darkMatterMass, new Vector3d(0, 0,0),
 				HelperVariable.darkMatterDensity, false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
@@ -526,17 +527,17 @@ public class Univers {
 				double a = Math.atan2(m.getPoint().getY()
 						- m1.getPoint().getY(), m.getPoint().getX()
 						- m1.getPoint().getX());
-				m.setSpeed(new Vector2d(m.orbitalSpeed(m1)
+				m.setSpeed(new Vector3d(m.orbitalSpeed(m1)
 						* Math.cos(a + Math.PI / 2), m.orbitalSpeed(m1)
-						* Math.sin(a + Math.PI / 2)));
+						* Math.sin(a + Math.PI / 2),0));
 			}
 		}
 	}
 
 	private void createPlanetariesGenesis() {
 		createUvivers(0, 0, 0, 0, 250, 200, 1);
-		Matter m1 = new Matter(new Point2d(Math.random(), Math.random()),
-				HelperVariable.darkMatterMass, new Vector2d(0, 0),
+		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(), 0),
+				HelperVariable.darkMatterMass, new Vector3d(0, 0,0),
 				HelperVariable.darkMatterDensity, false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
@@ -545,36 +546,36 @@ public class Univers {
 				double a = Math.atan2(m.getPoint().getY()
 						- m1.getPoint().getY(), m.getPoint().getX()
 						- m1.getPoint().getX());
-				m.setSpeed(new Vector2d(m.orbitalSpeed(m1)
+				m.setSpeed(new Vector3d(m.orbitalSpeed(m1)
 						* Math.cos(a + Math.PI / 2), m.orbitalSpeed(m1)
-						* Math.sin(a + Math.PI / 2)));
+						* Math.sin(a + Math.PI / 2),0));
 			}
 		}
 	}
 
 	private void createDoubleStars() {
-		Matter m1 = new Matter(new Point2d(Math.random() - 50,
-				Math.random() - 90), 5E9 + 1E10 + Math.random(), new Vector2d(
-				0, 0), HelperVariable.dentityMin, false);
+		Matter m1 = new Matter(new Point3d(Math.random() - 50,
+				Math.random() - 90, 0), 5E9 + 1E10 + Math.random(),
+				new Vector3d(0, 0,0), HelperVariable.dentityMin, false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
-		Matter m2 = new Matter(new Point2d(Math.random() + 50,
-				Math.random() + 90), 1E10 + Math.random(), new Vector2d(0, 0),
-				HelperVariable.dentityMin, false);
+		Matter m2 = new Matter(new Point3d(Math.random() + 50,
+				Math.random() + 90, 0), 1E10 + Math.random(),
+				new Vector3d(0, 0,0), HelperVariable.dentityMin, false);
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
 
 		double a = Math.atan2(m2.getPoint().getY() - m1.getPoint().getY(), m2
 				.getPoint().getX() - m1.getPoint().getX());
-		m1.setSpeed(new Vector2d(m2.orbitalSpeed(m1)
+		m1.setSpeed(new Vector3d(m2.orbitalSpeed(m1)
 				* Math.cos(a + Math.PI / 2), m2.orbitalSpeed(m1)
-				* Math.sin(a + Math.PI / 2)));
+				* Math.sin(a + Math.PI / 2),0));
 		a = Math.atan2(m1.getPoint().getY() - m2.getPoint().getY(), m1
 				.getPoint().getX() - m2.getPoint().getX());
-		m2.setSpeed(new Vector2d(m1.orbitalSpeed(m2)
+		m2.setSpeed(new Vector3d(m1.orbitalSpeed(m2)
 				* Math.cos(a + Math.PI / 2), m1.orbitalSpeed(m2)
-				* Math.sin(a + Math.PI / 2)));
+				* Math.sin(a + Math.PI / 2),0));
 
 	}
 
