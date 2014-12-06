@@ -129,11 +129,12 @@ public class Matter implements Comparable<Matter> {
 		// Relativity effet
 		double gamma = Math.pow(
 				1 - speed.length() / Math.pow(HelperVariable.C, 2), 0.5);
-		speed = new Vector3d(speed.x * gamma, speed.y * gamma, 0);
+		speed = new Vector3d(speed.x * gamma, speed.y * gamma, speed.z * gamma);
 		// End of
 
 		point.add(new Vector3d(speed.x * HelperVariable.timeFactor, speed.y
-				* HelperVariable.timeFactor, 0));
+				* HelperVariable.timeFactor, speed.z
+				* HelperVariable.timeFactor));
 	}
 
 	public void fusion(Matter m) {
@@ -141,14 +142,19 @@ public class Matter implements Comparable<Matter> {
 				(point.x * mass + m.getPoint().getX() * m.getMass())
 						/ (mass + m.getMass()), (point.y * mass + m.getPoint()
 						.getY() * m.getMass())
-						/ (mass + m.getMass()), 0);
+						/ (mass + m.getMass()), (point.z * mass + m.getPoint()
+						.getZ() * m.getMass())
+						/ (mass + m.getMass()));
 		speed = new Vector3d((speed.x * mass + m.getSpeed().x * m.getMass())
 				/ (mass + m.getMass()), (speed.y * mass + m.getSpeed().y
 				* m.getMass())
-				/ (mass + m.getMass()), 0);
+				/ (mass + m.getMass()), (speed.z * mass + m.getSpeed().z
+				* m.getMass())
+				/ (mass + m.getMass()));
 		a = new Vector3d((a.x * mass + m.getA().x * m.getMass())
 				/ (mass + m.getMass()), (a.y * mass + m.getA().y * m.getMass())
-				/ (mass + m.getMass()), 0);
+				/ (mass + m.getMass()), (a.z * mass + m.getA().z * m.getMass())
+				/ (mass + m.getMass()));
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
 		mass += m.getMass();
@@ -163,6 +169,9 @@ public class Matter implements Comparable<Matter> {
 		double v1y = (Cr * m.getMass() * (m.getSpeed().y - speed.y) + mass
 				* speed.y + m.getMass() * m.getSpeed().y)
 				/ (mass + m.getMass());
+		double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass
+				* speed.z + m.getMass() * m.getSpeed().z)
+				/ (mass + m.getMass());
 
 		double v2x = (Cr * mass * (speed.x - m.getSpeed().x) + m.getMass()
 				* m.getSpeed().x + mass * speed.x)
@@ -170,9 +179,12 @@ public class Matter implements Comparable<Matter> {
 		double v2y = (Cr * mass * (speed.y - m.getSpeed().y) + m.getMass()
 				* m.getSpeed().y + mass * speed.y)
 				/ (m.getMass() + mass);
+		double v2z = (Cr * mass * (speed.z - m.getSpeed().z) + m.getMass()
+				* m.getSpeed().z + mass * speed.z)
+				/ (m.getMass() + mass);
 
-		speed = new Vector3d(v1x, v1y, 0);
-		m.setSpeed(new Vector3d(v2x, v2y, 0));
+		speed = new Vector3d(v1x, v1y, v1z);
+		m.setSpeed(new Vector3d(v2x, v2y, v2z));
 		setA(new Vector3d(0, 0, 0));
 		m.setA(new Vector3d(0, 0, 0));
 	}
