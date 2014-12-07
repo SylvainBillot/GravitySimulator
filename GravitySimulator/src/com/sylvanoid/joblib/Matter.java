@@ -106,7 +106,7 @@ public class Matter implements Comparable<Matter> {
 						- speed.z * HelperVariable.timeFactor);
 	}
 
-	public Point3d max() {
+	public Point3d maxWithR() {
 		return new Point3d((point.x > getPlusV().x) ? (point.x + rayon)
 				: (getPlusV().x + rayon),
 				(point.y > getPlusV().y) ? (point.y + rayon)
@@ -115,13 +115,27 @@ public class Matter implements Comparable<Matter> {
 						: (getPlusV().z + rayon));
 	}
 
-	public Point3d min() {
+	public Point3d minWithR() {
 		return new Point3d((point.x > getPlusV().x) ? (getPlusV().x - rayon)
 				: (point.x - rayon),
 				(point.y > getPlusV().y) ? (getPlusV().y - rayon)
 						: (point.y - rayon),
 				(point.z > getPlusV().z) ? (getPlusV().z - rayon)
 						: (point.z - rayon));
+	}
+
+	public Point3d max() {
+		return new Point3d((point.x > getPlusV().x) ? (point.x)
+				: (getPlusV().x), (point.y > getPlusV().y) ? (point.y)
+				: (getPlusV().y), (point.z > getPlusV().z) ? (point.z)
+				: (getPlusV().z));
+	}
+
+	public Point3d min() {
+		return new Point3d((point.x > getPlusV().x) ? (getPlusV().x)
+				: (point.x), (point.y > getPlusV().y) ? (getPlusV().y)
+				: (point.y), (point.z > getPlusV().z) ? (getPlusV().z)
+				: (point.z));
 	}
 
 	public void move() {
@@ -131,10 +145,7 @@ public class Matter implements Comparable<Matter> {
 				1 - speed.length() / Math.pow(HelperVariable.C, 2), 0.5);
 		speed = new Vector3d(speed.x * gamma, speed.y * gamma, speed.z * gamma);
 		// End of
-
-		point.add(new Vector3d(speed.x * HelperVariable.timeFactor, speed.y
-				* HelperVariable.timeFactor, speed.z
-				* HelperVariable.timeFactor));
+		point = getPlusV();
 	}
 
 	public void fusion(Matter m) {
@@ -194,22 +205,19 @@ public class Matter implements Comparable<Matter> {
 				|| getPlusV().distance(m.getPlusV()) < rayon + m.rayon) {
 			return true;
 		} else {
-			double a1 = (point.y - getPlusV().y) / (point.x - getPlusV().x);
-			double b1 = point.y - a1 * point.x;
-			double a2 = (m.getPoint().getY() - m.getPlusV().y)
-					/ (m.getPoint().getX() - m.getPlusV().x);
-			double b2 = m.getPoint().getY() - a2 * m.getPoint().getX();
-			if (a1 == a2) {
-				return false;
+			if ((Math.max(max().x, m.max().x) - Math.min(min().x, m.min().x) <= (max().x
+					- min().x + m.max().x - m.min().x))
+					&& (Math.max(max().y, m.max().y)
+							- Math.min(min().y, m.min().y) <= (max().y - min().y
+							+ m.max().y - m.min().y))
+					&& (Math.max(max().z, m.max().z)
+							- Math.min(min().z, m.min().z) <= (max().z - min().z
+							+ m.max().z - m.min().z))) {
+				return true;
 			} else {
-				double xres = (b2 - b1) / (a1 - a2);
-				if (xres >= point.x && xres <= m.getPoint().getX()
-						|| xres >= m.getPoint().getX() && xres <= point.x) {
-					return true;
-				} else {
-					return false;
-				}
+				return false;
 			}
+
 		}
 	}
 

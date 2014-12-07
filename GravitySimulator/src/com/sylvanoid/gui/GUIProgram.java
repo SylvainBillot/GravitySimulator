@@ -302,6 +302,7 @@ public class GUIProgram extends JFrame {
 	}
 
 	public void reset() {
+		animator.stop();
 		HelperVariable.centerOnMassMax = false;
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.centerOnCentroid = false;
@@ -315,7 +316,7 @@ public class GUIProgram extends JFrame {
 	public void setOut(SequenceEncoder out) {
 		this.out = out;
 	}
-	
+
 	public void eyesXAdd(float value) {
 		eyesX += value;
 	}
@@ -323,7 +324,7 @@ public class GUIProgram extends JFrame {
 	public void eyesYAdd(float value) {
 		eyesY += value;
 	}
-	
+
 	public void eyesZAdd(float value) {
 		eyesZ += value;
 	}
@@ -347,7 +348,24 @@ public class GUIProgram extends JFrame {
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
-				gl.glTranslated(m.getPoint().x, m.getPoint().y, 0);
+
+				// Ligthing
+				/*
+				float[] lightPos = { 0, 0, 0, 1 }; // light position
+				lightPos[0] = (float) m.getPoint().x;
+				lightPos[1] = (float) m.getPoint().y;
+				lightPos[2] = (float) m.getPoint().z;
+				float[] noAmbient = { 0.2f, 0.2f, 0.2f, 1f }; // low ambient
+																
+				float[] diffuse = { 1f, 1f, 1f, 1f }; // full diffuse colour
+				gl.glEnable(GL2.GL_LIGHTING);
+				gl.glEnable(GL2.GL_LIGHT0);
+				gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, noAmbient, 0);
+				gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuse, 0);
+				gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPos, 0);
+				*/
+
+				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glPushMatrix();
 				gl.glColor3d(0.9, 1, 1);
 				glu.gluSphere(sun, m.getRayon() > 1 ? m.getRayon() : 1, 6, 6);
