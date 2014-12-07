@@ -6,8 +6,8 @@ import javax.vecmath.Vector3d;
 import com.sylvanoid.common.HelperVariable;
 
 public class Matter implements Comparable<Matter> {
-	private Point3d point = new Point3d(0, 0, 0);
 	private double mass;
+	private Point3d point = new Point3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
 	private double density;
@@ -208,11 +208,11 @@ public class Matter implements Comparable<Matter> {
 			if ((Math.max(max().x, m.max().x) - Math.min(min().x, m.min().x) <= (max().x
 					- min().x + m.max().x - m.min().x))
 					&& (Math.max(max().y, m.max().y)
-							- Math.min(min().y, m.min().y) <= (max().y - min().y
-							+ m.max().y - m.min().y))
+							- Math.min(min().y, m.min().y) <= (max().y
+							- min().y + m.max().y - m.min().y))
 					&& (Math.max(max().z, m.max().z)
-							- Math.min(min().z, m.min().z) <= (max().z - min().z
-							+ m.max().z - m.min().z))) {
+							- Math.min(min().z, m.min().z) <= (max().z
+							- min().z + m.max().z - m.min().z))) {
 				return true;
 			} else {
 				return false;
@@ -221,12 +221,23 @@ public class Matter implements Comparable<Matter> {
 		}
 	}
 
-	public double orbitalSpeed(Matter m) {
-		double orbitalSpeed = Math
+	public Vector3d orbitalSpeed(Matter m) {
+		double orbitalSpeedValue = Math
 				.pow(HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
 						/ ((mass + m.getMass()) * point.distance(m.getPoint())),
 						0.5);
-		return orbitalSpeed;
+
+		double theta = Math.atan2(m.getPoint().y - point.getY(), m.getPoint().x
+				- point.getX()) + Math.PI / 2;
+		double phi = Math.atan2(Math.pow(
+				Math.pow(m.getPoint().x - point.getX(), 2)
+						+ Math.pow(m.getPoint().y - point.getY(), 2), 0.5), (m
+				.getPoint().z - point.getZ()));
+
+		return new Vector3d(
+				orbitalSpeedValue * Math.cos(theta) * Math.sin(phi),
+				orbitalSpeedValue * Math.sin(theta) * Math.sin(phi),
+				orbitalSpeedValue * Math.cos(phi));
 	}
 
 }

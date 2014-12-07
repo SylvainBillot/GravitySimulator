@@ -90,6 +90,7 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				animator.stop();
 				GUIParam guiParam = new GUIParam(me);
 				guiParam.setVisible(true);
 			}
@@ -254,9 +255,7 @@ public class GUIProgram extends JFrame {
 			public void init(GLAutoDrawable drawable) {
 				// TODO Auto-generated method stub
 				GL2 gl = drawable.getGL().getGL2();
-				gl.glClearColor(0, 0, 0, 0);
-				gl.glShadeModel(GL2.GL_FLAT); // try setting this to GL_FLAT
-												// and see what happens.
+				gl.glClearColor(0, 0, 0.1f, 0);
 			}
 
 			@Override
@@ -307,6 +306,7 @@ public class GUIProgram extends JFrame {
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.centerOnCentroid = false;
 		univers = new Univers(HelperVariable.typeOfUnivers);
+		animator.start();
 	}
 
 	public SequenceEncoder getOut() {
@@ -340,35 +340,18 @@ public class GUIProgram extends JFrame {
 		// Change back to model view matrix.
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-
 		if (!HelperVariable.traceCourbe) {
 			gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		}
-		GLUquadric sun = glu.gluNewQuadric();
+		GLUquadric param = glu.gluNewQuadric();
+		glu.gluQuadricDrawStyle(param, GLU.GLU_POINT);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
-
-				// Ligthing
-				/*
-				float[] lightPos = { 0, 0, 0, 1 }; // light position
-				lightPos[0] = (float) m.getPoint().x;
-				lightPos[1] = (float) m.getPoint().y;
-				lightPos[2] = (float) m.getPoint().z;
-				float[] noAmbient = { 0.2f, 0.2f, 0.2f, 1f }; // low ambient
-																
-				float[] diffuse = { 1f, 1f, 1f, 1f }; // full diffuse colour
-				gl.glEnable(GL2.GL_LIGHTING);
-				gl.glEnable(GL2.GL_LIGHT0);
-				gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, noAmbient, 0);
-				gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, diffuse, 0);
-				gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPos, 0);
-				*/
-
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glPushMatrix();
-				gl.glColor3d(0.9, 1, 1);
-				glu.gluSphere(sun, m.getRayon() > 1 ? m.getRayon() : 1, 6, 6);
+				gl.glColor3d(1, 1, 1);
+				glu.gluSphere(param, m.getRayon(), 6, 6);
 				gl.glPopMatrix();
 			}
 		}
