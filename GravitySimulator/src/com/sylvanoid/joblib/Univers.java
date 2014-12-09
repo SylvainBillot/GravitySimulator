@@ -8,7 +8,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.vecmath.Point3d;
-import javax.vecmath.Point4d;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
@@ -468,7 +467,16 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1));
-				m.setColor(new Point4d(1,1,1,1));
+				double alea = Math.random();
+				if(alea>0.25){
+					m.setColor(new Point3d(1,1,1));
+				}
+				if(alea>0.80){
+					m.setColor(new Point3d(1,0.75,0.75));
+				}
+				if(alea>0.90){
+					m.setColor(new Point3d(0.75,0.75,1));
+				}
 			}
 		}
 	}

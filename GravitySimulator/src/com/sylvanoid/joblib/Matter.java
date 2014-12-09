@@ -1,7 +1,6 @@
 package com.sylvanoid.joblib;
 
 import javax.vecmath.Point3d;
-import javax.vecmath.Point4d;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
@@ -11,7 +10,7 @@ public class Matter implements Comparable<Matter> {
 	private Point3d point = new Point3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
-	private Point4d color = new Point4d(1, 1, 1, 1);
+	private Point3d color = new Point3d(1, 1, 11);
 	private double density;
 	private boolean isDark;
 	private double rayon;
@@ -51,11 +50,11 @@ public class Matter implements Comparable<Matter> {
 		this.point = point;
 	}
 
-	public Point4d getColor() {
+	public Point3d getColor() {
 		return color;
 	}
 
-	public void setColor(Point4d color) {
+	public void setColor(Point3d color) {
 		this.color = color;
 	}
 

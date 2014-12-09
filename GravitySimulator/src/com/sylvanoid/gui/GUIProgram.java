@@ -19,7 +19,6 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUquadric;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -34,6 +33,8 @@ import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Univers;
 
+import com.sylvanoid.common.TextureReader;
+
 public class GUIProgram extends JFrame {
 	/**
 	 * 
@@ -46,6 +47,8 @@ public class GUIProgram extends JFrame {
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
+
+	private int textures[] = new int[1]; // Storage For One textures
 
 	private Vector3d eyes = new Vector3d(0, 0, 900);
 
@@ -266,14 +269,20 @@ public class GUIProgram extends JFrame {
 			public void init(GLAutoDrawable drawable) {
 				// TODO Auto-generated method stub
 				GL2 gl = drawable.getGL().getGL2();
-				gl.glEnable(GL2.GL_TEXTURE_2D);
-				gl.glShadeModel(GL2.GL_SMOOTH);
-				gl.glClearColor(0, 0, 0.1f, 0);
-				gl.glClearDepth(1.0f);
-				gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
-				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
-				gl.glEnable(GL2.GL_BLEND);
+				gl.glEnable(GL2.GL_TEXTURE_2D); // Enable Texture Mapping
+				gl.glShadeModel(GL2.GL_SMOOTH); // Enable Smooth Shading
+				gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); // Black Background
+				gl.glClearDepth(1.0f); // Depth Buffer Setup
+				gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST); // Really
+																				// Nice
+																				// Perspective
+																				// Calculations
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE); // Set The Blending
+															// Function For
+															// Translucency
+				gl.glEnable(GL.GL_BLEND);
 
+				LoadGLTextures(gl);
 			}
 
 			@Override
@@ -354,6 +363,10 @@ public class GUIProgram extends JFrame {
 
 	private void render(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
+		if (!HelperVariable.traceCourbe) {
+			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		}
+		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our Texture
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		// Perspective.
@@ -363,20 +376,31 @@ public class GUIProgram extends JFrame {
 		// Change back to model view matrix.
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		if (!HelperVariable.traceCourbe) {
-			gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-		}
-		GLUquadric param = glu.gluNewQuadric();
-		glu.gluQuadricDrawStyle(param, GLU.GLU_POINT);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
+				double theta = Math.atan2(m.getPoint().y - eyes.y,
+						m.getPoint().x - eyes.x);
+				double phi = Math.atan2(Math.pow(
+						Math.pow(m.getPoint().x - eyes.x, 2)
+								+ Math.pow(m.getPoint().y - eyes.y, 2), 0.5),
+						(m.getPoint().z - eyes.z));
+				double dx = Math.cos(theta) * Math.sin(phi);
+				double dy = Math.sin(theta) * Math.sin(phi);
+				double dz = Math.cos(phi);
+				double r = m.getRayon() < 1 ? 1 : m.getRayon();
 				gl.glLoadIdentity();
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
-				gl.glPushMatrix();
-				gl.glColor4d(m.getColor().w, m.getColor().x, m.getColor().y,
-						m.getColor().z);
-				glu.gluSphere(param, m.getRayon(), 6, 6);
-				gl.glPopMatrix();
+				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glTexCoord2d(0, 0);
+				gl.glVertex3d(-r, -r, -r);
+				gl.glTexCoord2d(1, 0);
+				gl.glVertex3d(r, -r, -r);
+				gl.glTexCoord2d(1, 1);
+				gl.glVertex3d(r, r, r);
+				gl.glTexCoord2d(0, 1);
+				gl.glVertex3d(-r, r, r);
+				gl.glEnd();
 			}
 		}
 		gl.glEnd();
@@ -385,6 +409,31 @@ public class GUIProgram extends JFrame {
 
 	private void update() {
 		univers.process();
+	}
+
+	private void LoadGLTextures(GL gl) { // Load Bitmaps And Convert To Textures
+		com.sylvanoid.common.TextureReader.Texture texture = null;// Create
+																	// Storage
+																	// Space For
+																	// The
+																	// Texture
+		try {
+			texture = TextureReader.readTexture("resources/images/Star.bmp");
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		gl.glGenTextures(1, textures, 0); // Create One Texture
+
+		// Create Linear Filtered Texture
+		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+				GL.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+				GL.GL_LINEAR);
+		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture.getWidth(),
+				texture.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
+				texture.getPixels());
 	}
 
 }
