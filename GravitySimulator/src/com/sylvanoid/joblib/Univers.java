@@ -468,14 +468,18 @@ public class Univers {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1));
 				double alea = Math.random();
-				if(alea>0.25){
-					m.setColor(new Point3d(1,1,1));
+				if (alea > 0.25) {
+					m.setColor(new Point3d(0.75 + Math.random() / 4,
+							0.75 + Math.random() / 4, 0.75 + Math.random() / 4));
 				}
-				if(alea>0.80){
-					m.setColor(new Point3d(1,0.75,0.75));
+				if (alea > 0.80) {
+					m.setColor(new Point3d(0.75 + Math.random() / 4, 0.4 + Math
+							.random() * 0.20, 0.4 + Math.random() * 0.20));
 				}
-				if(alea>0.90){
-					m.setColor(new Point3d(0.75,0.75,1));
+				if (alea > 0.90) {
+					m.setColor(new Point3d(0.4 + Math.random() * 0.20,
+							0.4 + Math.random() * 0.20,
+							0.75 + Math.random() / 4));
 				}
 			}
 		}

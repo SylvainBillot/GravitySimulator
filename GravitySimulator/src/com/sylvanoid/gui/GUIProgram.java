@@ -7,8 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -295,22 +298,17 @@ public class GUIProgram extends JFrame {
 			public void display(GLAutoDrawable drawable) {
 				// TODO Auto-generated method stub
 				render(drawable);
-				// if (HelperVariable.exportToVideo) {
-				// BufferedImage img = new BufferedImage(drawable.getWidth(),
-				// drawable.getHeight(),
-				// BufferedImage.TYPE_USHORT_555_RGB);
-				// drawable.paint(img.getGraphics());
-				// GL2 gl = drawable.getGL().getGL2();
-				// BufferedImage img =
-				// gl.glReadBuffer(GL2.GL_READ_BUFFER).readPixelsToBufferedImage(drawable.getGL(),
-				// true);
-				// try {
-				// me.getOut().encodeImage(img);
-				// } catch (IOException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
-				// }
+				if (HelperVariable.exportToVideo) {
+					GL2 gl = drawable.getGL().getGL2();
+					BufferedImage img = toImage(gl, drawable.getWidth(),
+							drawable.getHeight());
+					try {
+						me.getOut().encodeImage(img);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				update();
 			}
 		});
@@ -378,29 +376,43 @@ public class GUIProgram extends JFrame {
 		gl.glLoadIdentity();
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				double theta = Math.atan2(m.getPoint().y - eyes.y,
-						m.getPoint().x - eyes.x);
-				double phi = Math.atan2(Math.pow(
-						Math.pow(m.getPoint().x - eyes.x, 2)
-								+ Math.pow(m.getPoint().y - eyes.y, 2), 0.5),
-						(m.getPoint().z - eyes.z));
-				double dx = Math.cos(theta) * Math.sin(phi);
-				double dy = Math.sin(theta) * Math.sin(phi);
-				double dz = Math.cos(phi);
-				double r = m.getRayon() < 1 ? 1 : m.getRayon();
-				gl.glLoadIdentity();
-				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
-				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glTexCoord2d(0, 0);
-				gl.glVertex3d(-r, -r, -r);
-				gl.glTexCoord2d(1, 0);
-				gl.glVertex3d(r, -r, -r);
-				gl.glTexCoord2d(1, 1);
-				gl.glVertex3d(r, r, r);
-				gl.glTexCoord2d(0, 1);
-				gl.glVertex3d(-r, r, r);
-				gl.glEnd();
+				for (double cpt = 0; cpt < 1; cpt += Math.random()) {
+					double r = m.getRayon() < 1 ? 1 : m.getRayon();
+					gl.glLoadIdentity();
+					gl.glTranslated(m.getPoint().x, m.getPoint().y,
+							m.getPoint().z);
+					gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+					gl.glBegin(GL2.GL_QUADS);
+					gl.glTexCoord2d(0, 0);
+					gl.glVertex3d(-r, -r, 0);
+					gl.glTexCoord2d(1, 0);
+					gl.glVertex3d(r, -r, 0);
+					gl.glTexCoord2d(1, 1);
+					gl.glVertex3d(r, r, 0);
+					gl.glTexCoord2d(0, 1);
+					gl.glVertex3d(-r, r, 0);
+					gl.glEnd();
+					gl.glBegin(GL2.GL_QUADS);
+					gl.glTexCoord2d(0, 0);
+					gl.glVertex3d(-r, 0, -r);
+					gl.glTexCoord2d(1, 0);
+					gl.glVertex3d(r, 0, -r);
+					gl.glTexCoord2d(1, 1);
+					gl.glVertex3d(r, 0, r);
+					gl.glTexCoord2d(0, 1);
+					gl.glVertex3d(-r, 0, r);
+					gl.glEnd();
+					gl.glBegin(GL2.GL_QUADS);
+					gl.glTexCoord2d(0, 0);
+					gl.glVertex3d(0, -r, -r);
+					gl.glTexCoord2d(1, 0);
+					gl.glVertex3d(0, r, -r);
+					gl.glTexCoord2d(1, 1);
+					gl.glVertex3d(0, r, r);
+					gl.glTexCoord2d(0, 1);
+					gl.glVertex3d(0, -r, r);
+					gl.glEnd();
+				}
 			}
 		}
 		gl.glEnd();
@@ -434,6 +446,23 @@ public class GUIProgram extends JFrame {
 		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture.getWidth(),
 				texture.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
 				texture.getPixels());
+	}
+
+	private BufferedImage toImage(GL2 gl, int w, int h) {
+		gl.glReadBuffer(GL.GL_FRONT); // or GL.GL_BACK
+		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h);
+		gl.glReadPixels(0, 0, w, h, GL2.GL_BGR, GL2.GL_BYTE, glBB);
+		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		int[] bd = ((DataBufferInt) bi.getRaster().getDataBuffer()).getData();
+		for (int y = 0; y < h; y++) {
+			for (int x = 0; x < w; x++) {
+				int b = 2 * glBB.get();
+				int g = 2 * glBB.get();
+				int r = 2 * glBB.get();
+				bd[(h - y - 1) * w + x] = (r << 16) | (g << 8) | b | 0xFF000000;
+			}
+		}
+		return bi;
 	}
 
 }
