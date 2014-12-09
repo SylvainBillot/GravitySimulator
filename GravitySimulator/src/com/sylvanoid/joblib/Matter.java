@@ -1,6 +1,7 @@
 package com.sylvanoid.joblib;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Point4d;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
@@ -10,6 +11,7 @@ public class Matter implements Comparable<Matter> {
 	private Point3d point = new Point3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
+	private Point4d color = new Point4d(1, 1, 1, 1);
 	private double density;
 	private boolean isDark;
 	private double rayon;
@@ -47,6 +49,14 @@ public class Matter implements Comparable<Matter> {
 
 	public void setPoint(Point3d point) {
 		this.point = point;
+	}
+
+	public Point4d getColor() {
+		return color;
+	}
+
+	public void setColor(Point4d color) {
+		this.color = color;
 	}
 
 	public Vector3d getA() {
@@ -214,11 +224,9 @@ public class Matter implements Comparable<Matter> {
 							- Math.min(min().z, m.min().z) <= (max().z
 							- min().z + m.max().z - m.min().z))) {
 				return true;
-			} else {
-				return false;
 			}
-
 		}
+		return false;
 	}
 
 	public Vector3d orbitalSpeed(Matter m) {
@@ -228,7 +236,8 @@ public class Matter implements Comparable<Matter> {
 						0.5);
 
 		double theta = Math.atan2(m.getPoint().y - point.getY(), m.getPoint().x
-				- point.getX()) + Math.PI / 2;
+				- point.getX())
+				+ Math.PI / 2;
 		double phi = Math.atan2(Math.pow(
 				Math.pow(m.getPoint().x - point.getX(), 2)
 						+ Math.pow(m.getPoint().y - point.getY(), 2), 0.5), (m

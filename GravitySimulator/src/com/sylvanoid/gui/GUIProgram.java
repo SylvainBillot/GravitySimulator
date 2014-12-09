@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.vecmath.Vector3d;
 
 import org.jcodec.api.SequenceEncoder;
 
@@ -40,14 +41,24 @@ public class GUIProgram extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private GUIProgram me;
+	private GLJPanel gljpanel;
 	private Univers univers;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
 
-	private float eyesX = 0;
-	private float eyesY = 0;
-	private float eyesZ = 900;
+	private Vector3d eyes = new Vector3d(0, 0, 900);
+
+	public static void main(String[] args) {
+
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				GUIProgram ex = new GUIProgram();
+				ex.setVisible(true);
+			}
+		});
+	}
 
 	public GUIProgram() {
 		this.me = this;
@@ -230,7 +241,7 @@ public class GUIProgram extends JFrame {
 
 		GLProfile glp = GLProfile.getDefault();
 		GLCapabilities caps = new GLCapabilities(glp);
-		GLJPanel gljpanel = new GLJPanel(caps);
+		gljpanel = new GLJPanel(caps);
 		gljpanel.addGLEventListener(new GLEventListener() {
 
 			@Override
@@ -246,7 +257,7 @@ public class GUIProgram extends JFrame {
 				gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 				gl.glLoadIdentity();
 				glu.gluPerspective(45, h, 1.0, 10000.0);
-				glu.gluLookAt(eyesX, eyesY, eyesZ, 0, 0, 0, 0, 1, 0);
+				glu.gluLookAt(eyes.x, eyes.y, eyes.z, 0, 0, 0, 0, 1, 0);
 				gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 				gl.glLoadIdentity();
 			}
@@ -255,7 +266,14 @@ public class GUIProgram extends JFrame {
 			public void init(GLAutoDrawable drawable) {
 				// TODO Auto-generated method stub
 				GL2 gl = drawable.getGL().getGL2();
+				gl.glEnable(GL2.GL_TEXTURE_2D);
+				gl.glShadeModel(GL2.GL_SMOOTH);
 				gl.glClearColor(0, 0, 0.1f, 0);
+				gl.glClearDepth(1.0f);
+				gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+				gl.glEnable(GL2.GL_BLEND);
+
 			}
 
 			@Override
@@ -268,6 +286,22 @@ public class GUIProgram extends JFrame {
 			public void display(GLAutoDrawable drawable) {
 				// TODO Auto-generated method stub
 				render(drawable);
+				// if (HelperVariable.exportToVideo) {
+				// BufferedImage img = new BufferedImage(drawable.getWidth(),
+				// drawable.getHeight(),
+				// BufferedImage.TYPE_USHORT_555_RGB);
+				// drawable.paint(img.getGraphics());
+				// GL2 gl = drawable.getGL().getGL2();
+				// BufferedImage img =
+				// gl.glReadBuffer(GL2.GL_READ_BUFFER).readPixelsToBufferedImage(drawable.getGL(),
+				// true);
+				// try {
+				// me.getOut().encodeImage(img);
+				// } catch (IOException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+				// }
 				update();
 			}
 		});
@@ -275,17 +309,6 @@ public class GUIProgram extends JFrame {
 		// Create a animator that drives canvas' display() at the specified FPS.
 		animator = new FPSAnimator(gljpanel, 60, true);
 
-	}
-
-	public static void main(String[] args) {
-
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				GUIProgram ex = new GUIProgram();
-				ex.setVisible(true);
-			}
-		});
 	}
 
 	public FPSAnimator getAnimator() {
@@ -298,6 +321,22 @@ public class GUIProgram extends JFrame {
 
 	public Univers getUnivers() {
 		return univers;
+	}
+
+	public GLJPanel getGljpanel() {
+		return gljpanel;
+	}
+
+	public void setGljpanel(GLJPanel gljpanel) {
+		this.gljpanel = gljpanel;
+	}
+
+	public void setEyes(Vector3d eyes) {
+		this.eyes = eyes;
+	}
+
+	public Vector3d getEyes() {
+		return eyes;
 	}
 
 	public void reset() {
@@ -313,22 +352,6 @@ public class GUIProgram extends JFrame {
 		return out;
 	}
 
-	public void setOut(SequenceEncoder out) {
-		this.out = out;
-	}
-
-	public void eyesXAdd(float value) {
-		eyesX += value;
-	}
-
-	public void eyesYAdd(float value) {
-		eyesY += value;
-	}
-
-	public void eyesZAdd(float value) {
-		eyesZ += value;
-	}
-
 	private void render(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -336,7 +359,7 @@ public class GUIProgram extends JFrame {
 		// Perspective.
 		float widthHeightRatio = (float) getWidth() / (float) getHeight();
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
-		glu.gluLookAt(eyesX, eyesY, eyesZ, 0, 0, 0, 0, 1, 0);
+		glu.gluLookAt(eyes.x, eyes.y, eyes.z, 0, 0, 0, 0, 1, 0);
 		// Change back to model view matrix.
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
@@ -350,7 +373,8 @@ public class GUIProgram extends JFrame {
 				gl.glLoadIdentity();
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glPushMatrix();
-				gl.glColor3d(1, 1, 1);
+				gl.glColor4d(m.getColor().w, m.getColor().x, m.getColor().y,
+						m.getColor().z);
 				glu.gluSphere(param, m.getRayon(), 6, 6);
 				gl.glPopMatrix();
 			}

@@ -8,6 +8,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Point4d;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
@@ -105,11 +106,14 @@ public class Univers {
 	public void computeCentroidOfUnivers() {
 		double tmpGx = 0;
 		double tmpGy = 0;
+		double tmpGz = 0;
 		for (Matter m : getListMatiere().values()) {
 			tmpGx += (m.getPoint().getX() * m.getMass());
 			tmpGy += (m.getPoint().getY() * m.getMass());
+			tmpGz += (m.getPoint().getZ() * m.getMass());
 		}
-		gPoint = new Point3d(tmpGx / getMass(), tmpGy / getMass(), 0);
+		gPoint = new Point3d(tmpGx / getMass(), tmpGy / getMass(), tmpGz
+				/ getMass());
 	}
 
 	public void resetAcceleration() {
@@ -219,9 +223,9 @@ public class Univers {
 				sortZ.put(m.getPoint().z, m);
 				sortZ.put(m.maxWithR().z, m);
 			}
-			SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z, true,
-					m1.maxWithR().z, false);
-			
+			SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z,
+					true, m1.maxWithR().z, false);
+
 			for (Matter m2 : selectZ.values()) {
 				if (treated.get(m2) == null && m1.collision(m2)) {
 					treated.put(m2, "");
@@ -246,7 +250,7 @@ public class Univers {
 		}
 		SortedMap<Double, Matter> selectY = sortY.subMap(m1.minWithR().y, true,
 				m1.maxWithR().y, false);
-		
+
 		TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
 		for (Matter m : selectY.values()) {
 			sortZ.put(m.minWithR().z, m);
@@ -255,7 +259,7 @@ public class Univers {
 		}
 		SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z, true,
 				m1.maxWithR().z, false);
-		
+
 		for (Matter m2 : selectZ.values()) {
 			if (m1 != m2 && m1.collision(m2)) {
 				Matter element[] = new Matter[2];
@@ -455,7 +459,7 @@ public class Univers {
 
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				HelperVariable.nebulaRadius, 0.1);
+				HelperVariable.nebulaRadius, 0.25);
 		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(), 0),
 				HelperVariable.darkMatterMass, new Vector3d(0, 0, 0),
 				HelperVariable.darkMatterDensity, true);
@@ -464,6 +468,7 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1));
+				m.setColor(new Point4d(1,1,1,1));
 			}
 		}
 	}
@@ -471,10 +476,10 @@ public class Univers {
 	private void createGalaxiesCollision() {
 		double transSpeed = 0.3;
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(-400, -100,
-				0), 0, 0, 0, HelperVariable.nebulaRadius, 0.10);
+				0), 0, transSpeed, 0, HelperVariable.nebulaRadius, 0.25);
 		TreeMap<Matter, Matter> subu02 = createUvivers(
-				new Vector3d(400, 100, 0), 0, 0, 0,
-				HelperVariable.nebulaRadius, 0.10);
+				new Vector3d(400, 100, 0), 0, -transSpeed, 0,
+				HelperVariable.nebulaRadius, 0.25);
 
 		Matter m1 = new Matter(new Point3d(-400 + Math.random(), -100
 				+ Math.random(), Math.random()), HelperVariable.darkMatterMass
@@ -493,13 +498,13 @@ public class Univers {
 
 		for (Matter m : subu01.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1));
+				m.getSpeed().add(m.orbitalSpeed(m1));
 			}
 		}
 
 		for (Matter m : subu02.values()) {
 			if (m != m2) {
-				m.setSpeed(m.orbitalSpeed(m2));
+				m.getSpeed().add(m.orbitalSpeed(m2));
 			}
 		}
 		listMatter.putAll(subu01);
@@ -531,7 +536,7 @@ public class Univers {
 				+ Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		listMatter.put(m6, m6);
-		Matter m7 = new Matter(new Point3d(-312 + Math.random(),
+		Matter m7 = new Matter(new Point3d(-330 + Math.random(),
 				30 + Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		for (Matter m : listMatter.values()) {
@@ -540,14 +545,14 @@ public class Univers {
 			}
 			mass += m.getMass();
 		}
-		m7.setSpeed(m7.orbitalSpeed(m3));
+		m7.getSpeed().add(m7.orbitalSpeed(m3));
 		listMatter.put(m7, m7);
 
 	}
 
 	private void createPlanetaryRandom() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				HelperVariable.nebulaRadius, 1);
+				HelperVariable.nebulaRadius, 0.25);
 		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(),
 				Math.random()), HelperVariable.darkMatterMass, new Vector3d(0,
 				0, 0), HelperVariable.darkMatterDensity, false);
