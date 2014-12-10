@@ -10,7 +10,7 @@ import javax.vecmath.Vector3d;
 public class InputHandler extends KeyAdapter {
 	private GUIProgram guiProgram;
 
-	private double theta = Math.PI / 128;
+	private double theta = Math.PI / 180;
 
 	public InputHandler(GUIProgram guiProgram) {
 		this.guiProgram = guiProgram;
@@ -25,10 +25,10 @@ public class InputHandler extends KeyAdapter {
 
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_PAGE_UP:
-			guiProgram.getEyes().scale(1.05);
+			guiProgram.getEyes().scale(1.01);
 			break;
 		case KeyEvent.VK_PAGE_DOWN:
-			guiProgram.getEyes().scale(1 / 1.05);
+			guiProgram.getEyes().scale(1 / 1.01);
 			break;
 		case KeyEvent.VK_LEFT:
 			guiProgram.getEyes().set(

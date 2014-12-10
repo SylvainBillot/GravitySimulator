@@ -122,6 +122,7 @@ public class Univers {
 	}
 
 	public void compute() {
+
 		if (listMatter.size() > 1) {
 			// Découpage en 4 et compute de chacun
 			double cx = min.x + (max.x - min.x) / 2;
@@ -429,6 +430,23 @@ public class Univers {
 			} while (cont);
 			miniListMatter.put(m, m);
 			miniMass += m.getMass();
+
+			for (Matter mbis : miniListMatter.values()) {
+				double alea = Math.random();
+				mbis.setColor(new Point3d(0.75 + Math.random() / 4, 0.75 + Math
+						.random() / 4, 0.75 + Math.random() / 4));
+				if (alea > 0.80) {
+					mbis.setColor(new Point3d(0.75 + Math.random() / 4,
+							0.4 + Math.random() * 0.20,
+							0.4 + Math.random() * 0.20));
+				}
+				if (alea > 0.90) {
+					mbis.setColor(new Point3d(0.4 + Math.random() * 0.20,
+							0.4 + Math.random() * 0.20,
+							0.75 + Math.random() / 4));
+				}
+			}
+
 		}
 
 		for (Matter m : miniListMatter.values()) {
@@ -467,20 +485,6 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1));
-				double alea = Math.random();
-				if (alea > 0.25) {
-					m.setColor(new Point3d(0.75 + Math.random() / 4,
-							0.75 + Math.random() / 4, 0.75 + Math.random() / 4));
-				}
-				if (alea > 0.80) {
-					m.setColor(new Point3d(0.75 + Math.random() / 4, 0.4 + Math
-							.random() * 0.20, 0.4 + Math.random() * 0.20));
-				}
-				if (alea > 0.90) {
-					m.setColor(new Point3d(0.4 + Math.random() * 0.20,
-							0.4 + Math.random() * 0.20,
-							0.75 + Math.random() / 4));
-				}
 			}
 		}
 	}

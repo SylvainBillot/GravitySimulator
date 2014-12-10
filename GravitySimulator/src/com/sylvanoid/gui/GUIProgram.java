@@ -373,46 +373,44 @@ public class GUIProgram extends JFrame {
 		glu.gluLookAt(eyes.x, eyes.y, eyes.z, 0, 0, 0, 0, 1, 0);
 		// Change back to model view matrix.
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				for (double cpt = 0; cpt < 1; cpt += Math.random()) {
-					double r = m.getRayon() < 1 ? 1 : m.getRayon();
-					gl.glLoadIdentity();
-					gl.glTranslated(m.getPoint().x, m.getPoint().y,
-							m.getPoint().z);
-					gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-					gl.glBegin(GL2.GL_QUADS);
-					gl.glTexCoord2d(0, 0);
-					gl.glVertex3d(-r, -r, 0);
-					gl.glTexCoord2d(1, 0);
-					gl.glVertex3d(r, -r, 0);
-					gl.glTexCoord2d(1, 1);
-					gl.glVertex3d(r, r, 0);
-					gl.glTexCoord2d(0, 1);
-					gl.glVertex3d(-r, r, 0);
-					gl.glEnd();
-					gl.glBegin(GL2.GL_QUADS);
-					gl.glTexCoord2d(0, 0);
-					gl.glVertex3d(-r, 0, -r);
-					gl.glTexCoord2d(1, 0);
-					gl.glVertex3d(r, 0, -r);
-					gl.glTexCoord2d(1, 1);
-					gl.glVertex3d(r, 0, r);
-					gl.glTexCoord2d(0, 1);
-					gl.glVertex3d(-r, 0, r);
-					gl.glEnd();
-					gl.glBegin(GL2.GL_QUADS);
-					gl.glTexCoord2d(0, 0);
-					gl.glVertex3d(0, -r, -r);
-					gl.glTexCoord2d(1, 0);
-					gl.glVertex3d(0, r, -r);
-					gl.glTexCoord2d(1, 1);
-					gl.glVertex3d(0, r, r);
-					gl.glTexCoord2d(0, 1);
-					gl.glVertex3d(0, -r, r);
-					gl.glEnd();
-				}
+				gl.glLoadIdentity();
+				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+				double r = 5 * (m.getRayon() < 1 ? 1 : m.getRayon());
+
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glTexCoord2d(0, 0);
+				gl.glVertex3d(-r, -r, 0);
+				gl.glTexCoord2d(1, 0);
+				gl.glVertex3d(r, -r, 0);
+				gl.glTexCoord2d(1, 1);
+				gl.glVertex3d(r, r, 0);
+				gl.glTexCoord2d(0, 1);
+				gl.glVertex3d(-r, r, 0);
+				gl.glEnd();
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glTexCoord2d(0, 0);
+				gl.glVertex3d(-r, 0, -r);
+				gl.glTexCoord2d(1, 0);
+				gl.glVertex3d(r, 0, -r);
+				gl.glTexCoord2d(1, 1);
+				gl.glVertex3d(r, 0, r);
+				gl.glTexCoord2d(0, 1);
+				gl.glVertex3d(-r, 0, r);
+				gl.glEnd();
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glTexCoord2d(0, 0);
+				gl.glVertex3d(0, -r, -r);
+				gl.glTexCoord2d(1, 0);
+				gl.glVertex3d(0, r, -r);
+				gl.glTexCoord2d(1, 1);
+				gl.glVertex3d(0, r, r);
+				gl.glTexCoord2d(0, 1);
+				gl.glVertex3d(0, -r, r);
+				gl.glEnd();
+
 			}
 		}
 		gl.glEnd();
@@ -423,21 +421,15 @@ public class GUIProgram extends JFrame {
 		univers.process();
 	}
 
-	private void LoadGLTextures(GL gl) { // Load Bitmaps And Convert To Textures
-		com.sylvanoid.common.TextureReader.Texture texture = null;// Create
-																	// Storage
-																	// Space For
-																	// The
-																	// Texture
+	private void LoadGLTextures(GL gl) {
+		com.sylvanoid.common.TextureReader.Texture texture = null;
 		try {
 			texture = TextureReader.readTexture("resources/images/Star.bmp");
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		gl.glGenTextures(1, textures, 0); // Create One Texture
-
-		// Create Linear Filtered Texture
+		gl.glGenTextures(1, textures, 0);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 				GL.GL_LINEAR);
@@ -464,5 +456,4 @@ public class GUIProgram extends JFrame {
 		}
 		return bi;
 	}
-
 }
