@@ -372,7 +372,7 @@ public class GUIProgram extends JFrame {
 		double phi02 = afterRotateX.angle(eyes) * Math.signum(eyes.x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				double r = 5 * (m.getRayon() < 1 ? 1 : m.getRayon());
+				double r = (1*Math.random()+4) * (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
@@ -382,6 +382,7 @@ public class GUIProgram extends JFrame {
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
 				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
+				gl.glRotated(Math.random()*360, 0, 0, 1);
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(0, 0);

@@ -490,21 +490,21 @@ public class Univers {
 	private void createGalaxiesCollision() {
 		double transSpeed = 0.3;
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(-400, -100,
-				0), 0, transSpeed, 0, HelperVariable.nebulaRadius, 0.25, 1,
+				-50), 0, transSpeed, 0, HelperVariable.nebulaRadius, 0.25, 1,
 				0.25);
 		TreeMap<Matter, Matter> subu02 = createUvivers(
-				new Vector3d(400, 100, 0), 0, -transSpeed, 0,
-				HelperVariable.nebulaRadius, 0.25, 1, 0.25);
+				new Vector3d(400, 100, 50), 0, -transSpeed, 0,
+				HelperVariable.nebulaRadius/2, 1, 0.15, 0.15);
 
 		Matter m1 = new Matter(new Point3d(-400 + Math.random(), -100
-				+ Math.random(), Math.random()), HelperVariable.darkMatterMass
+				+ Math.random(), -50+Math.random()), HelperVariable.darkMatterMass
 				+ Math.random(), new Vector3d(transSpeed, 0, 0),
 				HelperVariable.darkMatterDensity, true);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
 		Matter m2 = new Matter(new Point3d(400 + Math.random(),
-				100 + Math.random(), Math.random()),
+				100 + Math.random(), 50+Math.random()),
 				HelperVariable.darkMatterMass + Math.random(), new Vector3d(
 						-transSpeed, 0, 0), HelperVariable.darkMatterDensity,
 				true);

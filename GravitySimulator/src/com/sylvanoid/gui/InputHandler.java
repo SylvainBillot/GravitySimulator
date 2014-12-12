@@ -53,16 +53,25 @@ public class InputHandler extends KeyAdapter {
 		case KeyEvent.VK_HOME:
 			guiProgram.setEyes(new Vector3d(0, 0, 900));
 			break;
+		case KeyEvent.VK_NUMPAD0:
+			guiProgram.setEyes(new Vector3d(0, 0, 900));
+			break;
+		case KeyEvent.VK_NUMPAD1:
+			guiProgram.setEyes(new Vector3d(0.0000000001, 900, 0));
+			break;
+		case KeyEvent.VK_NUMPAD2:
+			guiProgram.setEyes(new Vector3d(900, 0, 0));
+			break;
 
 		}
 
 		switch (e.getKeyChar()) {
 		case '+':
-			HelperVariable.timeFactor *= 1.1;
+			HelperVariable.timeFactor *= 1.01;
 			break;
 
 		case '-':
-			HelperVariable.timeFactor *= 1 / 1.1;
+			HelperVariable.timeFactor *= 1 / 1.01;
 			break;
 
 		}
