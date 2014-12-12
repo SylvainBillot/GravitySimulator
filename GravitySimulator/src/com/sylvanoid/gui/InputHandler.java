@@ -1,5 +1,6 @@
 package com.sylvanoid.gui;
 
+import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 
 import java.awt.event.KeyAdapter;
@@ -31,27 +32,37 @@ public class InputHandler extends KeyAdapter {
 			break;
 		case KeyEvent.VK_LEFT:
 			guiProgram.getEyes().set(
-					HelperVector.rotate(guiProgram.getEyes(), new Vector3d(0, 1, 0), -theta));
+					HelperVector.rotate(guiProgram.getEyes(), new Vector3d(0,
+							1, 0), -theta));
 			break;
 		case KeyEvent.VK_RIGHT:
-			guiProgram.getEyes()
-					.set(HelperVector.rotate(guiProgram.getEyes(), new Vector3d(0, 1, 0),
-							theta));
+			guiProgram.getEyes().set(
+					HelperVector.rotate(guiProgram.getEyes(), new Vector3d(0,
+							1, 0), theta));
 			break;
 		case KeyEvent.VK_UP:
 			guiProgram.getEyes().set(
-					HelperVector.rotate(guiProgram.getEyes(), new Vector3d(1, 0, 0), -theta));
+					HelperVector.rotate(guiProgram.getEyes(), new Vector3d(1,
+							0, 0), -theta));
 			break;
 		case KeyEvent.VK_DOWN:
-			guiProgram.getEyes()
-					.set(HelperVector.rotate(guiProgram.getEyes(), new Vector3d(1, 0, 0),
-							theta));
+			guiProgram.getEyes().set(
+					HelperVector.rotate(guiProgram.getEyes(), new Vector3d(1,
+							0, 0), theta));
 			break;
 		case KeyEvent.VK_HOME:
-			guiProgram.setEyes(new Vector3d(0,0,900));
+			guiProgram.setEyes(new Vector3d(0, 0, 900));
 			break;
+
+		case KeyEvent.VK_NUMPAD1:
+			HelperVariable.timeFactor *= 1.1;
+			break;
+
+		case KeyEvent.VK_NUMPAD2:
+			HelperVariable.timeFactor *= 1 / 1.1;
+			break;
+
 		}
 	}
-
 
 }

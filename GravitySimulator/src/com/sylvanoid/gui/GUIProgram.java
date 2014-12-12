@@ -33,6 +33,7 @@ import org.jcodec.api.SequenceEncoder;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.sylvanoid.common.HelperVariable;
+import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Univers;
 
@@ -307,7 +308,6 @@ public class GUIProgram extends JFrame {
 			}
 		});
 		me.add(gljpanel, BorderLayout.CENTER);
-		// Create a animator that drives canvas' display() at the specified FPS.
 		animator = new FPSAnimator(gljpanel, 60, true);
 
 	}
@@ -366,21 +366,22 @@ public class GUIProgram extends JFrame {
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
 		glu.gluLookAt(eyes.x, eyes.y, eyes.z, 0, 0, 0, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		Vector3d toEyes = new Vector3d(eyes);
-		double phi = toEyes.angle(new Vector3d(0, 0, 1));
-		System.out.println(toEyes + " " + phi);
+		double phi01 = new Vector3d(0, 0, 1).angle(eyes) * -Math.signum(eyes.y);
+		Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
+				new Vector3d(1, 0, 0), phi01);
+		double phi02 = afterRotateX.angle(eyes) * Math.signum(eyes.x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
 				double r = 5 * (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
-				pts[0] = new Vector3d(-r, -r, 0);
-				pts[1] = new Vector3d(r, -r, 0);
-				pts[2] = new Vector3d(r, r, 0);
-				pts[3] = new Vector3d(-r, r, 0);
+				pts[0] = new Vector3d(-r, -r, 0); // BL
+				pts[1] = new Vector3d(r, -r, 0); // BR
+				pts[2] = new Vector3d(r, r, 0); // TR
+				pts[3] = new Vector3d(-r, r, 0); // TL
 				gl.glLoadIdentity();
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
-				gl.glRotated(-Math.signum(eyes.y)*phi*180/Math.PI, 1, 0, 0);
-				gl.glRotated(Math.signum(eyes.x)*phi*180/Math.PI, 0, 1, 0);
+				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
+				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(0, 0);
