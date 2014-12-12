@@ -1,10 +1,10 @@
 package com.sylvanoid.gui;
 
+import com.sylvanoid.common.HelperVector;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.vecmath.AxisAngle4d;
-import javax.vecmath.Matrix3d;
 import javax.vecmath.Vector3d;
 
 public class InputHandler extends KeyAdapter {
@@ -22,7 +22,6 @@ public class InputHandler extends KeyAdapter {
 	}
 
 	private void processKeyEvent(KeyEvent e, boolean pressed) {
-
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_PAGE_UP:
 			guiProgram.getEyes().scale(1.01);
@@ -32,30 +31,27 @@ public class InputHandler extends KeyAdapter {
 			break;
 		case KeyEvent.VK_LEFT:
 			guiProgram.getEyes().set(
-					rotate(guiProgram.getEyes(), new Vector3d(0, 1, 0), theta));
+					HelperVector.rotate(guiProgram.getEyes(), new Vector3d(0, 1, 0), -theta));
 			break;
 		case KeyEvent.VK_RIGHT:
 			guiProgram.getEyes()
-					.set(rotate(guiProgram.getEyes(), new Vector3d(0, 1, 0),
-							-theta));
+					.set(HelperVector.rotate(guiProgram.getEyes(), new Vector3d(0, 1, 0),
+							theta));
 			break;
 		case KeyEvent.VK_UP:
 			guiProgram.getEyes().set(
-					rotate(guiProgram.getEyes(), new Vector3d(1, 0, 0), theta));
+					HelperVector.rotate(guiProgram.getEyes(), new Vector3d(1, 0, 0), -theta));
 			break;
 		case KeyEvent.VK_DOWN:
 			guiProgram.getEyes()
-					.set(rotate(guiProgram.getEyes(), new Vector3d(1, 0, 0),
-							-theta));
+					.set(HelperVector.rotate(guiProgram.getEyes(), new Vector3d(1, 0, 0),
+							theta));
+			break;
+		case KeyEvent.VK_HOME:
+			guiProgram.setEyes(new Vector3d(0,0,900));
 			break;
 		}
 	}
 
-	private static Vector3d rotate(Vector3d vector, Vector3d axis, double angle) {
-		Matrix3d rotate = new Matrix3d();
-		rotate.set(new AxisAngle4d(axis, angle));
-		Vector3d result = new Vector3d();
-		rotate.transform(vector, result);
-		return result;
-	}
+
 }

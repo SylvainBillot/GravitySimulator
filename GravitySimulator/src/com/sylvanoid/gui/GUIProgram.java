@@ -272,19 +272,13 @@ public class GUIProgram extends JFrame {
 			public void init(GLAutoDrawable drawable) {
 				// TODO Auto-generated method stub
 				GL2 gl = drawable.getGL().getGL2();
-				gl.glEnable(GL2.GL_TEXTURE_2D); // Enable Texture Mapping
-				gl.glShadeModel(GL2.GL_SMOOTH); // Enable Smooth Shading
-				gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); // Black Background
-				gl.glClearDepth(1.0f); // Depth Buffer Setup
-				gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST); // Really
-																				// Nice
-																				// Perspective
-																				// Calculations
-				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE); // Set The Blending
-															// Function For
-															// Translucency
+				gl.glEnable(GL2.GL_TEXTURE_2D);
+				gl.glShadeModel(GL2.GL_SMOOTH);
+				gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+				gl.glClearDepth(1.0f);
+				gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
 				gl.glEnable(GL.GL_BLEND);
-
 				LoadGLTextures(gl);
 			}
 
@@ -371,46 +365,51 @@ public class GUIProgram extends JFrame {
 		float widthHeightRatio = (float) getWidth() / (float) getHeight();
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
 		glu.gluLookAt(eyes.x, eyes.y, eyes.z, 0, 0, 0, 0, 1, 0);
-		// Change back to model view matrix.
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		Vector3d toEyes = new Vector3d(eyes);
+		double phi = toEyes.angle(new Vector3d(0, 0, 1));
+		System.out.println(toEyes + " " + phi);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
+				double r = 5 * (m.getRayon() < 1 ? 1 : m.getRayon());
+				Vector3d[] pts = new Vector3d[4];
+				pts[0] = new Vector3d(-r, -r, 0);
+				pts[1] = new Vector3d(r, -r, 0);
+				pts[2] = new Vector3d(r, r, 0);
+				pts[3] = new Vector3d(-r, r, 0);
 				gl.glLoadIdentity();
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+				gl.glRotated(-Math.signum(eyes.y)*phi*180/Math.PI, 1, 0, 0);
+				gl.glRotated(Math.signum(eyes.x)*phi*180/Math.PI, 0, 1, 0);
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-				double r = 5 * (m.getRayon() < 1 ? 1 : m.getRayon());
-
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(0, 0);
-				gl.glVertex3d(-r, -r, 0);
+				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
 				gl.glTexCoord2d(1, 0);
-				gl.glVertex3d(r, -r, 0);
+				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
 				gl.glTexCoord2d(1, 1);
-				gl.glVertex3d(r, r, 0);
+				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
 				gl.glTexCoord2d(0, 1);
-				gl.glVertex3d(-r, r, 0);
-				gl.glEnd();
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glTexCoord2d(0, 0);
-				gl.glVertex3d(-r, 0, -r);
-				gl.glTexCoord2d(1, 0);
-				gl.glVertex3d(r, 0, -r);
-				gl.glTexCoord2d(1, 1);
-				gl.glVertex3d(r, 0, r);
-				gl.glTexCoord2d(0, 1);
-				gl.glVertex3d(-r, 0, r);
-				gl.glEnd();
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glTexCoord2d(0, 0);
-				gl.glVertex3d(0, -r, -r);
-				gl.glTexCoord2d(1, 0);
-				gl.glVertex3d(0, r, -r);
-				gl.glTexCoord2d(1, 1);
-				gl.glVertex3d(0, r, r);
-				gl.glTexCoord2d(0, 1);
-				gl.glVertex3d(0, -r, r);
+				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
 				gl.glEnd();
 
+				/*
+				 * gl.glBegin(GL2.GL_QUADS); gl.glTexCoord2d(0, 0);
+				 * gl.glVertex3d(-r, -r, 0); gl.glTexCoord2d(1, 0);
+				 * gl.glVertex3d(r, -r, 0); gl.glTexCoord2d(1, 1);
+				 * gl.glVertex3d(r, r, 0); gl.glTexCoord2d(0, 1);
+				 * gl.glVertex3d(-r, r, 0); gl.glEnd();
+				 * gl.glBegin(GL2.GL_QUADS); gl.glTexCoord2d(0, 0);
+				 * gl.glVertex3d(-r, 0, -r); gl.glTexCoord2d(1, 0);
+				 * gl.glVertex3d(r, 0, -r); gl.glTexCoord2d(1, 1);
+				 * gl.glVertex3d(r, 0, r); gl.glTexCoord2d(0, 1);
+				 * gl.glVertex3d(-r, 0, r); gl.glEnd();
+				 * gl.glBegin(GL2.GL_QUADS); gl.glTexCoord2d(0, 0);
+				 * gl.glVertex3d(0, -r, -r); gl.glTexCoord2d(1, 0);
+				 * gl.glVertex3d(0, r, -r); gl.glTexCoord2d(1, 1);
+				 * gl.glVertex3d(0, r, r); gl.glTexCoord2d(0, 1);
+				 * gl.glVertex3d(0, -r, r); gl.glEnd();
+				 */
 			}
 		}
 		gl.glEnd();
