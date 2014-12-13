@@ -28,6 +28,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.vecmath.Vector3d;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.jcodec.api.SequenceEncoder;
 
@@ -111,6 +114,31 @@ public class GUIProgram extends JFrame {
 				guiParam.setVisible(true);
 			}
 		});
+		JMenuItem menuItemExport = new JMenuItem("Export univer ...");
+		menuItemExport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					JAXBContext jc;
+					jc = JAXBContext.newInstance( Matter.class );
+			        Marshaller m = jc.createMarshaller();
+			        m.marshal( me.univers.getListMatiere(), System.out );
+				} catch (JAXBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		JMenuItem menuItemImport = new JMenuItem("Import univers ...");
+		menuItemImport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+		menuFichier.add(menuItemExport);
+		menuFichier.add(menuItemImport);
 		menuFichier.add(menuItemBaseParam);
 
 		JMenu menuProcess = new JMenu("Process");

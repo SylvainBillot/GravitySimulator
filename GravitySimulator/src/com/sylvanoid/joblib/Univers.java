@@ -14,7 +14,7 @@ import javax.vecmath.Vector3d;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
 
-public class Univers {
+public class Univers{
 	private double mass;
 	private TreeMap<Matter, Matter> listMatter;
 	private Point3d gPoint = new Point3d(0, 0, 0);
@@ -26,6 +26,10 @@ public class Univers {
 		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y);
 	}
 
+	public Univers() {
+		
+	}
+	
 	public Univers(TypeOfUnivers typeOfUnivers) {
 		listMatter = new TreeMap<Matter, Matter>();
 		mass = 0;
@@ -169,7 +173,7 @@ public class Univers {
 								new MassComparator());
 						sortByMass.putAll(u.listMatter);
 						for (Matter m : sortByMass.values()) {
-							double distance = m.getPoint().distance(
+							double distance = new Point3d(m.getPoint()).distance(
 									uvoisin.getGPoint());
 							double attraction = HelperVariable.timeFactor
 									* HelperVariable.GRAVITY
@@ -414,7 +418,7 @@ public class Univers {
 				Random random = new Random();
 				double r = random.nextDouble();
 				m = new Matter(
-						new Point3d(
+						new Vector3d(
 								origine.x
 										+ Math.cos(theta)
 										* Math.sin(phi)
@@ -448,15 +452,15 @@ public class Univers {
 
 			for (Matter mbis : miniListMatter.values()) {
 				double alea = Math.random();
-				mbis.setColor(new Point3d(0.90 + Math.random() / 4, 0.90 + Math
+				mbis.setColor(new Vector3d(0.90 + Math.random() / 4, 0.90 + Math
 						.random() / 4, 0.90 + Math.random() / 4));
 				if (alea > 0.80) {
-					mbis.setColor(new Point3d(0.90 + Math.random() * 0.1,
+					mbis.setColor(new Vector3d(0.90 + Math.random() * 0.1,
 							0.4 + Math.random() * 0.1,
 							0.4 + Math.random() * 0.1));
 				}
 				if (alea > 0.90) {
-					mbis.setColor(new Point3d(0.4 + Math.random() * 0.10,
+					mbis.setColor(new Vector3d(0.4 + Math.random() * 0.10,
 							0.4 + Math.random() * 0.10,
 							0.9 + Math.random() * 0.1));
 				}
@@ -492,7 +496,7 @@ public class Univers {
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
 				HelperVariable.nebulaRadius, 0.25, 1, 0.25);
-		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(), 0),
+		Matter m1 = new Matter(new Vector3d(Math.random(), Math.random(), 0),
 				HelperVariable.darkMatterMass, new Vector3d(0, 0, 0),
 				HelperVariable.darkMatterDensity, true);
 		listMatter.put(m1, m1);
@@ -513,7 +517,7 @@ public class Univers {
 				50), 0, -transSpeed, 0, HelperVariable.nebulaRadius / 2, 1,
 				0.15, 0.15);
 
-		Matter m1 = new Matter(new Point3d(-400 + Math.random(), -100
+		Matter m1 = new Matter(new Vector3d(-400 + Math.random(), -100
 				+ Math.random(), -50 + Math.random()),
 				HelperVariable.darkMatterMass + Math.random(), new Vector3d(
 						transSpeed, 0, 0), HelperVariable.darkMatterDensity,
@@ -521,7 +525,7 @@ public class Univers {
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
-		Matter m2 = new Matter(new Point3d(400 + Math.random(),
+		Matter m2 = new Matter(new Vector3d(400 + Math.random(),
 				100 + Math.random(), 50 + Math.random()),
 				HelperVariable.darkMatterMass + Math.random(), new Vector3d(
 						-transSpeed, 0, 0), HelperVariable.darkMatterDensity,
@@ -545,31 +549,31 @@ public class Univers {
 	}
 
 	private void createPlanetary() {
-		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(),
+		Matter m1 = new Matter(new Vector3d(Math.random(), Math.random(),
 				Math.random()), 1E10 + Math.random(), new Vector3d(0, 0, 0),
 				300, false);
 		listMatter.put(m1, m1);
-		Matter m2 = new Matter(new Point3d(50 + Math.random(),
+		Matter m2 = new Matter(new Vector3d(50 + Math.random(),
 				10 + Math.random(), Math.random()), 1E4 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		listMatter.put(m2, m2);
-		Matter m3 = new Matter(new Point3d(-320 + Math.random(),
+		Matter m3 = new Matter(new Vector3d(-320 + Math.random(),
 				30 + Math.random(), Math.random()), 1E9 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		listMatter.put(m3, m3);
-		Matter m4 = new Matter(new Point3d(-100 + Math.random(), -10
+		Matter m4 = new Matter(new Vector3d(-100 + Math.random(), -10
 				+ Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		listMatter.put(m4, m4);
-		Matter m5 = new Matter(new Point3d(90 + Math.random(), -20
+		Matter m5 = new Matter(new Vector3d(90 + Math.random(), -20
 				+ Math.random(), Math.random()), 1E3 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		listMatter.put(m5, m5);
-		Matter m6 = new Matter(new Point3d(-20 + Math.random(), -10
+		Matter m6 = new Matter(new Vector3d(-20 + Math.random(), -10
 				+ Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		listMatter.put(m6, m6);
-		Matter m7 = new Matter(new Point3d(-330 + Math.random(),
+		Matter m7 = new Matter(new Vector3d(-330 + Math.random(),
 				30 + Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		for (Matter m : listMatter.values()) {
@@ -586,7 +590,7 @@ public class Univers {
 	private void createPlanetaryRandom() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
 				HelperVariable.nebulaRadius, 0.25, 1, 1);
-		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(),
+		Matter m1 = new Matter(new Vector3d(Math.random(), Math.random(),
 				Math.random()), HelperVariable.darkMatterMass, new Vector3d(0,
 				0, 0), HelperVariable.darkMatterDensity, false);
 		listMatter.put(m1, m1);
@@ -601,7 +605,7 @@ public class Univers {
 	private void createPlanetariesGenesis() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
 				HelperVariable.nebulaRadius, 1, 1, 0.25);
-		Matter m1 = new Matter(new Point3d(Math.random(), Math.random(),
+		Matter m1 = new Matter(new Vector3d(Math.random(), Math.random(),
 				Math.random()), HelperVariable.darkMatterMass, new Vector3d(0,
 				0, 0), HelperVariable.darkMatterDensity, false);
 		listMatter.put(m1, m1);
@@ -614,17 +618,17 @@ public class Univers {
 	}
 
 	private void createDoubleStars() {
-		Matter m1 = new Matter(new Point3d(Math.random() - 50,
+		Matter m1 = new Matter(new Vector3d(Math.random() - 50,
 				Math.random() - 90, Math.random()), 5E9 + 1E10 + Math.random(),
 				new Vector3d(0, 0, 0), HelperVariable.dentityMin, false);
-		m1.setColor(new Point3d(1, 0.7, 0.7));
+		m1.setColor(new Vector3d(1, 0.7, 0.7));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
-		Matter m2 = new Matter(new Point3d(Math.random() + 50,
+		Matter m2 = new Matter(new Vector3d(Math.random() + 50,
 				Math.random() + 90, Math.random()), 1E10 + Math.random(),
 				new Vector3d(0, 0, 0), HelperVariable.dentityMin, false);
-		m2.setColor(new Point3d(0.8, 0.8, 1));
+		m2.setColor(new Vector3d(0.8, 0.8, 1));
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
 		m1.getSpeed().add(m1.orbitalSpeed(m2, new Vector3d(0, 0, 1)));

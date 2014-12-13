@@ -8,10 +8,10 @@ import com.sylvanoid.common.HelperVector;
 
 public class Matter implements Comparable<Matter> {
 	private double mass;
-	private Point3d point = new Point3d(0, 0, 0);
+	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
-	private Point3d color = new Point3d(1, 1, 11);
+	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private boolean isDark;
 	private double rayon;
@@ -33,7 +33,7 @@ public class Matter implements Comparable<Matter> {
 				+ speed.x + " vy:" + speed.y;
 	}
 
-	public Matter(Point3d point, double mass, Vector3d speed, double density,
+	public Matter(Vector3d point, double mass, Vector3d speed, double density,
 			boolean isDark) {
 		this.setPoint(point);
 		this.mass = mass;
@@ -43,19 +43,30 @@ public class Matter implements Comparable<Matter> {
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
-	public Point3d getPoint() {
+	public Matter(Vector3d point, double mass, Vector3d speed, double density,
+			Vector3d color, boolean isDark) {
+		this.setPoint(point);
+		this.mass = mass;
+		this.speed = speed;
+		this.density = density;
+		this.color = color;
+		this.isDark = isDark;
+		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
+	}
+
+	public Vector3d getPoint() {
 		return point;
 	}
 
-	public void setPoint(Point3d point) {
+	public void setPoint(Vector3d point) {
 		this.point = point;
 	}
 
-	public Point3d getColor() {
+	public Vector3d getColor() {
 		return color;
 	}
 
-	public void setColor(Point3d color) {
+	public void setColor(Vector3d color) {
 		this.color = color;
 	}
 
@@ -104,20 +115,20 @@ public class Matter implements Comparable<Matter> {
 		return rayon;
 	}
 
-	public Point3d getPlusV() {
-		return new Point3d(point.x + speed.x * HelperVariable.timeFactor,
+	public Vector3d getPlusV() {
+		return new Vector3d(point.x + speed.x * HelperVariable.timeFactor,
 				point.y + speed.y * HelperVariable.timeFactor, point.z
 						+ speed.z * HelperVariable.timeFactor);
 	}
 
-	public Point3d getMinusV() {
-		return new Point3d(point.x - speed.x * HelperVariable.timeFactor,
+	public Vector3d getMinusV() {
+		return new Vector3d(point.x - speed.x * HelperVariable.timeFactor,
 				point.y - speed.y * HelperVariable.timeFactor, point.z
 						- speed.z * HelperVariable.timeFactor);
 	}
 
-	public Point3d maxWithR() {
-		return new Point3d((point.x > getPlusV().x) ? (point.x + rayon)
+	public Vector3d maxWithR() {
+		return new Vector3d((point.x > getPlusV().x) ? (point.x + rayon)
 				: (getPlusV().x + rayon),
 				(point.y > getPlusV().y) ? (point.y + rayon)
 						: (getPlusV().y + rayon),
@@ -125,8 +136,8 @@ public class Matter implements Comparable<Matter> {
 						: (getPlusV().z + rayon));
 	}
 
-	public Point3d minWithR() {
-		return new Point3d((point.x > getPlusV().x) ? (getPlusV().x - rayon)
+	public Vector3d minWithR() {
+		return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x - rayon)
 				: (point.x - rayon),
 				(point.y > getPlusV().y) ? (getPlusV().y - rayon)
 						: (point.y - rayon),
@@ -134,15 +145,15 @@ public class Matter implements Comparable<Matter> {
 						: (point.z - rayon));
 	}
 
-	public Point3d max() {
-		return new Point3d((point.x > getPlusV().x) ? (point.x)
+	public Vector3d max() {
+		return new Vector3d((point.x > getPlusV().x) ? (point.x)
 				: (getPlusV().x), (point.y > getPlusV().y) ? (point.y)
 				: (getPlusV().y), (point.z > getPlusV().z) ? (point.z)
 				: (getPlusV().z));
 	}
 
-	public Point3d min() {
-		return new Point3d((point.x > getPlusV().x) ? (getPlusV().x)
+	public Vector3d min() {
+		return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x)
 				: (point.x), (point.y > getPlusV().y) ? (getPlusV().y)
 				: (point.y), (point.z > getPlusV().z) ? (getPlusV().z)
 				: (point.z));
@@ -159,13 +170,12 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public void fusion(Matter m) {
-		point = new Point3d(
-				(point.x * mass + m.getPoint().getX() * m.getMass())
-						/ (mass + m.getMass()), (point.y * mass + m.getPoint()
-						.getY() * m.getMass())
-						/ (mass + m.getMass()), (point.z * mass + m.getPoint()
-						.getZ() * m.getMass())
-						/ (mass + m.getMass()));
+		point = new Vector3d((point.x * mass + m.getPoint().x * m.getMass())
+				/ (mass + m.getMass()), (point.y * mass + m.getPoint().y
+				* m.getMass())
+				/ (mass + m.getMass()), (point.z * mass + m.getPoint().z
+				* m.getMass())
+				/ (mass + m.getMass()));
 		speed = new Vector3d((speed.x * mass + m.getSpeed().x * m.getMass())
 				/ (mass + m.getMass()), (speed.y * mass + m.getSpeed().y
 				* m.getMass())
@@ -211,8 +221,8 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public boolean collision(Matter m) {
-		if (point.distance(m.getPoint()) < rayon + m.rayon
-				|| getPlusV().distance(m.getPlusV()) < rayon + m.rayon) {
+		if (new Point3d(point).distance(new Point3d(m.getPoint())) < rayon + m.rayon
+				|| new Point3d(getPlusV()).distance(new Point3d(m.getPlusV())) < rayon + m.rayon) {
 			return true;
 		} else {
 			if ((Math.max(max().x, m.max().x) - Math.min(min().x, m.min().x) <= (max().x
@@ -232,15 +242,16 @@ public class Matter implements Comparable<Matter> {
 	public Vector3d orbitalSpeed(Matter m, Vector3d axis) {
 		double orbitalSpeedValue = Math
 				.pow(HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
-						/ ((mass + m.getMass()) * point.distance(m.getPoint())),
+						/ ((mass + m.getMass()) * new Point3d(point).distance(new Point3d(m.getPoint()))),
 						0.5);
 
-		double theta = Math.atan2(m.getPoint().y - point.getY(), m.getPoint().x
-				- point.getX());
-		double phi = Math.atan2(Math.pow(
-				Math.pow(m.getPoint().x - point.getX(), 2)
-						+ Math.pow(m.getPoint().y - point.getY(), 2), 0.5), (m
-				.getPoint().z - point.getZ()));
+		double theta = Math.atan2(m.getPoint().y - point.y, m.getPoint().x
+				- point.x);
+		double phi = Math.atan2(
+				Math.pow(
+						Math.pow(m.getPoint().x - point.x, 2)
+								+ Math.pow(m.getPoint().y - point.y, 2), 0.5),
+				(m.getPoint().z - point.z));
 
 		Vector3d accel = new Vector3d(orbitalSpeedValue * Math.cos(theta)
 				* Math.sin(phi), orbitalSpeedValue * Math.sin(theta)
