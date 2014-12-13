@@ -82,8 +82,6 @@ public class GUIProgram extends JFrame {
 				.getScreenSize();
 		setSize((int) dimension.getWidth(), (int) dimension.getHeight());
 		setLocationRelativeTo(null);
-		InputHandler inputHandler = new InputHandler(this);
-		addKeyListener(inputHandler);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				try {
@@ -149,15 +147,6 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
-		JCheckBoxMenuItem menuItemTrace = new JCheckBoxMenuItem("Trace",
-				HelperVariable.traceCourbe);
-		menuItemTrace.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.traceCourbe = !HelperVariable.traceCourbe;
-			}
-		});
 		JMenuItem menuItemCentreEcran = new JMenuItem("All univers on screen");
 		menuItemCentreEcran.addActionListener(new ActionListener() {
 			@Override
@@ -192,7 +181,6 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
-		menuVisu.add(menuItemTrace);
 		menuVisu.add(menuItemCentreEcran);
 		menuVisu.add(menuItemplusMassif);
 		menuVisu.add(menuItemBarycentre);
@@ -273,8 +261,8 @@ public class GUIProgram extends JFrame {
 				render(drawable);
 				if (HelperVariable.exportToVideo) {
 					GL2 gl = drawable.getGL().getGL2();
-					BufferedImage img = toImage(gl, drawable.getWidth(),
-							drawable.getHeight());
+					BufferedImage img = toImage(gl, drawable.getSurfaceWidth(),
+							drawable.getSurfaceHeight());
 					try {
 						me.getOut().encodeImage(img);
 					} catch (IOException e) {
@@ -285,6 +273,8 @@ public class GUIProgram extends JFrame {
 				update();
 			}
 		});
+		InputHandler inputHandler = new InputHandler(this);
+		gljpanel.addKeyListener(inputHandler);
 		me.add(gljpanel, BorderLayout.CENTER);
 		animator = new FPSAnimator(gljpanel, 60, true);
 		animator.start();
@@ -333,9 +323,8 @@ public class GUIProgram extends JFrame {
 
 	private void render(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
-		if (!HelperVariable.traceCourbe) {
-			gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		}
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		gl.glEnable(GL2.GL_BLEND);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our Texture
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
@@ -344,13 +333,15 @@ public class GUIProgram extends JFrame {
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
 		glu.gluLookAt(eyes.x, eyes.y, eyes.z, 0, 0, 0, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glLoadIdentity();
 		double phi01 = new Vector3d(0, 0, 1).angle(eyes) * -Math.signum(eyes.y);
 		Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
 				new Vector3d(1, 0, 0), phi01);
 		double phi02 = afterRotateX.angle(eyes) * Math.signum(eyes.x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				double r = (0.5*Math.random()+4.5) * (m.getRayon() < 1 ? 1 : m.getRayon());
+				double r = (0.5 * Math.random() + 4.5)
+						* (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
@@ -360,7 +351,7 @@ public class GUIProgram extends JFrame {
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
 				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
-				gl.glRotated(Math.random()*360, 0, 0, 1);
+				gl.glRotated(Math.random() * 360, 0, 0, 1);
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(0, 0);
@@ -372,28 +363,9 @@ public class GUIProgram extends JFrame {
 				gl.glTexCoord2d(0, 1);
 				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
 				gl.glEnd();
-
-				/*
-				 * gl.glBegin(GL2.GL_QUADS); gl.glTexCoord2d(0, 0);
-				 * gl.glVertex3d(-r, -r, 0); gl.glTexCoord2d(1, 0);
-				 * gl.glVertex3d(r, -r, 0); gl.glTexCoord2d(1, 1);
-				 * gl.glVertex3d(r, r, 0); gl.glTexCoord2d(0, 1);
-				 * gl.glVertex3d(-r, r, 0); gl.glEnd();
-				 * gl.glBegin(GL2.GL_QUADS); gl.glTexCoord2d(0, 0);
-				 * gl.glVertex3d(-r, 0, -r); gl.glTexCoord2d(1, 0);
-				 * gl.glVertex3d(r, 0, -r); gl.glTexCoord2d(1, 1);
-				 * gl.glVertex3d(r, 0, r); gl.glTexCoord2d(0, 1);
-				 * gl.glVertex3d(-r, 0, r); gl.glEnd();
-				 * gl.glBegin(GL2.GL_QUADS); gl.glTexCoord2d(0, 0);
-				 * gl.glVertex3d(0, -r, -r); gl.glTexCoord2d(1, 0);
-				 * gl.glVertex3d(0, r, -r); gl.glTexCoord2d(1, 1);
-				 * gl.glVertex3d(0, r, r); gl.glTexCoord2d(0, 1);
-				 * gl.glVertex3d(0, -r, r); gl.glEnd();
-				 */
 			}
 		}
-		gl.glEnd();
-		gl.glFlush();
+		gl.glDisable(GL2.GL_BLEND);
 	}
 
 	private void update() {
