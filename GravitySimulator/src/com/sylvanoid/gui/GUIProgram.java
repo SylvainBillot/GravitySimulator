@@ -52,7 +52,7 @@ public class GUIProgram extends JFrame {
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
 
-	private int textures[] = new int[1]; // Storage For One textures
+	private int textures[] = new int[2]; // Storage For One textures
 
 	private Vector3d eyes = new Vector3d(0, 0, 900);
 
@@ -329,7 +329,6 @@ public class GUIProgram extends JFrame {
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glEnable(GL2.GL_BLEND);
-		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our Texture
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		// Perspective.
@@ -344,6 +343,7 @@ public class GUIProgram extends JFrame {
 		double phi02 = afterRotateX.angle(eyes) * Math.signum(eyes.x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
+				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our Texture
 				double r = (0.5 * Math.random() + 4.5)
 						* (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
@@ -367,6 +367,31 @@ public class GUIProgram extends JFrame {
 				gl.glTexCoord2d(0, 1);
 				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
 				gl.glEnd();
+			} else {
+				//If you want show dark mass, code here
+				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]); // Select Our Texture
+				double r = 5*m.getRayon();
+				Vector3d[] pts = new Vector3d[4];
+				pts[0] = new Vector3d(-r, -r, 0); // BL
+				pts[1] = new Vector3d(r, -r, 0); // BR
+				pts[2] = new Vector3d(r, r, 0); // TR
+				pts[3] = new Vector3d(-r, r, 0); // TL
+				gl.glLoadIdentity();
+				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
+				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
+				gl.glRotated(Math.random() * 360, 0, 0, 1);
+				gl.glColor3d(0.15, 0.15, 0.15);
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glTexCoord2d(0, 0);
+				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
+				gl.glTexCoord2d(1, 0);
+				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
+				gl.glTexCoord2d(1, 1);
+				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
+				gl.glTexCoord2d(0, 1);
+				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
+				gl.glEnd();
 			}
 		}
 		gl.glDisable(GL2.GL_BLEND);
@@ -377,9 +402,11 @@ public class GUIProgram extends JFrame {
 	}
 
 	private void LoadGLTextures(GL gl) {
-		com.sylvanoid.common.TextureReader.Texture texture = null;
+		com.sylvanoid.common.TextureReader.Texture texture01 = null;
+		com.sylvanoid.common.TextureReader.Texture texture02 = null;
 		try {
-			texture = TextureReader.readTexture("resources/images/Star.bmp");
+			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
+			texture02 = TextureReader.readTexture("resources/images/Particle.png");
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -390,9 +417,18 @@ public class GUIProgram extends JFrame {
 				GL.GL_LINEAR);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
 				GL.GL_LINEAR);
-		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture.getWidth(),
-				texture.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
-				texture.getPixels());
+		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture01.getWidth(),
+				texture01.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
+				texture01.getPixels());
+		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+				GL.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+				GL.GL_LINEAR);
+		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture02.getWidth(),
+				texture02.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
+				texture02.getPixels());
+
 	}
 
 	private BufferedImage toImage(GL2 gl, int w, int h) {

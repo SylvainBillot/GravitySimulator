@@ -106,7 +106,7 @@ public class GUIParam extends JDialog {
 					massObjectMin.setValue(1E6);
 					massObjectMax.setValue(1E7);
 					darkMatterMass.setValue(1E12);
-					darkMatterDensity.setValue(1E10);
+					darkMatterDensity.setValue(1000);
 					break;
 				case 4:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxiesCollision;
@@ -121,7 +121,7 @@ public class GUIParam extends JDialog {
 					massObjectMin.setValue(1000000);
 					massObjectMax.setValue(10000000);
 					darkMatterMass.setValue(1E12);
-					darkMatterDensity.setValue(1E10);
+					darkMatterDensity.setValue(1000);
 					break;
 				case 5:
 					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetariesGenesis;

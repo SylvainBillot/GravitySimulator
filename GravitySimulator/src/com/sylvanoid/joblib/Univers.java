@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -284,17 +285,32 @@ public class Univers {
 		LinkedList<Matter[]> toTreat = new LinkedList<Matter[]>();
 		HashMap<Matter, String> treatedFusion = new HashMap<Matter, String>();
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
+		TreeMap<Double, Matter> sortXDark = new TreeMap<Double, Matter>();
 		for (Matter m : listMatter.values()) {
-			sortX.put(m.minWithR().x, m);
-			sortX.put(m.getPoint().x, m);
-			sortX.put(m.maxWithR().x, m);
+			if (!m.isDark()) {
+				sortX.put(m.minWithR().x, m);
+				sortX.put(m.getPoint().x, m);
+				sortX.put(m.maxWithR().x, m);
+			} else {
+				sortXDark.put(m.minWithR().x, m);
+				sortXDark.put(m.getPoint().x, m);
+				sortXDark.put(m.maxWithR().x, m);
+			}
 		}
 
 		for (Matter m1 : listMatter.values()) {
-			if (HelperVariable.fusion) {
-				treatNeighborFusion(m1, sortX, treatedFusion, toTreat);
+			if (!m1.isDark()) {
+				if (HelperVariable.fusion) {
+					treatNeighborFusion(m1, sortX, treatedFusion, toTreat);
+				} else {
+					treatNeighborImpact(m1, sortX, toTreat);
+				}
 			} else {
-				treatNeighborImpact(m1, sortX, toTreat);
+				if (HelperVariable.fusion) {
+					treatNeighborFusion(m1, sortXDark, treatedFusion, toTreat);
+				} else {
+					treatNeighborImpact(m1, sortXDark, toTreat);
+				}
 			}
 		}
 		for (int cpt = 0; cpt < toTreat.size(); cpt++) {
@@ -395,7 +411,8 @@ public class Univers {
 			do {
 				double theta = Math.random() * Math.PI * 2;
 				double phi = Math.random() * Math.PI * 2;
-				double r = Math.random();
+				Random random = new Random();
+				double r = random.nextDouble();
 				m = new Matter(
 						new Point3d(
 								origine.x
@@ -434,14 +451,14 @@ public class Univers {
 				mbis.setColor(new Point3d(0.90 + Math.random() / 4, 0.90 + Math
 						.random() / 4, 0.90 + Math.random() / 4));
 				if (alea > 0.80) {
-					mbis.setColor(new Point3d(0.90 + Math.random()*0.1,
+					mbis.setColor(new Point3d(0.90 + Math.random() * 0.1,
 							0.4 + Math.random() * 0.1,
 							0.4 + Math.random() * 0.1));
 				}
 				if (alea > 0.90) {
 					mbis.setColor(new Point3d(0.4 + Math.random() * 0.10,
 							0.4 + Math.random() * 0.10,
-							0.9 + Math.random()*0.1));
+							0.9 + Math.random() * 0.1));
 				}
 			}
 
@@ -482,7 +499,7 @@ public class Univers {
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
+				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 			}
 		}
 	}
@@ -492,19 +509,20 @@ public class Univers {
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(-400, -100,
 				-50), 0, transSpeed, 0, HelperVariable.nebulaRadius, 0.25, 1,
 				0.25);
-		TreeMap<Matter, Matter> subu02 = createUvivers(
-				new Vector3d(400, 100, 50), 0, -transSpeed, 0,
-				HelperVariable.nebulaRadius/2, 1, 0.15, 0.15);
+		TreeMap<Matter, Matter> subu02 = createUvivers(new Vector3d(400, 100,
+				50), 0, -transSpeed, 0, HelperVariable.nebulaRadius / 2, 1,
+				0.15, 0.15);
 
 		Matter m1 = new Matter(new Point3d(-400 + Math.random(), -100
-				+ Math.random(), -50+Math.random()), HelperVariable.darkMatterMass
-				+ Math.random(), new Vector3d(transSpeed, 0, 0),
-				HelperVariable.darkMatterDensity, true);
+				+ Math.random(), -50 + Math.random()),
+				HelperVariable.darkMatterMass + Math.random(), new Vector3d(
+						transSpeed, 0, 0), HelperVariable.darkMatterDensity,
+				true);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
 		Matter m2 = new Matter(new Point3d(400 + Math.random(),
-				100 + Math.random(), 50+Math.random()),
+				100 + Math.random(), 50 + Math.random()),
 				HelperVariable.darkMatterMass + Math.random(), new Vector3d(
 						-transSpeed, 0, 0), HelperVariable.darkMatterDensity,
 				true);
@@ -513,13 +531,13 @@ public class Univers {
 
 		for (Matter m : subu01.values()) {
 			if (m != m1) {
-				m.getSpeed().add(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
+				m.getSpeed().add(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 			}
 		}
 
 		for (Matter m : subu02.values()) {
 			if (m != m2) {
-				m.getSpeed().add(m.orbitalSpeed(m2,new Vector3d(0,1,0)));
+				m.getSpeed().add(m.orbitalSpeed(m2, new Vector3d(0, 1, 0)));
 			}
 		}
 		listMatter.putAll(subu01);
@@ -556,11 +574,11 @@ public class Univers {
 				new Vector3d(0, 0, 0), 300, false);
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
+				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 			}
 			mass += m.getMass();
 		}
-		m7.getSpeed().add(m7.orbitalSpeed(m3,new Vector3d(0,1,0)));
+		m7.getSpeed().add(m7.orbitalSpeed(m3, new Vector3d(0, 1, 0)));
 		listMatter.put(m7, m7);
 
 	}
@@ -575,7 +593,7 @@ public class Univers {
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
+				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 			}
 		}
 	}
@@ -590,7 +608,7 @@ public class Univers {
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
+				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 			}
 		}
 	}
@@ -599,19 +617,18 @@ public class Univers {
 		Matter m1 = new Matter(new Point3d(Math.random() - 50,
 				Math.random() - 90, Math.random()), 5E9 + 1E10 + Math.random(),
 				new Vector3d(0, 0, 0), HelperVariable.dentityMin, false);
-		m1.setColor(new Point3d(1,0.7,0.7));
+		m1.setColor(new Point3d(1, 0.7, 0.7));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
 		Matter m2 = new Matter(new Point3d(Math.random() + 50,
 				Math.random() + 90, Math.random()), 1E10 + Math.random(),
 				new Vector3d(0, 0, 0), HelperVariable.dentityMin, false);
-		m2.setColor(new Point3d(0.8,0.8,1));
+		m2.setColor(new Point3d(0.8, 0.8, 1));
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
-		m1.getSpeed().add(m1.orbitalSpeed(m2,new Vector3d(0,0,1)));
-		m2.getSpeed().add(m2.orbitalSpeed(m1,new Vector3d(0,0,1)));
+		m1.getSpeed().add(m1.orbitalSpeed(m2, new Vector3d(0, 0, 1)));
+		m2.getSpeed().add(m2.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 
 	}
-
 }
