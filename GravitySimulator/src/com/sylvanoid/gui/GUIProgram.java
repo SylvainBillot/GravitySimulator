@@ -143,33 +143,12 @@ public class GUIProgram extends JFrame {
 				me.reset();
 			}
 		});
-
-		JCheckBoxMenuItem menuItemByStep = new JCheckBoxMenuItem(
-				"Step By Step", HelperVariable.stepByStep);
-		menuItemByStep.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.stepByStep = !HelperVariable.stepByStep;
-			}
-		});
 		menuProcess.add(menuItemStart);
 		menuProcess.add(menuItemStop);
 		menuProcess.add(menuItemReset);
-		menuProcess.add(menuItemByStep);
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
-		JCheckBoxMenuItem menuItemDisplayVectors = new JCheckBoxMenuItem(
-				"Display Vectors", HelperVariable.displayVectors);
-		menuItemDisplayVectors.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				HelperVariable.displayVectors = !HelperVariable.displayVectors;
-			}
-		});
 		JCheckBoxMenuItem menuItemTrace = new JCheckBoxMenuItem("Trace",
 				HelperVariable.traceCourbe);
 		menuItemTrace.addActionListener(new ActionListener() {
@@ -213,7 +192,6 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
-		menuVisu.add(menuItemDisplayVectors);
 		menuVisu.add(menuItemTrace);
 		menuVisu.add(menuItemCentreEcran);
 		menuVisu.add(menuItemplusMassif);
@@ -309,7 +287,7 @@ public class GUIProgram extends JFrame {
 		});
 		me.add(gljpanel, BorderLayout.CENTER);
 		animator = new FPSAnimator(gljpanel, 60, true);
-
+		animator.start();
 	}
 
 	public FPSAnimator getAnimator() {
@@ -372,7 +350,7 @@ public class GUIProgram extends JFrame {
 		double phi02 = afterRotateX.angle(eyes) * Math.signum(eyes.x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				double r = (1*Math.random()+4) * (m.getRayon() < 1 ? 1 : m.getRayon());
+				double r = (0.5*Math.random()+4.5) * (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR

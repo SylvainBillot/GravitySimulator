@@ -69,7 +69,6 @@ public class InputHandler extends KeyAdapter {
 		case '+':
 			HelperVariable.timeFactor *= 1.01;
 			break;
-
 		case '-':
 			HelperVariable.timeFactor *= 1 / 1.01;
 			break;

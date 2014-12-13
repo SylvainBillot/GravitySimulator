@@ -482,7 +482,7 @@ public class Univers {
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1));
+				m.setSpeed(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
 			}
 		}
 	}
@@ -513,13 +513,13 @@ public class Univers {
 
 		for (Matter m : subu01.values()) {
 			if (m != m1) {
-				m.getSpeed().add(m.orbitalSpeed(m1));
+				m.getSpeed().add(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
 			}
 		}
 
 		for (Matter m : subu02.values()) {
 			if (m != m2) {
-				m.getSpeed().add(m.orbitalSpeed(m2));
+				m.getSpeed().add(m.orbitalSpeed(m2,new Vector3d(0,1,0)));
 			}
 		}
 		listMatter.putAll(subu01);
@@ -556,11 +556,11 @@ public class Univers {
 				new Vector3d(0, 0, 0), 300, false);
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1));
+				m.setSpeed(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
 			}
 			mass += m.getMass();
 		}
-		m7.getSpeed().add(m7.orbitalSpeed(m3));
+		m7.getSpeed().add(m7.orbitalSpeed(m3,new Vector3d(0,1,0)));
 		listMatter.put(m7, m7);
 
 	}
@@ -575,7 +575,7 @@ public class Univers {
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1));
+				m.setSpeed(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
 			}
 		}
 	}
@@ -590,7 +590,7 @@ public class Univers {
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1));
+				m.setSpeed(m.orbitalSpeed(m1,new Vector3d(0,0,1)));
 			}
 		}
 	}
@@ -599,16 +599,18 @@ public class Univers {
 		Matter m1 = new Matter(new Point3d(Math.random() - 50,
 				Math.random() - 90, Math.random()), 5E9 + 1E10 + Math.random(),
 				new Vector3d(0, 0, 0), HelperVariable.dentityMin, false);
+		m1.setColor(new Point3d(1,0.7,0.7));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
 		Matter m2 = new Matter(new Point3d(Math.random() + 50,
 				Math.random() + 90, Math.random()), 1E10 + Math.random(),
 				new Vector3d(0, 0, 0), HelperVariable.dentityMin, false);
+		m2.setColor(new Point3d(0.8,0.8,1));
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
-		m1.getSpeed().add(m1.orbitalSpeed(m2));
-		m2.getSpeed().add(m2.orbitalSpeed(m1));
+		m1.getSpeed().add(m1.orbitalSpeed(m2,new Vector3d(0,0,1)));
+		m2.getSpeed().add(m2.orbitalSpeed(m1,new Vector3d(0,0,1)));
 
 	}
 

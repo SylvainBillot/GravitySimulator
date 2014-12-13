@@ -14,9 +14,7 @@ public abstract class HelperVariable {
 	public static double darkMatterDensity = 1E10;
 	public static boolean manageImpact = false;
 	public static TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
-	public static boolean stepByStep = false;
 	public static boolean traceCourbe = false;
-	public static boolean displayVectors = false;
 	public static boolean exportToVideo = false;
 	public static boolean fusion = true; 
 	public static double typeOfImpact = 1; // 1=collision elastique

@@ -4,6 +4,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
+import com.sylvanoid.common.HelperVector;
 
 public class Matter implements Comparable<Matter> {
 	private double mass;
@@ -228,24 +229,38 @@ public class Matter implements Comparable<Matter> {
 		return false;
 	}
 
-	public Vector3d orbitalSpeed(Matter m) {
+	public Vector3d orbitalSpeed(Matter m, Vector3d axis) {
 		double orbitalSpeedValue = Math
 				.pow(HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
 						/ ((mass + m.getMass()) * point.distance(m.getPoint())),
 						0.5);
 
 		double theta = Math.atan2(m.getPoint().y - point.getY(), m.getPoint().x
-				- point.getX())
-				+ Math.PI / 2;
+				- point.getX());
 		double phi = Math.atan2(Math.pow(
 				Math.pow(m.getPoint().x - point.getX(), 2)
 						+ Math.pow(m.getPoint().y - point.getY(), 2), 0.5), (m
 				.getPoint().z - point.getZ()));
 
-		return new Vector3d(
-				orbitalSpeedValue * Math.cos(theta) * Math.sin(phi),
-				orbitalSpeedValue * Math.sin(theta) * Math.sin(phi),
-				orbitalSpeedValue * Math.cos(phi));
+		Vector3d accel = new Vector3d(orbitalSpeedValue * Math.cos(theta)
+				* Math.sin(phi), orbitalSpeedValue * Math.sin(theta)
+				* Math.sin(phi), orbitalSpeedValue * Math.cos(phi));
+
+		if (axis.x != 0) {
+			accel = HelperVector.rotate(accel,
+					new Vector3d(1, 0, Math.signum(axis.x) * Math.PI / 2),
+					Math.PI / 2);
+		}
+		if (axis.y != 0) {
+			accel = HelperVector.rotate(accel, new Vector3d(0, 1, 0),
+					Math.signum(axis.y) * Math.PI / 2);
+		}
+		if (axis.z != 0) {
+			accel = HelperVector.rotate(accel, new Vector3d(0, 0, 1),
+					Math.signum(axis.z) * Math.PI / 2);
+		}
+
+		return accel;
 	}
 
 }
