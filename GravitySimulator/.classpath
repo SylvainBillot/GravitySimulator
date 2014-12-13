@@ -10,5 +10,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/usr/share/java/gluegen2.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/gluegen2-rt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
