@@ -209,6 +209,8 @@ public class GUIParam extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				me.setVisible(false);
+				me.mother.setVisible(true);
+				me.mother.getAnimator().start();
 			}
 		});
 		add(btnCancel);
@@ -244,6 +246,7 @@ public class GUIParam extends JDialog {
 									.toString());
 					me.getMother().reset();
 					me.setVisible(false);
+					me.mother.setVisible(true);
 
 				} catch (Exception em) {
 					JDialog d = new JDialog();

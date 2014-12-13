@@ -16,9 +16,11 @@ public class GUIAbout extends JDialog {
 	 */
 	private static final long serialVersionUID = 1L;
 	private GUIAbout me;
+	private GUIProgram mother;
 
 	public GUIAbout(GUIProgram mother) {
 		me = this;
+		this.mother = mother;
 		setTitle("About");
 		setModal(true);
 		int w = 400;
@@ -45,6 +47,8 @@ public class GUIAbout extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				me.setVisible(false);
+				me.mother.setVisible(true);
+				
 			}
 		});
 		add(btnCancel, BorderLayout.SOUTH);

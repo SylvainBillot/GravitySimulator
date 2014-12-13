@@ -307,6 +307,10 @@ public class GUIProgram extends JFrame {
 	public Vector3d getEyes() {
 		return eyes;
 	}
+	
+	public FPSAnimator getAminator() {
+		return animator;
+	}
 
 	public void reset() {
 		animator.stop();
