@@ -1,5 +1,11 @@
-Gravity Simulator
-================
+Gravity Simulator 3D
+=====================
 
-Simple Java Gravity Simulator
-Version 0.9 Beta
+Java Gravity Simulator 3D
+Simulate:
+Planetaries system
+Galaxies rotation
+Planetaies genesis
+and more ...
+
+Export your simulation as video
