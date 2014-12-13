@@ -431,17 +431,17 @@ public class Univers {
 
 			for (Matter mbis : miniListMatter.values()) {
 				double alea = Math.random();
-				mbis.setColor(new Point3d(0.75 + Math.random() / 4, 0.75 + Math
-						.random() / 4, 0.75 + Math.random() / 4));
+				mbis.setColor(new Point3d(0.90 + Math.random() / 4, 0.90 + Math
+						.random() / 4, 0.90 + Math.random() / 4));
 				if (alea > 0.80) {
-					mbis.setColor(new Point3d(0.75 + Math.random() / 4,
-							0.4 + Math.random() * 0.20,
-							0.4 + Math.random() * 0.20));
+					mbis.setColor(new Point3d(0.90 + Math.random()*0.1,
+							0.4 + Math.random() * 0.1,
+							0.4 + Math.random() * 0.1));
 				}
 				if (alea > 0.90) {
-					mbis.setColor(new Point3d(0.4 + Math.random() * 0.20,
-							0.4 + Math.random() * 0.20,
-							0.75 + Math.random() / 4));
+					mbis.setColor(new Point3d(0.4 + Math.random() * 0.10,
+							0.4 + Math.random() * 0.10,
+							0.9 + Math.random()*0.1));
 				}
 			}
 
