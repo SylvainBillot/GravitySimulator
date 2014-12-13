@@ -31,8 +31,10 @@ public class GUIAbout extends JDialog {
 				"V0.9 Beta<br/>GNU GENERAL PUBLIC LICENSE<br/>" +
 				"Credit: Sylvain Billot<br/>" +
 				"https://github.com/SylvainBillot/GravitySimulator<br/>" +
-				"Credit: JOGL 2<br/>" +
-				"Credit: jcodec-0.1.5<br/>" +
+				"Credit: jogl 2 library<br/>" +
+				"Credit: gluegen 2 library<br/>" +
+				"Credit: vecmath library<br/>" +
+				"Credit: jcodec-0.1.5 library<br/>" +
 				"</body></html>";
 		JLabel content = new JLabel(text);
 		content.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
