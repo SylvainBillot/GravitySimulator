@@ -9,10 +9,6 @@ public abstract class HelperVariable {
 	public static final double C = 299792458;
 	public static final long MINSLEEPTIME = 10;
 
-	//public static double typeOfImpact = 1;
-	public static boolean centerOnCentroid = false;
-	public static boolean centerOnMassMax = false;
-	public static boolean centerOnScreen = false;
 	public static double dentityMin = 30;
 	public static double densityMax = 30;
 	public static int numberOfObjects = 1000;

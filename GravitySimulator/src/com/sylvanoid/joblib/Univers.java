@@ -366,7 +366,7 @@ public class Univers {
 
 		// Barycentre au centre de l'écran
 		computeCentroidOfUnivers();
-		if (HelperVariable.centerOnCentroid) {
+		if (parameters.isCenterOnCentroid()) {
 			for (Matter m : listMatter.values()) {
 				m.getPoint().setX(m.getPoint().getX() - gPoint.x);
 				m.getPoint().setY(m.getPoint().getY() - gPoint.y);
@@ -375,7 +375,7 @@ public class Univers {
 		}
 
 		// Centre l'ecran
-		if (HelperVariable.centerOnScreen) {
+		if (parameters.isCenterOnScreen()) {
 			computeLimits();
 			for (Matter m : listMatter.values()) {
 				m.getPoint().setX(m.getPoint().getX() - (max.x + min.x) / 2);
@@ -385,7 +385,7 @@ public class Univers {
 		}
 
 		// Centre sur le plus massif
-		if (HelperVariable.centerOnMassMax) {
+		if (parameters.isCenterOnMassMax()) {
 			TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 					new MassComparator());
 			sortByMass.putAll(listMatter);

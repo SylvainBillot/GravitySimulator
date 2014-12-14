@@ -39,7 +39,6 @@ import javax.xml.bind.Unmarshaller;
 import org.jcodec.api.SequenceEncoder;
 
 import com.jogamp.opengl.util.FPSAnimator;
-import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.XmlFilter;
 import com.sylvanoid.joblib.Matter;
@@ -223,9 +222,9 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				HelperVariable.centerOnScreen = true;
-				HelperVariable.centerOnCentroid = false;
-				HelperVariable.centerOnMassMax = false;
+				parameters.setCenterOnScreen(true);
+				parameters.setCenterOnCentroid(false);
+				parameters.setCenterOnMassMax(false);
 			}
 		});
 		JMenuItem menuItemplusMassif = new JMenuItem("Center on maximum mass");
@@ -233,9 +232,9 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				HelperVariable.centerOnScreen = false;
-				HelperVariable.centerOnCentroid = false;
-				HelperVariable.centerOnMassMax = true;
+				parameters.setCenterOnScreen(false);
+				parameters.setCenterOnCentroid(false);
+				parameters.setCenterOnMassMax(true);
 			}
 		});
 
@@ -245,9 +244,9 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				HelperVariable.centerOnScreen = false;
-				HelperVariable.centerOnMassMax = false;
-				HelperVariable.centerOnCentroid = true;
+				parameters.setCenterOnScreen(false);
+				parameters.setCenterOnCentroid(true);
+				parameters.setCenterOnMassMax(false);
 				;
 			}
 		});
@@ -393,9 +392,9 @@ public class GUIProgram extends JFrame {
 
 	public void reset() {
 		animator.stop();
-		HelperVariable.centerOnMassMax = false;
-		HelperVariable.centerOnCentroid = false;
-		HelperVariable.centerOnCentroid = false;
+		parameters.setCenterOnScreen(false);
+		parameters.setCenterOnCentroid(false);
+		parameters.setCenterOnMassMax(false);
 		univers = new Univers(parameters);
 		animator.start();
 	}
