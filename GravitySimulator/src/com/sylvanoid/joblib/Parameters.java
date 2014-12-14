@@ -17,8 +17,7 @@ public class Parameters {
 	private boolean centerOnCentroid = false;
 	private boolean centerOnMassMax = false;
 	private boolean centerOnScreen = false;
-	private double dentityMin = 30;
-	private double densityMax = 30;
+	private double density = 30;
 	private int numberOfObjects = 1000;
 	private double nebulaRadius = 600;
 	private double massObjectMin = 10000;
@@ -95,17 +94,11 @@ public class Parameters {
 	public void setCenterOnScreen(boolean centerOnScreen) {
 		this.centerOnScreen = centerOnScreen;
 	}
-	public double getDentityMin() {
-		return dentityMin;
+	public double getDensity() {
+		return density;
 	}
-	public void setDentityMin(double dentityMin) {
-		this.dentityMin = dentityMin;
-	}
-	public double getDensityMax() {
-		return densityMax;
-	}
-	public void setDensityMax(double densityMax) {
-		this.densityMax = densityMax;
+	public void setDensity(double density) {
+		this.density = density;
 	}
 	public int getNumberOfObjects() {
 		return numberOfObjects;

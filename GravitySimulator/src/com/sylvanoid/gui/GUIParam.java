@@ -30,7 +30,6 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField numberOfObjects;
 	private JFormattedTextField nebulaRadius;
 	private JFormattedTextField densiteMin;
-	private JFormattedTextField densiteMax;
 	private JFormattedTextField massObjectMin;
 	private JFormattedTextField massObjectMax;
 	private JCheckBox fusion;
@@ -48,7 +47,7 @@ public class GUIParam extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(14, 2));
+		setLayout(new GridLayout(13, 2));
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
@@ -76,7 +75,6 @@ public class GUIParam extends JDialog {
 					numberOfObjects.setValue(20);
 					fusion.setSelected(true);
 					densiteMin.setValue(30);
-					densiteMax.setValue(30);
 					nebulaRadius.setValue(500);
 					massObjectMin.setValue(1E4);
 					massObjectMax.setValue(1E6);
@@ -92,7 +90,6 @@ public class GUIParam extends JDialog {
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(500);
-					densiteMax.setValue(500);
 					nebulaRadius.setValue(600);
 					massObjectMin.setValue(100000000);
 					massObjectMax.setValue(1000000000);
@@ -106,7 +103,6 @@ public class GUIParam extends JDialog {
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(5000);
-					densiteMax.setValue(5000);
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(1E6);
 					massObjectMax.setValue(1E7);
@@ -122,7 +118,6 @@ public class GUIParam extends JDialog {
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
 					densiteMin.setValue(5000);
-					densiteMax.setValue(5000);
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(1000000);
 					massObjectMax.setValue(10000000);
@@ -138,7 +133,6 @@ public class GUIParam extends JDialog {
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(50);
-					densiteMax.setValue(50);
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(10000);
 					massObjectMax.setValue(100000);
@@ -157,7 +151,6 @@ public class GUIParam extends JDialog {
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(100);
-					densiteMax.setValue(100);
 					nebulaRadius.setValue(200);
 					massObjectMin.setValue(100000000);
 					massObjectMax.setValue(100000000);
@@ -180,12 +173,9 @@ public class GUIParam extends JDialog {
 		add(new Label("Nebula radius:"));
 		nebulaRadius = new JFormattedTextField(HelperVariable.nebulaRadius);
 		add(nebulaRadius);
-		add(new Label("Density min:"));
-		densiteMin = new JFormattedTextField(HelperVariable.dentityMin);
+		add(new Label("Density of objects:"));
+		densiteMin = new JFormattedTextField(me.mother.getParameters().getDensity());
 		add(densiteMin);
-		add(new Label("Dentity max:"));
-		densiteMax = new JFormattedTextField(HelperVariable.densityMax);
-		add(densiteMax);
 		add(new Label("Mass object min:"));
 		massObjectMin = new JFormattedTextField(HelperVariable.massObjectMin);
 		add(massObjectMin);
@@ -237,10 +227,8 @@ public class GUIParam extends JDialog {
 							.parseInt(me.numberOfObjects.getValue().toString());
 					HelperVariable.nebulaRadius = Double
 							.parseDouble(me.nebulaRadius.getValue().toString());
-					HelperVariable.dentityMin = Double
-							.parseDouble(me.densiteMin.getValue().toString());
-					HelperVariable.densityMax = Double
-							.parseDouble(me.densiteMax.getValue().toString());
+					me.mother.getParameters().setDensity(Double
+							.parseDouble(me.densiteMin.getValue().toString()));
 					HelperVariable.massObjectMin = Double
 							.parseDouble(me.massObjectMin.getValue().toString());
 					HelperVariable.massObjectMax = Double
@@ -283,7 +271,6 @@ public class GUIParam extends JDialog {
 		numberOfObjects.setEnabled(false);
 		nebulaRadius.setEnabled(false);
 		densiteMin.setEnabled(false);
-		densiteMax.setEnabled(false);
 		massObjectMin.setEnabled(false);
 		massObjectMax.setEnabled(false);
 		fusion.setEnabled(false);
@@ -306,7 +293,6 @@ public class GUIParam extends JDialog {
 			numberOfObjects.setEnabled(true);
 			fusion.setEnabled(true);
 			densiteMin.setEnabled(true);
-			densiteMax.setEnabled(true);
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
@@ -321,7 +307,6 @@ public class GUIParam extends JDialog {
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
-			densiteMax.setEnabled(true);
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
@@ -334,7 +319,6 @@ public class GUIParam extends JDialog {
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
-			densiteMax.setEnabled(true);
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
@@ -349,7 +333,6 @@ public class GUIParam extends JDialog {
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
-			densiteMax.setEnabled(true);
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
@@ -364,7 +347,6 @@ public class GUIParam extends JDialog {
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
-			densiteMax.setEnabled(true);
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);

@@ -9,8 +9,7 @@ public abstract class HelperVariable {
 	public static final double C = 299792458;
 	public static final long MINSLEEPTIME = 10;
 
-	public static double dentityMin = 30;
-	public static double densityMax = 30;
+	//public static double density = 30;
 	public static int numberOfObjects = 1000;
 	public static double nebulaRadius = 600;
 	public static double massObjectMin = 10000;

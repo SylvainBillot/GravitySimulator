@@ -457,9 +457,7 @@ public class Univers {
 								* (HelperVariable.massObjectMax - HelperVariable.massObjectMin)
 								+ Math.random(),
 						new Vector3d(0, 0, 0),
-						HelperVariable.dentityMin
-								+ Math.random()
-								* (HelperVariable.densityMax - HelperVariable.dentityMin),
+						parameters.getDensity(),
 						false);
 				cont = false;
 				for (Matter m2 : miniListMatter.values()) {
@@ -642,14 +640,14 @@ public class Univers {
 	private void createDoubleStars() {
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random() - 50,
 				Math.random() - 90, Math.random()), 5E9 + 1E10 + Math.random(),
-				new Vector3d(0, 0, 0), HelperVariable.dentityMin, false);
+				new Vector3d(0, 0, 0), parameters.getDensity(), false);
 		m1.setColor(new Vector3d(1, 0.7, 0.7));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
 		Matter m2 = new Matter(parameters, new Vector3d(Math.random() + 50,
 				Math.random() + 90, Math.random()), 1E10 + Math.random(),
-				new Vector3d(0, 0, 0), HelperVariable.dentityMin, false);
+				new Vector3d(0, 0, 0), parameters.getDensity(), false);
 		m2.setColor(new Vector3d(0.8, 0.8, 1));
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
