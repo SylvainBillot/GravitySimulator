@@ -34,6 +34,7 @@ import javax.vecmath.Vector3d;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import org.jcodec.api.SequenceEncoder;
 
@@ -57,9 +58,7 @@ public class GUIProgram extends JFrame {
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
-
 	private int textures[] = new int[2]; // Storage For One textures
-
 	private Vector3d eyes = new Vector3d(0, 0, 900);
 
 	public static void main(String[] args) {
@@ -125,13 +124,15 @@ public class GUIProgram extends JFrame {
 				animator.stop();
 				try {
 					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setDialogTitle("Specify a file to save");   
-					 
+					fileChooser.setDialogTitle("Specify a file to save");
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
 					int userSelection = fileChooser.showSaveDialog(me);
-					 
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						OutputStream output = new FileOutputStream(fileChooser.getSelectedFile().getAbsolutePath());
-						JAXBContext context = JAXBContext.newInstance(Univers.class);
+						OutputStream output = new FileOutputStream(fileChooser
+								.getSelectedFile().getAbsolutePath());
+						JAXBContext context = JAXBContext
+								.newInstance(Univers.class);
 						Marshaller m = context.createMarshaller();
 						m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 						m.marshal(univers, output);
@@ -141,7 +142,6 @@ public class GUIProgram extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-
 				animator.start();
 			}
 		});
@@ -151,6 +151,26 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				animator.stop();
+
+				try {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify a file to load");
+					int userSelection = fileChooser.showOpenDialog(me);
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						File file = new File(fileChooser.getSelectedFile()
+								.getAbsolutePath());
+						JAXBContext jaxbContext = JAXBContext
+								.newInstance(Univers.class);
+						Unmarshaller jaxbUnmarshaller = jaxbContext
+								.createUnmarshaller();
+						univers = (Univers) jaxbUnmarshaller.unmarshal(file);
+					}
+				} catch (JAXBException e1) {
+					e1.printStackTrace();
+				}
+
 				animator.start();
 			}
 		});
