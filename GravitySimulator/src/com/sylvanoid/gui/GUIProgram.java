@@ -106,7 +106,7 @@ public class GUIProgram extends JFrame {
 		add(menuBar, BorderLayout.NORTH);
 		JMenu menuFichier = new JMenu("File");
 		menuBar.add(menuFichier);
-		JMenuItem menuItemBaseParam = new JMenuItem("Params ...");
+		JMenuItem menuItemBaseParam = new JMenuItem("Some random unvivers ...");
 		menuItemBaseParam.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
