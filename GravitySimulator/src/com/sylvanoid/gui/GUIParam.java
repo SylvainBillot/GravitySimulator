@@ -14,7 +14,6 @@ import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JSlider;
 
-import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
 
 public class GUIParam extends JDialog {
@@ -167,20 +166,24 @@ public class GUIParam extends JDialog {
 				.getTimeFactor());
 		add(timeFactor);
 		add(new Label("Number of object:"));
-		numberOfObjects = new JFormattedTextField(
-				HelperVariable.numberOfObjects);
+		numberOfObjects = new JFormattedTextField(me.mother.getParameters()
+				.getNumberOfObjects());
 		add(numberOfObjects);
 		add(new Label("Nebula radius:"));
-		nebulaRadius = new JFormattedTextField(HelperVariable.nebulaRadius);
+		nebulaRadius = new JFormattedTextField(me.mother.getParameters()
+				.getNebulaRadius());
 		add(nebulaRadius);
 		add(new Label("Density of objects:"));
-		densiteMin = new JFormattedTextField(me.mother.getParameters().getDensity());
+		densiteMin = new JFormattedTextField(me.mother.getParameters()
+				.getDensity());
 		add(densiteMin);
 		add(new Label("Mass object min:"));
-		massObjectMin = new JFormattedTextField(HelperVariable.massObjectMin);
+		massObjectMin = new JFormattedTextField(me.mother.getParameters()
+				.getMassObjectMin());
 		add(massObjectMin);
 		add(new Label("Mass object max:"));
-		massObjectMax = new JFormattedTextField(HelperVariable.massObjectMax);
+		massObjectMax = new JFormattedTextField(me.mother.getParameters()
+				.getMassObjectMax());
 		add(massObjectMax);
 		add(new Label("Dark Matter or central star Mass:"));
 		darkMatterMass = new JFormattedTextField(me.mother.getParameters()
@@ -199,8 +202,8 @@ public class GUIParam extends JDialog {
 		fusion.setSelected(me.mother.getParameters().isFusion());
 		add(fusion);
 		add(new Label("Type of impact (1-elastic 0-inelastic):"));
-		typeOfImpact = new JSlider(0, 100,
-				(int) (me.mother.getParameters().getTypeOfImpact() * 100));
+		typeOfImpact = new JSlider(0, 100, (int) (me.mother.getParameters()
+				.getTypeOfImpact() * 100));
 		add(typeOfImpact);
 
 		JButton btnCancel = new JButton("Cancel");
@@ -223,16 +226,21 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTimeFactor(
 							Double.parseDouble(me.timeFactor.getValue()
 									.toString()));
-					HelperVariable.numberOfObjects = Integer
-							.parseInt(me.numberOfObjects.getValue().toString());
-					HelperVariable.nebulaRadius = Double
-							.parseDouble(me.nebulaRadius.getValue().toString());
-					me.mother.getParameters().setDensity(Double
-							.parseDouble(me.densiteMin.getValue().toString()));
-					HelperVariable.massObjectMin = Double
-							.parseDouble(me.massObjectMin.getValue().toString());
-					HelperVariable.massObjectMax = Double
-							.parseDouble(me.massObjectMax.getValue().toString());
+					me.mother.getParameters().setNumberOfObjects(
+							Integer.parseInt(me.numberOfObjects.getValue()
+									.toString()));
+					me.mother.getParameters().setNebulaRadius(
+							Double.parseDouble(me.nebulaRadius.getValue()
+									.toString()));
+					me.mother.getParameters().setDensity(
+							Double.parseDouble(me.densiteMin.getValue()
+									.toString()));
+					me.mother.getParameters().setMassObjectMin(
+							Double.parseDouble(me.massObjectMin.getValue()
+									.toString()));
+					me.mother.getParameters().setMassObjectMax(
+							Double.parseDouble(me.massObjectMax.getValue()
+									.toString()));
 					me.mother.getParameters().setManageImpact(
 							me.manageImpact.isSelected());
 					me.mother.getParameters().setFusion(me.fusion.isSelected());

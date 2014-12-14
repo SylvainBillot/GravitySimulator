@@ -430,7 +430,7 @@ public class Univers {
 			double radiusMax, double ratiox, double ratioy, double ratioz) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		double miniMass = 0;
-		for (int cpt = 0; cpt < HelperVariable.numberOfObjects; cpt++) {
+		for (int cpt = 0; cpt < parameters.getNumberOfObjects(); cpt++) {
 			Matter m;
 			boolean cont = false;
 			do {
@@ -452,13 +452,11 @@ public class Univers {
 								origine.z
 										+ Math.cos(phi)
 										* (r * ratioz * (radiusMax - radiusMin) + radiusMin)),
-						HelperVariable.massObjectMin
+						parameters.getMassObjectMin()
 								+ Math.random()
-								* (HelperVariable.massObjectMax - HelperVariable.massObjectMin)
-								+ Math.random(),
-						new Vector3d(0, 0, 0),
-						parameters.getDensity(),
-						false);
+								* (parameters.getMassObjectMax() - parameters
+										.getMassObjectMin()) + Math.random(),
+						new Vector3d(0, 0, 0), parameters.getDensity(), false);
 				cont = false;
 				for (Matter m2 : miniListMatter.values()) {
 					if (m.collision(m2)) {
@@ -510,15 +508,15 @@ public class Univers {
 
 	private void createRandomStaticUvivers() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				HelperVariable.nebulaRadius, 1, 1, 1);
+				parameters.getNebulaRadius(), 1, 1, 1);
 	}
 
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				HelperVariable.nebulaRadius, 0.25, 1, 0.25);
+				parameters.getNebulaRadius(), 0.25, 1, 0.25);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
-				Math.random(), 0), parameters.getDarkMatterMass(), new Vector3d(
-				0, 0, 0), parameters.getDarkMatterDensity(), true);
+				Math.random(), 0), parameters.getDarkMatterMass(),
+				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), true);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
@@ -531,10 +529,10 @@ public class Univers {
 	private void createGalaxiesCollision() {
 		double transSpeed = 0.3;
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(-400, -100,
-				-50), 0, transSpeed, 0, HelperVariable.nebulaRadius, 0.25, 1,
+				-50), 0, transSpeed, 0, parameters.getNebulaRadius(), 0.25, 1,
 				0.25);
 		TreeMap<Matter, Matter> subu02 = createUvivers(new Vector3d(400, 100,
-				50), 0, -transSpeed, 0, HelperVariable.nebulaRadius / 2, 1,
+				50), 0, -transSpeed, 0, parameters.getNebulaRadius() / 2, 1,
 				0.15, 0.15);
 
 		Matter m1 = new Matter(parameters, new Vector3d(-400 + Math.random(),
@@ -609,7 +607,7 @@ public class Univers {
 
 	private void createPlanetaryRandom() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				HelperVariable.nebulaRadius, 0.25, 1, 1);
+				parameters.getNebulaRadius(), 0.25, 1, 1);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
@@ -624,7 +622,7 @@ public class Univers {
 
 	private void createPlanetariesGenesis() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				HelperVariable.nebulaRadius, 1, 1, 0.25);
+				parameters.getNebulaRadius(), 1, 1, 0.25);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
