@@ -10,7 +10,9 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 import javax.media.opengl.GL;
@@ -23,6 +25,7 @@ import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -121,11 +124,20 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				animator.stop();
 				try {
-					JAXBContext context = JAXBContext.newInstance(Univers.class);
-					Marshaller m = context.createMarshaller();
-					m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-					m.marshal(univers, System.out);
-				} catch (JAXBException e1) {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify a file to save");   
+					 
+					int userSelection = fileChooser.showSaveDialog(me);
+					 
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						OutputStream output = new FileOutputStream(fileChooser.getSelectedFile().getAbsolutePath());
+						JAXBContext context = JAXBContext.newInstance(Univers.class);
+						Marshaller m = context.createMarshaller();
+						m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+						m.marshal(univers, output);
+						output.close();
+					}
+				} catch (JAXBException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}

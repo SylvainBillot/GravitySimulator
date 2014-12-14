@@ -36,7 +36,7 @@ public class Univers{
 
 	@Override
 	public String toString() {
-		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y);
+		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y + " gz:" + gPoint.z);
 	}
 
 	public Univers() {

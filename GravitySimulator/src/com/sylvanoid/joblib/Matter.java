@@ -10,9 +10,9 @@ import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.Vector3dAdapter;
 
-@XmlRootElement(name="matter")
+@XmlRootElement(name = "matter")
 public class Matter implements Comparable<Matter> {
-	
+
 	private double mass;
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
@@ -35,15 +35,15 @@ public class Matter implements Comparable<Matter> {
 
 	@Override
 	public String toString() {
-		return "m:" + mass + " x:" + point.x + " y:" + point.y + " vx:"
-				+ speed.x + " vy:" + speed.y;
+		return "m:" + mass + " x:" + point.x + " y:" + point.y + " z:"
+				+ point.z + " vx:" + speed.x + " vy:" + speed.y + " vz:"
+				+ speed.z;
 	}
 
 	public Matter() {
-		
+
 	}
-			
-	
+
 	public Matter(Vector3d point, double mass, Vector3d speed, double density,
 			boolean isDark) {
 		this.setPoint(point);
@@ -65,8 +65,8 @@ public class Matter implements Comparable<Matter> {
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
-	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
-    @XmlElement
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
 	public Vector3d getPoint() {
 		return point;
 	}
@@ -75,8 +75,8 @@ public class Matter implements Comparable<Matter> {
 		this.point = point;
 	}
 
-	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
-    @XmlElement
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
 	public Vector3d getColor() {
 		return color;
 	}
@@ -84,9 +84,9 @@ public class Matter implements Comparable<Matter> {
 	public void setColor(Vector3d color) {
 		this.color = color;
 	}
-	
-	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
-    @XmlElement
+
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
 	public Vector3d getA() {
 		return a;
 	}
@@ -95,8 +95,8 @@ public class Matter implements Comparable<Matter> {
 		this.a = a;
 	}
 
-	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
-    @XmlElement
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
 	public Vector3d getSpeed() {
 		return speed;
 	}
@@ -240,8 +240,10 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public boolean collision(Matter m) {
-		if (new Point3d(point).distance(new Point3d(m.getPoint())) < rayon + m.rayon
-				|| new Point3d(getPlusV()).distance(new Point3d(m.getPlusV())) < rayon + m.rayon) {
+		if (new Point3d(point).distance(new Point3d(m.getPoint())) < rayon
+				+ m.rayon
+				|| new Point3d(getPlusV()).distance(new Point3d(m.getPlusV())) < rayon
+						+ m.rayon) {
 			return true;
 		} else {
 			if ((Math.max(max().x, m.max().x) - Math.min(min().x, m.min().x) <= (max().x
@@ -259,10 +261,11 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public Vector3d orbitalSpeed(Matter m, Vector3d axis) {
-		double orbitalSpeedValue = Math
-				.pow(HelperVariable.GRAVITY * Math.pow(m.getMass(), 2)
-						/ ((mass + m.getMass()) * new Point3d(point).distance(new Point3d(m.getPoint()))),
-						0.5);
+		double orbitalSpeedValue = Math.pow(
+				HelperVariable.GRAVITY
+						* Math.pow(m.getMass(), 2)
+						/ ((mass + m.getMass()) * new Point3d(point)
+								.distance(new Point3d(m.getPoint()))), 0.5);
 
 		double theta = Math.atan2(m.getPoint().y - point.y, m.getPoint().x
 				- point.x);
