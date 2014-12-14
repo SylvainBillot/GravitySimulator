@@ -519,7 +519,7 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
 				HelperVariable.nebulaRadius, 0.25, 1, 0.25);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
-				Math.random(), 0), HelperVariable.darkMatterMass, new Vector3d(
+				Math.random(), 0), parameters.getDarkMatterMass(), new Vector3d(
 				0, 0, 0), HelperVariable.darkMatterDensity, true);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
@@ -541,7 +541,7 @@ public class Univers {
 
 		Matter m1 = new Matter(parameters, new Vector3d(-400 + Math.random(),
 				-100 + Math.random(), -50 + Math.random()),
-				HelperVariable.darkMatterMass + Math.random(), new Vector3d(
+				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
 						transSpeed, 0, 0), HelperVariable.darkMatterDensity,
 				true);
 		listMatter.put(m1, m1);
@@ -549,7 +549,7 @@ public class Univers {
 
 		Matter m2 = new Matter(parameters, new Vector3d(400 + Math.random(),
 				100 + Math.random(), 50 + Math.random()),
-				HelperVariable.darkMatterMass + Math.random(), new Vector3d(
+				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
 						-transSpeed, 0, 0), HelperVariable.darkMatterDensity,
 				true);
 		listMatter.put(m2, m2);
@@ -613,7 +613,7 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
 				HelperVariable.nebulaRadius, 0.25, 1, 1);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
-				Math.random(), Math.random()), HelperVariable.darkMatterMass,
+				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), HelperVariable.darkMatterDensity, false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
@@ -628,7 +628,7 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
 				HelperVariable.nebulaRadius, 1, 1, 0.25);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
-				Math.random(), Math.random()), HelperVariable.darkMatterMass,
+				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), HelperVariable.darkMatterDensity, false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();

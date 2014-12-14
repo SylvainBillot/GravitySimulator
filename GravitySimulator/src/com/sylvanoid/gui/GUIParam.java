@@ -193,7 +193,7 @@ public class GUIParam extends JDialog {
 		massObjectMax = new JFormattedTextField(HelperVariable.massObjectMax);
 		add(massObjectMax);
 		add(new Label("Dark Matter or central star Mass:"));
-		darkMatterMass = new JFormattedTextField(HelperVariable.darkMatterMass);
+		darkMatterMass = new JFormattedTextField(me.mother.getParameters().getDarkMatterMass());
 		add(darkMatterMass);
 		add(new Label("Dark Matter or central star Density:"));
 		darkMatterDensity = new JFormattedTextField(
@@ -248,9 +248,9 @@ public class GUIParam extends JDialog {
 					HelperVariable.fusion = me.fusion.isSelected();
 					HelperVariable.typeOfImpact = (double) me.typeOfImpact
 							.getValue() / 100;
-					HelperVariable.darkMatterMass = Double
+					me.mother.getParameters().setDarkMatterMass(Double
 							.parseDouble(me.darkMatterMass.getValue()
-									.toString());
+									.toString()));
 					HelperVariable.darkMatterDensity = Double
 							.parseDouble(me.darkMatterDensity.getValue()
 									.toString());
