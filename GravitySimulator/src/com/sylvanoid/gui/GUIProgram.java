@@ -41,6 +41,7 @@ import org.jcodec.api.SequenceEncoder;
 import com.jogamp.opengl.util.FPSAnimator;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
+import com.sylvanoid.common.XmlFilter;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Univers;
 
@@ -127,6 +128,7 @@ public class GUIProgram extends JFrame {
 					fileChooser.setDialogTitle("Specify a file to save");
 					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new XmlFilter());
 					int userSelection = fileChooser.showSaveDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						OutputStream output = new FileOutputStream(fileChooser
@@ -151,13 +153,13 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				animator.stop();
-
 				try {
 					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setDialogTitle("Specify a file to load");
-					int userSelection = fileChooser.showOpenDialog(me);
 					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new XmlFilter());
+					fileChooser.setDialogTitle("Specify a file to load");
+					int userSelection = fileChooser.showOpenDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						File file = new File(fileChooser.getSelectedFile()
 								.getAbsolutePath());
