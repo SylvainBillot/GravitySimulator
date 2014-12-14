@@ -10,15 +10,28 @@ import java.util.TreeMap;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
+import com.sylvanoid.common.Vector3dAdapter;
 
+@XmlRootElement
 public class Univers{
+	@XmlElement
 	private double mass;
+	@XmlElement
 	private TreeMap<Matter, Matter> listMatter;
-	private Point3d gPoint = new Point3d(0, 0, 0);
+	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
+    @XmlElement
+	private Vector3d gPoint = new Vector3d(0, 0, 0);
+	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
+    @XmlElement
 	private Vector3d min = new Vector3d(0, 0, 0);
+	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
+    @XmlElement
 	private Vector3d max = new Vector3d(0, 0, 0);
 
 	@Override
@@ -116,7 +129,7 @@ public class Univers{
 			tmpGy += (m.getPoint().getY() * m.getMass());
 			tmpGz += (m.getPoint().getZ() * m.getMass());
 		}
-		gPoint = new Point3d(tmpGx / getMass(), tmpGy / getMass(), tmpGz
+		gPoint = new Vector3d(tmpGx / getMass(), tmpGy / getMass(), tmpGz
 				/ getMass());
 	}
 
@@ -174,7 +187,7 @@ public class Univers{
 						sortByMass.putAll(u.listMatter);
 						for (Matter m : sortByMass.values()) {
 							double distance = new Point3d(m.getPoint()).distance(
-									uvoisin.getGPoint());
+									new Point3d(uvoisin.getGPoint()));
 							double attraction = HelperVariable.timeFactor
 									* HelperVariable.GRAVITY
 									* (((uvoisin.getMass()) / Math.pow(
@@ -396,7 +409,7 @@ public class Univers{
 		return listMatter;
 	}
 
-	public Point3d getGPoint() {
+	public Vector3d getGPoint() {
 		return gPoint;
 	}
 

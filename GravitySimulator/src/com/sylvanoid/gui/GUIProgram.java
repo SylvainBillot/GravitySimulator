@@ -28,6 +28,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.vecmath.Vector3d;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 
 import org.jcodec.api.SequenceEncoder;
 
@@ -117,6 +120,16 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				animator.stop();
+				try {
+					JAXBContext context = JAXBContext.newInstance(Univers.class);
+					Marshaller m = context.createMarshaller();
+					m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+					m.marshal(univers, System.out);
+				} catch (JAXBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 				animator.start();
 			}
 		});
@@ -132,7 +145,6 @@ public class GUIProgram extends JFrame {
 		menuFichier.add(menuItemBaseParam);
 		menuFichier.add(menuItemExport);
 		menuFichier.add(menuItemImport);
-		
 
 		JMenu menuProcess = new JMenu("Process");
 		menuBar.add(menuProcess);
@@ -328,7 +340,7 @@ public class GUIProgram extends JFrame {
 	public Vector3d getEyes() {
 		return eyes;
 	}
-	
+
 	public FPSAnimator getAminator() {
 		return animator;
 	}
@@ -364,7 +376,8 @@ public class GUIProgram extends JFrame {
 		double phi02 = afterRotateX.angle(eyes) * Math.signum(eyes.x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our Texture
+				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our
+																	// Texture
 				double r = (0.5 * Math.random() + 4.5)
 						* (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
@@ -389,9 +402,10 @@ public class GUIProgram extends JFrame {
 				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
 				gl.glEnd();
 			} else {
-				//If you want show dark mass, code here
-				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]); // Select Our Texture
-				double r = 5*m.getRayon();
+				// If you want show dark mass, code here
+				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]); // Select Our
+																	// Texture
+				double r = 5 * m.getRayon();
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
@@ -427,7 +441,8 @@ public class GUIProgram extends JFrame {
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
 		try {
 			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
-			texture02 = TextureReader.readTexture("resources/images/Particle.png");
+			texture02 = TextureReader
+					.readTexture("resources/images/Particle.png");
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);

@@ -2,11 +2,17 @@ package com.sylvanoid.joblib;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
+import com.sylvanoid.common.Vector3dAdapter;
 
+@XmlRootElement(name="matter")
 public class Matter implements Comparable<Matter> {
+	
 	private double mass;
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
@@ -33,6 +39,11 @@ public class Matter implements Comparable<Matter> {
 				+ speed.x + " vy:" + speed.y;
 	}
 
+	public Matter() {
+		
+	}
+			
+	
 	public Matter(Vector3d point, double mass, Vector3d speed, double density,
 			boolean isDark) {
 		this.setPoint(point);
@@ -54,6 +65,8 @@ public class Matter implements Comparable<Matter> {
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
+	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
+    @XmlElement
 	public Vector3d getPoint() {
 		return point;
 	}
@@ -62,6 +75,8 @@ public class Matter implements Comparable<Matter> {
 		this.point = point;
 	}
 
+	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
+    @XmlElement
 	public Vector3d getColor() {
 		return color;
 	}
@@ -69,7 +84,9 @@ public class Matter implements Comparable<Matter> {
 	public void setColor(Vector3d color) {
 		this.color = color;
 	}
-
+	
+	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
+    @XmlElement
 	public Vector3d getA() {
 		return a;
 	}
@@ -78,6 +95,8 @@ public class Matter implements Comparable<Matter> {
 		this.a = a;
 	}
 
+	@XmlJavaTypeAdapter(Vector3dAdapter.class) 
+    @XmlElement
 	public Vector3d getSpeed() {
 		return speed;
 	}
@@ -182,9 +201,9 @@ public class Matter implements Comparable<Matter> {
 				/ (mass + m.getMass()), (speed.z * mass + m.getSpeed().z
 				* m.getMass())
 				/ (mass + m.getMass()));
-		a = new Vector3d((a.x * mass + m.getA().x * m.getMass())
-				/ (mass + m.getMass()), (a.y * mass + m.getA().y * m.getMass())
-				/ (mass + m.getMass()), (a.z * mass + m.getA().z * m.getMass())
+		a = new Vector3d((a.x * mass + m.a.x * m.getMass())
+				/ (mass + m.getMass()), (a.y * mass + m.a.y * m.getMass())
+				/ (mass + m.getMass()), (a.z * mass + m.a.z * m.getMass())
 				/ (mass + m.getMass()));
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
