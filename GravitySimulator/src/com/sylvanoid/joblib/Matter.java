@@ -210,7 +210,7 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public void impact(Matter m) {
-		double Cr = HelperVariable.typeOfImpact;
+		double Cr = parameters.getTypeOfImpact();
 		double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
 				* speed.x + m.getMass() * m.getSpeed().x)
 				/ (mass + m.getMass());

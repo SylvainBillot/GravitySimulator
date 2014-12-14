@@ -9,15 +9,7 @@ public abstract class HelperVariable {
 	public static final double C = 299792458;
 	public static final long MINSLEEPTIME = 10;
 
-	//public static TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
-	//public static double timeFactor = 5;
-	//public static double darkMatterMass = 1E12;
-	public static double darkMatterDensity = 1E10;
-	public static boolean manageImpact = false;
-	public static boolean exportToVideo = false;
-	public static boolean fusion = true;
-	// 1=collision elastique 0=collision parfaitement inélastique
-	public static double typeOfImpact = 1;
+	//public static double typeOfImpact = 1;
 	public static boolean centerOnCentroid = false;
 	public static boolean centerOnMassMax = false;
 	public static boolean centerOnScreen = false;

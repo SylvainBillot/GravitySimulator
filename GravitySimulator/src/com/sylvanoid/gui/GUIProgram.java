@@ -259,12 +259,12 @@ public class GUIProgram extends JFrame {
 		JMenu menuVideo = new JMenu("Video");
 		JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
 				"Record to [home directory/out.mpeg]",
-				HelperVariable.exportToVideo);
+				parameters.isExportToVideo());
 		menuItemExportVideo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				HelperVariable.exportToVideo = !HelperVariable.exportToVideo;
+				parameters.setExportToVideo(!parameters.isExportToVideo());
 			}
 		});
 		menuBar.add(menuVideo);
@@ -330,7 +330,7 @@ public class GUIProgram extends JFrame {
 			public void display(GLAutoDrawable drawable) {
 				// TODO Auto-generated method stub
 				render(drawable);
-				if (HelperVariable.exportToVideo) {
+				if (parameters.isExportToVideo()) {
 					GL2 gl = drawable.getGL().getGL2();
 					BufferedImage img = toImage(gl, drawable.getSurfaceWidth(),
 							drawable.getSurfaceHeight());

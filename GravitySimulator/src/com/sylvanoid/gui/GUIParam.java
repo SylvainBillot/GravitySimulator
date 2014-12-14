@@ -193,23 +193,24 @@ public class GUIParam extends JDialog {
 		massObjectMax = new JFormattedTextField(HelperVariable.massObjectMax);
 		add(massObjectMax);
 		add(new Label("Dark Matter or central star Mass:"));
-		darkMatterMass = new JFormattedTextField(me.mother.getParameters().getDarkMatterMass());
+		darkMatterMass = new JFormattedTextField(me.mother.getParameters()
+				.getDarkMatterMass());
 		add(darkMatterMass);
 		add(new Label("Dark Matter or central star Density:"));
-		darkMatterDensity = new JFormattedTextField(
-				HelperVariable.darkMatterDensity);
+		darkMatterDensity = new JFormattedTextField(me.mother.getParameters()
+				.getDarkMatterDensity());
 		add(darkMatterDensity);
 		add(new Label("Manage Impact:"));
 		manageImpact = new JCheckBox();
-		manageImpact.setSelected(HelperVariable.manageImpact);
+		manageImpact.setSelected(me.mother.getParameters().isManageImpact());
 		add(manageImpact);
 		add(new Label("Fusion (or impact) :"));
 		fusion = new JCheckBox();
-		fusion.setSelected(HelperVariable.fusion);
+		fusion.setSelected(me.mother.getParameters().isFusion());
 		add(fusion);
 		add(new Label("Type of impact (1-elastic 0-inelastic):"));
 		typeOfImpact = new JSlider(0, 100,
-				(int) (HelperVariable.typeOfImpact * 100));
+				(int) (me.mother.getParameters().getTypeOfImpact() * 100));
 		add(typeOfImpact);
 
 		JButton btnCancel = new JButton("Cancel");
@@ -244,16 +245,17 @@ public class GUIParam extends JDialog {
 							.parseDouble(me.massObjectMin.getValue().toString());
 					HelperVariable.massObjectMax = Double
 							.parseDouble(me.massObjectMax.getValue().toString());
-					HelperVariable.manageImpact = me.manageImpact.isSelected();
-					HelperVariable.fusion = me.fusion.isSelected();
-					HelperVariable.typeOfImpact = (double) me.typeOfImpact
-							.getValue() / 100;
-					me.mother.getParameters().setDarkMatterMass(Double
-							.parseDouble(me.darkMatterMass.getValue()
+					me.mother.getParameters().setManageImpact(
+							me.manageImpact.isSelected());
+					me.mother.getParameters().setFusion(me.fusion.isSelected());
+					me.mother.getParameters().setTypeOfImpact(
+							(double) me.typeOfImpact.getValue() / 100);
+					me.mother.getParameters().setDarkMatterMass(
+							Double.parseDouble(me.darkMatterMass.getValue()
 									.toString()));
-					HelperVariable.darkMatterDensity = Double
-							.parseDouble(me.darkMatterDensity.getValue()
-									.toString());
+					me.mother.getParameters().setDarkMatterDensity(
+							Double.parseDouble(me.darkMatterDensity.getValue()
+									.toString()));
 					me.getMother().reset();
 					me.setVisible(false);
 					me.mother.setVisible(true);

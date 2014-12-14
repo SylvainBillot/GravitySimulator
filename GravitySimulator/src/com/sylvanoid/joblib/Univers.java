@@ -321,13 +321,13 @@ public class Univers {
 
 		for (Matter m1 : listMatter.values()) {
 			if (!m1.isDark()) {
-				if (HelperVariable.fusion) {
+				if (parameters.isFusion()) {
 					treatNeighborFusion(m1, sortX, treatedFusion, toTreat);
 				} else {
 					treatNeighborImpact(m1, sortX, toTreat);
 				}
 			} else {
-				if (HelperVariable.fusion) {
+				if (parameters.isFusion()) {
 					treatNeighborFusion(m1, sortXDark, treatedFusion, toTreat);
 				} else {
 					treatNeighborImpact(m1, sortXDark, toTreat);
@@ -336,7 +336,7 @@ public class Univers {
 		}
 		for (int cpt = 0; cpt < toTreat.size(); cpt++) {
 			Matter[] element = toTreat.get(cpt);
-			if (HelperVariable.fusion) {
+			if (parameters.isFusion()) {
 				element[0].fusion(element[1]);
 				listMatter.remove(element[1]);
 			} else {
@@ -351,7 +351,7 @@ public class Univers {
 
 	public void move() {
 
-		if (HelperVariable.manageImpact) {
+		if (parameters.isManageImpact()) {
 			double oldMass = mass;
 			manageImpact();
 			if (Math.abs(mass - oldMass) > 1) {
@@ -520,7 +520,7 @@ public class Univers {
 				HelperVariable.nebulaRadius, 0.25, 1, 0.25);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(), new Vector3d(
-				0, 0, 0), HelperVariable.darkMatterDensity, true);
+				0, 0, 0), parameters.getDarkMatterDensity(), true);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
@@ -542,7 +542,7 @@ public class Univers {
 		Matter m1 = new Matter(parameters, new Vector3d(-400 + Math.random(),
 				-100 + Math.random(), -50 + Math.random()),
 				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
-						transSpeed, 0, 0), HelperVariable.darkMatterDensity,
+						transSpeed, 0, 0), parameters.getDarkMatterDensity(),
 				true);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
@@ -550,7 +550,7 @@ public class Univers {
 		Matter m2 = new Matter(parameters, new Vector3d(400 + Math.random(),
 				100 + Math.random(), 50 + Math.random()),
 				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
-						-transSpeed, 0, 0), HelperVariable.darkMatterDensity,
+						-transSpeed, 0, 0), parameters.getDarkMatterDensity(),
 				true);
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
@@ -614,7 +614,7 @@ public class Univers {
 				HelperVariable.nebulaRadius, 0.25, 1, 1);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
-				new Vector3d(0, 0, 0), HelperVariable.darkMatterDensity, false);
+				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
@@ -629,7 +629,7 @@ public class Univers {
 				HelperVariable.nebulaRadius, 1, 1, 0.25);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
-				new Vector3d(0, 0, 0), HelperVariable.darkMatterDensity, false);
+				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
