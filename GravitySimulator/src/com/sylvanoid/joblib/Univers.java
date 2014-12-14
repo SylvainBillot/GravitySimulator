@@ -507,8 +507,10 @@ public class Univers {
 	}
 
 	private void createRandomStaticUvivers() {
-		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				parameters.getNebulaRadius(), 1, 1, 1);
+		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(0, 0,
+				0), 0, 0, 0, parameters.getNebulaRadius(), 1, 1,
+				1);
+		listMatter.putAll(subu01);
 	}
 
 	private void createRandomRotateUnivers() {
