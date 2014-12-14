@@ -1,0 +1,135 @@
+package com.sylvanoid.joblib;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.sylvanoid.common.TypeOfUnivers;
+
+@XmlRootElement
+public class Parameters {
+	private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
+	private double timeFactor = 5;
+	private double darkMatterMass = 1E12;
+	private double darkMatterDensity = 1E10;
+	private boolean manageImpact = false;
+	private boolean exportToVideo = false;
+	private boolean fusion = true;
+	private double typeOfImpact = 1;
+	private boolean centerOnCentroid = false;
+	private boolean centerOnMassMax = false;
+	private boolean centerOnScreen = false;
+	private double dentityMin = 30;
+	private double densityMax = 30;
+	private int numberOfObjects = 1000;
+	private double nebulaRadius = 600;
+	private double massObjectMin = 10000;
+	private double massObjectMax = 100000;
+	
+	public Parameters(){
+		
+	}
+	
+	public double getTimeFactor() {
+		return timeFactor;
+	}
+	public void setTimeFactor(double timeFactor) {
+		this.timeFactor = timeFactor;
+	}
+
+	public double getDarkMatterDensity() {
+		return darkMatterDensity;
+	}
+	public void setDarkMatterDensity(double darkMatterDensity) {
+		this.darkMatterDensity = darkMatterDensity;
+	}
+	public double getDarkMatterMass() {
+		return darkMatterMass;
+	}
+	public void setDarkMatterMass(double darkMatterMass) {
+		this.darkMatterMass = darkMatterMass;
+	}
+	public boolean isManageImpact() {
+		return manageImpact;
+	}
+	public void setManageImpact(boolean manageImpact) {
+		this.manageImpact = manageImpact;
+	}
+	public TypeOfUnivers getTypeOfUnivers() {
+		return typeOfUnivers;
+	}
+	public void setTypeOfUnivers(TypeOfUnivers typeOfUnivers) {
+		this.typeOfUnivers = typeOfUnivers;
+	}
+	public boolean isFusion() {
+		return fusion;
+	}
+	public void setFusion(boolean fusion) {
+		this.fusion = fusion;
+	}
+	public boolean isExportToVideo() {
+		return exportToVideo;
+	}
+	public void setExportToVideo(boolean exportToVideo) {
+		this.exportToVideo = exportToVideo;
+	}
+	public double getTypeOfImpact() {
+		return typeOfImpact;
+	}
+	public void setTypeOfImpact(double typeOfImpact) {
+		this.typeOfImpact = typeOfImpact;
+	}
+	public boolean isCenterOnCentroid() {
+		return centerOnCentroid;
+	}
+	public void setCenterOnCentroid(boolean centerOnCentroid) {
+		this.centerOnCentroid = centerOnCentroid;
+	}
+	public boolean isCenterOnMassMax() {
+		return centerOnMassMax;
+	}
+	public void setCenterOnMassMax(boolean centerOnMassMax) {
+		this.centerOnMassMax = centerOnMassMax;
+	}
+	public boolean isCenterOnScreen() {
+		return centerOnScreen;
+	}
+	public void setCenterOnScreen(boolean centerOnScreen) {
+		this.centerOnScreen = centerOnScreen;
+	}
+	public double getDentityMin() {
+		return dentityMin;
+	}
+	public void setDentityMin(double dentityMin) {
+		this.dentityMin = dentityMin;
+	}
+	public double getDensityMax() {
+		return densityMax;
+	}
+	public void setDensityMax(double densityMax) {
+		this.densityMax = densityMax;
+	}
+	public int getNumberOfObjects() {
+		return numberOfObjects;
+	}
+	public void setNumberOfObjects(int numberOfObjects) {
+		this.numberOfObjects = numberOfObjects;
+	}
+	public double getNebulaRadius() {
+		return nebulaRadius;
+	}
+	public void setNebulaRadius(double nebulaRadius) {
+		this.nebulaRadius = nebulaRadius;
+	}
+	public double getMassObjectMin() {
+		return massObjectMin;
+	}
+	public void setMassObjectMin(double massObjectMin) {
+		this.massObjectMin = massObjectMin;
+	}
+	public double getMassObjectMax() {
+		return massObjectMax;
+	}
+	public void setMassObjectMax(double massObjectMax) {
+		this.massObjectMax = massObjectMax;
+	}
+	
+}

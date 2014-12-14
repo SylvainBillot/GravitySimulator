@@ -43,6 +43,7 @@ import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.XmlFilter;
 import com.sylvanoid.joblib.Matter;
+import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
 
 import com.sylvanoid.common.TextureReader;
@@ -56,6 +57,7 @@ public class GUIProgram extends JFrame {
 	private GUIProgram me;
 	private GLJPanel gljpanel;
 	private Univers univers;
+	private Parameters parameters;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
@@ -75,6 +77,8 @@ public class GUIProgram extends JFrame {
 
 	public GUIProgram() {
 		this.me = this;
+		parameters = new Parameters();
+		univers = new Univers(parameters);
 		File directory = new File(System.getProperty("user.home"));
 		try {
 			out = new SequenceEncoder(new File(directory.getPath()
@@ -101,8 +105,6 @@ public class GUIProgram extends JFrame {
 				}
 			}
 		});
-		univers = new Univers(HelperVariable.typeOfUnivers);
-
 		JMenuBar menuBar = new JMenuBar();
 		add(menuBar, BorderLayout.NORTH);
 		JMenu menuFichier = new JMenu("File");
@@ -172,7 +174,9 @@ public class GUIProgram extends JFrame {
 				} catch (JAXBException e1) {
 					e1.printStackTrace();
 				}
-
+				for(Matter m : univers.getListMatiere().values()){
+					m.setParameters(univers.getParameters());
+				}
 				animator.start();
 			}
 		});
@@ -359,6 +363,14 @@ public class GUIProgram extends JFrame {
 		return univers;
 	}
 
+	public Parameters getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Parameters parameters) {
+		this.parameters = parameters;
+	}
+
 	public GLJPanel getGljpanel() {
 		return gljpanel;
 	}
@@ -384,7 +396,7 @@ public class GUIProgram extends JFrame {
 		HelperVariable.centerOnMassMax = false;
 		HelperVariable.centerOnCentroid = false;
 		HelperVariable.centerOnCentroid = false;
-		univers = new Univers(HelperVariable.typeOfUnivers);
+		univers = new Univers(parameters);
 		animator.start();
 	}
 

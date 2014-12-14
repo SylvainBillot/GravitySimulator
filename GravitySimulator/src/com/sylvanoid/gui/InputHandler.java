@@ -1,6 +1,5 @@
 package com.sylvanoid.gui;
 
-import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 
 import java.awt.event.KeyAdapter;
@@ -67,10 +66,10 @@ public class InputHandler extends KeyAdapter {
 
 		switch (e.getKeyChar()) {
 		case '+':
-			HelperVariable.timeFactor *= 1.01;
+			guiProgram.getParameters().setTimeFactor(guiProgram.getParameters().getTimeFactor()*1.01);
 			break;
 		case '-':
-			HelperVariable.timeFactor *= 1 / 1.01;
+			guiProgram.getParameters().setTimeFactor(guiProgram.getParameters().getTimeFactor()/1.01);
 			break;
 
 		}

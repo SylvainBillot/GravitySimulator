@@ -54,19 +54,22 @@ public class GUIParam extends JDialog {
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
 			typeOfUnivers.addItem(tou.getLabel());
 		}
-		typeOfUnivers.setSelectedItem(HelperVariable.typeOfUnivers.getLabel());
+		typeOfUnivers.setSelectedItem(mother.getParameters().getTypeOfUnivers()
+				.getLabel());
 		typeOfUnivers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switch (typeOfUnivers.getSelectedIndex()) {
 				case 0:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.Planetary;
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.Planetary);
 					manageImpact.setSelected(false);
 					timeFactor.setValue(5);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					break;
 				case 1:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetaryRandom;
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.PlanetaryRandom);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(10);
 					typeOfImpact.setValue(100);
@@ -81,7 +84,8 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(200);
 					break;
 				case 2:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.Random;
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.Random);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(2);
 					fusion.setSelected(true);
@@ -94,7 +98,8 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(1000000000);
 					break;
 				case 3:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.RandomRotateUnivers;
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.RandomRotateUnivers);
 					manageImpact.setSelected(false);
 					timeFactor.setValue(1);
 					fusion.setSelected(true);
@@ -109,7 +114,8 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1000);
 					break;
 				case 4:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.GalaxiesCollision;
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.GalaxiesCollision);
 					manageImpact.setSelected(false);
 					timeFactor.setValue(1);
 					fusion.setSelected(true);
@@ -124,7 +130,8 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1000);
 					break;
 				case 5:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.PlanetariesGenesis;
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.PlanetariesGenesis);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(50);
 					fusion.setSelected(true);
@@ -142,7 +149,8 @@ public class GUIParam extends JDialog {
 					break;
 
 				case 6:
-					HelperVariable.typeOfUnivers = TypeOfUnivers.DoubleStars;
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.DoubleStars);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(5);
 					fusion.setSelected(true);
@@ -162,7 +170,8 @@ public class GUIParam extends JDialog {
 		});
 		add(typeOfUnivers);
 		add(new Label("Time factor:"));
-		timeFactor = new JFormattedTextField(HelperVariable.timeFactor);
+		timeFactor = new JFormattedTextField(me.mother.getParameters()
+				.getTimeFactor());
 		add(timeFactor);
 		add(new Label("Number of object:"));
 		numberOfObjects = new JFormattedTextField(
@@ -220,8 +229,9 @@ public class GUIParam extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
-					HelperVariable.timeFactor = Double
-							.parseDouble(me.timeFactor.getValue().toString());
+					me.mother.getParameters().setTimeFactor(
+							Double.parseDouble(me.timeFactor.getValue()
+									.toString()));
 					HelperVariable.numberOfObjects = Integer
 							.parseInt(me.numberOfObjects.getValue().toString());
 					HelperVariable.nebulaRadius = Double
@@ -257,7 +267,7 @@ public class GUIParam extends JDialog {
 			}
 		});
 		add(btnOK);
-		
+
 		enableDisableParam();
 	}
 
@@ -265,7 +275,7 @@ public class GUIParam extends JDialog {
 		return mother;
 	}
 
-	private void enableDisableParam(){
+	private void enableDisableParam() {
 		timeFactor.setEnabled(false);
 		manageImpact.setEnabled(false);
 		numberOfObjects.setEnabled(false);
@@ -280,14 +290,14 @@ public class GUIParam extends JDialog {
 		darkMatterDensity.setEnabled(false);
 		switch (typeOfUnivers.getSelectedIndex()) {
 		case 0:
-			//TypeOfUnivers.Planetary;
+			// TypeOfUnivers.Planetary;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			break;
 		case 1:
-			//TypeOfUnivers.PlanetaryRandom;
+			// TypeOfUnivers.PlanetaryRandom;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			typeOfImpact.setEnabled(true);
@@ -302,7 +312,7 @@ public class GUIParam extends JDialog {
 			darkMatterDensity.setEnabled(true);
 			break;
 		case 2:
-			//TypeOfUnivers.Random;
+			// TypeOfUnivers.Random;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			fusion.setEnabled(true);
@@ -315,7 +325,7 @@ public class GUIParam extends JDialog {
 			massObjectMax.setEnabled(true);
 			break;
 		case 3:
-			//TypeOfUnivers.RandomRotateUnivers;
+			// TypeOfUnivers.RandomRotateUnivers;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			fusion.setEnabled(true);
@@ -330,7 +340,7 @@ public class GUIParam extends JDialog {
 			darkMatterDensity.setEnabled(true);
 			break;
 		case 4:
-			//TypeOfUnivers.GalaxiesCollision;
+			// TypeOfUnivers.GalaxiesCollision;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			fusion.setEnabled(true);
@@ -345,7 +355,7 @@ public class GUIParam extends JDialog {
 			darkMatterDensity.setEnabled(true);
 			break;
 		case 5:
-			//TypeOfUnivers.PlanetariesGenesis;
+			// TypeOfUnivers.PlanetariesGenesis;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			fusion.setEnabled(true);
@@ -362,7 +372,7 @@ public class GUIParam extends JDialog {
 			darkMatterDensity.setEnabled(true);
 			break;
 		case 6:
-			//TypeOfUnivers.DoubleStars;
+			// TypeOfUnivers.DoubleStars;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			fusion.setEnabled(true);
@@ -371,5 +381,5 @@ public class GUIParam extends JDialog {
 			break;
 		}
 	}
-	
+
 }

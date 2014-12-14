@@ -12,7 +12,7 @@ import com.sylvanoid.common.Vector3dAdapter;
 
 @XmlRootElement(name = "matter")
 public class Matter implements Comparable<Matter> {
-
+	private Parameters parameters;
 	private double mass;
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
@@ -44,8 +44,9 @@ public class Matter implements Comparable<Matter> {
 
 	}
 
-	public Matter(Vector3d point, double mass, Vector3d speed, double density,
+	public Matter(Parameters parameters, Vector3d point, double mass, Vector3d speed, double density,
 			boolean isDark) {
+		this.parameters=parameters;
 		this.setPoint(point);
 		this.mass = mass;
 		this.speed = speed;
@@ -54,17 +55,14 @@ public class Matter implements Comparable<Matter> {
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
-	public Matter(Vector3d point, double mass, Vector3d speed, double density,
-			Vector3d color, boolean isDark) {
-		this.setPoint(point);
-		this.mass = mass;
-		this.speed = speed;
-		this.density = density;
-		this.color = color;
-		this.isDark = isDark;
-		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
+	public Parameters getParameters(){
+		return parameters;
 	}
 
+	public void setParameters(Parameters parameters){
+		this.parameters=parameters;
+	}
+	
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	public Vector3d getPoint() {
@@ -135,15 +133,15 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public Vector3d getPlusV() {
-		return new Vector3d(point.x + speed.x * HelperVariable.timeFactor,
-				point.y + speed.y * HelperVariable.timeFactor, point.z
-						+ speed.z * HelperVariable.timeFactor);
+		return new Vector3d(point.x + speed.x * parameters.getTimeFactor(),
+				point.y + speed.y * parameters.getTimeFactor(), point.z
+						+ speed.z * parameters.getTimeFactor());
 	}
 
 	public Vector3d getMinusV() {
-		return new Vector3d(point.x - speed.x * HelperVariable.timeFactor,
-				point.y - speed.y * HelperVariable.timeFactor, point.z
-						- speed.z * HelperVariable.timeFactor);
+		return new Vector3d(point.x - speed.x * parameters.getTimeFactor(),
+				point.y - speed.y * parameters.getTimeFactor(), point.z
+						- speed.z * parameters.getTimeFactor());
 	}
 
 	public Vector3d maxWithR() {
