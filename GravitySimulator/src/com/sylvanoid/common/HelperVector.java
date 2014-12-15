@@ -4,7 +4,6 @@ import java.nio.DoubleBuffer;
 
 import javax.vecmath.AxisAngle4d;
 import javax.vecmath.Matrix3d;
-import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
 public abstract class HelperVector {
@@ -26,30 +25,34 @@ public abstract class HelperVector {
 		return Math.atan2(Math.pow(Math.pow(x, 2) + Math.pow(y, 2), 0.5), z);
 	}
 
-	public static DoubleBuffer matrix16(double angle, Point3d ptr) {
-		// double x = ptr.x;
-		// double y = ptr.y;
-		// double z = ptr.z;
-		double a = angle;
+	/**
+	 * 
+	 * @param r
+	 * @param u
+	 * @param l
+	 * @param p
+	 * @return
+	 */
+	public static DoubleBuffer matrix16(Vector3d r,Vector3d u,Vector3d l, Vector3d p ) {
 		double[] matrix = new double[16];
-		matrix[0] = Math.cos(a);
-		matrix[1] = 0;
-		matrix[2] = -Math.sin(a);
+		matrix[0] = r.x;
+		matrix[1] = r.y;
+		matrix[2] = r.z;
 		matrix[3] = 0;
 
-		matrix[4] = 0;
-		matrix[5] = 1;
-		matrix[6] = 0;
+		matrix[4] = u.x;
+		matrix[5] = u.y;
+		matrix[6] = u.z;
 		matrix[7] = 0;
 
-		matrix[8] = Math.sin(a);
-		matrix[9] = 0;
-		matrix[10] = Math.cos(a);
+		matrix[8] = l.x;
+		matrix[9] = l.y;
+		matrix[10] = l.z;
 		matrix[11] = 0;
 
-		matrix[12] = 0;
-		matrix[13] = 0;
-		matrix[14] = 0;
+		matrix[12] = p.x;
+		matrix[13] = p.y;
+		matrix[14] = p.z;
 		matrix[15] = 1;
 
 		return DoubleBuffer.wrap(matrix);

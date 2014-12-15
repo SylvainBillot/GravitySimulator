@@ -407,35 +407,36 @@ public class GUIProgram extends JFrame {
 		gl.glLoadIdentity();
 		// Perspective.
 		float widthHeightRatio = (float) getWidth() / (float) getHeight();
+		Vector3d look = new Vector3d(parameters.getEyes());
+		look.sub(parameters.getCenterOfVision());
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
-		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
-				parameters.getEyes().z, parameters.getCenterOfVision().x,
+		glu.gluLookAt(look.x, look.y, look.z, parameters.getCenterOfVision().x,
 				parameters.getCenterOfVision().y,
 				parameters.getCenterOfVision().z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();
-		double phi01 = new Vector3d(0, 0, 1).angle(parameters.getEyes())
-				* -Math.signum(parameters.getEyes().y);
-		Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
-				new Vector3d(1, 0, 0), phi01);
-		double phi02 = afterRotateX.angle(parameters.getEyes())
-				* Math.signum(parameters.getEyes().x);
+		gl.glPushMatrix();
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our
 																	// Texture
-				double r = (0.5 * Math.random() + 4.5)
+				double rayon = (0.5 * Math.random() + 4.5)
 						* (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
-				pts[0] = new Vector3d(-r, -r, 0); // BL
-				pts[1] = new Vector3d(r, -r, 0); // BR
-				pts[2] = new Vector3d(r, r, 0); // TR
-				pts[3] = new Vector3d(-r, r, 0); // TL
+				pts[0] = new Vector3d(-rayon, -rayon, 0); // BL
+				pts[1] = new Vector3d(+rayon, -rayon, 0); // BR
+				pts[2] = new Vector3d(+rayon, +rayon, 0); // TR
+				pts[3] = new Vector3d(-rayon, +rayon, 0); // TL
 				gl.glLoadIdentity();
-				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
-				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
-				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
-				gl.glRotated(Math.random() * 360, 0, 0, 1);
+				Vector3d l = look;
+				l.sub(parameters.getCenterOfVision());
+				l.normalize();
+				Vector3d u = new Vector3d(0,1, 0);
+				u.normalize();
+				Vector3d r = new Vector3d();
+				r.cross(u, l);
+				u.cross(l, r);
+				l.cross(r, u);
+				gl.glMultMatrixd(HelperVector.matrix16(r,u,l,m.getPoint()));
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(0, 0);
@@ -449,31 +450,9 @@ public class GUIProgram extends JFrame {
 				gl.glEnd();
 			} else {
 				// If you want show dark mass, code here
-				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]); // Select Our
-																	// Texture
-				double r = 5 * m.getRayon();
-				Vector3d[] pts = new Vector3d[4];
-				pts[0] = new Vector3d(-r, -r, 0); // BL
-				pts[1] = new Vector3d(r, -r, 0); // BR
-				pts[2] = new Vector3d(r, r, 0); // TR
-				pts[3] = new Vector3d(-r, r, 0); // TL
-				gl.glLoadIdentity();
-				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
-				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
-				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
-				gl.glRotated(Math.random() * 360, 0, 0, 1);
-				gl.glColor3d(0.15, 0.15, 0.15);
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glTexCoord2d(0, 0);
-				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
-				gl.glTexCoord2d(1, 0);
-				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
-				gl.glTexCoord2d(1, 1);
-				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
-				gl.glTexCoord2d(0, 1);
-				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
-				gl.glEnd();
+				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
 			}
+			gl.glPopMatrix();
 		}
 		gl.glDisable(GL2.GL_BLEND);
 	}

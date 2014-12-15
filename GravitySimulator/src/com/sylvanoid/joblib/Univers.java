@@ -414,14 +414,14 @@ public class Univers {
 			double delta, double speedTrans, double radiusMin,
 			double radiusMax, double ratiox, double ratioy, double ratioz) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
+		Random random = new Random();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < parameters.getNumberOfObjects(); cpt++) {
 			Matter m;
 			boolean cont = false;
 			do {
-				double theta = Math.random() * Math.PI * 2;
-				double phi = Math.random() * Math.PI * 2;
-				Random random = new Random();
+				double theta = random.nextDouble() * Math.PI * 2;
+				double phi = random.nextDouble() * Math.PI * 2;
 				double r = random.nextDouble();
 				m = new Matter(
 						parameters,
@@ -438,10 +438,11 @@ public class Univers {
 										+ Math.cos(phi)
 										* (r * ratioz * (radiusMax - radiusMin) + radiusMin)),
 						parameters.getMassObjectMin()
-								+ Math.random()
+								+ random.nextDouble()
 								* (parameters.getMassObjectMax() - parameters
-										.getMassObjectMin()) + Math.random(),
-						new Vector3d(0, 0, 0), parameters.getDensity(), false);
+										.getMassObjectMin())
+								+ random.nextDouble(), new Vector3d(0, 0, 0),
+						parameters.getDensity(), false);
 				cont = false;
 				for (Matter m2 : miniListMatter.values()) {
 					if (m.collision(m2)) {
@@ -454,18 +455,21 @@ public class Univers {
 			miniMass += m.getMass();
 
 			for (Matter mbis : miniListMatter.values()) {
-				double alea = Math.random();
-				mbis.setColor(new Vector3d(0.90 + Math.random() / 4,
-						0.90 + Math.random() / 4, 0.90 + Math.random() / 4));
+				double alea = random.nextDouble();
+				mbis.setColor(new Vector3d(0.90 + random.nextDouble() / 4,
+						0.90 + random.nextDouble() / 4, 0.90 + random
+								.nextDouble() / 4));
 				if (alea > 0.80) {
-					mbis.setColor(new Vector3d(0.90 + Math.random() * 0.1,
-							0.4 + Math.random() * 0.1,
-							0.4 + Math.random() * 0.1));
+					mbis.setColor(new Vector3d(
+							0.90 + random.nextDouble() * 0.1, 0.4 + random
+									.nextDouble() * 0.1, 0.4 + random
+									.nextDouble() * 0.1));
 				}
 				if (alea > 0.90) {
-					mbis.setColor(new Vector3d(0.4 + Math.random() * 0.10,
-							0.4 + Math.random() * 0.10,
-							0.9 + Math.random() * 0.1));
+					mbis.setColor(new Vector3d(
+							0.4 + random.nextDouble() * 0.10, 0.4 + random
+									.nextDouble() * 0.10, 0.9 + random
+									.nextDouble() * 0.1));
 				}
 			}
 
