@@ -61,7 +61,6 @@ public class GUIProgram extends JFrame {
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
 	private int textures[] = new int[2]; // Storage For One textures
-	private Vector3d eyes = new Vector3d(0, 0, 900);
 
 	public static void main(String[] args) {
 
@@ -173,7 +172,8 @@ public class GUIProgram extends JFrame {
 				} catch (JAXBException e1) {
 					e1.printStackTrace();
 				}
-				for(Matter m : univers.getListMatiere().values()){
+				me.setParameters(univers.getParameters());
+				for (Matter m : univers.getListMatiere().values()) {
 					m.setParameters(univers.getParameters());
 				}
 				animator.start();
@@ -300,7 +300,11 @@ public class GUIProgram extends JFrame {
 				gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 				gl.glLoadIdentity();
 				glu.gluPerspective(45, h, 1.0, 10000.0);
-				glu.gluLookAt(eyes.x, eyes.y, eyes.z, 0, 0, 0, 0, 1, 0);
+				glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
+						parameters.getEyes().z,
+						parameters.getCenterOfVision().x,
+						parameters.getCenterOfVision().y,
+						parameters.getCenterOfVision().z, 0, 1, 0);
 				gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 				gl.glLoadIdentity();
 			}
@@ -378,14 +382,6 @@ public class GUIProgram extends JFrame {
 		this.gljpanel = gljpanel;
 	}
 
-	public void setEyes(Vector3d eyes) {
-		this.eyes = eyes;
-	}
-
-	public Vector3d getEyes() {
-		return eyes;
-	}
-
 	public FPSAnimator getAminator() {
 		return animator;
 	}
@@ -412,13 +408,18 @@ public class GUIProgram extends JFrame {
 		// Perspective.
 		float widthHeightRatio = (float) getWidth() / (float) getHeight();
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
-		glu.gluLookAt(eyes.x, eyes.y, eyes.z, 0, 0, 0, 0, 1, 0);
+		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
+				parameters.getEyes().z, parameters.getCenterOfVision().x,
+				parameters.getCenterOfVision().y,
+				parameters.getCenterOfVision().z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		double phi01 = new Vector3d(0, 0, 1).angle(eyes) * -Math.signum(eyes.y);
+		double phi01 = new Vector3d(0, 0, 1).angle(parameters.getEyes())
+				* -Math.signum(parameters.getEyes().y);
 		Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
 				new Vector3d(1, 0, 0), phi01);
-		double phi02 = afterRotateX.angle(eyes) * Math.signum(eyes.x);
+		double phi02 = afterRotateX.angle(parameters.getEyes())
+				* Math.signum(parameters.getEyes().x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our

@@ -367,21 +367,14 @@ public class Univers {
 		// Barycentre au centre de l'écran
 		computeCentroidOfUnivers();
 		if (parameters.isCenterOnCentroid()) {
-			for (Matter m : listMatter.values()) {
-				m.getPoint().setX(m.getPoint().getX() - gPoint.x);
-				m.getPoint().setY(m.getPoint().getY() - gPoint.y);
-				m.getPoint().setZ(m.getPoint().getZ() - gPoint.z);
-			}
+			parameters.setCenterOfVision(gPoint);
 		}
 
 		// Centre l'ecran
 		if (parameters.isCenterOnScreen()) {
 			computeLimits();
-			for (Matter m : listMatter.values()) {
-				m.getPoint().setX(m.getPoint().getX() - (max.x + min.x) / 2);
-				m.getPoint().setY(m.getPoint().getY() - (max.y + min.y) / 2);
-				m.getPoint().setZ(m.getPoint().getZ() - (max.z + min.z) / 2);
-			}
+			parameters.setCenterOfVision(new Vector3d((max.x + min.x) / 2,
+					(max.y + min.y) / 2, (max.z + min.z) / 2));
 		}
 
 		// Centre sur le plus massif
@@ -390,15 +383,7 @@ public class Univers {
 					new MassComparator());
 			sortByMass.putAll(listMatter);
 			Matter maxMass = sortByMass.firstEntry().getValue();
-			double cmaxX = maxMass.getPoint().getX();
-			double cmaxY = maxMass.getPoint().getY();
-			double cmaxZ = maxMass.getPoint().getZ();
-
-			for (Matter m : sortByMass.values()) {
-				m.getPoint().setX(m.getPoint().getX() - cmaxX);
-				m.getPoint().setY(m.getPoint().getY() - cmaxY);
-				m.getPoint().setZ(m.getPoint().getZ() - cmaxZ);
-			}
+			parameters.setCenterOfVision(maxMass.getPoint());
 		}
 	}
 
@@ -507,9 +492,8 @@ public class Univers {
 	}
 
 	private void createRandomStaticUvivers() {
-		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(0, 0,
-				0), 0, 0, 0, parameters.getNebulaRadius(), 1, 1,
-				1);
+		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(0, 0, 0),
+				0, 0, 0, parameters.getNebulaRadius(), 1, 1, 1);
 		listMatter.putAll(subu01);
 	}
 

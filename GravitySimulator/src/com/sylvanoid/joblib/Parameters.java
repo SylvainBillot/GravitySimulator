@@ -1,8 +1,12 @@
 package com.sylvanoid.joblib;
 
+import javax.vecmath.Vector3d;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.TypeOfUnivers;
+import com.sylvanoid.common.Vector3dAdapter;
 
 @XmlRootElement
 public class Parameters {
@@ -22,6 +26,8 @@ public class Parameters {
 	private double nebulaRadius = 600;
 	private double massObjectMin = 10000;
 	private double massObjectMax = 100000;
+	private Vector3d eyes = new Vector3d(0, 0, 900);
+	private Vector3d centerOfVision = new Vector3d(0, 0, 0);
 	
 	public Parameters(){
 		
@@ -123,6 +129,26 @@ public class Parameters {
 	}
 	public void setMassObjectMax(double massObjectMax) {
 		this.massObjectMax = massObjectMax;
+	}
+	
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
+	public Vector3d getEyes() {
+		return eyes;
+	}
+
+	public void setEyes(Vector3d eyes) {
+		this.eyes = eyes;
+	}
+
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
+	public Vector3d getCenterOfVision() {
+		return centerOfVision;
+	}
+
+	public void setCenterOfVision(Vector3d centerOfVision) {
+		this.centerOfVision = centerOfVision;
 	}
 	
 }
