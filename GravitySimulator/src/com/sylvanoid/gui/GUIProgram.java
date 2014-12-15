@@ -407,10 +407,9 @@ public class GUIProgram extends JFrame {
 		gl.glLoadIdentity();
 		// Perspective.
 		float widthHeightRatio = (float) getWidth() / (float) getHeight();
-		Vector3d look = new Vector3d(parameters.getEyes());
-		look.sub(parameters.getCenterOfVision());
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
-		glu.gluLookAt(look.x, look.y, look.z, parameters.getCenterOfVision().x,
+		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
+				parameters.getEyes().z, parameters.getCenterOfVision().x,
 				parameters.getCenterOfVision().y,
 				parameters.getCenterOfVision().z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
@@ -427,16 +426,44 @@ public class GUIProgram extends JFrame {
 				pts[2] = new Vector3d(+rayon, +rayon, 0); // TR
 				pts[3] = new Vector3d(-rayon, +rayon, 0); // TL
 				gl.glLoadIdentity();
-				Vector3d l = look;
+
+				Vector3d l = new Vector3d(parameters.getEyes());
 				l.sub(parameters.getCenterOfVision());
 				l.normalize();
-				Vector3d u = new Vector3d(0,1, 0);
+				Vector3d u = new Vector3d(0, 1, 0);
 				u.normalize();
 				Vector3d r = new Vector3d();
 				r.cross(u, l);
 				u.cross(l, r);
 				l.cross(r, u);
-				gl.glMultMatrixd(HelperVector.matrix16(r,u,l,m.getPoint()));
+				gl.glMultMatrixd(HelperVector.matrix16(r, u, l, m.getPoint()));
+/*
+				Vector3d objToCamProj = new Vector3d(parameters.getEyes());
+				objToCamProj.sub(parameters.getCenterOfVision());
+				objToCamProj.y = 0;
+				objToCamProj.normalize();
+				Vector3d lookAt = new Vector3d(0, 0, 1);
+				Vector3d upAux = new Vector3d();
+				upAux.cross(objToCamProj, lookAt);
+				double angleCosine = lookAt.dot(objToCamProj);
+				if ((angleCosine < 0.99990) && (angleCosine > -0.9999)) {
+					gl.glRotated(Math.acos(angleCosine) * 180 / Math.PI,
+							upAux.x, upAux.y, upAux.z);
+				}
+				Vector3d objToCam = parameters.getEyes();
+				objToCam.sub(m.getPoint());
+				objToCam.normalize();
+				angleCosine = objToCamProj.dot(objToCam);
+				if ((angleCosine < 0.99990) && (angleCosine > -0.9999)) {
+					if (objToCam.y < 0) {
+						gl.glRotated(Math.acos(angleCosine) * 180 / Math.PI, 1,
+								0, 0);
+					} else {
+						gl.glRotated(Math.acos(angleCosine) * 180 / Math.PI,
+								-1, 0, 0);
+					}
+				}
+*/
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glTexCoord2d(0, 0);
