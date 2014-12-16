@@ -423,9 +423,9 @@ public class GUIProgram extends JFrame {
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				double distance = new Point3d(parameters.getEyes())
 						.distance(new Point3d(parameters.getCenterOfVision()));
-				double pointSize = 900/distance;
-				System.out.println(m.getRayon() + " " +pointSize);
-				gl.glPointSize((float) (pointSize * m.getRayon()*10));
+				double pointSize = 900 / distance;
+				System.out.println(m.getRayon() + " " + pointSize);
+				gl.glPointSize((float) (pointSize * m.getRayon() * 10));
 				gl.glBegin(GL2.GL_POINTS);
 				gl.glVertex3d(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glEnd();
@@ -453,6 +453,7 @@ public class GUIProgram extends JFrame {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+
 		gl.glGenTextures(1, textures, 0);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
