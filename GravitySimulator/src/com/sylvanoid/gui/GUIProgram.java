@@ -30,7 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3d;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -417,17 +417,15 @@ public class GUIProgram extends JFrame {
 			if (!m.isDark()) {
 				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]); // Select Our
 				gl.glEnable(GL2.GL_POINT_SPRITE);
-				gl.glTexEnvi(GL2.GL_POINT_SPRITE, GL2.GL_COORD_REPLACE, GL2.GL_TRUE);
-				double rayon = (0.5 * Math.random() + 4.5)
-						* (m.getRayon() < 1 ? 1 : m.getRayon());
-				Vector3d[] pts = new Vector3d[4];
-				pts[0] = new Vector3d(-rayon, -rayon, 0); // BL
-				pts[1] = new Vector3d(+rayon, -rayon, 0); // BR
-				pts[2] = new Vector3d(+rayon, +rayon, 0); // TR
-				pts[3] = new Vector3d(-rayon, +rayon, 0); // TL
+				gl.glTexEnvi(GL2.GL_POINT_SPRITE, GL2.GL_COORD_REPLACE,
+						GL2.GL_TRUE);
 				gl.glLoadIdentity();
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-				gl.glPointSize((float)rayon);
+				double distance = new Point3d(parameters.getEyes())
+						.distance(new Point3d(parameters.getCenterOfVision()));
+				double pointSize = 900/distance;
+				System.out.println(m.getRayon() + " " +pointSize);
+				gl.glPointSize((float) (pointSize * m.getRayon()*10));
 				gl.glBegin(GL2.GL_POINTS);
 				gl.glVertex3d(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glEnd();
