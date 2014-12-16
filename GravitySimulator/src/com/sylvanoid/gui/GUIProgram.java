@@ -39,7 +39,6 @@ import javax.xml.bind.Unmarshaller;
 import org.jcodec.api.SequenceEncoder;
 
 import com.jogamp.opengl.util.FPSAnimator;
-import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.XmlFilter;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
@@ -416,8 +415,9 @@ public class GUIProgram extends JFrame {
 		gl.glPushMatrix();
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]); // Select Our
-																	// Texture
+				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]); // Select Our
+				gl.glEnable(GL2.GL_POINT_SPRITE);
+				gl.glTexEnvi(GL2.GL_POINT_SPRITE, GL2.GL_COORD_REPLACE, GL2.GL_TRUE);
 				double rayon = (0.5 * Math.random() + 4.5)
 						* (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
@@ -426,54 +426,10 @@ public class GUIProgram extends JFrame {
 				pts[2] = new Vector3d(+rayon, +rayon, 0); // TR
 				pts[3] = new Vector3d(-rayon, +rayon, 0); // TL
 				gl.glLoadIdentity();
-
-				Vector3d l = new Vector3d(parameters.getEyes());
-				l.sub(parameters.getCenterOfVision());
-				l.normalize();
-				Vector3d u = new Vector3d(0, 1, 0);
-				u.normalize();
-				Vector3d r = new Vector3d();
-				r.cross(u, l);
-				u.cross(l, r);
-				l.cross(r, u);
-				gl.glMultMatrixd(HelperVector.matrix16(r, u, l, m.getPoint()));
-/*
-				Vector3d objToCamProj = new Vector3d(parameters.getEyes());
-				objToCamProj.sub(parameters.getCenterOfVision());
-				objToCamProj.y = 0;
-				objToCamProj.normalize();
-				Vector3d lookAt = new Vector3d(0, 0, 1);
-				Vector3d upAux = new Vector3d();
-				upAux.cross(objToCamProj, lookAt);
-				double angleCosine = lookAt.dot(objToCamProj);
-				if ((angleCosine < 0.99990) && (angleCosine > -0.9999)) {
-					gl.glRotated(Math.acos(angleCosine) * 180 / Math.PI,
-							upAux.x, upAux.y, upAux.z);
-				}
-				Vector3d objToCam = parameters.getEyes();
-				objToCam.sub(m.getPoint());
-				objToCam.normalize();
-				angleCosine = objToCamProj.dot(objToCam);
-				if ((angleCosine < 0.99990) && (angleCosine > -0.9999)) {
-					if (objToCam.y < 0) {
-						gl.glRotated(Math.acos(angleCosine) * 180 / Math.PI, 1,
-								0, 0);
-					} else {
-						gl.glRotated(Math.acos(angleCosine) * 180 / Math.PI,
-								-1, 0, 0);
-					}
-				}
-*/
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glTexCoord2d(0, 0);
-				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
-				gl.glTexCoord2d(1, 0);
-				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
-				gl.glTexCoord2d(1, 1);
-				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
-				gl.glTexCoord2d(0, 1);
-				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
+				gl.glPointSize((float)rayon);
+				gl.glBegin(GL2.GL_POINTS);
+				gl.glVertex3d(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glEnd();
 			} else {
 				// If you want show dark mass, code here
