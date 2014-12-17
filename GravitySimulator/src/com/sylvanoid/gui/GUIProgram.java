@@ -312,8 +312,9 @@ public class GUIProgram extends JFrame {
 				gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
 				gl.glClearDepth(1.0f);
 				gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
-				gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
-				gl.glEnable(GL.GL_BLEND);
+				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
+				gl.glShadeModel(GL2.GL_FLAT);
+				gl.glEnable(GL2.GL_BLEND);
 				LoadGLTextures(gl);
 			}
 
@@ -417,11 +418,10 @@ public class GUIProgram extends JFrame {
 			if (!m.isDark()) {
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 				gl.glLoadIdentity();
-				
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glMultMatrixd(HelperVector
 						.make3DTransformMatrix(new Vector3d(-phi01, -phi02, Math.random()*2*Math.PI)));
-				double r = 5 * (m.getRayon() < 1 ? 1 : m.getRayon());
+				double r = (Math.random()*0.5 + 4.5) * (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
