@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperVariable;
+import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.common.Vector3dAdapter;
 
@@ -196,24 +197,9 @@ public class Univers {
 									* HelperVariable.GRAVITY
 									* (((uvoisin.getMass()) / Math.pow(
 											distance, 2)));
-							double theta = Math
-									.atan2(uvoisin.getGPoint().y
-											- m.getPoint().getY(),
-											uvoisin.getGPoint().x
-													- m.getPoint().getX());
-							double phi = Math.atan2(Math.pow(
-									Math.pow(uvoisin.getGPoint().x
-											- m.getPoint().getX(), 2)
-											+ Math.pow(uvoisin.getGPoint().y
-													- m.getPoint().getY(), 2),
-									0.5), (uvoisin.getGPoint().z - m.getPoint()
-									.getZ()));
-
 							m.getA().add(
-									new Vector3d(attraction * Math.cos(theta)
-											* Math.sin(phi), attraction
-											* Math.sin(theta) * Math.sin(phi),
-											attraction * Math.cos(phi)));
+									HelperVector.accel(m.getPoint(),
+											uvoisin.getGPoint(), attraction));
 						}
 					}
 				}

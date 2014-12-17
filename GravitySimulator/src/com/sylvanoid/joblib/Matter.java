@@ -265,21 +265,11 @@ public class Matter implements Comparable<Matter> {
 						/ ((mass + m.getMass()) * new Point3d(point)
 								.distance(new Point3d(m.getPoint()))), 0.5);
 
-		double theta = Math.atan2(m.getPoint().y - point.y, m.getPoint().x
-				- point.x);
-		double phi = Math.atan2(
-				Math.pow(
-						Math.pow(m.getPoint().x - point.x, 2)
-								+ Math.pow(m.getPoint().y - point.y, 2), 0.5),
-				(m.getPoint().z - point.z));
-
-		Vector3d accel = new Vector3d(orbitalSpeedValue * Math.cos(theta)
-				* Math.sin(phi), orbitalSpeedValue * Math.sin(theta)
-				* Math.sin(phi), orbitalSpeedValue * Math.cos(phi));
+		Vector3d accel = HelperVector.accel(point, m.getPoint(), orbitalSpeedValue);
 
 		if (axis.x != 0) {
 			accel = HelperVector.rotate(accel,
-					new Vector3d(1, 0, Math.signum(axis.x) * Math.PI / 2),
+					new Vector3d(0, 0, Math.signum(axis.x) * Math.PI / 2),
 					Math.PI / 2);
 		}
 		if (axis.y != 0) {
