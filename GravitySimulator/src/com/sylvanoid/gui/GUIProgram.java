@@ -30,7 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -39,6 +39,7 @@ import javax.xml.bind.Unmarshaller;
 import org.jcodec.api.SequenceEncoder;
 
 import com.jogamp.opengl.util.FPSAnimator;
+import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.XmlFilter;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
@@ -412,28 +413,42 @@ public class GUIProgram extends JFrame {
 				parameters.getCenterOfVision().y,
 				parameters.getCenterOfVision().z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glPushMatrix();
+		gl.glLoadIdentity();
+		double phi01 = new Vector3d(0, 0, 1).angle(parameters.getEyes())
+				* -Math.signum(parameters.getEyes().y);
+		Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
+				new Vector3d(1, 0, 0), phi01);
+		double phi02 = afterRotateX.angle(parameters.getEyes())
+				* Math.signum(parameters.getEyes().x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]); // Select Our
-				gl.glEnable(GL2.GL_POINT_SPRITE);
-				gl.glTexEnvi(GL2.GL_POINT_SPRITE, GL2.GL_COORD_REPLACE,
-						GL2.GL_TRUE);
+				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
+				double r = 5
+						* (m.getRayon() < 1 ? 1 : m.getRayon());
+				Vector3d[] pts = new Vector3d[4];
+				pts[0] = new Vector3d(-r, -r, 0); // BL
+				pts[1] = new Vector3d(r, -r, 0); // BR
+				pts[2] = new Vector3d(r, r, 0); // TR
+				pts[3] = new Vector3d(-r, r, 0); // TL
 				gl.glLoadIdentity();
+				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
+				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-				double distance = new Point3d(parameters.getEyes())
-						.distance(new Point3d(parameters.getCenterOfVision()));
-				double pointSize = 900 / distance;
-				System.out.println(m.getRayon() + " " + pointSize);
-				gl.glPointSize((float) (pointSize * m.getRayon() * 10));
-				gl.glBegin(GL2.GL_POINTS);
-				gl.glVertex3d(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+				gl.glBegin(GL2.GL_TRIANGLE_FAN);
+				gl.glTexCoord2d(0, 0);
+				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
+				gl.glTexCoord2d(1, 0);
+				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
+				gl.glTexCoord2d(1, 1);
+				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
+				gl.glTexCoord2d(0, 1);
+				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
 				gl.glEnd();
 			} else {
 				// If you want show dark mass, code here
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
 			}
-			gl.glPopMatrix();
 		}
 		gl.glDisable(GL2.GL_BLEND);
 	}
@@ -446,14 +461,14 @@ public class GUIProgram extends JFrame {
 		com.sylvanoid.common.TextureReader.Texture texture01 = null;
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
 		try {
-			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
+			texture01 = TextureReader
+					.readTexture("resources/images/Star.bmp");
 			texture02 = TextureReader
 					.readTexture("resources/images/Particle.png");
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-
 		gl.glGenTextures(1, textures, 0);
 		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
