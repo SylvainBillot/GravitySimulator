@@ -55,21 +55,6 @@ public class InputHandler extends KeyAdapter {
 			lookAt.add(new Vector3d(0,0,900));
 			guiProgram.getParameters().setEyes(lookAt);
 			break;
-		case KeyEvent.VK_NUMPAD0:
-			lookAt = new Vector3d(guiProgram.getParameters().getCenterOfVision());
-			lookAt.add(new Vector3d(0,0,900));
-			guiProgram.getParameters().setEyes(lookAt);
-			break;
-		case KeyEvent.VK_NUMPAD1:
-			lookAt = new Vector3d(guiProgram.getParameters().getCenterOfVision());
-			lookAt.add(new Vector3d(0,900,0));
-			guiProgram.getParameters().setEyes(lookAt);
-			break;
-		case KeyEvent.VK_NUMPAD2:
-			lookAt = new Vector3d(guiProgram.getParameters().getCenterOfVision());
-			lookAt.add(new Vector3d(900,0,0));
-			guiProgram.getParameters().setEyes(lookAt);
-			break;
 		}
 
 		switch (e.getKeyChar()) {
