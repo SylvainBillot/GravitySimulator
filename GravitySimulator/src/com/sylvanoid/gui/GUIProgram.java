@@ -222,7 +222,7 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setCenterOfVision(new Vector3d(0,0,0));
+				parameters.setCenterOfVision(new Vector3d(0, 0, 0));
 			}
 		});
 		JMenuItem menuItemplusMassif = new JMenuItem("Look at maximum mass");
@@ -230,7 +230,8 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setCenterOfVision(univers.getListMatiere().firstEntry().getValue().getPoint());
+				parameters.setCenterOfVision(univers.getListMatiere()
+						.firstEntry().getValue().getPoint());
 			}
 		});
 
@@ -404,27 +405,28 @@ public class GUIProgram extends JFrame {
 				parameters.getCenterOfVision().z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		double phi01 = new Vector3d(0, 0, 1).angle(parameters.getEyes())
-				* -Math.signum(parameters.getEyes().y);
+		Vector3d lookAt = new Vector3d(parameters.getEyes());
+		lookAt.sub(parameters.getCenterOfVision());
+		double phi01 = new Vector3d(0, 0, 1).angle(lookAt)
+				* -Math.signum(lookAt.y);
 		Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
 				new Vector3d(1, 0, 0), phi01);
-		double phi02 = afterRotateX.angle(parameters.getEyes())
-				* Math.signum(parameters.getEyes().x);
+		double phi02 = afterRotateX.angle(lookAt)
+				* Math.signum(lookAt.x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
-				double r = 5
-						* (m.getRayon() < 1 ? 1 : m.getRayon());
+				gl.glLoadIdentity();
+				
+				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+				gl.glMultMatrixd(HelperVector
+						.make3DTransformMatrix(new Vector3d(-phi01, -phi02, Math.random()*2*Math.PI)));
+				double r = 5 * (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
 				pts[2] = new Vector3d(r, r, 0); // TR
 				pts[3] = new Vector3d(-r, r, 0); // TL
-				gl.glLoadIdentity();
-				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
-				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
-				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
-				
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				gl.glBegin(GL2.GL_TRIANGLE_FAN);
 				gl.glTexCoord2d(0, 0);
@@ -452,8 +454,7 @@ public class GUIProgram extends JFrame {
 		com.sylvanoid.common.TextureReader.Texture texture01 = null;
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
 		try {
-			texture01 = TextureReader
-					.readTexture("resources/images/Star.bmp");
+			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
 			texture02 = TextureReader
 					.readTexture("resources/images/Particle.png");
 		} catch (IOException e) {
