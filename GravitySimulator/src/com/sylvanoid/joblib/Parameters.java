@@ -18,9 +18,6 @@ public class Parameters {
 	private boolean exportToVideo = false;
 	private boolean fusion = true;
 	private double typeOfImpact = 1;
-	private boolean centerOnCentroid = false;
-	private boolean centerOnMassMax = false;
-	private boolean centerOnScreen = false;
 	private double density = 30;
 	private int numberOfObjects = 1000;
 	private double nebulaRadius = 600;
@@ -95,30 +92,6 @@ public class Parameters {
 
 	public void setTypeOfImpact(double typeOfImpact) {
 		this.typeOfImpact = typeOfImpact;
-	}
-
-	public boolean isCenterOnCentroid() {
-		return centerOnCentroid;
-	}
-
-	public void setCenterOnCentroid(boolean centerOnCentroid) {
-		this.centerOnCentroid = centerOnCentroid;
-	}
-
-	public boolean isCenterOnMassMax() {
-		return centerOnMassMax;
-	}
-
-	public void setCenterOnMassMax(boolean centerOnMassMax) {
-		this.centerOnMassMax = centerOnMassMax;
-	}
-
-	public boolean isCenterOnScreen() {
-		return centerOnScreen;
-	}
-
-	public void setCenterOnScreen(boolean centerOnScreen) {
-		this.centerOnScreen = centerOnScreen;
 	}
 
 	public double getDensity() {

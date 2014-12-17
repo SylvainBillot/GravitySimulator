@@ -217,37 +217,30 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
-		JMenuItem menuItemCentreEcran = new JMenuItem("All univers on screen");
+		JMenuItem menuItemCentreEcran = new JMenuItem("Look at 0,0,0");
 		menuItemCentreEcran.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setCenterOnScreen(true);
-				parameters.setCenterOnCentroid(false);
-				parameters.setCenterOnMassMax(false);
+				parameters.setCenterOfVision(new Vector3d(0,0,0));
 			}
 		});
-		JMenuItem menuItemplusMassif = new JMenuItem("Center on maximum mass");
+		JMenuItem menuItemplusMassif = new JMenuItem("Look at maximum mass");
 		menuItemplusMassif.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setCenterOnScreen(false);
-				parameters.setCenterOnCentroid(false);
-				parameters.setCenterOnMassMax(true);
+				parameters.setCenterOfVision(univers.getListMatiere().firstEntry().getValue().getPoint());
 			}
 		});
 
-		JMenuItem menuItemBarycentre = new JMenuItem("Center on centroid");
+		JMenuItem menuItemBarycentre = new JMenuItem("Look at centroid");
 		menuItemBarycentre.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setCenterOnScreen(false);
-				parameters.setCenterOnCentroid(true);
-				parameters.setCenterOnMassMax(false);
-				;
+				parameters.setCenterOfVision(univers.getGPoint());
 			}
 		});
 
@@ -388,9 +381,6 @@ public class GUIProgram extends JFrame {
 
 	public void reset() {
 		animator.stop();
-		parameters.setCenterOnScreen(false);
-		parameters.setCenterOnCentroid(false);
-		parameters.setCenterOnMassMax(false);
 		univers = new Univers(parameters);
 		animator.start();
 	}
@@ -434,6 +424,7 @@ public class GUIProgram extends JFrame {
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glRotated(phi01 * 180 / Math.PI, 1, 0, 0);
 				gl.glRotated(phi02 * 180 / Math.PI, 0, 1, 0);
+				
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				gl.glBegin(GL2.GL_TRIANGLE_FAN);
 				gl.glTexCoord2d(0, 0);

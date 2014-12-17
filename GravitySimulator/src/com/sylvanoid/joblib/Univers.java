@@ -363,28 +363,6 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			m.move();
 		}
-
-		// Barycentre au centre de l'écran
-		computeCentroidOfUnivers();
-		if (parameters.isCenterOnCentroid()) {
-			parameters.setCenterOfVision(gPoint);
-		}
-
-		// Centre l'ecran
-		if (parameters.isCenterOnScreen()) {
-			computeLimits();
-			parameters.setCenterOfVision(new Vector3d((max.x + min.x) / 2,
-					(max.y + min.y) / 2, (max.z + min.z) / 2));
-		}
-
-		// Centre sur le plus massif
-		if (parameters.isCenterOnMassMax()) {
-			TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
-					new MassComparator());
-			sortByMass.putAll(listMatter);
-			Matter maxMass = sortByMass.firstEntry().getValue();
-			parameters.setCenterOfVision(maxMass.getPoint());
-		}
 	}
 
 	public void process() {
