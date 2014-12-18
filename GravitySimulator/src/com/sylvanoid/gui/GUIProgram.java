@@ -217,12 +217,14 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
-		JMenuItem menuItemCentreEcran = new JMenuItem("Look at 0,0,0");
+		JMenuItem menuItemCentreEcran = new JMenuItem("Look at 0");
 		menuItemCentreEcran.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setCenterOfVision(new Vector3d(0, 0, 0));
+				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+				diffLookAt.negate();
+				parameters.setEyes(diffLookAt);
 			}
 		});
 		JMenuItem menuItemplusMassif = new JMenuItem("Look at maximum mass");
@@ -230,8 +232,10 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setCenterOfVision(univers.getListMatiere()
-						.firstEntry().getValue().getPoint());
+				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+				diffLookAt.negate();
+				diffLookAt.add(univers.getListMatiere().firstEntry().getValue().getPoint());
+				parameters.setEyes(diffLookAt);
 			}
 		});
 
@@ -241,7 +245,11 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setCenterOfVision(univers.getGPoint());
+				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+				diffLookAt.negate();
+				diffLookAt.add(univers.getGPoint());
+				parameters.setEyes(diffLookAt);
+
 			}
 		});
 
@@ -294,11 +302,11 @@ public class GUIProgram extends JFrame {
 				gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 				gl.glLoadIdentity();
 				glu.gluPerspective(45, h, 1.0, 10000.0);
+				Vector3d centerOfVision = new Vector3d(parameters.getEyes());
+				centerOfVision.add(parameters.getLookAt());
 				glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
-						parameters.getEyes().z,
-						parameters.getCenterOfVision().x,
-						parameters.getCenterOfVision().y,
-						parameters.getCenterOfVision().z, 0, 1, 0);
+						parameters.getEyes().z, centerOfVision.x,
+						centerOfVision.y, centerOfVision.z, 0, 1, 0);
 				gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 				gl.glLoadIdentity();
 			}
@@ -400,28 +408,29 @@ public class GUIProgram extends JFrame {
 		// Perspective.
 		float widthHeightRatio = (float) getWidth() / (float) getHeight();
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
+		Vector3d centerOfVision = new Vector3d(parameters.getEyes());
+		centerOfVision.add(parameters.getLookAt());
 		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
-				parameters.getEyes().z, parameters.getCenterOfVision().x,
-				parameters.getCenterOfVision().y,
-				parameters.getCenterOfVision().z, 0, 1, 0);
+				parameters.getEyes().z, centerOfVision.x, centerOfVision.y,
+				centerOfVision.z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		Vector3d lookAt = new Vector3d(parameters.getEyes());
-		lookAt.sub(parameters.getCenterOfVision());
-		double phi01 = new Vector3d(0, 0, 1).angle(lookAt)
-				* -Math.signum(lookAt.y);
+		double phi01 = new Vector3d(0, 0, 1).angle(parameters.getLookAt())
+				* -Math.signum(parameters.getLookAt().y);
 		Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
 				new Vector3d(1, 0, 0), phi01);
-		double phi02 = afterRotateX.angle(lookAt)
-				* Math.signum(lookAt.x);
+		double phi02 = afterRotateX.angle(parameters.getLookAt())
+				* Math.signum(parameters.getLookAt().x);
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
-				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 				gl.glLoadIdentity();
+				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				gl.glMultMatrixd(HelperVector
-						.make3DTransformMatrix(new Vector3d(-phi01, -phi02, Math.random()*2*Math.PI)));
-				double r = (Math.random()*0.5 + 4.5) * (m.getRayon() < 1 ? 1 : m.getRayon());
+						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
+								Math.random() * 2 * Math.PI)));
+				double r = (Math.random() * 0.5 + 4.5)
+						* (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
@@ -444,6 +453,7 @@ public class GUIProgram extends JFrame {
 			}
 		}
 		gl.glDisable(GL2.GL_BLEND);
+		gl.glPopMatrix();
 	}
 
 	private void update() {

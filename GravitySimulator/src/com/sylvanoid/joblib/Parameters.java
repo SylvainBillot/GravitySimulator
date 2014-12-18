@@ -24,7 +24,7 @@ public class Parameters {
 	private double massObjectMin = 10000;
 	private double massObjectMax = 100000;
 	private Vector3d eyes = new Vector3d(0, 0, 900);
-	private Vector3d centerOfVision = new Vector3d(0, 0, 0);
+	private Vector3d lookAt = new Vector3d(0, 0, -900);
 
 	public Parameters() {
 
@@ -146,12 +146,13 @@ public class Parameters {
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
-	public Vector3d getCenterOfVision() {
-		return centerOfVision;
+	public Vector3d getLookAt() {
+		return lookAt;
 	}
 
-	public void setCenterOfVision(Vector3d centerOfVision) {
-		this.centerOfVision = centerOfVision;
+	public void setLookAt(Vector3d lookAt) {
+		this.lookAt = lookAt;
 	}
+
 
 }
