@@ -427,31 +427,26 @@ public class GUIProgram extends JFrame {
 		float ldTab[] = { 1f, 1f, 1f, 0f };
 		FloatBuffer LightDif = FloatBuffer.wrap(ldTab);
 		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, LightDif);
-		gl.glEnable(GL2.GL_BLEND);
+		
 /*
 		gl.glTranslated(0, 0, 0);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3d(0.3, 0.0, 0.0);
-		gl.glVertex3d(0.0, -1000, -1000);
-		gl.glVertex3d(0.0, 1000, -1000);
-		gl.glVertex3d(0.0, 1000, 1000);
-		gl.glVertex3d(0.0, -1000, 1000);
+		gl.glBegin(GL2.GL_LINES);
+		gl.glColor3d(1, 0.0, 0.0);
+		gl.glVertex3d(0.0, 0, -1000);
+		gl.glVertex3d(0.0, 0, 1000);
 		gl.glEnd();
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3d(0.0, 0.3, 0.0);
-		gl.glVertex3d(-1000, -1000, 0);
-		gl.glVertex3d(1000, -1000, 0);
-		gl.glVertex3d(1000, 1000, 0);
-		gl.glVertex3d(-1000, 1000, 0);
+		gl.glBegin(GL2.GL_LINES);
+		gl.glColor3d(0, 1, 0.0);
+		gl.glVertex3d(0.0, -1000,0);
+		gl.glVertex3d(0.0, 1000,0);
 		gl.glEnd();
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3d(0.0, 0.0, 0.3);
-		gl.glVertex3d(-1000, 0.0, -1000);
-		gl.glVertex3d(1000, 0.0, -1000);
-		gl.glVertex3d(1000, 0.0, 1000);
-		gl.glVertex3d(-1000, 0.0, 1000);
+		gl.glBegin(GL2.GL_LINES);
+		gl.glColor3d(0, 0.0, 1);
+		gl.glVertex3d(-1000,0,0);
+		gl.glVertex3d(1000,0,0);
 		gl.glEnd();
 */
+		gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
 		for (Matter m : univers.getListMatiere().values()) {
