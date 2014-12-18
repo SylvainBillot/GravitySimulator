@@ -246,9 +246,11 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				univers.computeCentroidOfUnivers();
 				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 				diffLookAt.negate();
 				diffLookAt.add(univers.getGPoint());
+				System.out.println(univers.getGPoint());
 				parameters.setEyes(diffLookAt);
 
 			}
