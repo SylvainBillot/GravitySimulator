@@ -420,20 +420,20 @@ public class Univers {
 
 			for (Matter mbis : miniListMatter.values()) {
 				double alea = random.nextDouble();
-				mbis.setColor(new Vector3d(0.90 + random.nextDouble() / 4,
-						0.90 + random.nextDouble() / 4, 0.90 + random
-								.nextDouble() / 4));
+				mbis.setColor(new Vector3d(0.80 + random.nextDouble() * 0.20,
+						0.80 + random.nextDouble() * 0.20, 0.80 + random
+								.nextDouble() * 0.20));
 				if (alea > 0.80) {
 					mbis.setColor(new Vector3d(
 							0.90 + random.nextDouble() * 0.1, 0.4 + random
-									.nextDouble() * 0.1, 0.4 + random
-									.nextDouble() * 0.1));
+									.nextDouble() * 0.2, 0.4 + random
+									.nextDouble() * 0.2));
 				}
 				if (alea > 0.90) {
 					mbis.setColor(new Vector3d(
-							0.4 + random.nextDouble() * 0.10, 0.4 + random
-									.nextDouble() * 0.10, 0.9 + random
-									.nextDouble() * 0.1));
+							0.4 + random.nextDouble() * 0.20, 0.4 + random
+									.nextDouble() * 0.20, 0.9 + random
+									.nextDouble() * 0.10));
 				}
 			}
 
@@ -471,6 +471,7 @@ public class Univers {
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), true);
+		m1.setColor(new Vector3d(0.25,0.25,0.25));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
@@ -494,6 +495,7 @@ public class Univers {
 				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
 						transSpeed, 0, 0), parameters.getDarkMatterDensity(),
 				true);
+		m1.setColor(new Vector3d(0.25,0.25,0.25));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
 
@@ -502,6 +504,7 @@ public class Univers {
 				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
 						-transSpeed, 0, 0), parameters.getDarkMatterDensity(),
 				true);
+		m2.setColor(new Vector3d(0.25,0.25,0.25));
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
 

@@ -27,12 +27,14 @@ public class InputHandler extends KeyAdapter {
 		;
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_PAGE_UP:
-			guiProgram.getParameters().getEyes().scale(1.05);
 			guiProgram.getParameters().getLookAt().scale(1.05);
+			diffLookAt.sub(guiProgram.getParameters().getLookAt());
+			guiProgram.getParameters().getEyes().add(diffLookAt);
 			break;
 		case KeyEvent.VK_PAGE_DOWN:
-			guiProgram.getParameters().getEyes().scale(1 / 1.05);
 			guiProgram.getParameters().getLookAt().scale(1 / 1.05);
+			diffLookAt.sub(guiProgram.getParameters().getLookAt());
+			guiProgram.getParameters().getEyes().add(diffLookAt);
 			break;
 		case KeyEvent.VK_LEFT:
 			guiProgram.getParameters().setLookAt(
@@ -64,7 +66,7 @@ public class InputHandler extends KeyAdapter {
 			break;
 		case KeyEvent.VK_HOME:
 			guiProgram.getParameters().setEyes(new Vector3d(0, 0, 900));
-			guiProgram.getParameters().setLookAt(new Vector3d(0, 0, -900));
+			guiProgram.getParameters().setLookAt(new Vector3d(0.001, 0, -900));
 			break;
 		}
 

@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -323,6 +324,9 @@ public class GUIProgram extends JFrame {
 				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
 				gl.glShadeModel(GL2.GL_FLAT);
 				gl.glEnable(GL2.GL_BLEND);
+				gl.glEnable(GL2.GL_LIGHTING);
+				gl.glEnable(GL2.GL_COLOR_MATERIAL);
+				gl.glEnable(GL2.GL_LIGHT0);
 				LoadGLTextures(gl);
 			}
 
@@ -415,20 +419,32 @@ public class GUIProgram extends JFrame {
 				centerOfVision.z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		double phi01 = new Vector3d(0, 0, 1).angle(parameters.getLookAt())
-				* -Math.signum(parameters.getLookAt().y);
-		Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
-				new Vector3d(1, 0, 0), phi01);
-		double phi02 = afterRotateX.angle(parameters.getLookAt())
-				* Math.signum(parameters.getLookAt().x);
+		Vector3d lpos = new Vector3d(parameters.getEyes());
+		lpos.add(parameters.getLookAt());
+		lpos.sub(parameters.getEyes());
+		float[] lptab = {(float) lpos.x,(float) lpos.y,(float) lpos.z,1};
+		FloatBuffer LightPos = FloatBuffer.wrap(lptab);
+		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_POSITION,LightPos);
+		float ldTab[] = {1f,1f,1f,0f};
+		FloatBuffer LightDif = FloatBuffer.wrap(ldTab);
+		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_SPECULAR,LightDif);
+		gl.glPushMatrix();
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+
+				double phi01 = new Vector3d(0, 0, 1).angle(parameters.getLookAt())
+						* -Math.signum(parameters.getLookAt().y);
+				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
+						new Vector3d(1, 0, 0), phi01);
+				double phi02 = afterRotateX.angle(parameters.getLookAt())
+						* Math.signum(parameters.getLookAt().x);
 				gl.glMultMatrixd(HelperVector
 						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
 								Math.random() * 2 * Math.PI)));
+
 				double r = (Math.random() * 0.5 + 4.5)
 						* (m.getRayon() < 1 ? 1 : m.getRayon());
 				Vector3d[] pts = new Vector3d[4];
@@ -449,7 +465,35 @@ public class GUIProgram extends JFrame {
 				gl.glEnd();
 			} else {
 				// If you want show dark mass, code here
+				gl.glLoadIdentity();
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
+				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+
+				double phi01 = new Vector3d(0, 0, 1).angle(parameters.getLookAt())
+						* -Math.signum(parameters.getLookAt().y);
+				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
+						new Vector3d(1, 0, 0), phi01);
+				double phi02 = afterRotateX.angle(parameters.getLookAt())
+						* Math.signum(parameters.getLookAt().x);
+				gl.glMultMatrixd(HelperVector
+						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,0)));
+				double r = 5 * m.getRayon();
+				Vector3d[] pts = new Vector3d[4];
+				pts[0] = new Vector3d(-r, -r, 0); // BL
+				pts[1] = new Vector3d(r, -r, 0); // BR
+				pts[2] = new Vector3d(r, r, 0); // TR
+				pts[3] = new Vector3d(-r, r, 0); // TL
+				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+				gl.glBegin(GL2.GL_TRIANGLE_FAN);
+				gl.glTexCoord2d(0, 0);
+				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
+				gl.glTexCoord2d(1, 0);
+				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
+				gl.glTexCoord2d(1, 1);
+				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
+				gl.glTexCoord2d(0, 1);
+				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
+				gl.glEnd();
 			}
 		}
 		gl.glDisable(GL2.GL_BLEND);
