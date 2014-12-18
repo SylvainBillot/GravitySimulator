@@ -235,7 +235,8 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 				diffLookAt.negate();
-				diffLookAt.add(univers.getListMatiere().firstEntry().getValue().getPoint());
+				diffLookAt.add(univers.getListMatiere().firstEntry().getValue()
+						.getPoint());
 				parameters.setEyes(diffLookAt);
 			}
 		});
@@ -318,14 +319,11 @@ public class GUIProgram extends JFrame {
 			public void init(GLAutoDrawable drawable) {
 				// TODO Auto-generated method stub
 				GL2 gl = drawable.getGL().getGL2();
-				gl.glEnable(GL2.GL_TEXTURE_2D);
 				gl.glShadeModel(GL2.GL_SMOOTH);
-				gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
+				gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 				gl.glClearDepth(1.0f);
 				gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
-				gl.glShadeModel(GL2.GL_FLAT);
-				gl.glEnable(GL2.GL_BLEND);
 				gl.glEnable(GL2.GL_LIGHTING);
 				gl.glEnable(GL2.GL_COLOR_MATERIAL);
 				gl.glEnable(GL2.GL_LIGHT0);
@@ -408,7 +406,6 @@ public class GUIProgram extends JFrame {
 	private void render(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-		gl.glEnable(GL2.GL_BLEND);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		// Perspective.
@@ -424,12 +421,38 @@ public class GUIProgram extends JFrame {
 		Vector3d lpos = new Vector3d(parameters.getEyes());
 		lpos.add(parameters.getLookAt());
 		lpos.sub(parameters.getEyes());
-		float[] lptab = {(float) lpos.x,(float) lpos.y,(float) lpos.z,1};
+		float[] lptab = { (float) lpos.x, (float) lpos.y, (float) lpos.z, 1 };
 		FloatBuffer LightPos = FloatBuffer.wrap(lptab);
-		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_POSITION,LightPos);
-		float ldTab[] = {1f,1f,1f,0f};
+		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, LightPos);
+		float ldTab[] = { 1f, 1f, 1f, 0f };
 		FloatBuffer LightDif = FloatBuffer.wrap(ldTab);
-		gl.glLightfv(GL2.GL_LIGHT0,GL2.GL_SPECULAR,LightDif);
+		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, LightDif);
+		gl.glEnable(GL2.GL_BLEND);
+/*
+		gl.glTranslated(0, 0, 0);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor3d(0.3, 0.0, 0.0);
+		gl.glVertex3d(0.0, -1000, -1000);
+		gl.glVertex3d(0.0, 1000, -1000);
+		gl.glVertex3d(0.0, 1000, 1000);
+		gl.glVertex3d(0.0, -1000, 1000);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor3d(0.0, 0.3, 0.0);
+		gl.glVertex3d(-1000, -1000, 0);
+		gl.glVertex3d(1000, -1000, 0);
+		gl.glVertex3d(1000, 1000, 0);
+		gl.glVertex3d(-1000, 1000, 0);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor3d(0.0, 0.0, 0.3);
+		gl.glVertex3d(-1000, 0.0, -1000);
+		gl.glVertex3d(1000, 0.0, -1000);
+		gl.glVertex3d(1000, 0.0, 1000);
+		gl.glVertex3d(-1000, 0.0, 1000);
+		gl.glEnd();
+*/
+		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
 		for (Matter m : univers.getListMatiere().values()) {
 			if (!m.isDark()) {
@@ -437,10 +460,10 @@ public class GUIProgram extends JFrame {
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 
-				double phi01 = new Vector3d(0, 0, 1).angle(parameters.getLookAt())
-						* -Math.signum(parameters.getLookAt().y);
-				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
-						new Vector3d(1, 0, 0), phi01);
+				double phi01 = new Vector3d(0, 0, 1).angle(parameters
+						.getLookAt()) * -Math.signum(parameters.getLookAt().y);
+				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0,
+						1), new Vector3d(1, 0, 0), phi01);
 				double phi02 = afterRotateX.angle(parameters.getLookAt())
 						* Math.signum(parameters.getLookAt().x);
 				gl.glMultMatrixd(HelperVector
@@ -471,14 +494,14 @@ public class GUIProgram extends JFrame {
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 
-				double phi01 = new Vector3d(0, 0, 1).angle(parameters.getLookAt())
-						* -Math.signum(parameters.getLookAt().y);
-				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1),
-						new Vector3d(1, 0, 0), phi01);
+				double phi01 = new Vector3d(0, 0, 1).angle(parameters
+						.getLookAt()) * -Math.signum(parameters.getLookAt().y);
+				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0,
+						1), new Vector3d(1, 0, 0), phi01);
 				double phi02 = afterRotateX.angle(parameters.getLookAt())
 						* Math.signum(parameters.getLookAt().x);
 				gl.glMultMatrixd(HelperVector
-						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,0)));
+						.make3DTransformMatrix(new Vector3d(-phi01, -phi02, 0)));
 				double r = 5 * m.getRayon();
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
@@ -499,6 +522,7 @@ public class GUIProgram extends JFrame {
 			}
 		}
 		gl.glDisable(GL2.GL_BLEND);
+		gl.glDisable(GL2.GL_TEXTURE_2D);
 		gl.glPopMatrix();
 	}
 
