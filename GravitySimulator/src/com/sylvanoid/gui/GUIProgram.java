@@ -14,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -324,9 +323,6 @@ public class GUIProgram extends JFrame {
 				gl.glClearDepth(1.0f);
 				gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
-				gl.glEnable(GL2.GL_LIGHTING);
-				gl.glEnable(GL2.GL_COLOR_MATERIAL);
-				gl.glEnable(GL2.GL_LIGHT0);
 				LoadGLTextures(gl);
 			}
 
@@ -418,34 +414,24 @@ public class GUIProgram extends JFrame {
 				centerOfVision.z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		Vector3d lpos = new Vector3d(parameters.getEyes());
-		lpos.add(parameters.getLookAt());
-		lpos.sub(parameters.getEyes());
-		float[] lptab = { (float) lpos.x, (float) lpos.y, (float) lpos.z, 1 };
-		FloatBuffer LightPos = FloatBuffer.wrap(lptab);
-		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, LightPos);
-		float ldTab[] = { 1f, 1f, 1f, 0f };
-		FloatBuffer LightDif = FloatBuffer.wrap(ldTab);
-		gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, LightDif);
 		
-/*
 		gl.glTranslated(0, 0, 0);
 		gl.glBegin(GL2.GL_LINES);
-		gl.glColor3d(1, 0.0, 0.0);
-		gl.glVertex3d(0.0, 0, -1000);
-		gl.glVertex3d(0.0, 0, 1000);
+		gl.glColor3d(0.3, 0.0, 0.0);
+		gl.glVertex3d(0.0, 0, -100000);
+		gl.glVertex3d(0.0, 0, 100000);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
-		gl.glColor3d(0, 1, 0.0);
-		gl.glVertex3d(0.0, -1000,0);
-		gl.glVertex3d(0.0, 1000,0);
+		gl.glColor3d(0, 0.3, 0.0);
+		gl.glVertex3d(0.0, -100000,0);
+		gl.glVertex3d(0.0, 100000,0);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
-		gl.glColor3d(0, 0.0, 1);
-		gl.glVertex3d(-1000,0,0);
-		gl.glVertex3d(1000,0,0);
+		gl.glColor3d(0, 0, 0.3);
+		gl.glVertex3d(-100000,0,0);
+		gl.glVertex3d(100000,0,0);
 		gl.glEnd();
-*/
+
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
