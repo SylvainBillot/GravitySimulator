@@ -154,7 +154,7 @@ public class GUIProgram extends JFrame {
 						Unmarshaller jaxbUnmarshaller = jaxbContext
 								.createUnmarshaller();
 						univers = (Univers) jaxbUnmarshaller.unmarshal(file);
-						renderer.reinit(me);
+						renderer.reload(me);
 					}
 				} catch (JAXBException e1) {
 					e1.printStackTrace();
@@ -212,7 +212,7 @@ public class GUIProgram extends JFrame {
 				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 				diffLookAt.negate();
 				parameters.setEyes(diffLookAt);
-				renderer.reinit(me);
+				renderer.reload(me);
 			}
 		});
 		JMenuItem menuItemplusMassif = new JMenuItem("Look at maximum mass");
@@ -225,7 +225,7 @@ public class GUIProgram extends JFrame {
 				diffLookAt.add(univers.getListMatter().firstEntry().getValue()
 						.getPoint());
 				parameters.setEyes(diffLookAt);
-				renderer.reinit(me);
+				renderer.reload(me);
 			}
 		});
 
@@ -240,7 +240,7 @@ public class GUIProgram extends JFrame {
 				diffLookAt.negate();
 				diffLookAt.add(univers.getGPoint());
 				parameters.setEyes(diffLookAt);
-				renderer.reinit(me);
+				renderer.reload(me);
 
 			}
 		});
@@ -258,7 +258,7 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				parameters.setExportToVideo(!parameters.isExportToVideo());
-				renderer.reinit(me);
+				renderer.reload(me);
 			}
 		});
 		menuBar.add(menuVideo);
@@ -322,8 +322,9 @@ public class GUIProgram extends JFrame {
 
 	public void reset() {
 		animator.stop();
+		parameters.setElapsedTime(0);
 		univers = new Univers(parameters);
-		renderer.reinit(this);
+		renderer.reload(this);
 		animator.start();
 	}
 

@@ -15,6 +15,7 @@ import javax.vecmath.Vector3d;
 
 import org.jcodec.api.SequenceEncoder;
 
+import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.TextureReader;
 import com.sylvanoid.joblib.Matter;
@@ -23,19 +24,22 @@ import com.sylvanoid.joblib.Univers;
 
 public class Renderer implements GLEventListener {
 
+	private int textSize = 10;
+
 	private GUIProgram guiProgram;
 	private Parameters parameters;
 	private Univers univers;
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
-
 	private int textures[] = new int[2]; // Storage For One textures
 
+	private TextRenderer textRenderer;
+
 	public Renderer(GUIProgram guiProgram) {
-		reinit(guiProgram);
+		reload(guiProgram);
 	}
 
-	public void reinit(GUIProgram guiProgram) {
+	public void reload(GUIProgram guiProgram) {
 		this.guiProgram = guiProgram;
 		this.univers = guiProgram.getUnivers();
 		this.parameters = guiProgram.getParameters();
@@ -77,6 +81,8 @@ public class Renderer implements GLEventListener {
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
 		LoadGLTextures(gl);
+		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
+				java.awt.Font.PLAIN, textSize));
 	}
 
 	@Override
@@ -91,7 +97,7 @@ public class Renderer implements GLEventListener {
 		gl.glViewport(0, 0, width, height);
 		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
 		gl.glLoadIdentity();
-		glu.gluPerspective(45, h, 1.0, 10000.0);
+		glu.gluPerspective(45, h, 1.0, 1E5);
 		Vector3d centerOfVision = new Vector3d(parameters.getEyes());
 		centerOfVision.add(parameters.getLookAt());
 		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
@@ -103,6 +109,7 @@ public class Renderer implements GLEventListener {
 	}
 
 	private void render(GLAutoDrawable drawable) {
+		parameters.setElapsedTime(parameters.getElapsedTime()+parameters.getTimeFactor());
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -110,7 +117,7 @@ public class Renderer implements GLEventListener {
 		// Perspective.
 		float widthHeightRatio = (float) guiProgram.getWidth()
 				/ (float) guiProgram.getHeight();
-		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
+		glu.gluPerspective(45, widthHeightRatio, 1, 1E5);
 		Vector3d centerOfVision = new Vector3d(parameters.getEyes());
 		centerOfVision.add(parameters.getLookAt());
 		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
@@ -122,19 +129,33 @@ public class Renderer implements GLEventListener {
 		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0.3, 0.0, 0.0);
-		gl.glVertex3d(0.0, 0, -100000);
-		gl.glVertex3d(0.0, 0, 100000);
+		gl.glVertex3d(0.0, 0, -1E5);
+		gl.glVertex3d(0.0, 0, 1E5);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0, 0.3, 0.0);
-		gl.glVertex3d(0.0, -100000, 0);
-		gl.glVertex3d(0.0, 100000, 0);
+		gl.glVertex3d(0.0, -1E5, 0);
+		gl.glVertex3d(0.0, 1E5, 0);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0, 0, 0.3);
-		gl.glVertex3d(-100000, 0, 0);
-		gl.glVertex3d(100000, 0, 0);
+		gl.glVertex3d(-1E5, 0, 0);
+		gl.glVertex3d(1E5, 0, 0);
 		gl.glEnd();
+
+		textRenderer.beginRendering(drawable.getSurfaceWidth(),
+				drawable.getSurfaceHeight());
+		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
+		textRenderer.draw("Elapsed time: " + parameters.getElapsedTime(), 10,
+				drawable.getSurfaceHeight() - textSize*1);
+		textRenderer.draw("Time Speed: " + parameters.getTimeFactor(), 10,
+				drawable.getSurfaceHeight() - textSize*2);
+		textRenderer.draw("Camera: " + parameters.getEyes(), 10,
+				drawable.getSurfaceHeight() - textSize*3);
+		textRenderer.draw("LookAt vector: " + parameters.getLookAt(), 10,
+				drawable.getSurfaceHeight() - textSize*4);
+
+		textRenderer.endRendering();
 
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_TEXTURE_2D);

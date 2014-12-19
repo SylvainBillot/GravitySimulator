@@ -11,6 +11,7 @@ import com.sylvanoid.common.Vector3dAdapter;
 @XmlRootElement
 public class Parameters {
 	private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
+	private double elapsedTime = 0;
 	private double timeFactor = 5;
 	private double darkMatterMass = 1E12;
 	private double darkMatterDensity = 1E10;
@@ -28,6 +29,14 @@ public class Parameters {
 
 	public Parameters() {
 
+	}
+
+	public double getElapsedTime() {
+		return elapsedTime;
+	}
+
+	public void setElapsedTime(double elapsedTime) {
+		this.elapsedTime = elapsedTime;
 	}
 
 	public double getTimeFactor() {
