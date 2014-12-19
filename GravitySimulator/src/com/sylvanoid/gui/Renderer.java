@@ -21,28 +21,27 @@ import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
 
-public class Renderer implements GLEventListener{
+public class Renderer implements GLEventListener {
 
 	private GUIProgram guiProgram;
 	private Parameters parameters;
 	private Univers univers;
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
-	
+
 	private int textures[] = new int[2]; // Storage For One textures
 
-	
 	public Renderer(GUIProgram guiProgram) {
 		reinit(guiProgram);
 	}
-	
+
 	public void reinit(GUIProgram guiProgram) {
 		this.guiProgram = guiProgram;
 		this.univers = guiProgram.getUnivers();
 		this.parameters = guiProgram.getParameters();
 		this.out = guiProgram.getOut();
 	}
-	
+
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		// TODO Auto-generated method stub
@@ -65,7 +64,7 @@ public class Renderer implements GLEventListener{
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -81,8 +80,8 @@ public class Renderer implements GLEventListener{
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int xstart,
-			int ystart, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int xstart, int ystart,
+			int width, int height) {
 		// TODO Auto-generated method stub
 		final GL2 gl = drawable.getGL().getGL2();
 
@@ -96,8 +95,8 @@ public class Renderer implements GLEventListener{
 		Vector3d centerOfVision = new Vector3d(parameters.getEyes());
 		centerOfVision.add(parameters.getLookAt());
 		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
-				parameters.getEyes().z, centerOfVision.x,
-				centerOfVision.y, centerOfVision.z, 0, 1, 0);
+				parameters.getEyes().z, centerOfVision.x, centerOfVision.y,
+				centerOfVision.z, 0, 1, 0);
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity();
 
@@ -109,7 +108,8 @@ public class Renderer implements GLEventListener{
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		// Perspective.
-		float widthHeightRatio = (float) guiProgram.getWidth() / (float) guiProgram.getHeight();
+		float widthHeightRatio = (float) guiProgram.getWidth()
+				/ (float) guiProgram.getHeight();
 		glu.gluPerspective(45, widthHeightRatio, 1, 10000);
 		Vector3d centerOfVision = new Vector3d(parameters.getEyes());
 		centerOfVision.add(parameters.getLookAt());
@@ -118,8 +118,8 @@ public class Renderer implements GLEventListener{
 				centerOfVision.z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-		
-		gl.glTranslated(0, 0, 0);
+
+		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0.3, 0.0, 0.0);
 		gl.glVertex3d(0.0, 0, -100000);
@@ -127,13 +127,13 @@ public class Renderer implements GLEventListener{
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0, 0.3, 0.0);
-		gl.glVertex3d(0.0, -100000,0);
-		gl.glVertex3d(0.0, 100000,0);
+		gl.glVertex3d(0.0, -100000, 0);
+		gl.glVertex3d(0.0, 100000, 0);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0, 0, 0.3);
-		gl.glVertex3d(-100000,0,0);
-		gl.glVertex3d(100000,0,0);
+		gl.glVertex3d(-100000, 0, 0);
+		gl.glVertex3d(100000, 0, 0);
 		gl.glEnd();
 
 		gl.glEnable(GL2.GL_BLEND);
@@ -211,7 +211,6 @@ public class Renderer implements GLEventListener{
 		gl.glPopMatrix();
 	}
 
-	
 	private void LoadGLTextures(GL gl) {
 		com.sylvanoid.common.TextureReader.Texture texture01 = null;
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
@@ -260,5 +259,4 @@ public class Renderer implements GLEventListener{
 		return bi;
 	}
 
-	
 }

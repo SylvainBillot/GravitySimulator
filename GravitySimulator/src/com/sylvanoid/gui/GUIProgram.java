@@ -239,7 +239,6 @@ public class GUIProgram extends JFrame {
 				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 				diffLookAt.negate();
 				diffLookAt.add(univers.getGPoint());
-				System.out.println(univers.getGPoint());
 				parameters.setEyes(diffLookAt);
 				renderer.reinit(me);
 
@@ -285,7 +284,7 @@ public class GUIProgram extends JFrame {
 		gljpanel.addGLEventListener(renderer);
 		gljpanel.addKeyListener(new InputHandler(this));
 		me.add(gljpanel, BorderLayout.CENTER);
-		animator = new FPSAnimator(gljpanel, 60, true);
+		animator = new FPSAnimator(gljpanel, 25, true);
 		animator.start();
 	}
 
