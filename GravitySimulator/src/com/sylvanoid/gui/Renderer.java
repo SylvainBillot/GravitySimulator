@@ -167,6 +167,8 @@ public class Renderer implements GLEventListener {
 				drawable.getSurfaceHeight() - textSize*1);
 		textRenderer.draw("Time Speed: " + parameters.getTimeFactor(), 10,
 				drawable.getSurfaceHeight() - textSize*2);
+		textRenderer.draw("Num of Object: " + univers.getListMatter().size(), 10,
+				drawable.getSurfaceHeight() - textSize*3);
 		textRenderer.endRendering();
 
 		gl.glEnable(GL2.GL_BLEND);
