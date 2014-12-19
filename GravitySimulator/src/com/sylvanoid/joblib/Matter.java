@@ -8,18 +8,19 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
+import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.common.Vector3dAdapter;
 
 @XmlRootElement(name = "matter")
 public class Matter implements Comparable<Matter> {
 	private Parameters parameters;
+	private TypeOfObject typeOfObject = TypeOfObject.Star;
 	private double mass;
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
-	private boolean isDark;
 	private double rayon;
 
 	@Override
@@ -51,7 +52,9 @@ public class Matter implements Comparable<Matter> {
 		this.mass = mass;
 		this.speed = speed;
 		this.density = density;
-		this.isDark = isDark;
+		if(isDark) {
+			typeOfObject =TypeOfObject.Dark;
+		};
 		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
 	}
 
@@ -63,6 +66,14 @@ public class Matter implements Comparable<Matter> {
 		this.parameters=parameters;
 	}
 	
+	public TypeOfObject getTypeOfObject() {
+		return typeOfObject;
+	}
+
+	public void setTypeOfObject(TypeOfObject typeOfObject) {
+		this.typeOfObject = typeOfObject;
+	}
+
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	public Vector3d getPoint() {
@@ -121,11 +132,7 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public boolean isDark() {
-		return isDark;
-	}
-
-	public void setDark(boolean isDark) {
-		this.isDark = isDark;
+		return typeOfObject==TypeOfObject.Dark;
 	}
 
 	public double getRayon() {
@@ -260,7 +267,7 @@ public class Matter implements Comparable<Matter> {
 
 	public Vector3d orbitalSpeed(Matter m, Vector3d axis) {
 		double orbitalSpeedValue = Math.pow(
-				HelperVariable.GRAVITY
+				HelperVariable.G
 						* Math.pow(m.getMass(), 2)
 						/ ((mass + m.getMass()) * new Point3d(point)
 								.distance(new Point3d(m.getPoint()))), 0.5);

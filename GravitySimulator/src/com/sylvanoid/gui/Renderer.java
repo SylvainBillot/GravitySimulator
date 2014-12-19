@@ -31,7 +31,7 @@ public class Renderer implements GLEventListener {
 	private Univers univers;
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
-	private int textures[] = new int[2]; // Storage For One textures
+	private int textures[] = new int[3]; // Storage For One textures
 
 	private TextRenderer textRenderer;
 
@@ -150,11 +150,6 @@ public class Renderer implements GLEventListener {
 				drawable.getSurfaceHeight() - textSize*1);
 		textRenderer.draw("Time Speed: " + parameters.getTimeFactor(), 10,
 				drawable.getSurfaceHeight() - textSize*2);
-		textRenderer.draw("Camera: " + parameters.getEyes(), 10,
-				drawable.getSurfaceHeight() - textSize*3);
-		textRenderer.draw("LookAt vector: " + parameters.getLookAt(), 10,
-				drawable.getSurfaceHeight() - textSize*4);
-
 		textRenderer.endRendering();
 
 		gl.glEnable(GL2.GL_BLEND);
@@ -235,15 +230,20 @@ public class Renderer implements GLEventListener {
 	private void LoadGLTextures(GL gl) {
 		com.sylvanoid.common.TextureReader.Texture texture01 = null;
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
+		com.sylvanoid.common.TextureReader.Texture texture03 = null;
 		try {
 			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
 			texture02 = TextureReader
-					.readTexture("resources/images/Particle.png");
+					.readTexture("resources/images/Dark.png");
+			texture03 = TextureReader
+					.readTexture("resources/images/Planetary.png");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 		gl.glGenTextures(1, textures, 0);
+		
 		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 				GL.GL_LINEAR);
@@ -252,6 +252,7 @@ public class Renderer implements GLEventListener {
 		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture01.getWidth(),
 				texture01.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
 				texture01.getPixels());
+
 		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 				GL.GL_LINEAR);
@@ -260,6 +261,15 @@ public class Renderer implements GLEventListener {
 		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture02.getWidth(),
 				texture02.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
 				texture02.getPixels());
+
+		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+				GL.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+				GL.GL_LINEAR);
+		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture03.getWidth(),
+				texture03.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
+				texture03.getPixels());
 
 	}
 

@@ -194,7 +194,7 @@ public class Univers {
 							double distance = new Point3d(m.getPoint())
 									.distance(new Point3d(uvoisin.getGPoint()));
 							double attraction = parameters.getTimeFactor()
-									* HelperVariable.GRAVITY
+									* HelperVariable.G
 									* (((uvoisin.getMass()) / Math.pow(
 											distance, 2)));
 							m.getA().add(
@@ -572,7 +572,7 @@ public class Univers {
 		mass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 1, 0)));
 			}
 		}
 	}
