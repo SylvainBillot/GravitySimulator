@@ -579,7 +579,7 @@ public class Univers {
 
 	private void createPlanetariesGenesis() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				parameters.getNebulaRadius(), 1, 1, 0.25);
+				parameters.getNebulaRadius(), 1,1, 0.15);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);

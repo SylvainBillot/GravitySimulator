@@ -33,11 +33,14 @@ public class Renderer implements GLEventListener{
 
 	
 	public Renderer(GUIProgram guiProgram) {
+		reinit(guiProgram);
+	}
+	
+	public void reinit(GUIProgram guiProgram) {
 		this.guiProgram = guiProgram;
 		this.univers = guiProgram.getUnivers();
 		this.parameters = guiProgram.getParameters();
 		this.out = guiProgram.getOut();
-		
 	}
 	
 	@Override

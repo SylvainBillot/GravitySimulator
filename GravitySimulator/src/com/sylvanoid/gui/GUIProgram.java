@@ -46,6 +46,7 @@ public class GUIProgram extends JFrame {
 	private Parameters parameters;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
+	Renderer renderer;
 
 	public static void main(String[] args) {
 
@@ -153,6 +154,7 @@ public class GUIProgram extends JFrame {
 						Unmarshaller jaxbUnmarshaller = jaxbContext
 								.createUnmarshaller();
 						univers = (Univers) jaxbUnmarshaller.unmarshal(file);
+						renderer.reinit(me);
 					}
 				} catch (JAXBException e1) {
 					e1.printStackTrace();
@@ -210,6 +212,7 @@ public class GUIProgram extends JFrame {
 				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 				diffLookAt.negate();
 				parameters.setEyes(diffLookAt);
+				renderer.reinit(me);
 			}
 		});
 		JMenuItem menuItemplusMassif = new JMenuItem("Look at maximum mass");
@@ -222,6 +225,7 @@ public class GUIProgram extends JFrame {
 				diffLookAt.add(univers.getListMatter().firstEntry().getValue()
 						.getPoint());
 				parameters.setEyes(diffLookAt);
+				renderer.reinit(me);
 			}
 		});
 
@@ -237,6 +241,7 @@ public class GUIProgram extends JFrame {
 				diffLookAt.add(univers.getGPoint());
 				System.out.println(univers.getGPoint());
 				parameters.setEyes(diffLookAt);
+				renderer.reinit(me);
 
 			}
 		});
@@ -254,6 +259,7 @@ public class GUIProgram extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				parameters.setExportToVideo(!parameters.isExportToVideo());
+				renderer.reinit(me);
 			}
 		});
 		menuBar.add(menuVideo);
@@ -275,7 +281,8 @@ public class GUIProgram extends JFrame {
 		GLProfile glp = GLProfile.getDefault();
 		GLCapabilities caps = new GLCapabilities(glp);
 		gljpanel = new GLJPanel(caps);
-		gljpanel.addGLEventListener(new Renderer(this));
+		renderer = new Renderer(this);
+		gljpanel.addGLEventListener(renderer);
 		gljpanel.addKeyListener(new InputHandler(this));
 		me.add(gljpanel, BorderLayout.CENTER);
 		animator = new FPSAnimator(gljpanel, 60, true);
@@ -317,7 +324,7 @@ public class GUIProgram extends JFrame {
 	public void reset() {
 		animator.stop();
 		univers = new Univers(parameters);
-		gljpanel.addGLEventListener(new Renderer(this));
+		renderer.reinit(this);
 		animator.start();
 	}
 
