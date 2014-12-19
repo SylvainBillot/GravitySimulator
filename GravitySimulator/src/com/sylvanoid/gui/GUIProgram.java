@@ -173,7 +173,7 @@ public class GUIProgram extends JFrame {
 					e1.printStackTrace();
 				}
 				me.setParameters(univers.getParameters());
-				for (Matter m : univers.getListMatiere().values()) {
+				for (Matter m : univers.getListMatter().values()) {
 					m.setParameters(univers.getParameters());
 				}
 				animator.start();
@@ -234,7 +234,7 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 				diffLookAt.negate();
-				diffLookAt.add(univers.getListMatiere().firstEntry().getValue()
+				diffLookAt.add(univers.getListMatter().firstEntry().getValue()
 						.getPoint());
 				parameters.setEyes(diffLookAt);
 			}
@@ -435,7 +435,7 @@ public class GUIProgram extends JFrame {
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
-		for (Matter m : univers.getListMatiere().values()) {
+		for (Matter m : univers.getListMatter().values()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
 				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);

@@ -79,7 +79,7 @@ public class Univers {
 		this.max = max;
 		listMatter = new TreeMap<Matter, Matter>();
 		mass = 0;
-		for (Matter m : father.getListMatiere().values()) {
+		for (Matter m : father.getListMatter().values()) {
 			if (m.getPoint().getX() >= min.x && m.getPoint().getX() <= max.x
 					&& m.getPoint().getY() >= min.y
 					&& m.getPoint().getY() <= max.y
@@ -129,7 +129,7 @@ public class Univers {
 		double tmpGx = 0;
 		double tmpGy = 0;
 		double tmpGz = 0;
-		for (Matter m : getListMatiere().values()) {
+		for (Matter m : getListMatter().values()) {
 			tmpGx += (m.getPoint().getX() * m.getMass());
 			tmpGy += (m.getPoint().getY() * m.getMass());
 			tmpGz += (m.getPoint().getZ() * m.getMass());
@@ -185,7 +185,7 @@ public class Univers {
 			for (Univers u : subUnivers) {
 				u.compute();
 				for (Univers uvoisin : subUnivers) {
-					if (u != uvoisin && uvoisin.getListMatiere().size() > 0) {
+					if (u != uvoisin && uvoisin.getListMatter().size() > 0) {
 						uvoisin.computeCentroidOfUnivers();
 						TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 								new MassComparator());
@@ -203,7 +203,7 @@ public class Univers {
 						}
 					}
 				}
-				for (Matter m : u.getListMatiere().values()) {
+				for (Matter m : u.getListMatter().values()) {
 					listMatter.put(m, m);
 					mass += m.getMass();
 				}
@@ -362,7 +362,7 @@ public class Univers {
 		return parameters;
 	}
 
-	public TreeMap<Matter, Matter> getListMatiere() {
+	public TreeMap<Matter, Matter> getListMatter() {
 		return listMatter;
 	}
 
