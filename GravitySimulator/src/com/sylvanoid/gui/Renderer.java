@@ -18,6 +18,7 @@ import org.jcodec.api.SequenceEncoder;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.TextureReader;
+import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
@@ -158,7 +159,12 @@ public class Renderer implements GLEventListener {
 		for (Matter m : univers.getListMatter().values()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
-				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
+				if(m.getTypeOfObject()==TypeOfObject.Star){
+					gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
+				}
+				if(m.getTypeOfObject()==TypeOfObject.Planetary){
+					gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
+				}
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 
 				double phi01 = new Vector3d(0, 0, 1).angle(parameters
@@ -192,7 +198,7 @@ public class Renderer implements GLEventListener {
 			} else {
 				// If you want show dark mass, code here
 				gl.glLoadIdentity();
-				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
+				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 
 				double phi01 = new Vector3d(0, 0, 1).angle(parameters
@@ -228,23 +234,32 @@ public class Renderer implements GLEventListener {
 	}
 
 	private void LoadGLTextures(GL gl) {
+		com.sylvanoid.common.TextureReader.Texture texture00 = null;
 		com.sylvanoid.common.TextureReader.Texture texture01 = null;
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
-		com.sylvanoid.common.TextureReader.Texture texture03 = null;
 		try {
+			texture00 = TextureReader
+					.readTexture("resources/images/Dark.png");
 			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
 			texture02 = TextureReader
-					.readTexture("resources/images/Dark.png");
-			texture03 = TextureReader
 					.readTexture("resources/images/Planetary.png");
 
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		gl.glGenTextures(1, textures, 0);
+		gl.glGenTextures(2, textures, 0);
 		
 		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+				GL.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+				GL.GL_LINEAR);
+		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture00.getWidth(),
+				texture00.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
+				texture00.getPixels());
+
+		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 				GL.GL_LINEAR);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
@@ -253,7 +268,7 @@ public class Renderer implements GLEventListener {
 				texture01.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
 				texture01.getPixels());
 
-		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
+		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 				GL.GL_LINEAR);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
@@ -261,15 +276,6 @@ public class Renderer implements GLEventListener {
 		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture02.getWidth(),
 				texture02.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
 				texture02.getPixels());
-
-		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture03.getWidth(),
-				texture03.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
-				texture03.getPixels());
 
 	}
 

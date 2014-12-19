@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
+import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.common.Vector3dAdapter;
 
@@ -527,37 +528,45 @@ public class Univers {
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), 1E10 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
+		m1.setColor(new Vector3d(1,1,0.5));
 		listMatter.put(m1, m1);
 		Matter m2 = new Matter(parameters, new Vector3d(50 + Math.random(),
 				10 + Math.random(), Math.random()), 1E4 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
+		m2.setColor(new Vector3d(1,0.8,0.8));
 		listMatter.put(m2, m2);
 		Matter m3 = new Matter(parameters, new Vector3d(-320 + Math.random(),
 				30 + Math.random(), Math.random()), 1E9 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
+		m3.setColor(new Vector3d(1,1,1));
 		listMatter.put(m3, m3);
 		Matter m4 = new Matter(parameters, new Vector3d(-100 + Math.random(),
 				-10 + Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
+		m4.setColor(new Vector3d(0.5,0.5,1));
 		listMatter.put(m4, m4);
 		Matter m5 = new Matter(parameters, new Vector3d(90 + Math.random(), -20
 				+ Math.random(), Math.random()), 1E3 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
+		m5.setColor(new Vector3d(1,0.6,0.6));
 		listMatter.put(m5, m5);
 		Matter m6 = new Matter(parameters, new Vector3d(-20 + Math.random(),
 				-10 + Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		listMatter.put(m6, m6);
+		m6.setColor(new Vector3d(1,0.9,0.5));
 		Matter m7 = new Matter(parameters, new Vector3d(-330 + Math.random(),
 				30 + Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
+		m7.setColor(new Vector3d(0.5,0.8,0.7));
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
 			mass += m.getMass();
 		}
-		m7.getSpeed().add(m7.orbitalSpeed(m3, new Vector3d(0, 1, 0)));
+		m7.getSpeed().add(m7.orbitalSpeed(m3, new Vector3d(0, 0, 1)));
 		listMatter.put(m7, m7);
 
 	}
@@ -573,6 +582,7 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 1, 0)));
+				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
 		}
 	}
@@ -588,6 +598,7 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
 		}
 	}
