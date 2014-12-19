@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.text.DecimalFormat;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -160,15 +161,23 @@ public class Renderer implements GLEventListener {
 		gl.glVertex3d(1E5, 0, 0);
 		gl.glEnd();
 
+		DecimalFormat df2d = new DecimalFormat("0.00");
+		DecimalFormat dfsc = new DecimalFormat("0.####E0");
 		textRenderer.beginRendering(drawable.getSurfaceWidth(),
 				drawable.getSurfaceHeight());
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
-		textRenderer.draw("Elapsed time: " + parameters.getElapsedTime(), 10,
+		textRenderer.draw("Elapsed time: " + df2d.format(parameters.getElapsedTime()), 10,
 				drawable.getSurfaceHeight() - textSize*1);
-		textRenderer.draw("Time Speed: " + parameters.getTimeFactor(), 10,
+		textRenderer.draw("Time Speed: " + df2d.format(parameters.getTimeFactor()), 10,
 				drawable.getSurfaceHeight() - textSize*2);
 		textRenderer.draw("Num of Object: " + univers.getListMatter().size(), 10,
 				drawable.getSurfaceHeight() - textSize*3);
+		textRenderer.draw("Max mass: " + dfsc.format(univers.getListMatter().firstEntry().getValue().getMass()), 10,
+				drawable.getSurfaceHeight() - textSize*4);
+		textRenderer.draw("Univers visible mass: " + dfsc.format(univers.getVisibleMass()), 10,
+				drawable.getSurfaceHeight() - textSize*5);
+		textRenderer.draw("Univers dark mass: " + dfsc.format(univers.getDarkMass()), 10,
+				drawable.getSurfaceHeight() - textSize*6);
 		textRenderer.endRendering();
 
 		gl.glEnable(GL2.GL_BLEND);

@@ -27,6 +27,10 @@ public class Univers {
 	@XmlElement
 	private double mass;
 	@XmlElement
+	private double visibleMass;
+	@XmlElement
+	private double darkMass;
+	@XmlElement
 	private TreeMap<Matter, Matter> listMatter;
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
@@ -51,6 +55,8 @@ public class Univers {
 		this.parameters = parameters;
 		listMatter = new TreeMap<Matter, Matter>();
 		mass = 0;
+		visibleMass = 0;
+		darkMass = 0;
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.Random) {
 			createRandomStaticUvivers();
 		}
@@ -80,6 +86,8 @@ public class Univers {
 		this.max = max;
 		listMatter = new TreeMap<Matter, Matter>();
 		mass = 0;
+		visibleMass = 0;
+		darkMass = 0;
 		for (Matter m : father.getListMatter().values()) {
 			if (m.getPoint().getX() >= min.x && m.getPoint().getX() <= max.x
 					&& m.getPoint().getY() >= min.y
@@ -88,6 +96,11 @@ public class Univers {
 					&& m.getPoint().getZ() <= max.z) {
 				listMatter.put(m, m);
 				mass += m.getMass();
+				if (m.isDark()) {
+					darkMass += m.getMass();
+				} else {
+					visibleMass += m.getMass();
+				}
 			}
 		}
 	}
@@ -183,6 +196,8 @@ public class Univers {
 
 			listMatter = new TreeMap<Matter, Matter>();
 			mass = 0;
+			visibleMass = 0;
+			darkMass = 0;
 			for (Univers u : subUnivers) {
 				u.compute();
 				for (Univers uvoisin : subUnivers) {
@@ -207,6 +222,11 @@ public class Univers {
 				for (Matter m : u.getListMatter().values()) {
 					listMatter.put(m, m);
 					mass += m.getMass();
+					if (m.isDark()) {
+						darkMass += m.getMass();
+					} else {
+						visibleMass += m.getMass();
+					}
 				}
 			}
 		}
@@ -331,8 +351,15 @@ public class Univers {
 			}
 		}
 		mass = 0;
+		visibleMass = 0;
+		darkMass = 0;
 		for (Matter m : listMatter.values()) {
 			mass += m.getMass();
+			if (m.isDark()) {
+				darkMass += m.getMass();
+			} else {
+				visibleMass += m.getMass();
+			}
 		}
 	}
 
@@ -373,6 +400,14 @@ public class Univers {
 
 	public double getMass() {
 		return mass;
+	}
+
+	public double getVisibleMass() {
+		return visibleMass;
+	}
+
+	public double getDarkMass() {
+		return darkMass;
 	}
 
 	private TreeMap<Matter, Matter> createUvivers(Vector3d origine,
@@ -472,9 +507,10 @@ public class Univers {
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), true);
-		m1.setColor(new Vector3d(0.25,0.25,0.25));
+		m1.setColor(new Vector3d(0.25, 0.25, 0.25));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
+		darkMass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
@@ -496,18 +532,20 @@ public class Univers {
 				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
 						transSpeed, 0, 0), parameters.getDarkMatterDensity(),
 				true);
-		m1.setColor(new Vector3d(0.25,0.25,0.25));
+		m1.setColor(new Vector3d(0.25, 0.25, 0.25));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
+		darkMass += m1.getMass();
 
 		Matter m2 = new Matter(parameters, new Vector3d(400 + Math.random(),
 				100 + Math.random(), 50 + Math.random()),
 				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
 						-transSpeed, 0, 0), parameters.getDarkMatterDensity(),
 				true);
-		m2.setColor(new Vector3d(0.25,0.25,0.25));
+		m2.setColor(new Vector3d(0.25, 0.25, 0.25));
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
+		darkMass += m2.getMass();
 
 		for (Matter m : subu01.values()) {
 			if (m != m1) {
@@ -528,43 +566,44 @@ public class Univers {
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), 1E10 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
-		m1.setColor(new Vector3d(1,1,0.5));
+		m1.setColor(new Vector3d(1, 1, 0.5));
 		listMatter.put(m1, m1);
 		Matter m2 = new Matter(parameters, new Vector3d(50 + Math.random(),
 				10 + Math.random(), Math.random()), 1E4 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
-		m2.setColor(new Vector3d(1,0.8,0.8));
+		m2.setColor(new Vector3d(1, 0.8, 0.8));
 		listMatter.put(m2, m2);
 		Matter m3 = new Matter(parameters, new Vector3d(-320 + Math.random(),
 				30 + Math.random(), Math.random()), 1E9 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
-		m3.setColor(new Vector3d(1,1,1));
+		m3.setColor(new Vector3d(1, 1, 1));
 		listMatter.put(m3, m3);
 		Matter m4 = new Matter(parameters, new Vector3d(-100 + Math.random(),
 				-10 + Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
-		m4.setColor(new Vector3d(0.5,0.5,1));
+		m4.setColor(new Vector3d(0.5, 0.5, 1));
 		listMatter.put(m4, m4);
 		Matter m5 = new Matter(parameters, new Vector3d(90 + Math.random(), -20
 				+ Math.random(), Math.random()), 1E3 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
-		m5.setColor(new Vector3d(1,0.6,0.6));
+		m5.setColor(new Vector3d(1, 0.6, 0.6));
 		listMatter.put(m5, m5);
 		Matter m6 = new Matter(parameters, new Vector3d(-20 + Math.random(),
 				-10 + Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
 		listMatter.put(m6, m6);
-		m6.setColor(new Vector3d(1,0.9,0.5));
+		m6.setColor(new Vector3d(1, 0.9, 0.5));
 		Matter m7 = new Matter(parameters, new Vector3d(-330 + Math.random(),
 				30 + Math.random(), Math.random()), 1E2 + Math.random(),
 				new Vector3d(0, 0, 0), 300, false);
-		m7.setColor(new Vector3d(0.5,0.8,0.7));
+		m7.setColor(new Vector3d(0.5, 0.8, 0.7));
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
 			mass += m.getMass();
+			visibleMass+=m.getMass();
 		}
 		m7.getSpeed().add(m7.orbitalSpeed(m3, new Vector3d(0, 0, 1)));
 		listMatter.put(m7, m7);
@@ -579,6 +618,7 @@ public class Univers {
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
+		visibleMass+=m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 1, 0)));
@@ -589,12 +629,13 @@ public class Univers {
 
 	private void createPlanetariesGenesis() {
 		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				parameters.getNebulaRadius(), 1,1, 0.15);
+				parameters.getNebulaRadius(), 1, 1, 0.15);
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
+		visibleMass+=m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
 				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
@@ -610,6 +651,7 @@ public class Univers {
 		m1.setColor(new Vector3d(1, 0.7, 0.7));
 		listMatter.put(m1, m1);
 		mass += m1.getMass();
+		visibleMass+=m1.getMass();
 
 		Matter m2 = new Matter(parameters, new Vector3d(Math.random() + 50,
 				Math.random() + 90, Math.random()), 1E10 + Math.random(),
@@ -617,6 +659,7 @@ public class Univers {
 		m2.setColor(new Vector3d(0.8, 0.8, 1));
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
+		visibleMass+=m1.getMass();
 		m1.getSpeed().add(m1.orbitalSpeed(m2, new Vector3d(0, 0, 1)));
 		m2.getSpeed().add(m2.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 
