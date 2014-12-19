@@ -26,6 +26,8 @@ public class Parameters {
 	private double massObjectMax = 100000;
 	private Vector3d eyes = new Vector3d(0, 0, 900);
 	private Vector3d lookAt = new Vector3d(0.001, 0, -900);
+	private boolean followMaxMass = false;
+	private boolean followCentroid = false;
 
 	public Parameters() {
 
@@ -161,6 +163,22 @@ public class Parameters {
 
 	public void setLookAt(Vector3d lookAt) {
 		this.lookAt = lookAt;
+	}
+
+	public boolean isFollowMaxMass() {
+		return followMaxMass;
+	}
+
+	public void setFollowMaxMass(boolean followMaxMass) {
+		this.followMaxMass = followMaxMass;
+	}
+
+	public boolean isFollowCentroid() {
+		return followCentroid;
+	}
+
+	public void setFollowCentroid(boolean followCentroid) {
+		this.followCentroid = followCentroid;
 	}
 
 

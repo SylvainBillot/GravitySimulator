@@ -204,47 +204,49 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
+		JMenuItem menuItemStopFollow = new JMenuItem("Stop following");
+		menuItemStopFollow.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setFollowCentroid(false);
+				parameters.setFollowMaxMass(false);
+			}
+		});
 		JMenuItem menuItemCentreEcran = new JMenuItem("Look at 0");
 		menuItemCentreEcran.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				parameters.setFollowCentroid(false);
+				parameters.setFollowMaxMass(false);
 				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 				diffLookAt.negate();
 				parameters.setEyes(diffLookAt);
 				renderer.reload(me);
 			}
 		});
-		JMenuItem menuItemplusMassif = new JMenuItem("Look at maximum mass");
+		JMenuItem menuItemplusMassif = new JMenuItem("Follow maximum mass");
 		menuItemplusMassif.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-				diffLookAt.negate();
-				diffLookAt.add(univers.getListMatter().firstEntry().getValue()
-						.getPoint());
-				parameters.setEyes(diffLookAt);
-				renderer.reload(me);
+				parameters.setFollowCentroid(false);
+				parameters.setFollowMaxMass(true);
 			}
 		});
 
-		JMenuItem menuItemBarycentre = new JMenuItem("Look at centroid");
+		JMenuItem menuItemBarycentre = new JMenuItem("Follow centroid");
 		menuItemBarycentre.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				univers.computeCentroidOfUnivers();
-				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-				diffLookAt.negate();
-				diffLookAt.add(univers.getGPoint());
-				parameters.setEyes(diffLookAt);
-				renderer.reload(me);
-
+				parameters.setFollowCentroid(true);
+				parameters.setFollowMaxMass(false);
 			}
 		});
-
+		menuVisu.add(menuItemStopFollow);
 		menuVisu.add(menuItemCentreEcran);
 		menuVisu.add(menuItemplusMassif);
 		menuVisu.add(menuItemBarycentre);

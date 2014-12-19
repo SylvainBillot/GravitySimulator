@@ -111,6 +111,22 @@ public class Renderer implements GLEventListener {
 
 	private void render(GLAutoDrawable drawable) {
 		parameters.setElapsedTime(parameters.getElapsedTime()+parameters.getTimeFactor());
+		
+		if(parameters.isFollowCentroid()) {
+			univers.computeCentroidOfUnivers();
+			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+			diffLookAt.negate();
+			diffLookAt.add(univers.getGPoint());
+			parameters.setEyes(diffLookAt);
+		}
+		if(parameters.isFollowMaxMass()) {
+			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+			diffLookAt.negate();
+			diffLookAt.add(univers.getListMatter().firstEntry().getValue()
+					.getPoint());
+			parameters.setEyes(diffLookAt);
+		}
+		
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
