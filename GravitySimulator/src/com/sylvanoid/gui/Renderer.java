@@ -180,6 +180,9 @@ public class Renderer implements GLEventListener {
 				"Univers exp factor: "
 						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
 				drawable.getSurfaceHeight() - textSize * 7);
+
+		textRenderer.draw(
+				"https://github.com/SylvainBillot/GravitySimulator", drawable.getSurfaceWidth()-275, 10);
 		textRenderer.endRendering();
 
 		gl.glEnable(GL2.GL_BLEND);
