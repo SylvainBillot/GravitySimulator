@@ -186,9 +186,11 @@ public class Matter implements Comparable<Matter> {
 	public void move() {
 		speed.add(a);
 		// Relativity effet
+		/*
 		double gamma = Math.pow(
 				1 - speed.length() / Math.pow(HelperVariable.C, 2), 0.5);
 		speed = new Vector3d(speed.x * gamma, speed.y * gamma, speed.z * gamma);
+		*/
 		// End of
 		point = getPlusV();
 	}
@@ -272,7 +274,7 @@ public class Matter implements Comparable<Matter> {
 						/ ((mass + m.getMass()) * new Point3d(point)
 								.distance(new Point3d(m.getPoint()))), 0.5);
 
-		Vector3d accel = HelperVector.accel(point, m.getPoint(), orbitalSpeedValue);
+		Vector3d accel = HelperVector.acceleration(point, m.getPoint(), orbitalSpeedValue);
 
 		if (axis.x != 0) {
 			accel = HelperVector.rotate(accel,

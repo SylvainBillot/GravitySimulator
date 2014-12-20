@@ -10,7 +10,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 import javax.vecmath.Vector3d;
 
@@ -91,43 +90,34 @@ public class Renderer implements GLEventListener {
 	public void reshape(GLAutoDrawable drawable, int xstart, int ystart,
 			int width, int height) {
 		// TODO Auto-generated method stub
-		final GL2 gl = drawable.getGL().getGL2();
-
-		if (height <= 0) // avoid a divide by zero error!
-			height = 1;
-		final float h = (float) width / (float) height;
-		gl.glViewport(0, 0, width, height);
-		gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
-		gl.glLoadIdentity();
-		glu.gluPerspective(45, h, 1.0, 1E5);
-		Vector3d centerOfVision = new Vector3d(parameters.getEyes());
-		centerOfVision.add(parameters.getLookAt());
-		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
-				parameters.getEyes().z, centerOfVision.x, centerOfVision.y,
-				centerOfVision.z, 0, 1, 0);
-		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-		gl.glLoadIdentity();
-
 	}
 
 	private void render(GLAutoDrawable drawable) {
-		parameters.setElapsedTime(parameters.getElapsedTime()+parameters.getTimeFactor());
-		
-		if(parameters.isFollowCentroid()) {
+		parameters.setElapsedTime(parameters.getElapsedTime()
+				+ parameters.getTimeFactor());
+
+		if (parameters.isFollowCentroid()) {
 			univers.computeCentroidOfUnivers();
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
 			diffLookAt.add(univers.getGPoint());
 			parameters.setEyes(diffLookAt);
 		}
-		if(parameters.isFollowMaxMass()) {
+		if (parameters.isFollowMaxMass()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
 			diffLookAt.add(univers.getListMatter().firstEntry().getValue()
 					.getPoint());
 			parameters.setEyes(diffLookAt);
 		}
-		
+		if (parameters.isPermanentRotationy()) {
+			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(0, 1, 0), -Math.PI/1000));
+			diffLookAt.sub(parameters.getLookAt());
+			parameters.getEyes().add(diffLookAt);
+		}
+
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -166,18 +156,30 @@ public class Renderer implements GLEventListener {
 		textRenderer.beginRendering(drawable.getSurfaceWidth(),
 				drawable.getSurfaceHeight());
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
-		textRenderer.draw("Elapsed time: " + df2d.format(parameters.getElapsedTime()), 10,
-				drawable.getSurfaceHeight() - textSize*1);
-		textRenderer.draw("Time Speed: " + df2d.format(parameters.getTimeFactor()), 10,
-				drawable.getSurfaceHeight() - textSize*2);
-		textRenderer.draw("Num of Object: " + univers.getListMatter().size(), 10,
-				drawable.getSurfaceHeight() - textSize*3);
-		textRenderer.draw("Max mass: " + dfsc.format(univers.getListMatter().firstEntry().getValue().getMass()), 10,
-				drawable.getSurfaceHeight() - textSize*4);
-		textRenderer.draw("Univers visible mass: " + dfsc.format(univers.getVisibleMass()), 10,
-				drawable.getSurfaceHeight() - textSize*5);
-		textRenderer.draw("Univers dark mass: " + dfsc.format(univers.getDarkMass()), 10,
-				drawable.getSurfaceHeight() - textSize*6);
+		textRenderer.draw(
+				"Elapsed time: " + df2d.format(parameters.getElapsedTime()),
+				10, drawable.getSurfaceHeight() - textSize * 1);
+		textRenderer.draw(
+				"Time Step: " + df2d.format(parameters.getTimeFactor()), 10,
+				drawable.getSurfaceHeight() - textSize * 2);
+		textRenderer.draw("Num of Object: " + univers.getListMatter().size(),
+				10, drawable.getSurfaceHeight() - textSize * 3);
+		textRenderer.draw(
+				"Max mass: "
+						+ dfsc.format(univers.getListMatter().firstEntry()
+								.getValue().getMass()), 10,
+				drawable.getSurfaceHeight() - textSize * 4);
+		textRenderer.draw(
+				"Univers visible mass: "
+						+ dfsc.format(univers.getVisibleMass()), 10,
+				drawable.getSurfaceHeight() - textSize * 5);
+		textRenderer.draw(
+				"Univers dark mass: " + dfsc.format(univers.getDarkMass()), 10,
+				drawable.getSurfaceHeight() - textSize * 6);
+		textRenderer.draw(
+				"Univers exp factor: "
+						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
+				drawable.getSurfaceHeight() - textSize * 7);
 		textRenderer.endRendering();
 
 		gl.glEnable(GL2.GL_BLEND);
@@ -186,10 +188,10 @@ public class Renderer implements GLEventListener {
 		for (Matter m : univers.getListMatter().values()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
-				if(m.getTypeOfObject()==TypeOfObject.Star){
+				if (m.getTypeOfObject() == TypeOfObject.Star) {
 					gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
 				}
-				if(m.getTypeOfObject()==TypeOfObject.Planetary){
+				if (m.getTypeOfObject() == TypeOfObject.Planetary) {
 					gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
 				}
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
@@ -265,8 +267,7 @@ public class Renderer implements GLEventListener {
 		com.sylvanoid.common.TextureReader.Texture texture01 = null;
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
 		try {
-			texture00 = TextureReader
-					.readTexture("resources/images/Dark.png");
+			texture00 = TextureReader.readTexture("resources/images/Dark.png");
 			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
 			texture02 = TextureReader
 					.readTexture("resources/images/Planetary.png");
@@ -276,7 +277,7 @@ public class Renderer implements GLEventListener {
 			throw new RuntimeException(e);
 		}
 		gl.glGenTextures(2, textures, 0);
-		
+
 		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 				GL.GL_LINEAR);

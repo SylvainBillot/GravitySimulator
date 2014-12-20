@@ -1,13 +1,15 @@
 package com.sylvanoid.common;
 
 public enum TypeOfUnivers {
-	Planetary			("Planetary System"),
-	PlanetaryRandom		("Random Planetary System"),
-	Random				("Random Static Univers"),
-	RandomRotateUnivers	("Random Rotate Univers (With Dark Mass)"),
-	GalaxiesCollision	("Galaxies Collision"),
-	PlanetariesGenesis	("Planetaries Genenesis ?"),
-	DoubleStars			("Double Stars");
+	Planetary					("Planetary System"),
+	PlanetaryRandom				("Random Planetary System"),
+	Random						("Random Static Univers"),
+	RandomRotateUnivers			("Random Rotate Univers (With Dark Mass)"),
+	GalaxiesCollision			("Galaxies Collision"),
+	PlanetariesGenesis			("Planetaries Genenesis ?"),
+	DoubleStars					("Double Stars"),
+	RandomInitialExpension		("Random univers with expension")
+	;
 
 	private final String label;
 	

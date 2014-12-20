@@ -28,6 +28,8 @@ public class Parameters {
 	private Vector3d lookAt = new Vector3d(0.001, 0, -900);
 	private boolean followMaxMass = false;
 	private boolean followCentroid = false;
+	private double expensionOfUnivers = 0;
+	private boolean permanentRotationy = false;
 
 	public Parameters() {
 
@@ -181,5 +183,19 @@ public class Parameters {
 		this.followCentroid = followCentroid;
 	}
 
+	public double getExpensionOfUnivers() {
+		return expensionOfUnivers;
+	}
 
+	public void setExpensionOfUnivers(double expensionOfUnivers) {
+		this.expensionOfUnivers = expensionOfUnivers;
+	}
+
+	public boolean isPermanentRotationy() {
+		return permanentRotationy;
+	}
+
+	public void setPermanentRotationy(boolean permanentRotationy) {
+		this.permanentRotationy = permanentRotationy;
+	}
 }

@@ -246,6 +246,18 @@ public class GUIProgram extends JFrame {
 				parameters.setFollowMaxMass(false);
 			}
 		});
+
+		JMenuItem menuItemPermanentRotationy = new JMenuItem("Permanent Y Rotation");
+		menuItemPermanentRotationy.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setPermanentRotationy(!parameters.isPermanentRotationy());
+			}
+		});
+		
+		menuVisu.add(menuItemPermanentRotationy);
 		menuVisu.add(menuItemStopFollow);
 		menuVisu.add(menuItemCentreEcran);
 		menuVisu.add(menuItemplusMassif);

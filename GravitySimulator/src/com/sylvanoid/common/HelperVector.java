@@ -26,11 +26,11 @@ public abstract class HelperVector {
 		return values;
 	}
 
-	public static Vector3d accel(Vector3d obj1, Vector3d obj2, double force) {
+	public static Vector3d acceleration(Vector3d obj1, Vector3d obj2, double attraction) {
 		double angles[] = new double[2];
 		angles = HelperVector.angles(obj1, obj2);
-		return new Vector3d(force * Math.cos(angles[0]) * Math.sin(angles[1]),
-				force * Math.sin(angles[0]) * Math.sin(angles[1]), force
+		return new Vector3d(attraction * Math.cos(angles[0]) * Math.sin(angles[1]),
+				attraction * Math.sin(angles[0]) * Math.sin(angles[1]), attraction
 						* Math.cos(angles[1]));
 	}
 

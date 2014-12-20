@@ -31,6 +31,7 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField densiteMin;
 	private JFormattedTextField massObjectMin;
 	private JFormattedTextField massObjectMax;
+	private JFormattedTextField expensionOfUnivers;
 	private JCheckBox fusion;
 	private JSlider typeOfImpact;
 	private JFormattedTextField darkMatterMass;
@@ -46,7 +47,7 @@ public class GUIParam extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(13, 2));
+		setLayout(new GridLayout(14, 2));
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
@@ -64,6 +65,7 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(5);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -79,6 +81,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(1E6);
 					darkMatterMass.setValue(1E10);
 					darkMatterDensity.setValue(200);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -92,6 +95,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(600);
 					massObjectMin.setValue(100000000);
 					massObjectMax.setValue(1000000000);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -107,6 +111,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(1E7);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1000);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -122,6 +127,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(10000000);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1000);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -139,6 +145,7 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1E10);
 					darkMatterMass.setValue(1E10);
 					darkMatterDensity.setValue(200);
+					expensionOfUnivers.setValue(0);
 					break;
 
 				case 6:
@@ -155,6 +162,21 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(100000000);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1E10);
+					expensionOfUnivers.setValue(0);
+					break;
+				case 7:
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.RandomInitialExpension);
+					manageImpact.setSelected(true);
+					timeFactor.setValue(2);
+					fusion.setSelected(true);
+					typeOfImpact.setValue(100);
+					numberOfObjects.setValue(1000);
+					densiteMin.setValue(500);
+					nebulaRadius.setValue(600);
+					massObjectMin.setValue(100000000);
+					massObjectMax.setValue(1000000000);
+					expensionOfUnivers.setValue(0.000084);
 					break;
 				}
 				enableDisableParam();
@@ -197,6 +219,12 @@ public class GUIParam extends JDialog {
 		manageImpact = new JCheckBox();
 		manageImpact.setSelected(me.mother.getParameters().isManageImpact());
 		add(manageImpact);
+
+		add(new Label("Expension of univers :"));
+		expensionOfUnivers = new JFormattedTextField(me.mother.getParameters()
+				.getExpensionOfUnivers());
+		add(expensionOfUnivers);
+
 		add(new Label("Fusion (or impact) :"));
 		fusion = new JCheckBox();
 		fusion.setSelected(me.mother.getParameters().isFusion());
@@ -252,6 +280,9 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setDarkMatterDensity(
 							Double.parseDouble(me.darkMatterDensity.getValue()
 									.toString()));
+					me.mother.getParameters().setExpensionOfUnivers(
+							Double.parseDouble(me.expensionOfUnivers.getValue()
+									.toString()));
 					me.getMother().reset();
 					me.setVisible(false);
 					me.mother.setVisible(true);
@@ -285,6 +316,7 @@ public class GUIParam extends JDialog {
 		typeOfImpact.setEnabled(false);
 		darkMatterMass.setEnabled(false);
 		darkMatterDensity.setEnabled(false);
+		expensionOfUnivers.setEnabled(false);
 		switch (typeOfUnivers.getSelectedIndex()) {
 		case 0:
 			// TypeOfUnivers.Planetary;
@@ -292,6 +324,7 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
+			expensionOfUnivers.setEnabled(true);
 			break;
 		case 1:
 			// TypeOfUnivers.PlanetaryRandom;
@@ -306,6 +339,7 @@ public class GUIParam extends JDialog {
 			massObjectMax.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
+			expensionOfUnivers.setEnabled(true);
 			break;
 		case 2:
 			// TypeOfUnivers.Random;
@@ -318,6 +352,7 @@ public class GUIParam extends JDialog {
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
+			expensionOfUnivers.setEnabled(true);
 			break;
 		case 3:
 			// TypeOfUnivers.RandomRotateUnivers;
@@ -332,6 +367,7 @@ public class GUIParam extends JDialog {
 			massObjectMax.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
+			expensionOfUnivers.setEnabled(true);
 			break;
 		case 4:
 			// TypeOfUnivers.GalaxiesCollision;
@@ -346,6 +382,7 @@ public class GUIParam extends JDialog {
 			massObjectMax.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
+			expensionOfUnivers.setEnabled(true);
 			break;
 		case 5:
 			// TypeOfUnivers.PlanetariesGenesis;
@@ -362,6 +399,7 @@ public class GUIParam extends JDialog {
 			darkMatterDensity.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
+			expensionOfUnivers.setEnabled(true);
 			break;
 		case 6:
 			// TypeOfUnivers.DoubleStars;
@@ -370,6 +408,20 @@ public class GUIParam extends JDialog {
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			densiteMin.setEnabled(true);
+			expensionOfUnivers.setEnabled(true);
+			break;
+		case 7:
+			// TypeOfUnivers.RandomInitialExpension;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			expensionOfUnivers.setEnabled(true);
 			break;
 		}
 	}
