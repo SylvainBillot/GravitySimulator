@@ -45,27 +45,28 @@ public class Matter implements Comparable<Matter> {
 
 	}
 
-	public Matter(Parameters parameters, Vector3d point, double mass, Vector3d speed, double density,
-			boolean isDark) {
-		this.parameters=parameters;
+	public Matter(Parameters parameters, Vector3d point, double mass,
+			Vector3d speed, double density, boolean isDark) {
+		this.parameters = parameters;
 		this.setPoint(point);
 		this.mass = mass;
 		this.speed = speed;
 		this.density = density;
-		if(isDark) {
-			typeOfObject =TypeOfObject.Dark;
-		};
-		this.rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
+		if (isDark) {
+			typeOfObject = TypeOfObject.Dark;
+		}
+		this.rayon = Math.pow(3 * (mass / density) / (4 * Math.PI), (double) 1
+				/ (double) 3);
 	}
 
-	public Parameters getParameters(){
+	public Parameters getParameters() {
 		return parameters;
 	}
 
-	public void setParameters(Parameters parameters){
-		this.parameters=parameters;
+	public void setParameters(Parameters parameters) {
+		this.parameters = parameters;
 	}
-	
+
 	public TypeOfObject getTypeOfObject() {
 		return typeOfObject;
 	}
@@ -119,7 +120,8 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public void setMass(double mass) {
-		rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
+		rayon = Math.pow(3 * (mass / density) / (4 * Math.PI), (double) 1
+				/ (double) 3);
 		this.mass = mass;
 	}
 
@@ -132,7 +134,7 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public boolean isDark() {
-		return typeOfObject==TypeOfObject.Dark;
+		return typeOfObject == TypeOfObject.Dark;
 	}
 
 	public double getRayon() {
@@ -187,10 +189,10 @@ public class Matter implements Comparable<Matter> {
 		speed.add(a);
 		// Relativity effet
 		/*
-		double gamma = Math.pow(
-				1 - speed.length() / Math.pow(HelperVariable.C, 2), 0.5);
-		speed = new Vector3d(speed.x * gamma, speed.y * gamma, speed.z * gamma);
-		*/
+		 * double gamma = Math.pow( 1 - speed.length() /
+		 * Math.pow(HelperVariable.C, 2), 0.5); speed = new Vector3d(speed.x *
+		 * gamma, speed.y * gamma, speed.z * gamma);
+		 */
 		// End of
 		point = getPlusV();
 	}
@@ -215,7 +217,8 @@ public class Matter implements Comparable<Matter> {
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
 		mass += m.getMass();
-		rayon = Math.pow(mass, (double) 1 / (double) 3) / density;
+		rayon = Math.pow(3 * (mass / density) / (4 * Math.PI), (double) 1
+				/ (double) 3);
 	}
 
 	public void impact(Matter m) {
@@ -274,7 +277,8 @@ public class Matter implements Comparable<Matter> {
 						/ ((mass + m.getMass()) * new Point3d(point)
 								.distance(new Point3d(m.getPoint()))), 0.5);
 
-		Vector3d accel = HelperVector.acceleration(point, m.getPoint(), orbitalSpeedValue);
+		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
+				orbitalSpeedValue);
 
 		if (axis.x != 0) {
 			accel = HelperVector.rotate(accel,

@@ -89,12 +89,12 @@ public class GUIParam extends JDialog {
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(20);
 					fusion.setSelected(true);
-					densiteMin.setValue(30);
+					densiteMin.setValue(1E5);
 					nebulaRadius.setValue(500);
 					massObjectMin.setValue(1E4);
 					massObjectMax.setValue(1E6);
 					darkMatterMass.setValue(1E10);
-					darkMatterDensity.setValue(200);
+					darkMatterDensity.setValue(1E6);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 2:
@@ -106,7 +106,7 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(500);
+					densiteMin.setValue(1E7);
 					nebulaRadius.setValue(600);
 					massObjectMin.setValue(100000000);
 					massObjectMax.setValue(1000000000);
@@ -121,12 +121,12 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(300);
+					densiteMin.setValue(1E6);
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(1E6);
 					massObjectMax.setValue(1E7);
 					darkMatterMass.setValue(1E12);
-					darkMatterDensity.setValue(1000);
+					darkMatterDensity.setValue(1E8);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 4:
@@ -138,12 +138,12 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
-					densiteMin.setValue(300);
+					densiteMin.setValue(1E6);
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(1000000);
 					massObjectMax.setValue(10000000);
 					darkMatterMass.setValue(1E12);
-					darkMatterDensity.setValue(1000);
+					darkMatterDensity.setValue(1E8);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 5:
@@ -155,14 +155,14 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(50);
+					densiteMin.setValue(1E5);
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(10000);
 					massObjectMax.setValue(100000);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1E10);
 					darkMatterMass.setValue(1E10);
-					darkMatterDensity.setValue(200);
+					darkMatterDensity.setValue(1E7);
 					expensionOfUnivers.setValue(0);
 					break;
 
@@ -175,7 +175,7 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(100);
+					densiteMin.setValue(1E6);
 					nebulaRadius.setValue(200);
 					massObjectMin.setValue(100000000);
 					massObjectMax.setValue(100000000);
@@ -192,7 +192,7 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(200);
+					densiteMin.setValue(1E6);
 					nebulaRadius.setValue(600);
 					massObjectMin.setValue(100000000);
 					massObjectMax.setValue(1000000000);
