@@ -113,7 +113,7 @@ public class Renderer implements GLEventListener {
 		if (parameters.isPermanentRotationy()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 1, 0), -Math.PI/1000));
+					new Vector3d(0, 1, 0), -Math.PI / 1000));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 		}
@@ -181,8 +181,8 @@ public class Renderer implements GLEventListener {
 						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
 				drawable.getSurfaceHeight() - textSize * 7);
 
-		textRenderer.draw(
-				"https://github.com/SylvainBillot/GravitySimulator", drawable.getSurfaceWidth()-275, 10);
+		textRenderer.draw("https://github.com/SylvainBillot/GravitySimulator",
+				drawable.getSurfaceWidth() - 275, 10);
 		textRenderer.endRendering();
 
 		gl.glEnable(GL2.GL_BLEND);
@@ -197,6 +197,7 @@ public class Renderer implements GLEventListener {
 				if (m.getTypeOfObject() == TypeOfObject.Planetary) {
 					gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
 				}
+
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 
 				double phi01 = new Vector3d(0, 0, 1).angle(parameters
@@ -205,6 +206,7 @@ public class Renderer implements GLEventListener {
 						1), new Vector3d(1, 0, 0), phi01);
 				double phi02 = afterRotateX.angle(parameters.getLookAt())
 						* Math.signum(parameters.getLookAt().x);
+
 				gl.glMultMatrixd(HelperVector
 						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
 								Math.random() * 2 * Math.PI)));

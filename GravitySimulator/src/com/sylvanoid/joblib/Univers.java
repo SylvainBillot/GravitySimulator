@@ -378,16 +378,12 @@ public class Univers {
 		}
 
 		for (Matter m : listMatter.values()) {
-			Vector3d expension = HelperVector.acceleration(
-					m.getPoint(),
-					new Vector3d(0,0,0),
-					parameters.getExpensionOfUnivers()
-							* parameters.getTimeFactor());
-			expension.negate();
-			m.getA().add(expension);
-		}
+			double exp = 1 + parameters.getTimeFactor()
+					* parameters.getExpensionOfUnivers();
+			m.getPoint().x *= exp;
+			m.getPoint().y *= exp;
+			m.getPoint().z *= exp;
 
-		for (Matter m : listMatter.values()) {
 			m.move();
 		}
 	}
