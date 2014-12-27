@@ -247,16 +247,18 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
-		JMenuItem menuItemPermanentRotationy = new JMenuItem("Permanent Y Rotation");
+		JCheckBoxMenuItem menuItemPermanentRotationy = new JCheckBoxMenuItem(
+				"Permanent Y Rotation", parameters.isPermanentRotationy());
 		menuItemPermanentRotationy.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setPermanentRotationy(!parameters.isPermanentRotationy());
+				parameters.setPermanentRotationy(!parameters
+						.isPermanentRotationy());
 			}
 		});
-		
+
 		menuVisu.add(menuItemPermanentRotationy);
 		menuVisu.add(menuItemStopFollow);
 		menuVisu.add(menuItemCentreEcran);

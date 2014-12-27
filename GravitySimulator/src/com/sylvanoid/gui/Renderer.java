@@ -28,7 +28,8 @@ import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
 
-public class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMotionListener {
+public class Renderer implements GLEventListener, KeyListener, MouseListener,
+		MouseMotionListener {
 
 	private int textSize = 10;
 	private double theta = Math.PI / 180;
@@ -106,14 +107,20 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 			univers.computeCentroidOfUnivers();
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
-			diffLookAt.add(univers.getGPoint());
+			Vector3d tmpvecScala = new Vector3d(univers.getGPoint());
+			tmpvecScala.cross(tmpvecScala, new Vector3d(parameters.getScala(),
+					parameters.getScala(), parameters.getScala()));
+			diffLookAt.add(tmpvecScala);
 			parameters.setEyes(diffLookAt);
 		}
 		if (parameters.isFollowMaxMass()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
-			diffLookAt.add(univers.getListMatter().firstEntry().getValue()
-					.getPoint());
+			Vector3d tmpvecScala = new Vector3d(univers.getListMatter()
+					.firstEntry().getValue().getPoint());
+			tmpvecScala.cross(tmpvecScala, new Vector3d(parameters.getScala(),
+					parameters.getScala(), parameters.getScala()));
+			diffLookAt.add(tmpvecScala);
 			parameters.setEyes(diffLookAt);
 		}
 		if (parameters.isPermanentRotationy()) {
@@ -141,91 +148,96 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 		gl.glLoadIdentity();
 		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
 
-		// Show matrix
-		double matrixRadius = 500;
-		double matrixStep = 100;
-		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
-			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
-				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
-				gl.glVertex3d(i, j, -600);
-				gl.glVertex3d(i, j, 600);
-				gl.glEnd();
+		if (parameters.isShowgrid()) {
+			// Show matrix
+			double matrixRadius = 500;
+			double matrixStep = 100;
+			for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
+				for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(i, j, -600);
+					gl.glVertex3d(i, j, 600);
+					gl.glEnd();
+				}
+			}
+			for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
+				for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(i, -600, j);
+					gl.glVertex3d(i, 600, j);
+					gl.glEnd();
+				}
+			}
+			for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
+				for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(-600, i, j);
+					gl.glVertex3d(600, i, j);
+					gl.glEnd();
+				}
 			}
 		}
-		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
-			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
-				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
-				gl.glVertex3d(i, -600, j);
-				gl.glVertex3d(i, 600, j);
-				gl.glEnd();
-			}
+		if (parameters.isShowAxis()) {
+			// Show Axis
+			gl.glBegin(GL2.GL_LINES);
+			gl.glColor3d(0.3, 0, 0);
+			gl.glVertex3d(0, 0, -1E5);
+			gl.glVertex3d(0, 0, 1E5);
+			gl.glEnd();
+			gl.glBegin(GL2.GL_LINES);
+			gl.glColor3d(0, 0.3, 0);
+			gl.glVertex3d(0, -1E5, 0);
+			gl.glVertex3d(0, 1E5, 0);
+			gl.glEnd();
+			gl.glBegin(GL2.GL_LINES);
+			gl.glColor3d(0, 0, 0.3);
+			gl.glVertex3d(-1E5, 0, 0);
+			gl.glVertex3d(1E5, 0, 0);
+			gl.glEnd();
 		}
-		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
-			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
-				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
-				gl.glVertex3d(-600, i, j);
-				gl.glVertex3d(600, i, j);
-				gl.glEnd();
-			}
+		if (parameters.isShowInfo()) {
+			DecimalFormat df2d = new DecimalFormat("0.00");
+			DecimalFormat dfsc = new DecimalFormat("0.####E0");
+			textRenderer.beginRendering(drawable.getSurfaceWidth(),
+					drawable.getSurfaceHeight());
+			textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
+			textRenderer.draw("Scala: " + dfsc.format(parameters.getScala()),
+					10, drawable.getSurfaceHeight() - textSize * 1);
+			textRenderer.draw(
+					"Elapsed time (day): "
+							+ df2d.format(parameters.getElapsedTime() / 86400),
+					10, drawable.getSurfaceHeight() - textSize * 2);
+			textRenderer.draw(
+					"Time Step: " + df2d.format(parameters.getTimeFactor()),
+					10, drawable.getSurfaceHeight() - textSize * 3);
+			textRenderer.draw("Num of Object: "
+					+ univers.getListMatter().size(), 10,
+					drawable.getSurfaceHeight() - textSize * 4);
+			textRenderer.draw(
+					"Max mass: "
+							+ dfsc.format(univers.getListMatter().firstEntry()
+									.getValue().getMass()), 10,
+					drawable.getSurfaceHeight() - textSize * 5);
+			textRenderer.draw(
+					"Univers visible mass: "
+							+ dfsc.format(univers.getVisibleMass()), 10,
+					drawable.getSurfaceHeight() - textSize * 6);
+			textRenderer.draw(
+					"Univers dark mass: " + dfsc.format(univers.getDarkMass()),
+					10, drawable.getSurfaceHeight() - textSize * 7);
+			textRenderer.draw(
+					"Univers exp factor: "
+							+ dfsc.format(parameters.getExpensionOfUnivers()),
+					10, drawable.getSurfaceHeight() - textSize * 8);
+
+			textRenderer.draw(
+					"https://github.com/SylvainBillot/GravitySimulator",
+					drawable.getSurfaceWidth() - 275, 10);
+			textRenderer.endRendering();
 		}
-
-		// Show Axis
-		gl.glBegin(GL2.GL_LINES);
-		gl.glColor3d(0.3, 0, 0);
-		gl.glVertex3d(0, 0, -1E5);
-		gl.glVertex3d(0, 0, 1E5);
-		gl.glEnd();
-		gl.glBegin(GL2.GL_LINES);
-		gl.glColor3d(0, 0.3, 0);
-		gl.glVertex3d(0, -1E5, 0);
-		gl.glVertex3d(0, 1E5, 0);
-		gl.glEnd();
-		gl.glBegin(GL2.GL_LINES);
-		gl.glColor3d(0, 0, 0.3);
-		gl.glVertex3d(-1E5, 0, 0);
-		gl.glVertex3d(1E5, 0, 0);
-		gl.glEnd();
-
-		DecimalFormat df2d = new DecimalFormat("0.00");
-		DecimalFormat dfsc = new DecimalFormat("0.####E0");
-		textRenderer.beginRendering(drawable.getSurfaceWidth(),
-				drawable.getSurfaceHeight());
-		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
-		textRenderer.draw("Scala: " + dfsc.format(parameters.getScala()), 10,
-				drawable.getSurfaceHeight() - textSize * 1);
-		textRenderer.draw(
-				"Elapsed time (day): "
-						+ df2d.format(parameters.getElapsedTime() / 86400), 10,
-				drawable.getSurfaceHeight() - textSize * 2);
-		textRenderer.draw(
-				"Time Step: " + df2d.format(parameters.getTimeFactor()), 10,
-				drawable.getSurfaceHeight() - textSize * 3);
-		textRenderer.draw("Num of Object: " + univers.getListMatter().size(),
-				10, drawable.getSurfaceHeight() - textSize * 4);
-		textRenderer.draw(
-				"Max mass: "
-						+ dfsc.format(univers.getListMatter().firstEntry()
-								.getValue().getMass()), 10,
-				drawable.getSurfaceHeight() - textSize * 5);
-		textRenderer.draw(
-				"Univers visible mass: "
-						+ dfsc.format(univers.getVisibleMass()), 10,
-				drawable.getSurfaceHeight() - textSize * 6);
-		textRenderer.draw(
-				"Univers dark mass: " + dfsc.format(univers.getDarkMass()), 10,
-				drawable.getSurfaceHeight() - textSize * 7);
-		textRenderer.draw(
-				"Univers exp factor: "
-						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
-				drawable.getSurfaceHeight() - textSize * 8);
-
-		textRenderer.draw("https://github.com/SylvainBillot/GravitySimulator",
-				drawable.getSurfaceWidth() - 275, 10);
-		textRenderer.endRendering();
-
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
@@ -385,24 +397,23 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	@Override
 	public void keyReleased(java.awt.event.KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyTyped(java.awt.event.KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void processKeyEvent(KeyEvent e, boolean pressed) {
 		Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-		;
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_PAGE_UP:
-			parameters.setScala(parameters.getScala()*1.01);
+			parameters.setScala(parameters.getScala() * 1.01);
 			break;
 		case KeyEvent.VK_PAGE_DOWN:
-			parameters.setScala(parameters.getScala()*(1/1.01));
+			parameters.setScala(parameters.getScala() * (1 / 1.01));
 			break;
 		case KeyEvent.VK_LEFT:
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
@@ -423,9 +434,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 			parameters.getEyes().add(diffLookAt);
 			break;
 		case KeyEvent.VK_DOWN:
-			parameters.setLookAt(
-					HelperVector.rotate(parameters.getLookAt(), new Vector3d(1,
-							0, 0), theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(1, 0, 0), theta));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 			break;
@@ -449,44 +459,43 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
+
 }

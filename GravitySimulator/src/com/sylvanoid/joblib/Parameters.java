@@ -31,6 +31,9 @@ public class Parameters {
 	private double expensionOfUnivers = 0;
 	private boolean permanentRotationy = false;
 	private double scala = 1E-9;
+	private boolean showAxis = true;
+	private boolean showgrid = false;
+	private boolean showInfo = true;
 
 	public Parameters() {
 
@@ -206,5 +209,29 @@ public class Parameters {
 
 	public void setScala(double scala) {
 		this.scala = scala;
+	}
+
+	public boolean isShowAxis() {
+		return showAxis;
+	}
+
+	public void setShowAxis(boolean showAxis) {
+		this.showAxis = showAxis;
+	}
+
+	public boolean isShowgrid() {
+		return showgrid;
+	}
+
+	public void setShowgrid(boolean showgrid) {
+		this.showgrid = showgrid;
+	}
+
+	public boolean isShowInfo() {
+		return showInfo;
+	}
+
+	public void setShowInfo(boolean showInfo) {
+		this.showInfo = showInfo;
 	}
 }
