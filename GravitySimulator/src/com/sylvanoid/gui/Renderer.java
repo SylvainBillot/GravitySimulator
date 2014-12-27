@@ -79,7 +79,7 @@ public class Renderer implements GLEventListener {
 		gl.glShadeModel(GL2.GL_SMOOTH);
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		gl.glClearDepth(1.0f);
-		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
 		LoadGLTextures(gl);
 		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
@@ -119,7 +119,7 @@ public class Renderer implements GLEventListener {
 		}
 
 		GL2 gl = drawable.getGL().getGL2();
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		// Perspective.
@@ -133,17 +133,49 @@ public class Renderer implements GLEventListener {
 				centerOfVision.z, 0, 1, 0);
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
-
 		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
+		
+		//Show matrix
+		double matrixRadius = 600;
+		double matrixStep = 100;
+		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
+			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.1, 0.1, 0.1);
+				gl.glVertex3d(i, j, -600);
+				gl.glVertex3d(i, j, 600);
+				gl.glEnd();
+			}
+		}
+		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
+			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.1, 0.1, 0.1);
+				gl.glVertex3d(i, -600, j);
+				gl.glVertex3d(i, 600, j);
+				gl.glEnd();
+			}
+		}
+		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
+			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.1, 0.1, 0.1);
+				gl.glVertex3d(-600, i, j);
+				gl.glVertex3d(600, i, j);
+				gl.glEnd();
+			}
+		}
+
+		//Show Axis
 		gl.glBegin(GL2.GL_LINES);
-		gl.glColor3d(0.3, 0.0, 0.0);
-		gl.glVertex3d(0.0, 0, -1E5);
-		gl.glVertex3d(0.0, 0, 1E5);
+		gl.glColor3d(0.3, 0, 0);
+		gl.glVertex3d(0, 0, -1E5);
+		gl.glVertex3d(0, 0, 1E5);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
-		gl.glColor3d(0, 0.3, 0.0);
-		gl.glVertex3d(0.0, -1E5, 0);
-		gl.glVertex3d(0.0, 1E5, 0);
+		gl.glColor3d(0, 0.3, 0);
+		gl.glVertex3d(0, -1E5, 0);
+		gl.glVertex3d(0, 1E5, 0);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0, 0, 0.3);
@@ -151,6 +183,7 @@ public class Renderer implements GLEventListener {
 		gl.glVertex3d(1E5, 0, 0);
 		gl.glEnd();
 
+		
 		DecimalFormat df2d = new DecimalFormat("0.00");
 		DecimalFormat dfsc = new DecimalFormat("0.####E0");
 		textRenderer.beginRendering(drawable.getSurfaceWidth(),
@@ -192,10 +225,10 @@ public class Renderer implements GLEventListener {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
 				if (m.getTypeOfObject() == TypeOfObject.Star) {
-					gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
 				}
 				if (m.getTypeOfObject() == TypeOfObject.Planetary) {
-					gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
 				}
 
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
@@ -232,7 +265,7 @@ public class Renderer implements GLEventListener {
 			} else {
 				// If you want show dark mass, code here
 				gl.glLoadIdentity();
-				gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
+				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
 				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 
 				double phi01 = new Vector3d(0, 0, 1).angle(parameters
@@ -283,37 +316,37 @@ public class Renderer implements GLEventListener {
 		}
 		gl.glGenTextures(2, textures, 0);
 
-		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture00.getWidth(),
-				texture00.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
+		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
+				GL2.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+				GL2.GL_LINEAR);
+		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture00.getWidth(),
+				texture00.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
 				texture00.getPixels());
 
-		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[1]);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture01.getWidth(),
-				texture01.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
+		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
+				GL2.GL_LINEAR);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+				GL2.GL_LINEAR);
+		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture01.getWidth(),
+				texture01.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
 				texture01.getPixels());
 
-		gl.glBindTexture(GL.GL_TEXTURE_2D, textures[2]);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-				GL.GL_LINEAR);
-		gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, 3, texture02.getWidth(),
-				texture02.getHeight(), 0, GL.GL_RGB, GL.GL_UNSIGNED_BYTE,
+		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
+				GL2.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+				GL2.GL_LINEAR);
+		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture02.getWidth(),
+				texture02.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
 				texture02.getPixels());
 
 	}
 
 	private BufferedImage toImage(GL2 gl, int w, int h) {
-		gl.glReadBuffer(GL.GL_FRONT); // or GL.GL_BACK
+		gl.glReadBuffer(GL2.GL_FRONT); // or GL.GL_BACK
 		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h);
 		gl.glReadPixels(0, 0, w, h, GL2.GL_BGR, GL2.GL_BYTE, glBB);
 		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
