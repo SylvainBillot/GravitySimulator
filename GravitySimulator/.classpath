@@ -4,8 +4,16 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="jcodec-0.1.5.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/vecmath.jar"/>
-	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/gluegen.jar"/>
-	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/jogl-all.jar"/>
+	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/gluegen.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://jogamp.org/deployment/jogamp-next/javadoc/gluegen/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/jogl-all.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://jogamp.org/deployment/jogamp-next/javadoc/jogl/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/gluegen-rt-natives-linux-amd64.jar"/>
 	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/gluegen-rt-natives-linux-i586.jar"/>
 	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/gluegen-rt-natives-macosx-universal.jar"/>
