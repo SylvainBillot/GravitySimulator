@@ -2,6 +2,9 @@ package com.sylvanoid.gui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
@@ -25,7 +28,7 @@ import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
 
-public class Renderer implements GLEventListener, KeyListener {
+public class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMotionListener {
 
 	private int textSize = 10;
 	private double theta = Math.PI / 180;
@@ -441,6 +444,48 @@ public class Renderer implements GLEventListener, KeyListener {
 			break;
 
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
