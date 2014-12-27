@@ -28,6 +28,7 @@ public class GUIParam extends JDialog {
 	private GUIProgram mother;
 	private JComboBox<String> typeOfUnivers;
 	private JFormattedTextField timeFactor;
+	private JFormattedTextField scala;
 	private JCheckBox manageImpact;
 	private JFormattedTextField numberOfObjects;
 	private JFormattedTextField nebulaRadius;
@@ -50,7 +51,7 @@ public class GUIParam extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(14, 2));
+		setLayout(new GridLayout(15, 2));
 
 		NumberFormat displayFormat = NumberFormat.getNumberInstance();
 		displayFormat.setMinimumFractionDigits(0);
@@ -74,6 +75,7 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.Planetary);
 					manageImpact.setSelected(false);
 					timeFactor.setValue(5);
+					scala.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					expensionOfUnivers.setValue(0);
@@ -83,6 +85,7 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.PlanetaryRandom);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(10);
+					scala.setValue(1);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(20);
 					fusion.setSelected(true);
@@ -99,6 +102,7 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.Random);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(2);
+					scala.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
@@ -113,10 +117,11 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.RandomRotateUnivers);
 					manageImpact.setSelected(false);
 					timeFactor.setValue(1);
+					scala.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(5000);
+					densiteMin.setValue(300);
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(1E6);
 					massObjectMax.setValue(1E7);
@@ -129,10 +134,11 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.GalaxiesCollision);
 					manageImpact.setSelected(false);
 					timeFactor.setValue(1);
+					scala.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
-					densiteMin.setValue(5000);
+					densiteMin.setValue(300);
 					nebulaRadius.setValue(300);
 					massObjectMin.setValue(1000000);
 					massObjectMax.setValue(10000000);
@@ -145,6 +151,7 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.PlanetariesGenesis);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(50);
+					scala.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
@@ -164,6 +171,7 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.DoubleStars);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(5);
+					scala.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
@@ -180,6 +188,7 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.RandomInitialExpension);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(2);
+					scala.setValue(1);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
@@ -195,6 +204,11 @@ public class GUIParam extends JDialog {
 		});
 		add(typeOfUnivers);
 
+		add(new Label("Scala:"));
+		scala = new JFormattedTextField(ddf);
+		scala.setValue(me.mother.getParameters().getScala());
+		add(scala);
+		
 		add(new Label("Time factor:"));
 		timeFactor = new JFormattedTextField(ddf);
 		timeFactor.setValue(me.mother.getParameters().getTimeFactor());
@@ -278,6 +292,9 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTimeFactor(
 							Double.parseDouble(me.timeFactor.getValue()
 									.toString()));
+					me.mother.getParameters().setScala(
+							Double.parseDouble(me.scala.getValue()
+									.toString()));
 					me.mother.getParameters().setNumberOfObjects(
 							Integer.parseInt(me.numberOfObjects.getValue()
 									.toString()));
@@ -330,6 +347,7 @@ public class GUIParam extends JDialog {
 
 	private void enableDisableParam() {
 		timeFactor.setEnabled(false);
+		scala.setEnabled(false);
 		manageImpact.setEnabled(false);
 		numberOfObjects.setEnabled(false);
 		nebulaRadius.setEnabled(false);
@@ -346,6 +364,7 @@ public class GUIParam extends JDialog {
 			// TypeOfUnivers.Planetary;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			expensionOfUnivers.setEnabled(true);
@@ -354,6 +373,7 @@ public class GUIParam extends JDialog {
 			// TypeOfUnivers.PlanetaryRandom;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			fusion.setEnabled(true);
@@ -369,6 +389,7 @@ public class GUIParam extends JDialog {
 			// TypeOfUnivers.Random;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
@@ -382,6 +403,7 @@ public class GUIParam extends JDialog {
 			// TypeOfUnivers.RandomRotateUnivers;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
@@ -397,6 +419,7 @@ public class GUIParam extends JDialog {
 			// TypeOfUnivers.GalaxiesCollision;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
@@ -412,6 +435,7 @@ public class GUIParam extends JDialog {
 			// TypeOfUnivers.PlanetariesGenesis;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
@@ -429,6 +453,7 @@ public class GUIParam extends JDialog {
 			// TypeOfUnivers.DoubleStars;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			densiteMin.setEnabled(true);
@@ -438,6 +463,7 @@ public class GUIParam extends JDialog {
 			// TypeOfUnivers.RandomInitialExpension;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
 			fusion.setEnabled(true);
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);

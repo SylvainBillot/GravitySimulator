@@ -19,7 +19,7 @@ public class Parameters {
 	private boolean exportToVideo = false;
 	private boolean fusion = true;
 	private double typeOfImpact = 1;
-	private double density = 30;
+	private double density = 100;
 	private int numberOfObjects = 1000;
 	private double nebulaRadius = 600;
 	private double massObjectMin = 10000;
@@ -30,6 +30,7 @@ public class Parameters {
 	private boolean followCentroid = false;
 	private double expensionOfUnivers = 0;
 	private boolean permanentRotationy = false;
+	private double scala = 1;
 
 	public Parameters() {
 
@@ -197,5 +198,13 @@ public class Parameters {
 
 	public void setPermanentRotationy(boolean permanentRotationy) {
 		this.permanentRotationy = permanentRotationy;
+	}
+
+	public double getScala() {
+		return scala;
+	}
+
+	public void setScala(double scala) {
+		this.scala = scala;
 	}
 }

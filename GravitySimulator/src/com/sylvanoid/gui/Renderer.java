@@ -134,9 +134,9 @@ public class Renderer implements GLEventListener {
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
-		
-		//Show matrix
-		double matrixRadius = 600;
+
+		// Show matrix
+		double matrixRadius = 500;
 		double matrixStep = 100;
 		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
 			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
@@ -166,7 +166,7 @@ public class Renderer implements GLEventListener {
 			}
 		}
 
-		//Show Axis
+		// Show Axis
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0.3, 0, 0);
 		gl.glVertex3d(0, 0, -1E5);
@@ -183,36 +183,38 @@ public class Renderer implements GLEventListener {
 		gl.glVertex3d(1E5, 0, 0);
 		gl.glEnd();
 
-		
 		DecimalFormat df2d = new DecimalFormat("0.00");
 		DecimalFormat dfsc = new DecimalFormat("0.####E0");
 		textRenderer.beginRendering(drawable.getSurfaceWidth(),
 				drawable.getSurfaceHeight());
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
 		textRenderer.draw(
-				"Elapsed time: " + df2d.format(parameters.getElapsedTime()),
+				"Scala: " + df2d.format(parameters.getScala()),
 				10, drawable.getSurfaceHeight() - textSize * 1);
 		textRenderer.draw(
+				"Elapsed time: " + df2d.format(parameters.getElapsedTime()),
+				10, drawable.getSurfaceHeight() - textSize * 2);
+		textRenderer.draw(
 				"Time Step: " + df2d.format(parameters.getTimeFactor()), 10,
-				drawable.getSurfaceHeight() - textSize * 2);
+				drawable.getSurfaceHeight() - textSize * 3);
 		textRenderer.draw("Num of Object: " + univers.getListMatter().size(),
-				10, drawable.getSurfaceHeight() - textSize * 3);
+				10, drawable.getSurfaceHeight() - textSize * 4);
 		textRenderer.draw(
 				"Max mass: "
 						+ dfsc.format(univers.getListMatter().firstEntry()
 								.getValue().getMass()), 10,
-				drawable.getSurfaceHeight() - textSize * 4);
+				drawable.getSurfaceHeight() - textSize * 5);
 		textRenderer.draw(
 				"Univers visible mass: "
 						+ dfsc.format(univers.getVisibleMass()), 10,
-				drawable.getSurfaceHeight() - textSize * 5);
+				drawable.getSurfaceHeight() - textSize * 6);
 		textRenderer.draw(
 				"Univers dark mass: " + dfsc.format(univers.getDarkMass()), 10,
-				drawable.getSurfaceHeight() - textSize * 6);
+				drawable.getSurfaceHeight() - textSize * 7);
 		textRenderer.draw(
 				"Univers exp factor: "
 						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
-				drawable.getSurfaceHeight() - textSize * 7);
+				drawable.getSurfaceHeight() - textSize * 8);
 
 		textRenderer.draw("https://github.com/SylvainBillot/GravitySimulator",
 				drawable.getSurfaceWidth() - 275, 10);
@@ -231,7 +233,9 @@ public class Renderer implements GLEventListener {
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
 				}
 
-				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+				gl.glTranslated(parameters.getScala() * m.getPoint().x,
+						parameters.getScala() * m.getPoint().y,
+						parameters.getScala() * m.getPoint().z);
 
 				double phi01 = new Vector3d(0, 0, 1).angle(parameters
 						.getLookAt()) * -Math.signum(parameters.getLookAt().y);
@@ -245,7 +249,7 @@ public class Renderer implements GLEventListener {
 								Math.random() * 2 * Math.PI)));
 
 				double r = (Math.random() * 0.5 + 4.5)
-						* (m.getRayon() < 1 ? 1 : m.getRayon());
+						* m.getRayon() * parameters.getScala();
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
@@ -266,7 +270,9 @@ public class Renderer implements GLEventListener {
 				// If you want show dark mass, code here
 				gl.glLoadIdentity();
 				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-				gl.glTranslated(m.getPoint().x, m.getPoint().y, m.getPoint().z);
+				gl.glTranslated(parameters.getScala() * m.getPoint().x,
+						parameters.getScala() * m.getPoint().y,
+						parameters.getScala() * m.getPoint().z);
 
 				double phi01 = new Vector3d(0, 0, 1).angle(parameters
 						.getLookAt()) * -Math.signum(parameters.getLookAt().y);
@@ -276,7 +282,7 @@ public class Renderer implements GLEventListener {
 						* Math.signum(parameters.getLookAt().x);
 				gl.glMultMatrixd(HelperVector
 						.make3DTransformMatrix(new Vector3d(-phi01, -phi02, 0)));
-				double r = 5 * m.getRayon();
+				double r = 5 * m.getRayon() * parameters.getScala();
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
@@ -346,7 +352,7 @@ public class Renderer implements GLEventListener {
 	}
 
 	private BufferedImage toImage(GL2 gl, int w, int h) {
-		gl.glReadBuffer(GL2.GL_FRONT); // or GL.GL_BACK
+		gl.glReadBuffer(GL2.GL_FRONT);
 		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h);
 		gl.glReadPixels(0, 0, w, h, GL2.GL_BGR, GL2.GL_BYTE, glBB);
 		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);

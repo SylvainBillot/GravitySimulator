@@ -27,14 +27,10 @@ public class InputHandler extends KeyAdapter {
 		;
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_PAGE_UP:
-			parameters.getLookAt().scale(1.05);
-			diffLookAt.sub(parameters.getLookAt());
-			parameters.getEyes().add(diffLookAt);
+			parameters.setScala(parameters.getScala()*1.01);
 			break;
 		case KeyEvent.VK_PAGE_DOWN:
-			parameters.getLookAt().scale(1 / 1.05);
-			diffLookAt.sub(parameters.getLookAt());
-			parameters.getEyes().add(diffLookAt);
+			parameters.setScala(parameters.getScala()*(1/1.01));
 			break;
 		case KeyEvent.VK_LEFT:
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
