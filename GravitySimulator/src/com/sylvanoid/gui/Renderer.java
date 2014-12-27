@@ -107,9 +107,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			univers.computeCentroidOfUnivers();
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
-			Vector3d tmpvecScala = new Vector3d(univers.getGPoint());
-			tmpvecScala.cross(tmpvecScala, new Vector3d(parameters.getScala(),
-					parameters.getScala(), parameters.getScala()));
+			Vector3d tmpvecScala = new Vector3d(univers.getGPoint().x
+					* parameters.getScala(), univers.getGPoint().y
+					* parameters.getScala(), univers.getGPoint().z
+					* parameters.getScala());
 			diffLookAt.add(tmpvecScala);
 			parameters.setEyes(diffLookAt);
 		}
@@ -118,8 +119,9 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			diffLookAt.negate();
 			Vector3d tmpvecScala = new Vector3d(univers.getListMatter()
 					.firstEntry().getValue().getPoint());
-			tmpvecScala.cross(tmpvecScala, new Vector3d(parameters.getScala(),
-					parameters.getScala(), parameters.getScala()));
+			tmpvecScala = new Vector3d(tmpvecScala.x * parameters.getScala(),
+					tmpvecScala.y * parameters.getScala(), tmpvecScala.z
+							* parameters.getScala());
 			diffLookAt.add(tmpvecScala);
 			parameters.setEyes(diffLookAt);
 		}
@@ -149,33 +151,34 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
 
 		if (parameters.isShowgrid()) {
-			// Show matrix
-			double matrixRadius = 500;
-			double matrixStep = 100;
-			for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
-				for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+			// Show grid
+			double gridStep = parameters.getGridStep() * parameters.getScala();
+			double gridRadius = 10 * parameters.getGridStep()
+					* parameters.getScala();
+			for (double i = -gridRadius; i <= gridRadius; i += gridStep) {
+				for (double j = -gridRadius; j <= gridRadius; j += gridStep) {
 					gl.glBegin(GL2.GL_LINES);
 					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, j, -600);
-					gl.glVertex3d(i, j, 600);
+					gl.glVertex3d(i, j, -gridRadius);
+					gl.glVertex3d(i, j, gridRadius);
 					gl.glEnd();
 				}
 			}
-			for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
-				for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+			for (double i = -gridRadius; i <= gridRadius; i += gridStep) {
+				for (double j = -gridRadius; j <= gridRadius; j += gridStep) {
 					gl.glBegin(GL2.GL_LINES);
 					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, -600, j);
-					gl.glVertex3d(i, 600, j);
+					gl.glVertex3d(i, -gridRadius, j);
+					gl.glVertex3d(i, gridRadius, j);
 					gl.glEnd();
 				}
 			}
-			for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
-				for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
+			for (double i = -gridRadius; i <= gridRadius; i += gridStep) {
+				for (double j = -gridRadius; j <= gridRadius; j += gridStep) {
 					gl.glBegin(GL2.GL_LINES);
 					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(-600, i, j);
-					gl.glVertex3d(600, i, j);
+					gl.glVertex3d(-gridRadius, i, j);
+					gl.glVertex3d(gridRadius, i, j);
 					gl.glEnd();
 				}
 			}
@@ -287,38 +290,42 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
 				gl.glEnd();
 			} else {
-				// If you want show dark mass, code here
-				gl.glLoadIdentity();
-				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-				gl.glTranslated(parameters.getScala() * m.getPoint().x,
-						parameters.getScala() * m.getPoint().y,
-						parameters.getScala() * m.getPoint().z);
+				if (parameters.isShowDarkMatter()) {
+					// If you want show dark mass, code here
+					gl.glLoadIdentity();
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
+					gl.glTranslated(parameters.getScala() * m.getPoint().x,
+							parameters.getScala() * m.getPoint().y,
+							parameters.getScala() * m.getPoint().z);
 
-				double phi01 = new Vector3d(0, 0, 1).angle(parameters
-						.getLookAt()) * -Math.signum(parameters.getLookAt().y);
-				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0,
-						1), new Vector3d(1, 0, 0), phi01);
-				double phi02 = afterRotateX.angle(parameters.getLookAt())
-						* Math.signum(parameters.getLookAt().x);
-				gl.glMultMatrixd(HelperVector
-						.make3DTransformMatrix(new Vector3d(-phi01, -phi02, 0)));
-				double r = 5 * m.getRayon() * parameters.getScala();
-				Vector3d[] pts = new Vector3d[4];
-				pts[0] = new Vector3d(-r, -r, 0); // BL
-				pts[1] = new Vector3d(r, -r, 0); // BR
-				pts[2] = new Vector3d(r, r, 0); // TR
-				pts[3] = new Vector3d(-r, r, 0); // TL
-				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-				gl.glBegin(GL2.GL_TRIANGLE_FAN);
-				gl.glTexCoord2d(0, 0);
-				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
-				gl.glTexCoord2d(1, 0);
-				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
-				gl.glTexCoord2d(1, 1);
-				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
-				gl.glTexCoord2d(0, 1);
-				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
-				gl.glEnd();
+					double phi01 = new Vector3d(0, 0, 1).angle(parameters
+							.getLookAt())
+							* -Math.signum(parameters.getLookAt().y);
+					Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0,
+							0, 1), new Vector3d(1, 0, 0), phi01);
+					double phi02 = afterRotateX.angle(parameters.getLookAt())
+							* Math.signum(parameters.getLookAt().x);
+					gl.glMultMatrixd(HelperVector
+							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
+									0)));
+					double r = 5 * m.getRayon() * parameters.getScala();
+					Vector3d[] pts = new Vector3d[4];
+					pts[0] = new Vector3d(-r, -r, 0); // BL
+					pts[1] = new Vector3d(r, -r, 0); // BR
+					pts[2] = new Vector3d(r, r, 0); // TR
+					pts[3] = new Vector3d(-r, r, 0); // TL
+					gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+					gl.glBegin(GL2.GL_TRIANGLE_FAN);
+					gl.glTexCoord2d(0, 0);
+					gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
+					gl.glTexCoord2d(1, 0);
+					gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
+					gl.glTexCoord2d(1, 1);
+					gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
+					gl.glTexCoord2d(0, 1);
+					gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
+					gl.glEnd();
+				}
 			}
 		}
 		gl.glDisable(GL2.GL_BLEND);
@@ -408,6 +415,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	private void processKeyEvent(KeyEvent e, boolean pressed) {
 		Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_PAGE_UP:
 			parameters.setScala(parameters.getScala() * 1.01);
@@ -451,6 +459,43 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			break;
 		case '-':
 			parameters.setTimeFactor(parameters.getTimeFactor() / 1.01);
+			break;
+		case '4':
+			parameters.setFollowCentroid(false);
+			parameters.setFollowMaxMass(false);
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(0, 1, 0), theta));
+			break;
+		case '6':
+			parameters.setFollowCentroid(false);
+			parameters.setFollowMaxMass(false);
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(0, 1, 0), -theta));
+			break;
+		case '9':
+			parameters.setFollowCentroid(false);
+			parameters.setFollowMaxMass(false);
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(1, 0, 0), theta));
+			break;
+		case '3':
+			parameters.setFollowCentroid(false);
+			parameters.setFollowMaxMass(false);
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(1, 0, 0), -theta));
+			break;
+		case '8':
+			diffLookAt.normalize();
+			diffLookAt = new Vector3d(diffLookAt.x * 5, diffLookAt.y * 5,
+					diffLookAt.z * 5);
+			parameters.getEyes().add(diffLookAt);
+			break;
+		case '2':
+			diffLookAt.normalize();
+			diffLookAt = new Vector3d(diffLookAt.x * 5, diffLookAt.y * 5,
+					diffLookAt.z * 5);
+			diffLookAt.negate();
+			parameters.getEyes().add(diffLookAt);
 			break;
 
 		}

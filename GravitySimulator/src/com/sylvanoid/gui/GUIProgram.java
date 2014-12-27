@@ -259,11 +259,64 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
+		JCheckBoxMenuItem menuItemShowAxis = new JCheckBoxMenuItem(
+				"Show Axis", parameters.isShowAxis());
+		menuItemShowAxis.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setShowAxis(!parameters
+						.isShowAxis());
+			}
+		});
+
+		JCheckBoxMenuItem menuItemShowGrid = new JCheckBoxMenuItem(
+				"Show grids", parameters.isShowgrid());
+		menuItemShowGrid.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setShowgrid(!parameters
+						.isShowgrid());
+			}
+		});
+
+		JCheckBoxMenuItem menuItemShowInfo = new JCheckBoxMenuItem(
+				"Show info", parameters.isShowInfo());
+		menuItemShowInfo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setShowInfo(!parameters
+						.isShowInfo());
+			}
+		});
+
+		JCheckBoxMenuItem menuItemShowDM = new JCheckBoxMenuItem(
+				"Show dark matter", parameters.isShowDarkMatter());
+		menuItemShowDM.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setShowDarkMatter(!parameters
+						.isShowDarkMatter());
+			}
+		});
+		
 		menuVisu.add(menuItemPermanentRotationy);
 		menuVisu.add(menuItemStopFollow);
 		menuVisu.add(menuItemCentreEcran);
 		menuVisu.add(menuItemplusMassif);
 		menuVisu.add(menuItemBarycentre);
+		menuVisu.add("");
+		menuVisu.add(menuItemShowInfo);
+		menuVisu.add(menuItemShowAxis);
+		menuVisu.add(menuItemShowGrid);
+		menuVisu.add(menuItemShowDM);
 
 		JMenu menuVideo = new JMenu("Video");
 		JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(

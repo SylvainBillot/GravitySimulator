@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.common.Vector3dAdapter;
 
@@ -34,6 +35,8 @@ public class Parameters {
 	private boolean showAxis = true;
 	private boolean showgrid = false;
 	private boolean showInfo = true;
+	private double gridStep = HelperVariable.UA;
+	private boolean showDarkMatter = false;
 
 	public Parameters() {
 
@@ -233,5 +236,21 @@ public class Parameters {
 
 	public void setShowInfo(boolean showInfo) {
 		this.showInfo = showInfo;
+	}
+
+	public double getGridStep() {
+		return gridStep;
+	}
+
+	public void setGridStep(double gridStep) {
+		this.gridStep = gridStep;
+	}
+
+	public boolean isShowDarkMatter() {
+		return showDarkMatter;
+	}
+
+	public void setShowDarkMatter(boolean showDarkMatter) {
+		this.showDarkMatter = showDarkMatter;
 	}
 }
