@@ -141,7 +141,7 @@ public class Renderer implements GLEventListener {
 		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
 			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.1, 0.1, 0.1);
+				gl.glColor3d(0.08, 0.08, 0.08);
 				gl.glVertex3d(i, j, -600);
 				gl.glVertex3d(i, j, 600);
 				gl.glEnd();
@@ -150,7 +150,7 @@ public class Renderer implements GLEventListener {
 		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
 			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.1, 0.1, 0.1);
+				gl.glColor3d(0.08, 0.08, 0.08);
 				gl.glVertex3d(i, -600, j);
 				gl.glVertex3d(i, 600, j);
 				gl.glEnd();
@@ -159,7 +159,7 @@ public class Renderer implements GLEventListener {
 		for (double i = -matrixRadius; i <= matrixRadius; i += matrixStep) {
 			for (double j = -matrixRadius; j <= matrixRadius; j += matrixStep) {
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.1, 0.1, 0.1);
+				gl.glColor3d(0.08, 0.08, 0.08);
 				gl.glVertex3d(-600, i, j);
 				gl.glVertex3d(600, i, j);
 				gl.glEnd();
