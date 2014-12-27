@@ -12,7 +12,7 @@ import com.sylvanoid.common.Vector3dAdapter;
 public class Parameters {
 	private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
 	private double elapsedTime = 0;
-	private double timeFactor = 5;
+	private double timeFactor = 6000;
 	private double darkMatterMass = 1E12;
 	private double darkMatterDensity = 1E10;
 	private boolean manageImpact = false;
@@ -30,7 +30,7 @@ public class Parameters {
 	private boolean followCentroid = false;
 	private double expensionOfUnivers = 0;
 	private boolean permanentRotationy = false;
-	private double scala = 1;
+	private double scala = 1E-9;
 
 	public Parameters() {
 

@@ -74,8 +74,8 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.Planetary);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(5);
-					scala.setValue(1);
+					timeFactor.setValue(6000);
+					scala.setValue(1E-9);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					expensionOfUnivers.setValue(0);

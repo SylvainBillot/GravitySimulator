@@ -1,5 +1,7 @@
 package com.sylvanoid.gui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
@@ -23,9 +25,10 @@ import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
 
-public class Renderer implements GLEventListener {
+public class Renderer implements GLEventListener, KeyListener {
 
 	private int textSize = 10;
+	private double theta = Math.PI / 180;
 
 	private GUIProgram guiProgram;
 	private Parameters parameters;
@@ -188,12 +191,12 @@ public class Renderer implements GLEventListener {
 		textRenderer.beginRendering(drawable.getSurfaceWidth(),
 				drawable.getSurfaceHeight());
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
+		textRenderer.draw("Scala: " + dfsc.format(parameters.getScala()), 10,
+				drawable.getSurfaceHeight() - textSize * 1);
 		textRenderer.draw(
-				"Scala: " + df2d.format(parameters.getScala()),
-				10, drawable.getSurfaceHeight() - textSize * 1);
-		textRenderer.draw(
-				"Elapsed time: " + df2d.format(parameters.getElapsedTime()),
-				10, drawable.getSurfaceHeight() - textSize * 2);
+				"Elapsed time (day): "
+						+ df2d.format(parameters.getElapsedTime() / 86400), 10,
+				drawable.getSurfaceHeight() - textSize * 2);
 		textRenderer.draw(
 				"Time Step: " + df2d.format(parameters.getTimeFactor()), 10,
 				drawable.getSurfaceHeight() - textSize * 3);
@@ -248,8 +251,10 @@ public class Renderer implements GLEventListener {
 						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
 								Math.random() * 2 * Math.PI)));
 
-				double r = (Math.random() * 0.5 + 4.5)
-						* m.getRayon() * parameters.getScala();
+				double r = (Math.random() * 0.5 + 2.5)
+						* (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+								.getRayon() * parameters.getScala());
+
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
@@ -368,4 +373,75 @@ public class Renderer implements GLEventListener {
 		return bi;
 	}
 
+	@Override
+	public void keyPressed(java.awt.event.KeyEvent e) {
+		// TODO Auto-generated method stub
+		processKeyEvent(e, true);
+	}
+
+	@Override
+	public void keyReleased(java.awt.event.KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(java.awt.event.KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void processKeyEvent(KeyEvent e, boolean pressed) {
+		Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+		;
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_PAGE_UP:
+			parameters.setScala(parameters.getScala()*1.01);
+			break;
+		case KeyEvent.VK_PAGE_DOWN:
+			parameters.setScala(parameters.getScala()*(1/1.01));
+			break;
+		case KeyEvent.VK_LEFT:
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(0, 1, 0), -theta));
+			diffLookAt.sub(parameters.getLookAt());
+			parameters.getEyes().add(diffLookAt);
+			break;
+		case KeyEvent.VK_RIGHT:
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(0, 1, 0), theta));
+			diffLookAt.sub(parameters.getLookAt());
+			parameters.getEyes().add(diffLookAt);
+			break;
+		case KeyEvent.VK_UP:
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(1, 0, 0), -theta));
+			diffLookAt.sub(parameters.getLookAt());
+			parameters.getEyes().add(diffLookAt);
+			break;
+		case KeyEvent.VK_DOWN:
+			parameters.setLookAt(
+					HelperVector.rotate(parameters.getLookAt(), new Vector3d(1,
+							0, 0), theta));
+			diffLookAt.sub(parameters.getLookAt());
+			parameters.getEyes().add(diffLookAt);
+			break;
+		case KeyEvent.VK_HOME:
+			parameters.setEyes(new Vector3d(0, 0, 900));
+			parameters.setLookAt(new Vector3d(0.001, 0, -900));
+			break;
+		}
+
+		switch (e.getKeyChar()) {
+		case '+':
+			parameters.setTimeFactor(parameters.getTimeFactor() * 1.01);
+			break;
+		case '-':
+			parameters.setTimeFactor(parameters.getTimeFactor() / 1.01);
+			break;
+
+		}
+	}
+	
+	
 }

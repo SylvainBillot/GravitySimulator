@@ -573,51 +573,72 @@ public class Univers {
 	}
 
 	private void createPlanetary() {
-		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
-				Math.random(), Math.random()), 1E10 + Math.random(),
-				new Vector3d(0, 0, 0), 1E6, false);
-		m1.setColor(new Vector3d(1, 1, 0.5));
-		listMatter.put(m1, m1);
-		Matter m2 = new Matter(parameters, new Vector3d(50 + Math.random(),
-				Math.random(), 10 + Math.random()), 1E4 + Math.random(),
-				new Vector3d(0, 0, 0), 300, false);
-		m2.setColor(new Vector3d(1, 0.8, 0.8));
-		listMatter.put(m2, m2);
-		Matter m3 = new Matter(parameters, new Vector3d(-320 + Math.random(),
-				Math.random(), 30 + Math.random()), 1E9 + Math.random(),
-				new Vector3d(0, 0, 0), 1E6, false);
-		m3.setColor(new Vector3d(1, 1, 1));
-		listMatter.put(m3, m3);
-		Matter m4 = new Matter(parameters, new Vector3d(-100 + Math.random(),
-				Math.random(), -10 + Math.random()), 1E3 + Math.random(),
-				new Vector3d(0, 0, 0), 300, false);
-		m4.setColor(new Vector3d(0.5, 0.5, 1));
-		listMatter.put(m4, m4);
-		Matter m5 = new Matter(parameters, new Vector3d(90 + Math.random(),
-				Math.random(), -20 + Math.random()), 1E3 + Math.random(),
-				new Vector3d(0, 0, 0), 300, false);
-		m5.setColor(new Vector3d(1, 0.6, 0.6));
-		listMatter.put(m5, m5);
-		Matter m6 = new Matter(parameters, new Vector3d(-20 + Math.random(),
-				Math.random(), -10 + Math.random()), 1E2 + Math.random(),
-				new Vector3d(0, 0, 0), 300, false);
-		listMatter.put(m6, m6);
-		m6.setColor(new Vector3d(1, 0.9, 0.5));
-		Matter m7 = new Matter(parameters, new Vector3d(-330 + Math.random(),
-				Math.random(), 30 + Math.random()), 1E2 + Math.random(),
-				new Vector3d(0, 0, 0), 100, false);
-		m7.setColor(new Vector3d(0.5, 0.8, 0.7));
+		Matter sun = new Matter(parameters, new Vector3d(Math.random(),
+				Math.random(), Math.random()), 1.9891E30 + Math.random(),
+				new Vector3d(0, 0, 0), 1408, false);
+		sun.setColor(new Vector3d(1, 1, 0.5));
+		listMatter.put(sun, sun);
+
+		Matter mercure = new Matter(parameters, new Vector3d(0.38709893
+				* HelperVariable.UA + Math.random(), Math.random(),
+				Math.random()), 330.2E21 + Math.random(), new Vector3d(0,
+				0, 0), 5427, false);
+		mercure.setColor(new Vector3d(1, 0.8, 0.8));
+		listMatter.put(mercure, mercure);
+
+		Matter venus = new Matter(parameters, new Vector3d(0.723332
+				* HelperVariable.UA + Math.random(), Math.random(),
+				Math.random()), 5.972E24 + Math.random(), new Vector3d(0,
+				0, 0), 5.204E3, false);
+		venus.setColor(new Vector3d(1, 1, 0.8));
+		listMatter.put(venus, venus);
+
+		Matter earth = new Matter(parameters, new Vector3d(1
+				* HelperVariable.UA + Math.random(), Math.random(),
+				Math.random()), 4.8685E24 + Math.random(), new Vector3d(0,
+				0, 0), 5.52E3, false);
+		earth.setColor(new Vector3d(0.7, 0.7, 1));
+		listMatter.put(earth, earth);
+
+		Matter mars = new Matter(parameters, new Vector3d(1.52366231
+				* HelperVariable.UA + Math.random(), Math.random(),
+				Math.random()), 641.85E21 + Math.random(), new Vector3d(0,
+				0, 0), 3933.5, false);
+		mars.setColor(new Vector3d(1, 0.7, 0.7));
+		listMatter.put(mars, mars);
+
+		Matter jupiter = new Matter(parameters, new Vector3d(5.20336301
+				* HelperVariable.UA + Math.random(), Math.random(),
+				Math.random()), 1.8986E27 + Math.random(), new Vector3d(0,
+				0, 0), 1326, false);
+		jupiter.setColor(new Vector3d(1, 0.8, 0.8));
+		listMatter.put(jupiter, jupiter);
+
+		Matter saturn = new Matter(parameters, new Vector3d(9.53707032
+				* HelperVariable.UA + Math.random(), Math.random(),
+				Math.random()), 568.46E24 + Math.random(), new Vector3d(0,
+				0, 0), 687.3, false);
+		saturn.setColor(new Vector3d(0.9, 0.9, 0.9));
+		listMatter.put(saturn, saturn);
+
+		Matter moon = new Matter(parameters, new Vector3d((1+0.00257)
+				* HelperVariable.UA + Math.random(), Math.random(),
+				Math.random()), 7.3477E22 + Math.random(), new Vector3d(0,
+				0, 0), 3.3464E3, false);
+		moon.setColor(new Vector3d(1, 1, 1));
+		listMatter.put(moon, moon);
+		
+		
 		for (Matter m : listMatter.values()) {
-			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 1, 0)));
+			if (m != sun) {
+				m.setSpeed(m.orbitalSpeed(sun, new Vector3d(0, 1, 0)));
 				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
 			mass += m.getMass();
 			visibleMass += m.getMass();
 		}
-		m7.getSpeed().add(m7.orbitalSpeed(m3, new Vector3d(0, 1, 0)));
-		listMatter.put(m7, m7);
-
+		
+		moon.getSpeed().add(moon.orbitalSpeed(earth, new Vector3d(0,1,0)));
 	}
 
 	private void createPlanetaryRandom() {
