@@ -211,6 +211,7 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				parameters.setFollowCentroid(false);
 				parameters.setFollowMaxMass(false);
+				parameters.setObjectToFollow(null);
 			}
 		});
 		JMenuItem menuItemCentreEcran = new JMenuItem("Look at 0");
@@ -220,6 +221,7 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				parameters.setFollowCentroid(false);
 				parameters.setFollowMaxMass(false);
+				parameters.setObjectToFollow(null);
 				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 				diffLookAt.negate();
 				parameters.setEyes(diffLookAt);
@@ -233,6 +235,7 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				parameters.setFollowCentroid(false);
 				parameters.setFollowMaxMass(true);
+				parameters.setObjectToFollow(null);
 			}
 		});
 
@@ -244,9 +247,21 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				parameters.setFollowCentroid(true);
 				parameters.setFollowMaxMass(false);
+				parameters.setObjectToFollow(null);
 			}
 		});
 
+		JMenuItem menuItemFollowSomething = new JMenuItem("Follow something ...");
+		menuItemFollowSomething.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				animator.stop();
+				GUIFollowOther guiFO = new GUIFollowOther(me);
+				guiFO.setVisible(true);
+			}
+		});		
+		
 		JCheckBoxMenuItem menuItemPermanentRotationy = new JCheckBoxMenuItem(
 				"Permanent Y Rotation", parameters.isPermanentRotationy());
 		menuItemPermanentRotationy.addActionListener(new ActionListener() {
@@ -312,6 +327,7 @@ public class GUIProgram extends JFrame {
 		menuVisu.add(menuItemCentreEcran);
 		menuVisu.add(menuItemplusMassif);
 		menuVisu.add(menuItemBarycentre);
+		menuVisu.add(menuItemFollowSomething);
 		menuVisu.add("");
 		menuVisu.add(menuItemShowInfo);
 		menuVisu.add(menuItemShowAxis);

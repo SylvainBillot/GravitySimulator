@@ -14,6 +14,7 @@ import com.sylvanoid.common.Vector3dAdapter;
 @XmlRootElement(name = "matter")
 public class Matter implements Comparable<Matter> {
 	private Parameters parameters;
+	private String name;
 	private TypeOfObject typeOfObject = TypeOfObject.Star;
 	private double mass;
 	private Vector3d point = new Vector3d(0, 0, 0);
@@ -36,7 +37,7 @@ public class Matter implements Comparable<Matter> {
 
 	@Override
 	public String toString() {
-		return "m:" + mass + " x:" + point.x + " y:" + point.y + " z:"
+		return name + " mass:" + mass + " x:" + point.x + " y:" + point.y + " z:"
 				+ point.z + " vx:" + speed.x + " vy:" + speed.y + " vz:"
 				+ speed.z;
 	}
@@ -55,6 +56,7 @@ public class Matter implements Comparable<Matter> {
 		if (isDark) {
 			typeOfObject = TypeOfObject.Dark;
 		}
+		this.name = "id: " + this.hashCode();
 		this.rayon = Math.pow(3 * (mass / density) / (4 * Math.PI), (double) 1
 				/ (double) 3);
 	}
@@ -73,6 +75,14 @@ public class Matter implements Comparable<Matter> {
 
 	public void setTypeOfObject(TypeOfObject typeOfObject) {
 		this.typeOfObject = typeOfObject;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)

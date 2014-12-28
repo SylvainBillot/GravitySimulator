@@ -125,6 +125,16 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			diffLookAt.add(tmpvecScala);
 			parameters.setEyes(diffLookAt);
 		}
+		if (parameters.getObjectToFollow()!=null) {
+			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+			diffLookAt.negate();
+			Vector3d tmpvecScala = new Vector3d(parameters.getObjectToFollow().getPoint());
+			tmpvecScala = new Vector3d(tmpvecScala.x * parameters.getScala(),
+					tmpvecScala.y * parameters.getScala(), tmpvecScala.z
+							* parameters.getScala());
+			diffLookAt.add(tmpvecScala);
+			parameters.setEyes(diffLookAt);
+		}
 		if (parameters.isPermanentRotationy()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
@@ -463,39 +473,44 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		case '4':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
+			parameters.setObjectToFollow(null);
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
 					new Vector3d(0, 1, 0), theta));
 			break;
 		case '6':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
+			parameters.setObjectToFollow(null);
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
 					new Vector3d(0, 1, 0), -theta));
 			break;
-		case '9':
+		case '8':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
+			parameters.setObjectToFollow(null);
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
 					new Vector3d(1, 0, 0), theta));
+			break;
+		case '2':
+			parameters.setFollowCentroid(false);
+			parameters.setFollowMaxMass(false);
+			parameters.setObjectToFollow(null);
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(1, 0, 0), -theta));
+			break;
+		case '1':
+			parameters.setFollowCentroid(false);
+			parameters.setFollowMaxMass(false);
+			parameters.setObjectToFollow(null);
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(0, 0, 1), theta));
 			break;
 		case '3':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
+			parameters.setObjectToFollow(null);
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(1, 0, 0), -theta));
-			break;
-		case '8':
-			diffLookAt.normalize();
-			diffLookAt = new Vector3d(diffLookAt.x * 5, diffLookAt.y * 5,
-					diffLookAt.z * 5);
-			parameters.getEyes().add(diffLookAt);
-			break;
-		case '2':
-			diffLookAt.normalize();
-			diffLookAt = new Vector3d(diffLookAt.x * 5, diffLookAt.y * 5,
-					diffLookAt.z * 5);
-			diffLookAt.negate();
-			parameters.getEyes().add(diffLookAt);
+					new Vector3d(0, 0, 1), -theta));
 			break;
 
 		}
