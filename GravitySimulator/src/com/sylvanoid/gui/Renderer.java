@@ -91,6 +91,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		LoadGLTextures(gl);
 		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
 				java.awt.Font.PLAIN, textSize));
+		drawable.getAnimator().setUpdateFPSFrames(10, null);
 	}
 
 	@Override
@@ -273,8 +274,9 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			textRenderer.beginRendering(drawable.getSurfaceWidth(),
 					drawable.getSurfaceHeight());
 			textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
-			textRenderer.draw("Scala: 1/" + dfsc.format(1/parameters.getScala()),
-					10, drawable.getSurfaceHeight() - textSize * 1);
+			textRenderer.draw(
+					"Scala: 1/" + dfsc.format(1 / parameters.getScala()), 10,
+					drawable.getSurfaceHeight() - textSize * 1);
 			textRenderer.draw(
 					"Elapsed time (day): "
 							+ df2d.format(parameters.getElapsedTime()
@@ -308,6 +310,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 					"Univers exp factor: "
 							+ dfsc.format(parameters.getExpensionOfUnivers()),
 					10, drawable.getSurfaceHeight() - textSize * 8);
+
+			textRenderer.draw(
+					"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()),
+					10, 10);
 
 			textRenderer.draw(
 					"https://github.com/SylvainBillot/GravitySimulator",

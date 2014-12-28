@@ -162,7 +162,6 @@ public class Univers {
 	}
 
 	public void compute() {
-
 		if (listMatter.size() > 1) {
 			// Découpage en 4 et compute de chacun
 			double cx = min.x + (max.x - min.x) / 2;
