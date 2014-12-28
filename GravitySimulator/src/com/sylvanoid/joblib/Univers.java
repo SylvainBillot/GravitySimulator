@@ -528,17 +528,21 @@ public class Univers {
 	}
 
 	private void createGalaxiesCollision() {
-		double transSpeed = 0.3;
-		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(-400, -100,
-				-50), 0, transSpeed, 0, parameters.getNebulaRadius(), 0.25, 1,
-				0.25);
-		TreeMap<Matter, Matter> subu02 = createUvivers(new Vector3d(400, 100,
-				50), 0, -transSpeed, 0, parameters.getNebulaRadius() / 2, 1,
-				0.15, 0.15);
+		double transSpeed = 1E5;
+		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(
+				-HelperVariable.PC * 70000, -HelperVariable.PC * 25000,
+				-HelperVariable.PC * 25000), 0, transSpeed, 0,
+				parameters.getNebulaRadius(), 0.15, 1, 0.15);
+		
+		TreeMap<Matter, Matter> subu02 = createUvivers(new Vector3d(
+				HelperVariable.PC * 70000, HelperVariable.PC * 25000,
+				HelperVariable.PC * 25000), 0, -transSpeed, 0,
+				parameters.getNebulaRadius() / 2, 1, 0.15, 0.15);
 
-		Matter m1 = new Matter(parameters, new Vector3d(-400 + Math.random(),
-				-100 + Math.random(), -50 + Math.random()),
-				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
+		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
+				* 70000 + Math.random(), -HelperVariable.PC * 25000
+				+ Math.random(), -HelperVariable.PC * 25000 + Math.random()),
+				parameters.getDarkMatterMass()/2 + Math.random(), new Vector3d(
 						transSpeed, 0, 0), parameters.getDarkMatterDensity(),
 				true);
 		m1.setColor(new Vector3d(0.25, 0.25, 0.25));
@@ -546,9 +550,10 @@ public class Univers {
 		mass += m1.getMass();
 		darkMass += m1.getMass();
 
-		Matter m2 = new Matter(parameters, new Vector3d(400 + Math.random(),
-				100 + Math.random(), 50 + Math.random()),
-				parameters.getDarkMatterMass() + Math.random(), new Vector3d(
+		Matter m2 = new Matter(parameters, new Vector3d(HelperVariable.PC
+				* 70000 + Math.random(), HelperVariable.PC * 25000
+				+ Math.random(), HelperVariable.PC * 25000 + Math.random()),
+				parameters.getDarkMatterMass()/2.0001 + Math.random(), new Vector3d(
 						-transSpeed, 0, 0), parameters.getDarkMatterDensity(),
 				true);
 		m2.setColor(new Vector3d(0.25, 0.25, 0.25));
@@ -567,14 +572,16 @@ public class Univers {
 				m.getSpeed().add(m.orbitalSpeed(m2, new Vector3d(0, 1, 0)));
 			}
 		}
+
 		listMatter.putAll(subu01);
 		listMatter.putAll(subu02);
 	}
 
 	private void createPlanetary() {
 		Matter sun = new Matter(parameters, new Vector3d(Math.random(),
-				Math.random(), Math.random()), HelperVariable.M + Math.random(),
-				new Vector3d(0, 0, 0), 1408, false);
+				Math.random(), Math.random()),
+				HelperVariable.M + Math.random(), new Vector3d(0, 0, 0), 1408,
+				false);
 		sun.setColor(new Vector3d(1, 1, 0.5));
 		sun.setName("Sun");
 		listMatter.put(sun, sun);

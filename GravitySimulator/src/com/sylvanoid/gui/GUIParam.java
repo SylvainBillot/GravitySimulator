@@ -117,34 +117,34 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomRotateUnivers);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(1);
-					scala.setValue(1);
+					timeFactor.setValue(HelperVariable.ONEDAY*365*1000000);
+					scala.setValue(4E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(1E6);
-					nebulaRadius.setValue(300);
-					massObjectMin.setValue(1E6);
-					massObjectMax.setValue(1E7);
-					darkMatterMass.setValue(1E12);
-					darkMatterDensity.setValue(1E8);
+					densiteMin.setValue(1E-21);
+					nebulaRadius.setValue(HelperVariable.PC*30000);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1000);
+					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1000);
+					darkMatterMass.setValue(1E40);
+					darkMatterDensity.setValue(1E-20);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.GalaxiesCollision);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(1);
-					scala.setValue(1);
+					timeFactor.setValue(HelperVariable.ONEDAY*365*1000000);
+					scala.setValue(1E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
-					densiteMin.setValue(1E6);
-					nebulaRadius.setValue(300);
-					massObjectMin.setValue(1000000);
-					massObjectMax.setValue(10000000);
-					darkMatterMass.setValue(1E12);
-					darkMatterDensity.setValue(1E8);
+					densiteMin.setValue(1E-21);
+					nebulaRadius.setValue(HelperVariable.PC*30000);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1000);
+					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1000);
+					darkMatterMass.setValue(5E42);
+					darkMatterDensity.setValue(1E-20);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 5:
