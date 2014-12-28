@@ -125,10 +125,11 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			diffLookAt.add(tmpvecScala);
 			parameters.setEyes(diffLookAt);
 		}
-		if (parameters.getObjectToFollow()!=null) {
+		if (parameters.getObjectToFollow() != null) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
-			Vector3d tmpvecScala = new Vector3d(parameters.getObjectToFollow().getPoint());
+			Vector3d tmpvecScala = new Vector3d(parameters.getObjectToFollow()
+					.getPoint());
 			tmpvecScala = new Vector3d(tmpvecScala.x * parameters.getScala(),
 					tmpvecScala.y * parameters.getScala(), tmpvecScala.z
 							* parameters.getScala());
@@ -165,26 +166,81 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			double gridStep = parameters.getGridStep() * parameters.getScala();
 			double gridRadius = 10 * parameters.getGridStep()
 					* parameters.getScala();
-			for (double i = -gridRadius; i <= gridRadius; i += gridStep) {
-				for (double j = -gridRadius; j <= gridRadius; j += gridStep) {
+			for (double i = 0; i <= gridRadius; i += gridStep) {
+				for (double j = 0; j <= gridRadius; j += gridStep) {
 					gl.glBegin(GL2.GL_LINES);
 					gl.glColor3d(0.08, 0.08, 0.08);
 					gl.glVertex3d(i, j, -gridRadius);
 					gl.glVertex3d(i, j, gridRadius);
 					gl.glEnd();
-				}
-			}
-			for (double i = -gridRadius; i <= gridRadius; i += gridStep) {
-				for (double j = -gridRadius; j <= gridRadius; j += gridStep) {
+
 					gl.glBegin(GL2.GL_LINES);
 					gl.glColor3d(0.08, 0.08, 0.08);
 					gl.glVertex3d(i, -gridRadius, j);
 					gl.glVertex3d(i, gridRadius, j);
 					gl.glEnd();
+
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(-gridRadius, i, j);
+					gl.glVertex3d(gridRadius, i, j);
+					gl.glEnd();
+
+				}
+				for (double j = 0; j >= -gridRadius; j -= gridStep) {
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(i, j, -gridRadius);
+					gl.glVertex3d(i, j, gridRadius);
+					gl.glEnd();
+
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(i, -gridRadius, j);
+					gl.glVertex3d(i, gridRadius, j);
+					gl.glEnd();
+
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(-gridRadius, i, j);
+					gl.glVertex3d(gridRadius, i, j);
+					gl.glEnd();
 				}
 			}
-			for (double i = -gridRadius; i <= gridRadius; i += gridStep) {
-				for (double j = -gridRadius; j <= gridRadius; j += gridStep) {
+			for (double i = 0; i >= -gridRadius; i -= gridStep) {
+				for (double j = 0; j <= gridRadius; j += gridStep) {
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(i, j, -gridRadius);
+					gl.glVertex3d(i, j, gridRadius);
+					gl.glEnd();
+
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(i, -gridRadius, j);
+					gl.glVertex3d(i, gridRadius, j);
+					gl.glEnd();
+
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(-gridRadius, i, j);
+					gl.glVertex3d(gridRadius, i, j);
+					gl.glEnd();
+
+				}
+				for (double j = 0; j >= -gridRadius; j -= gridStep) {
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(i, j, -gridRadius);
+					gl.glVertex3d(i, j, gridRadius);
+					gl.glEnd();
+
+					gl.glBegin(GL2.GL_LINES);
+					gl.glColor3d(0.08, 0.08, 0.08);
+					gl.glVertex3d(i, -gridRadius, j);
+					gl.glVertex3d(i, gridRadius, j);
+					gl.glEnd();
+
 					gl.glBegin(GL2.GL_LINES);
 					gl.glColor3d(0.08, 0.08, 0.08);
 					gl.glVertex3d(-gridRadius, i, j);
