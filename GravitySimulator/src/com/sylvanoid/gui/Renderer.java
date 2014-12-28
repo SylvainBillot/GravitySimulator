@@ -273,7 +273,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			textRenderer.beginRendering(drawable.getSurfaceWidth(),
 					drawable.getSurfaceHeight());
 			textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
-			textRenderer.draw("Scala: " + dfsc.format(parameters.getScala()),
+			textRenderer.draw("Scala: 1/" + dfsc.format(1/parameters.getScala()),
 					10, drawable.getSurfaceHeight() - textSize * 1);
 			textRenderer.draw(
 					"Elapsed time (day): "
