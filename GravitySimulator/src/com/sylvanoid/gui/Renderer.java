@@ -21,9 +21,9 @@ import javax.vecmath.Vector3d;
 import org.jcodec.api.SequenceEncoder;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
+import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.TextureReader;
-import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
@@ -268,7 +268,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			gl.glEnd();
 		}
 		if (parameters.isShowInfo()) {
-			DecimalFormat df2d = new DecimalFormat("0.00");
+			DecimalFormat df2d = new DecimalFormat("0.0000");
 			DecimalFormat dfsc = new DecimalFormat("0.####E0");
 			textRenderer.beginRendering(drawable.getSurfaceWidth(),
 					drawable.getSurfaceHeight());
@@ -277,26 +277,33 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 					10, drawable.getSurfaceHeight() - textSize * 1);
 			textRenderer.draw(
 					"Elapsed time (day): "
-							+ df2d.format(parameters.getElapsedTime() / 86400),
-					10, drawable.getSurfaceHeight() - textSize * 2);
+							+ df2d.format(parameters.getElapsedTime()
+									/ HelperVariable.ONEDAY), 10,
+					drawable.getSurfaceHeight() - textSize * 2);
 			textRenderer.draw(
-					"Time Step: " + df2d.format(parameters.getTimeFactor()),
-					10, drawable.getSurfaceHeight() - textSize * 3);
+					"Time Step (day): "
+							+ df2d.format(parameters.getTimeFactor()
+									/ HelperVariable.ONEDAY), 10,
+					drawable.getSurfaceHeight() - textSize * 3);
 			textRenderer.draw("Num of Object: "
 					+ univers.getListMatter().size(), 10,
 					drawable.getSurfaceHeight() - textSize * 4);
 			textRenderer.draw(
-					"Max mass: "
+					"Max mass (M): "
 							+ dfsc.format(univers.getListMatter().firstEntry()
-									.getValue().getMass()), 10,
+									.getValue().getMass()
+									/ HelperVariable.M), 10,
 					drawable.getSurfaceHeight() - textSize * 5);
 			textRenderer.draw(
-					"Univers visible mass: "
-							+ dfsc.format(univers.getVisibleMass()), 10,
+					"Univers visible mass (M): "
+							+ dfsc.format(univers.getVisibleMass()
+									/ HelperVariable.M), 10,
 					drawable.getSurfaceHeight() - textSize * 6);
 			textRenderer.draw(
-					"Univers dark mass: " + dfsc.format(univers.getDarkMass()),
-					10, drawable.getSurfaceHeight() - textSize * 7);
+					"Univers dark mass (M): "
+							+ dfsc.format(univers.getDarkMass()
+									/ HelperVariable.M), 10,
+					drawable.getSurfaceHeight() - textSize * 7);
 			textRenderer.draw(
 					"Univers exp factor: "
 							+ dfsc.format(parameters.getExpensionOfUnivers()),
@@ -313,10 +320,9 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		for (Matter m : univers.getListMatter().values()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
-				if (m.getTypeOfObject() == TypeOfObject.Star) {
+				if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
-				}
-				if (m.getTypeOfObject() == TypeOfObject.Planetary) {
+				} else {
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
 				}
 
@@ -335,10 +341,15 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
 								Math.random() * 2 * Math.PI)));
 
-				double r = (Math.random() * 0.5 + 2.5)
-						* (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-								.getRayon() * parameters.getScala());
-
+				double r;
+				if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
+					r = (Math.random() * 0.5 + 2.5)
+							* (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+									.getRayon() * parameters.getScala());
+				} else {
+					r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+							.getRayon() * parameters.getScala());
+				}
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR

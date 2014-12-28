@@ -1,7 +1,7 @@
 package com.sylvanoid.common;
 
 public enum TypeOfUnivers {
-	Planetary					("Planetary System"),
+	Planetary					("With Solar System values"),
 	PlanetaryRandom				("Random Planetary System"),
 	Random						("Random Static Univers"),
 	RandomRotateUnivers			("Random Rotate Univers (With Dark Mass)"),

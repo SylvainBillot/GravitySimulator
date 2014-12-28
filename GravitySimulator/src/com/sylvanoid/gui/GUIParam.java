@@ -17,6 +17,7 @@ import javax.swing.JSlider;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
+import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
 
 public class GUIParam extends JDialog {
@@ -84,32 +85,32 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.PlanetaryRandom);
 					manageImpact.setSelected(true);
-					timeFactor.setValue(10);
-					scala.setValue(1);
+					timeFactor.setValue(HelperVariable.ONEDAY);
+					scala.setValue(1E-9);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(20);
 					fusion.setSelected(true);
-					densiteMin.setValue(1E5);
-					nebulaRadius.setValue(500);
-					massObjectMin.setValue(1E4);
-					massObjectMax.setValue(1E6);
-					darkMatterMass.setValue(1E10);
-					darkMatterDensity.setValue(1E6);
+					densiteMin.setValue(1);
+					nebulaRadius.setValue(HelperVariable.UA*5);
+					massObjectMin.setValue(HelperVariable.M/1000);
+					massObjectMax.setValue(HelperVariable.M/100);
+					darkMatterMass.setValue(HelperVariable.M);
+					darkMatterDensity.setValue(1);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.Random);
 					manageImpact.setSelected(true);
-					timeFactor.setValue(2);
-					scala.setValue(1);
+					timeFactor.setValue(HelperVariable.ONEDAY/3);
+					scala.setValue(5E-10);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(1E7);
-					nebulaRadius.setValue(600);
-					massObjectMin.setValue(100000000);
-					massObjectMax.setValue(1000000000);
+					densiteMin.setValue(0.1);
+					nebulaRadius.setValue(HelperVariable.UA*5);
+					massObjectMin.setValue(HelperVariable.M/1000);
+					massObjectMax.setValue(HelperVariable.M/100);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 3:
