@@ -188,16 +188,16 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomInitialExpension);
 					manageImpact.setSelected(true);
-					timeFactor.setValue(2);
-					scala.setValue(1);
+					timeFactor.setValue(HelperVariable.ONEDAY/3);
+					scala.setValue(5E-10);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(1E6);
-					nebulaRadius.setValue(600);
-					massObjectMin.setValue(100000000);
-					massObjectMax.setValue(1000000000);
-					expensionOfUnivers.setValue(0.00028);
+					densiteMin.setValue(0.1);
+					nebulaRadius.setValue(HelperVariable.UA*5);
+					massObjectMin.setValue(HelperVariable.M/1000);
+					massObjectMax.setValue(HelperVariable.M/100);
+					expensionOfUnivers.setValue(0.0000000275);
 					break;
 				}
 				enableDisableParam();
