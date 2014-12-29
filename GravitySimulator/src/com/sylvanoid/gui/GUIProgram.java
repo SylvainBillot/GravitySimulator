@@ -11,6 +11,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
@@ -43,6 +46,7 @@ public class GUIProgram extends JFrame {
 	private GUIProgram me;
 	private GLJPanel gljpanel;
 	private Univers univers;
+	private LinkedList<List<Vector3d>> forTrace;
 	private Parameters parameters;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
@@ -63,6 +67,7 @@ public class GUIProgram extends JFrame {
 		this.me = this;
 		parameters = new Parameters();
 		univers = new Univers(parameters);
+		forTrace = new LinkedList<List<Vector3d>>();
 		File directory = new File(System.getProperty("user.home"));
 		try {
 			out = new SequenceEncoder(new File(directory.getPath()
@@ -260,7 +265,20 @@ public class GUIProgram extends JFrame {
 				GUIFollowOther guiFO = new GUIFollowOther(me);
 				guiFO.setVisible(true);
 			}
-		});		
+		});	
+		
+		JCheckBoxMenuItem menuItemShowTrace = new JCheckBoxMenuItem(
+				"Show Trace", parameters.isShowTrace());
+		menuItemShowTrace.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setShowTrace(!parameters
+						.isShowTrace());
+				me.forTrace = new LinkedList<List<Vector3d>>();
+			}
+		});
 		
 		JCheckBoxMenuItem menuItemPermanentRotationy = new JCheckBoxMenuItem(
 				"Permanent Y Rotation", parameters.isPermanentRotationy());
@@ -322,6 +340,7 @@ public class GUIProgram extends JFrame {
 			}
 		});
 		
+		menuVisu.add(menuItemShowTrace);
 		menuVisu.add(menuItemPermanentRotationy);
 		menuVisu.add(menuItemStopFollow);
 		menuVisu.add(menuItemCentreEcran);
@@ -387,6 +406,10 @@ public class GUIProgram extends JFrame {
 		return univers;
 	}
 
+	public LinkedList<List<Vector3d>> getForTrace() {
+		return forTrace;
+	}
+
 	public Parameters getParameters() {
 		return parameters;
 	}
@@ -408,6 +431,7 @@ public class GUIProgram extends JFrame {
 	}
 
 	public void reset() {
+		forTrace = new LinkedList<List<Vector3d>>();
 		animator.stop();
 		parameters.setElapsedTime(0);
 		univers = new Univers(parameters);

@@ -38,6 +38,7 @@ public class Parameters {
 	private double gridStep = HelperVariable.UA;
 	private boolean showDarkMatter = false;
 	private Matter objectToFollow = null;
+	private boolean showTrace = false;
 
 	public Parameters() {
 
@@ -261,5 +262,13 @@ public class Parameters {
 
 	public void setObjectToFollow(Matter objectToFollow) {
 		this.objectToFollow = objectToFollow;
+	}
+
+	public boolean isShowTrace() {
+		return showTrace;
+	}
+
+	public void setShowTrace(boolean showTrace) {
+		this.showTrace = showTrace;
 	}
 }

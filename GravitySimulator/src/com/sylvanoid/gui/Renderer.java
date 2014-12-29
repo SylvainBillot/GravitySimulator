@@ -10,6 +10,9 @@ import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -37,6 +40,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	private GUIProgram guiProgram;
 	private Parameters parameters;
 	private Univers univers;
+	private LinkedList<List<Vector3d>> forTrace = new LinkedList<List<Vector3d>>();
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
 	private int textures[] = new int[3]; // Storage For One textures
@@ -50,6 +54,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	public void reload(GUIProgram guiProgram) {
 		this.guiProgram = guiProgram;
 		this.univers = guiProgram.getUnivers();
+		this.forTrace = guiProgram.getForTrace();
 		this.parameters = guiProgram.getParameters();
 		this.out = guiProgram.getOut();
 	}
@@ -57,7 +62,17 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
+		univers.process();
+		List<Vector3d> tmpList = new ArrayList<Vector3d>();
+		for (Matter m : univers.getListMatter().values()) {
+			tmpList.add(new Vector3d(m.getPoint().x, m.getPoint().y, m
+					.getPoint().z));
+		}
+		forTrace.add(tmpList);
+		if (forTrace.size() > 1000) {
+			forTrace.pollFirst();
+		}
+
 		render(drawable);
 		if (parameters.isExportToVideo()) {
 			GL2 gl = drawable.getGL().getGL2();
@@ -70,7 +85,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				e.printStackTrace();
 			}
 		}
-		univers.process();
 	}
 
 	@Override
@@ -124,6 +138,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 					tmpvecScala.y * parameters.getScala(), tmpvecScala.z
 							* parameters.getScala());
 			diffLookAt.add(tmpvecScala);
+
 			parameters.setEyes(diffLookAt);
 		}
 		if (parameters.getObjectToFollow() != null) {
@@ -158,6 +173,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
 				parameters.getEyes().z, centerOfVision.x, centerOfVision.y,
 				centerOfVision.z, 0, 1, 0);
+
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
 		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
@@ -250,6 +266,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				}
 			}
 		}
+
 		if (parameters.isShowAxis()) {
 			// Show Axis
 			gl.glBegin(GL2.GL_LINES);
@@ -320,6 +337,24 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 					drawable.getSurfaceWidth() - 275, 10);
 			textRenderer.endRendering();
 		}
+
+		if (parameters.isShowTrace()) {
+			/* Show trace */
+			gl.glPushMatrix();
+			gl.glColor3d(0.20, 0.20, 0.20);
+			gl.glBegin(GL2.GL_POINTS);
+			for (List<Vector3d> tmpList : forTrace) {
+				for (Vector3d p : tmpList) {
+					gl.glVertex3d(parameters.getScala() * p.x,
+							parameters.getScala() * p.y, parameters.getScala()
+									* p.z);
+				}
+			}
+			gl.glEnd();
+			gl.glPopMatrix();
+		}
+
+		/* Show current univers */
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
@@ -413,7 +448,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		}
 		gl.glDisable(GL2.GL_BLEND);
 		gl.glDisable(GL2.GL_TEXTURE_2D);
-		gl.glPopMatrix();
 	}
 
 	private void LoadGLTextures(GL gl) {
