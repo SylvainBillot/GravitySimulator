@@ -575,7 +575,7 @@ public class Univers {
 	private void createPlanetary() {
 		Matter sun = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()),
-				HelperVariable.G + Math.random(), new Vector3d(0, 0, 0), 1408,
+				HelperVariable.M + Math.random(), new Vector3d(0, 0, 0), 1408,
 				false);
 		sun.setColor(new Vector3d(1, 1, 0.5));
 		sun.setName("Sun");
