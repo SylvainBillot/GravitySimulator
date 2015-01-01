@@ -6,7 +6,7 @@ import java.awt.Label;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -14,8 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JSlider;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
@@ -41,7 +39,9 @@ public class GUIParam extends JDialog {
 	private JSlider typeOfImpact;
 	private JFormattedTextField darkMatterMass;
 	private JFormattedTextField darkMatterDensity;
-
+	
+	DecimalFormat dfsc = new DecimalFormat("0.####E0");
+	
 	public GUIParam(GUIProgram mother) {
 		this.me = this;
 		this.mother = mother;
@@ -53,13 +53,6 @@ public class GUIParam extends JDialog {
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
 		setLayout(new GridLayout(15, 2));
-
-		NumberFormat displayFormat = NumberFormat.getNumberInstance();
-		displayFormat.setMinimumFractionDigits(0);
-		displayFormat.setMaximumFractionDigits(20);
-		DefaultFormatterFactory ddf = new DefaultFormatterFactory(
-				new NumberFormatter(displayFormat), new NumberFormatter(
-						displayFormat));
 
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
@@ -128,7 +121,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1000);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-20);
-					expensionOfUnivers.setValue(0);
+					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -145,7 +138,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1000);
 					darkMatterMass.setValue(5E42);
 					darkMatterDensity.setValue(1E-20);
-					expensionOfUnivers.setValue(0);
+					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -197,7 +190,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.UA*5);
 					massObjectMin.setValue(HelperVariable.M/1000);
 					massObjectMax.setValue(HelperVariable.M/100);
-					expensionOfUnivers.setValue(0.0000000275);
+					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				}
 				enableDisableParam();
@@ -206,48 +199,48 @@ public class GUIParam extends JDialog {
 		add(typeOfUnivers);
 
 		add(new Label("Scala 1/x:"));
-		scala = new JFormattedTextField(ddf);
+		scala = new JFormattedTextField(dfsc);
 		scala.setValue(me.mother.getParameters().getScala());
 		add(scala);
 		
 		add(new Label("Time factor:"));
-		timeFactor = new JFormattedTextField(ddf);
+		timeFactor = new JFormattedTextField(dfsc);
 		timeFactor.setValue(me.mother.getParameters().getTimeFactor());
 		add(timeFactor);
 
 		add(new Label("Number of object:"));
-		numberOfObjects = new JFormattedTextField(ddf);
+		numberOfObjects = new JFormattedTextField(dfsc);
 		numberOfObjects
 				.setValue(me.mother.getParameters().getNumberOfObjects());
 		add(numberOfObjects);
 
 		add(new Label("Nebula radius:"));
-		nebulaRadius = new JFormattedTextField(ddf);
+		nebulaRadius = new JFormattedTextField(dfsc);
 		nebulaRadius.setValue(me.mother.getParameters().getNebulaRadius());
 		add(nebulaRadius);
 
 		add(new Label("Density of objects:"));
-		densiteMin = new JFormattedTextField(ddf);
+		densiteMin = new JFormattedTextField(dfsc);
 		densiteMin.setValue(me.mother.getParameters().getDensity());
 		add(densiteMin);
 
 		add(new Label("Mass object min:"));
-		massObjectMin = new JFormattedTextField(ddf);
+		massObjectMin = new JFormattedTextField(dfsc);
 		massObjectMin.setValue(me.mother.getParameters().getMassObjectMin());
 		add(massObjectMin);
 
 		add(new Label("Mass object max:"));
-		massObjectMax = new JFormattedTextField(ddf);
+		massObjectMax = new JFormattedTextField(dfsc);
 		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
 		add(massObjectMax);
 
 		add(new Label("Dark Matter or central star Mass:"));
-		darkMatterMass = new JFormattedTextField(ddf);
+		darkMatterMass = new JFormattedTextField(dfsc);
 		darkMatterMass.setValue(me.mother.getParameters().getDarkMatterMass());
 		add(darkMatterMass);
 
 		add(new Label("Dark Matter or central star Density:"));
-		darkMatterDensity = new JFormattedTextField(ddf);
+		darkMatterDensity = new JFormattedTextField(dfsc);
 		darkMatterDensity.setValue(me.mother.getParameters()
 				.getDarkMatterDensity());
 		add(darkMatterDensity);
@@ -258,7 +251,7 @@ public class GUIParam extends JDialog {
 		add(manageImpact);
 
 		add(new Label("Expension of univers :"));
-		expensionOfUnivers = new JFormattedTextField(ddf);
+		expensionOfUnivers = new JFormattedTextField(dfsc);
 		expensionOfUnivers.setValue(me.mother.getParameters()
 				.getExpensionOfUnivers());
 		add(expensionOfUnivers);

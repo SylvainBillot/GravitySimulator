@@ -9,7 +9,6 @@ public abstract class HelperVariable {
 	public static final double ONEDAY = 60 * 60 * 24; // s
 	public static final double MINIMALSTARMASS = 0.07 * HelperVariable.M; // kg
 	public static final double MAXIMALSTARMASS = 300 * HelperVariable.M; // kg
-	
-	/* unity conversion */
-	public static final double GM = 6.67234E-11 * HelperVariable.M; // N.m2 M-1 s-2
+	public static final double H0 = (67.8 *1E3) /( HelperVariable.PC * 1E6); // m s-1
+
 }
