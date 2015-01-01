@@ -72,7 +72,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(1E-9);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
-					expensionOfUnivers.setValue(0);
+					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -89,7 +89,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(HelperVariable.M/100);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
-					expensionOfUnivers.setValue(0);
+					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -104,7 +104,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.UA*5);
 					massObjectMin.setValue(HelperVariable.M/1000);
 					massObjectMax.setValue(HelperVariable.M/100);
-					expensionOfUnivers.setValue(0);
+					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -157,7 +157,7 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1E10);
 					darkMatterMass.setValue(1E10);
 					darkMatterDensity.setValue(1E7);
-					expensionOfUnivers.setValue(0);
+					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 
 				case 6:
@@ -175,21 +175,21 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(100000000);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1E10);
-					expensionOfUnivers.setValue(0);
+					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomInitialExpension);
 					manageImpact.setSelected(true);
-					timeFactor.setValue(HelperVariable.ONEDAY/3);
-					scala.setValue(5E-10);
+					timeFactor.setValue(HelperVariable.ONEDAY*1E9);
+					scala.setValue(1E-20);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
-					densiteMin.setValue(0.1);
-					nebulaRadius.setValue(HelperVariable.UA*5);
-					massObjectMin.setValue(HelperVariable.M/1000);
-					massObjectMax.setValue(HelperVariable.M/100);
+					densiteMin.setValue(1E-22);
+					nebulaRadius.setValue(HelperVariable.PC*1E6);
+					massObjectMin.setValue(HelperVariable.M*1E2);
+					massObjectMax.setValue(HelperVariable.M*1E10);
 					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				}
