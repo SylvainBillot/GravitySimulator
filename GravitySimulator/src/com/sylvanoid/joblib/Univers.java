@@ -520,22 +520,22 @@ public class Univers {
 	}
 
 	private void createGalaxiesCollision() {
-		double transSpeed = 0.0;
+		double initialSpeedx = 1E5;
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(
 				-HelperVariable.PC * 70000, -HelperVariable.PC * 25000,
-				-HelperVariable.PC * 25000), new Vector3d(transSpeed, 0, 0), 0,
+				-HelperVariable.PC * 25000), new Vector3d(initialSpeedx, 0, 0), 0,
 				parameters.getNebulaRadius(), new Vector3d(0.15, 1, 0.15));
 		
 		TreeMap<Matter, Matter> subu02 = createUvivers(new Vector3d(
 				HelperVariable.PC * 70000, HelperVariable.PC * 25000,
-				HelperVariable.PC * 25000), new Vector3d(-transSpeed, 0, 0), 0,
+				HelperVariable.PC * 25000), new Vector3d(-initialSpeedx, 0, 0), 0,
 				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.15, 0.15));
 
 		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
 				* 70000 + Math.random(), -HelperVariable.PC * 25000
 				+ Math.random(), -HelperVariable.PC * 25000 + Math.random()),
 				parameters.getDarkMatterMass() / 2 + Math.random(),
-				new Vector3d(transSpeed, 0, 0),
+				new Vector3d(initialSpeedx, 0, 0),
 				parameters.getDarkMatterDensity(), true);
 		m1.setColor(new Vector3d(0.25, 0.25, 0.25));
 		listMatter.put(m1, m1);
@@ -546,7 +546,7 @@ public class Univers {
 				* 70000 + Math.random(), HelperVariable.PC * 25000
 				+ Math.random(), HelperVariable.PC * 25000 + Math.random()),
 				parameters.getDarkMatterMass() / 2.0001 + Math.random(),
-				new Vector3d(-transSpeed, 0, 0),
+				new Vector3d(-initialSpeedx, 0, 0),
 				parameters.getDarkMatterDensity(), true);
 		m2.setColor(new Vector3d(0.25, 0.25, 0.25));
 		listMatter.put(m2, m2);
@@ -564,7 +564,7 @@ public class Univers {
 		for (Matter m : subu02.values()) {
 			if (m != m2) {
 				Vector3d newSpeed = new Vector3d(m.getSpeed());
-				newSpeed.add(m.orbitalSpeed(m2, new Vector3d(0, 0, 1)));
+				newSpeed.add(m.orbitalSpeed(m2, new Vector3d(0, 1, 0)));
 				m.setSpeed(newSpeed);
 			}
 		}
