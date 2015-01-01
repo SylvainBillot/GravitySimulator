@@ -420,8 +420,8 @@ public class Univers {
 	}
 
 	private TreeMap<Matter, Matter> createUvivers(Vector3d origine,
-			double delta, double speedTrans, double radiusMin,
-			double radiusMax, double ratiox, double ratioy, double ratioz) {
+			Vector3d initialSpeed, double radiusMin, double radiusMax,
+			Vector3d ratio) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		Random random = new Random();
 		double miniMass = 0;
@@ -432,15 +432,21 @@ public class Univers {
 				double x = 1;
 				double y = 1;
 				double z = 1;
-				while (x * x + y * y + z * z > 1) {
-					x = 2 * (random.nextDouble() - 0.5);
-					y = 2 * (random.nextDouble() - 0.5);
-					z = 2 * (random.nextDouble() - 0.5);
+				boolean IsNotOK = true;
+				while (IsNotOK) {
+					x = 2 * (random.nextDouble() - 0.5) * radiusMax;
+					y = 2 * (random.nextDouble() - 0.5) * radiusMax;
+					z = 2 * (random.nextDouble() - 0.5) * radiusMax;
+					IsNotOK = (Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2) > Math
+							.pow(radiusMax, 2));
+					IsNotOK = IsNotOK
+							|| (Math.pow(x, 2) + Math.pow(y, 2) < Math.pow(
+									radiusMin, 2));
 				}
 
-				m = new Matter(parameters, new Vector3d(origine.x + x * ratiox
-						* radiusMax, origine.y + y * ratioy * radiusMax,
-						origine.z + z * ratioz * radiusMax),
+				m = new Matter(parameters, new Vector3d(
+						origine.x + x * ratio.x, origine.y + y * ratio.y,
+						origine.z + z * ratio.z),
 						parameters.getMassObjectMin()
 								+ random.nextDouble()
 								* (parameters.getMassObjectMax() - parameters
@@ -480,17 +486,7 @@ public class Univers {
 		}
 
 		for (Matter m : miniListMatter.values()) {
-			double distance = Math
-					.pow(Math.pow(m.getPoint().getX() - origine.x, 2)
-							+ Math.pow(m.getPoint().getY() - origine.y, 2), 0.5);
-			double angle = Math.atan2(m.getPoint().getY() - origine.y, m
-					.getPoint().getX() - origine.x);
-			m.setSpeed(new Vector3d(m.getPoint().getX() - origine.x
-					- Math.cos(angle - delta) * distance + speedTrans, m
-					.getPoint().getY()
-					- origine.y
-					- Math.sin(angle - delta)
-					* distance, 0));
+			m.setSpeed(initialSpeed);
 		}
 
 		listMatter.putAll(miniListMatter);
@@ -501,13 +497,14 @@ public class Univers {
 
 	private void createRandomStaticUvivers() {
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(0, 0, 0),
-				0, 0, 0, parameters.getNebulaRadius(), 1, 1, 1);
+				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
+				new Vector3d(1, 1, 1));
 		listMatter.putAll(subu01);
 	}
 
 	private void createRandomRotateUnivers() {
-		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				parameters.getNebulaRadius(), 0.25, 1, 0.25);
+		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), 0,
+				parameters.getNebulaRadius(), new Vector3d(0.25, 1, 0.25));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), true);
@@ -523,16 +520,16 @@ public class Univers {
 	}
 
 	private void createGalaxiesCollision() {
-		double transSpeed = 1E5;
+		double transSpeed = 0.0;
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(
 				-HelperVariable.PC * 70000, -HelperVariable.PC * 25000,
-				-HelperVariable.PC * 25000), 0, transSpeed, 0,
-				parameters.getNebulaRadius(), 0.15, 1, 0.15);
-
+				-HelperVariable.PC * 25000), new Vector3d(transSpeed, 0, 0), 0,
+				parameters.getNebulaRadius(), new Vector3d(0.15, 1, 0.15));
+		
 		TreeMap<Matter, Matter> subu02 = createUvivers(new Vector3d(
 				HelperVariable.PC * 70000, HelperVariable.PC * 25000,
-				HelperVariable.PC * 25000), 0, -transSpeed, 0,
-				parameters.getNebulaRadius() / 2, 1, 0.15, 0.15);
+				HelperVariable.PC * 25000), new Vector3d(-transSpeed, 0, 0), 0,
+				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.15, 0.15));
 
 		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
 				* 70000 + Math.random(), -HelperVariable.PC * 25000
@@ -558,13 +555,17 @@ public class Univers {
 
 		for (Matter m : subu01.values()) {
 			if (m != m1) {
-				m.getSpeed().add(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+				Vector3d newSpeed = new Vector3d(m.getSpeed());
+				newSpeed.add(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+				m.setSpeed(newSpeed);
 			}
 		}
 
 		for (Matter m : subu02.values()) {
 			if (m != m2) {
-				m.getSpeed().add(m.orbitalSpeed(m2, new Vector3d(0, 1, 0)));
+				Vector3d newSpeed = new Vector3d(m.getSpeed());
+				newSpeed.add(m.orbitalSpeed(m2, new Vector3d(0, 0, 1)));
+				m.setSpeed(newSpeed);
 			}
 		}
 
@@ -654,12 +655,14 @@ public class Univers {
 		saturn.setPoint(HelperVector.rotate(saturn.getPoint(), new Vector3d(0,
 				0, 1), 2.48 * Math.PI / 180));
 
-		moon.getSpeed().add(moon.orbitalSpeed(earth, new Vector3d(0, 1, 0)));
+		Vector3d newSpeed = new Vector3d(moon.getSpeed());
+		newSpeed.add(moon.orbitalSpeed(earth, new Vector3d(0, 1, 0)));
+		moon.setSpeed(newSpeed);
 	}
 
 	private void createPlanetaryRandom() {
-		createUvivers(new Vector3d(0, 0, 0), 0, 0, 0,
-				parameters.getNebulaRadius(), 1, 0.1, 1);
+		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), 0,
+				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
@@ -675,9 +678,9 @@ public class Univers {
 	}
 
 	private void createPlanetariesGenesis() {
-		createUvivers(new Vector3d(0, 0, 0), 0, 0,
+		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				parameters.getNebulaRadius() * 0.9,
-				parameters.getNebulaRadius(), 1, 1, 0.1);
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.1));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
@@ -707,8 +710,8 @@ public class Univers {
 		listMatter.put(m2, m2);
 		mass += m2.getMass();
 		visibleMass += m1.getMass();
-		m1.getSpeed().add(m1.orbitalSpeed(m2, new Vector3d(0, 0, 1)));
-		m2.getSpeed().add(m2.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+		m1.setSpeed(m1.orbitalSpeed(m2, new Vector3d(0, 0, 1)));
+		m2.setSpeed(m2.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 
 	}
 }
