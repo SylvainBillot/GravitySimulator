@@ -205,7 +205,7 @@ public class GUIParam extends JDialog {
 		});
 		add(typeOfUnivers);
 
-		add(new Label("Scala:"));
+		add(new Label("Scala 1/x:"));
 		scala = new JFormattedTextField(ddf);
 		scala.setValue(me.mother.getParameters().getScala());
 		add(scala);

@@ -161,9 +161,9 @@ public class Univers {
 		}
 	}
 
+	/* Barnes Hutt implementation */
 	public void compute() {
 		if (listMatter.size() > 1) {
-			// Découpage en 4 et compute de chacun
 			double cx = min.x + (max.x - min.x) / 2;
 			double cy = min.y + (max.z - min.y) / 2;
 			double cz = min.z + (max.z - min.z) / 2;
@@ -370,7 +370,8 @@ public class Univers {
 		if (parameters.isManageImpact()) {
 			double oldMass = mass;
 			manageImpact();
-			if (Math.abs(mass - oldMass) > listMatter.lastEntry().getValue().getMass()) {
+			if (Math.abs(mass - oldMass) > listMatter.lastEntry().getValue()
+					.getMass()) {
 				System.out.println("wtf :" + mass + " - " + oldMass + " = "
 						+ (mass - oldMass));
 			}
@@ -437,8 +438,9 @@ public class Univers {
 					z = 2 * (random.nextDouble() - 0.5);
 				}
 
-				m = new Matter(parameters, new Vector3d(origine.x + x* ratiox * radiusMax,
-						origine.y + y* ratioy * radiusMax, origine.z + z* ratioz * radiusMax),
+				m = new Matter(parameters, new Vector3d(origine.x + x * ratiox
+						* radiusMax, origine.y + y * ratioy * radiusMax,
+						origine.z + z * ratioz * radiusMax),
 						parameters.getMassObjectMin()
 								+ random.nextDouble()
 								* (parameters.getMassObjectMax() - parameters
@@ -573,7 +575,7 @@ public class Univers {
 	private void createPlanetary() {
 		Matter sun = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()),
-				HelperVariable.M + Math.random(), new Vector3d(0, 0, 0), 1408,
+				HelperVariable.G + Math.random(), new Vector3d(0, 0, 0), 1408,
 				false);
 		sun.setColor(new Vector3d(1, 1, 0.5));
 		sun.setName("Sun");
@@ -640,8 +642,6 @@ public class Univers {
 				m.setSpeed(m.orbitalSpeed(sun, new Vector3d(0, 1, 0)));
 				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
-			mass += m.getMass();
-			visibleMass += m.getMass();
 		}
 
 		moon.getSpeed().add(moon.orbitalSpeed(earth, new Vector3d(0, 1, 0)));
