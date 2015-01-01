@@ -640,9 +640,19 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			if (m != sun) {
 				m.setSpeed(m.orbitalSpeed(sun, new Vector3d(0, 1, 0)));
-				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
 		}
+
+		mercure.setPoint(HelperVector.rotate(mercure.getPoint(), new Vector3d(
+				0, 0, 1), 7 * Math.PI / 180));
+		venus.setPoint(HelperVector.rotate(venus.getPoint(), new Vector3d(0, 0,
+				1), 3 * Math.PI / 180));
+		mars.setPoint(HelperVector.rotate(mars.getPoint(),
+				new Vector3d(0, 0, 1), 1.8 * Math.PI / 180));
+		jupiter.setPoint(HelperVector.rotate(jupiter.getPoint(), new Vector3d(
+				0, 0, 1), 1.3 * Math.PI / 180));
+		saturn.setPoint(HelperVector.rotate(saturn.getPoint(), new Vector3d(0,
+				0, 1), 2.48 * Math.PI / 180));
 
 		moon.getSpeed().add(moon.orbitalSpeed(earth, new Vector3d(0, 1, 0)));
 	}
