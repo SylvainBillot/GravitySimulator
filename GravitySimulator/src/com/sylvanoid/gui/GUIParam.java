@@ -72,7 +72,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(1E-9);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
-					expensionOfUnivers.setValue(HelperVariable.H0);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -89,7 +89,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(HelperVariable.M/100);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
-					expensionOfUnivers.setValue(HelperVariable.H0);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -104,7 +104,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.UA*5);
 					massObjectMin.setValue(HelperVariable.M/1000);
 					massObjectMax.setValue(HelperVariable.M/100);
-					expensionOfUnivers.setValue(HelperVariable.H0);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -121,7 +121,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1000);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-20);
-					expensionOfUnivers.setValue(HelperVariable.H0);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -157,7 +157,7 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1E10);
 					darkMatterMass.setValue(1E10);
 					darkMatterDensity.setValue(1E7);
-					expensionOfUnivers.setValue(HelperVariable.H0);
+					expensionOfUnivers.setValue(0);
 					break;
 
 				case 6:
@@ -175,7 +175,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(100000000);
 					darkMatterMass.setValue(1E12);
 					darkMatterDensity.setValue(1E10);
-					expensionOfUnivers.setValue(HelperVariable.H0);
+					expensionOfUnivers.setValue(0);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
