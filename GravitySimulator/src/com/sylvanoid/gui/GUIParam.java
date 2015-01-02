@@ -110,7 +110,7 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomRotateUnivers);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(HelperVariable.ONEDAY*365*1000000);
+					timeFactor.setValue(HelperVariable.ONEYEAR*1000000);
 					scala.setValue(4E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -127,7 +127,7 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.GalaxiesCollision);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(HelperVariable.ONEDAY*365*1000000);
+					timeFactor.setValue(HelperVariable.ONEYEAR*1000000);
 					scala.setValue(1E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -181,7 +181,7 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomInitialExpension);
 					manageImpact.setSelected(true);
-					timeFactor.setValue(HelperVariable.ONEDAY*1E9);
+					timeFactor.setValue(HelperVariable.ONEYEAR*1E7);
 					scala.setValue(1E-20);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);

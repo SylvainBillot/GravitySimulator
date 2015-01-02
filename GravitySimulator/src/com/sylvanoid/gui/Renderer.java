@@ -40,7 +40,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	private GUIProgram guiProgram;
 	private Parameters parameters;
 	private Univers univers;
-	private LinkedList<List<Vector3d>> forTrace = new LinkedList<List<Vector3d>>();
+	private LinkedList<List<Vector3d[]>> forTrace = new LinkedList<List<Vector3d[]>>();
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
 	private int textures[] = new int[3]; // Storage For One textures
@@ -63,10 +63,14 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	public void display(GLAutoDrawable drawable) {
 		// TODO Auto-generated method stub
 		univers.process();
-		List<Vector3d> tmpList = new ArrayList<Vector3d>();
+		List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
 		for (Matter m : univers.getListMatter().values()) {
-			tmpList.add(new Vector3d(m.getPoint().x, m.getPoint().y, m
-					.getPoint().z));
+			Vector3d[] myLine = new Vector3d[2];
+			myLine[0] = new Vector3d(m.getPointBefore().x, m.getPointBefore().y, m
+					.getPointBefore().z);
+			myLine[1] = new Vector3d(m.getPoint().x, m.getPoint().y, m
+					.getPoint().z);
+			tmpList.add(myLine);
 		}
 		forTrace.add(tmpList);
 		if (forTrace.size() > 1000) {
@@ -294,16 +298,34 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			textRenderer.draw(
 					"Scala: 1/" + dfsc.format(1 / parameters.getScala()), 10,
 					drawable.getSurfaceHeight() - textSize * 1);
-			textRenderer.draw(
-					"Elapsed time (day): "
-							+ df2d.format(parameters.getElapsedTime()
-									/ HelperVariable.ONEDAY), 10,
-					drawable.getSurfaceHeight() - textSize * 2);
-			textRenderer.draw(
-					"Time Step (day): "
-							+ df2d.format(parameters.getTimeFactor()
-									/ HelperVariable.ONEDAY), 10,
-					drawable.getSurfaceHeight() - textSize * 3);
+
+			if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525) {
+				textRenderer.draw(
+						"Elapsed time (day): "
+								+ df2d.format(parameters.getElapsedTime()
+										/ HelperVariable.ONEDAY), 10,
+						drawable.getSurfaceHeight() - textSize * 2);
+			} else {
+				textRenderer.draw(
+						"Elapsed time (year): "
+								+ df2d.format(parameters.getElapsedTime()
+										/ HelperVariable.ONEYEAR), 10,
+						drawable.getSurfaceHeight() - textSize * 2);
+			}
+			if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525) {
+				textRenderer.draw(
+						"Time Step (day): "
+								+ df2d.format(parameters.getTimeFactor()
+										/ HelperVariable.ONEDAY), 10,
+						drawable.getSurfaceHeight() - textSize * 3);
+			} else {
+				textRenderer.draw(
+						"Time Step (year): "
+								+ df2d.format(parameters.getTimeFactor()
+										/ HelperVariable.ONEYEAR), 10,
+						drawable.getSurfaceHeight() - textSize * 3);
+
+			}
 			textRenderer.draw("Num of Object: "
 					+ univers.getListMatter().size(), 10,
 					drawable.getSurfaceHeight() - textSize * 4);
@@ -342,15 +364,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			/* Show trace */
 			gl.glPushMatrix();
 			gl.glColor3d(0.20, 0.20, 0.20);
-			gl.glBegin(GL2.GL_POINTS);
-			for (List<Vector3d> tmpList : forTrace) {
-				for (Vector3d p : tmpList) {
-					gl.glVertex3d(parameters.getScala() * p.x,
-							parameters.getScala() * p.y, parameters.getScala()
-									* p.z);
+			for (List<Vector3d[]> tmpList : forTrace) {
+				for (Vector3d[] p : tmpList) {
+					gl.glBegin(GL2.GL_LINES);
+					gl.glVertex3d(parameters.getScala() * p[0].x,
+							parameters.getScala() * p[0].y, parameters.getScala()
+									* p[0].z);
+					gl.glVertex3d(parameters.getScala() * p[1].x,
+							parameters.getScala() * p[1].y, parameters.getScala()
+									* p[1].z);
+					gl.glEnd();
 				}
 			}
-			gl.glEnd();
 			gl.glPopMatrix();
 		}
 

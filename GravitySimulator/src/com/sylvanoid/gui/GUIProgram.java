@@ -48,7 +48,7 @@ public class GUIProgram extends JFrame {
 	private GUIProgram me;
 	private GLJPanel gljpanel;
 	private Univers univers;
-	private LinkedList<List<Vector3d>> forTrace;
+	private LinkedList<List<Vector3d[]>> forTrace;
 	private Parameters parameters;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
@@ -80,7 +80,7 @@ public class GUIProgram extends JFrame {
 		this.me = this;
 		parameters = new Parameters();
 		univers = new Univers(parameters);
-		forTrace = new LinkedList<List<Vector3d>>();
+		forTrace = new LinkedList<List<Vector3d[]>>();
 		File directory = new File(System.getProperty("user.home"));
 		try {
 			out = new SequenceEncoder(new File(directory.getPath()
@@ -289,7 +289,7 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				parameters.setShowTrace(!parameters
 						.isShowTrace());
-				me.forTrace = new LinkedList<List<Vector3d>>();
+				me.forTrace = new LinkedList<List<Vector3d[]>>();
 			}
 		});
 		
@@ -419,7 +419,7 @@ public class GUIProgram extends JFrame {
 		return univers;
 	}
 
-	public LinkedList<List<Vector3d>> getForTrace() {
+	public LinkedList<List<Vector3d[]>> getForTrace() {
 		return forTrace;
 	}
 
@@ -444,7 +444,7 @@ public class GUIProgram extends JFrame {
 	}
 
 	public void reset() {
-		forTrace = new LinkedList<List<Vector3d>>();
+		forTrace = new LinkedList<List<Vector3d[]>>();
 		animator.stop();
 		parameters.setElapsedTime(0);
 		univers = new Univers(parameters);

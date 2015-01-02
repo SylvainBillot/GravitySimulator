@@ -17,6 +17,7 @@ public class Matter implements Comparable<Matter> {
 	private String name;
 	private TypeOfObject typeOfObject = TypeOfObject.Star;
 	private double mass;
+	private Vector3d pointBefore = new Vector3d(0, 0, 0);
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
@@ -93,6 +94,16 @@ public class Matter implements Comparable<Matter> {
 
 	public void setPoint(Vector3d point) {
 		this.point = point;
+	}
+
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
+	public Vector3d getPointBefore() {
+		return pointBefore;
+	}
+
+	public void setPointBefore(Vector3d pointBefore) {
+		this.pointBefore = pointBefore;
 	}
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
@@ -196,6 +207,7 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public void move() {
+		pointBefore = new Vector3d(point);
 		speed.add(a);
 		// Relativity effet
 		/*
