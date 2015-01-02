@@ -305,11 +305,17 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 								+ df2d.format(parameters.getElapsedTime()
 										/ HelperVariable.ONEDAY), 10,
 						drawable.getSurfaceHeight() - textSize * 2);
-			} else {
+			} else if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525 * 1E3) {
 				textRenderer.draw(
 						"Elapsed time (year): "
 								+ df2d.format(parameters.getElapsedTime()
 										/ HelperVariable.ONEYEAR), 10,
+						drawable.getSurfaceHeight() - textSize * 2);
+			} else {
+				textRenderer.draw(
+						"Elapsed time (millions of year): "
+								+ df2d.format(parameters.getElapsedTime()
+										/ HelperVariable.ONEYEAR / 1E6), 10,
 						drawable.getSurfaceHeight() - textSize * 2);
 			}
 			if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525) {
@@ -318,11 +324,17 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 								+ df2d.format(parameters.getTimeFactor()
 										/ HelperVariable.ONEDAY), 10,
 						drawable.getSurfaceHeight() - textSize * 3);
-			} else {
+			} else if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525 * 1E3) {
 				textRenderer.draw(
 						"Time Step (year): "
 								+ df2d.format(parameters.getTimeFactor()
 										/ HelperVariable.ONEYEAR), 10,
+						drawable.getSurfaceHeight() - textSize * 3);
+			} else {
+				textRenderer.draw(
+						"Time Step (millions of year): "
+								+ df2d.format(parameters.getTimeFactor()
+										/ HelperVariable.ONEYEAR / 1E6), 10,
 						drawable.getSurfaceHeight() - textSize * 3);
 
 			}
@@ -410,8 +422,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
 									Math.random() * 2 * Math.PI)));
 				} else {
-					gl.glMultMatrixd(HelperVector
-							.make3DTransformMatrix(m.getAngles()));
+					gl.glMultMatrixd(HelperVector.make3DTransformMatrix(m
+							.getAngles()));
 				}
 
 				double r;

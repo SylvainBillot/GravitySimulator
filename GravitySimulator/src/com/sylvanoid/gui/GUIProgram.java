@@ -34,6 +34,7 @@ import javax.xml.bind.Unmarshaller;
 import org.jcodec.api.SequenceEncoder;
 
 import com.jogamp.opengl.util.FPSAnimator;
+import com.sylvanoid.common.MpejFilter;
 import com.sylvanoid.common.XmlFilter;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
@@ -60,14 +61,16 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void run() {
 				try {
-				    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				        if ("Nimbus".equals(info.getName())) {
-				            UIManager.setLookAndFeel(info.getClassName());
-				            break;
-				        }
-				    }
+					for (LookAndFeelInfo info : UIManager
+							.getInstalledLookAndFeels()) {
+						if ("Nimbus".equals(info.getName())) {
+							UIManager.setLookAndFeel(info.getClassName());
+							break;
+						}
+					}
 				} catch (Exception e) {
-				    // If Nimbus is not available, you can set the GUI to another look and feel.
+					// If Nimbus is not available, you can set the GUI to
+					// another look and feel.
 				}
 				GUIProgram ex = new GUIProgram();
 				ex.setVisible(true);
@@ -80,14 +83,6 @@ public class GUIProgram extends JFrame {
 		parameters = new Parameters();
 		univers = new Univers(parameters);
 		forTrace = new LinkedList<List<Vector3d[]>>();
-		File directory = new File(System.getProperty("user.home"));
-		try {
-			out = new SequenceEncoder(new File(directory.getPath()
-					+ "/out.mpeg"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		setTitle("Gravity Simulator");
 		Dimension dimension = java.awt.Toolkit.getDefaultToolkit()
 				.getScreenSize();
@@ -268,7 +263,8 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
-		JMenuItem menuItemFollowSomething = new JMenuItem("Follow something ...");
+		JMenuItem menuItemFollowSomething = new JMenuItem(
+				"Follow something ...");
 		menuItemFollowSomething.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -277,8 +273,8 @@ public class GUIProgram extends JFrame {
 				GUIFollowOther guiFO = new GUIFollowOther(me);
 				guiFO.setVisible(true);
 			}
-		});	
-		
+		});
+
 		JCheckBoxMenuItem menuItemShowTrace = new JCheckBoxMenuItem(
 				"Show Trace", parameters.isShowTrace());
 		menuItemShowTrace.addActionListener(new ActionListener() {
@@ -286,12 +282,11 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setShowTrace(!parameters
-						.isShowTrace());
+				parameters.setShowTrace(!parameters.isShowTrace());
 				me.forTrace = new LinkedList<List<Vector3d[]>>();
 			}
 		});
-		
+
 		JCheckBoxMenuItem menuItemPermanentRotationy = new JCheckBoxMenuItem(
 				"Permanent Y Rotation", parameters.isPermanentRotationy());
 		menuItemPermanentRotationy.addActionListener(new ActionListener() {
@@ -304,15 +299,14 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
-		JCheckBoxMenuItem menuItemShowAxis = new JCheckBoxMenuItem(
-				"Show Axis", parameters.isShowAxis());
+		JCheckBoxMenuItem menuItemShowAxis = new JCheckBoxMenuItem("Show Axis",
+				parameters.isShowAxis());
 		menuItemShowAxis.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setShowAxis(!parameters
-						.isShowAxis());
+				parameters.setShowAxis(!parameters.isShowAxis());
 			}
 		});
 
@@ -323,20 +317,18 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setShowgrid(!parameters
-						.isShowgrid());
+				parameters.setShowgrid(!parameters.isShowgrid());
 			}
 		});
 
-		JCheckBoxMenuItem menuItemShowInfo = new JCheckBoxMenuItem(
-				"Show info", parameters.isShowInfo());
+		JCheckBoxMenuItem menuItemShowInfo = new JCheckBoxMenuItem("Show info",
+				parameters.isShowInfo());
 		menuItemShowInfo.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setShowInfo(!parameters
-						.isShowInfo());
+				parameters.setShowInfo(!parameters.isShowInfo());
 			}
 		});
 
@@ -347,11 +339,10 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setShowDarkMatter(!parameters
-						.isShowDarkMatter());
+				parameters.setShowDarkMatter(!parameters.isShowDarkMatter());
 			}
 		});
-		
+
 		menuVisu.add(menuItemShowTrace);
 		menuVisu.add(menuItemPermanentRotationy);
 		menuVisu.add(menuItemStopFollow);
@@ -367,14 +358,51 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVideo = new JMenu("Video");
 		JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
-				"Record to [home directory/out.mpeg]",
-				parameters.isExportToVideo());
+				"Record to ...", parameters.isExportToVideo());
 		menuItemExportVideo.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				parameters.setExportToVideo(!parameters.isExportToVideo());
+				animator.stop();
+				if (!parameters.isExportToVideo()) {
+					try {
+						JFileChooser fileChooser = new JFileChooser();
+						fileChooser.setDialogTitle("Specify video name");
+						fileChooser
+								.setFileSelectionMode(JFileChooser.FILES_ONLY);
+						fileChooser.setMultiSelectionEnabled(false);
+						fileChooser.setFileFilter(new MpejFilter());
+						fileChooser.setSelectedFile(new File("out.mpeg"));
+						int userSelection = fileChooser.showSaveDialog(me);
+						if (userSelection == JFileChooser.APPROVE_OPTION) {
+							if (!fileChooser.getSelectedFile()
+									.getAbsolutePath().toLowerCase()
+									.endsWith(".mpeg")) {
+								out = new SequenceEncoder(new File(fileChooser
+										.getSelectedFile().getAbsolutePath()
+										+ ".mpeg"));
+
+							} else {
+								out = new SequenceEncoder(new File(fileChooser
+										.getSelectedFile().getAbsolutePath()));
+							}
+							parameters.setExportToVideo(!parameters.isExportToVideo());
+						} 
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					try {
+						out.finish();
+						parameters.setExportToVideo(!parameters.isExportToVideo());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
 				renderer.reload(me);
+				animator.start();
 			}
 		});
 		menuBar.add(menuVideo);
