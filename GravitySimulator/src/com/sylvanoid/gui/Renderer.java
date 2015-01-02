@@ -43,7 +43,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	private LinkedList<List<Vector3d[]>> forTrace = new LinkedList<List<Vector3d[]>>();
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
-	private int textures[] = new int[3]; // Storage For One textures
+	private int textures[] = new int[4]; // Storage For One textures
 
 	private TextRenderer textRenderer;
 
@@ -66,10 +66,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
 		for (Matter m : univers.getListMatter().values()) {
 			Vector3d[] myLine = new Vector3d[2];
-			myLine[0] = new Vector3d(m.getPointBefore().x, m.getPointBefore().y, m
-					.getPointBefore().z);
-			myLine[1] = new Vector3d(m.getPoint().x, m.getPoint().y, m
-					.getPoint().z);
+			myLine[0] = new Vector3d(m.getPointBefore().x,
+					m.getPointBefore().y, m.getPointBefore().z);
+			myLine[1] = new Vector3d(m.getPoint().x, m.getPoint().y,
+					m.getPoint().z);
 			tmpList.add(myLine);
 		}
 		forTrace.add(tmpList);
@@ -368,11 +368,11 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				for (Vector3d[] p : tmpList) {
 					gl.glBegin(GL2.GL_LINES);
 					gl.glVertex3d(parameters.getScala() * p[0].x,
-							parameters.getScala() * p[0].y, parameters.getScala()
-									* p[0].z);
+							parameters.getScala() * p[0].y,
+							parameters.getScala() * p[0].z);
 					gl.glVertex3d(parameters.getScala() * p[1].x,
-							parameters.getScala() * p[1].y, parameters.getScala()
-									* p[1].z);
+							parameters.getScala() * p[1].y,
+							parameters.getScala() * p[1].z);
 					gl.glEnd();
 				}
 			}
@@ -386,10 +386,12 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		for (Matter m : univers.getListMatter().values()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
+				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
 				if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
-				} else {
-					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
+				}
+				if (m.getMass() > HelperVariable.MINIMALGALAXYMASS) {
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
 				}
 
 				gl.glTranslated(parameters.getScala() * m.getPoint().x,
@@ -403,12 +405,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				double phi02 = afterRotateX.angle(parameters.getLookAt())
 						* Math.signum(parameters.getLookAt().x);
 
-				gl.glMultMatrixd(HelperVector
-						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
-								Math.random() * 2 * Math.PI)));
+				if (m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
+					gl.glMultMatrixd(HelperVector
+							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
+									Math.random() * 2 * Math.PI)));
+				} else {
+					gl.glMultMatrixd(HelperVector
+							.make3DTransformMatrix(m.getAngles()));
+				}
 
 				double r;
-				if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
+				if (m.getMass() > HelperVariable.MINIMALSTARMASS
+						&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
 					r = (Math.random() * 0.5 + 2.5)
 							* (m.getRayon() * parameters.getScala() < 1 ? 1 : m
 									.getRayon() * parameters.getScala());
@@ -479,17 +487,20 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		com.sylvanoid.common.TextureReader.Texture texture00 = null;
 		com.sylvanoid.common.TextureReader.Texture texture01 = null;
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
+		com.sylvanoid.common.TextureReader.Texture texture03 = null;
 		try {
 			texture00 = TextureReader.readTexture("resources/images/Dark.png");
 			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
 			texture02 = TextureReader
 					.readTexture("resources/images/Planetary.png");
+			texture03 = TextureReader
+					.readTexture("resources/images/Galaxy.png");
 
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-		gl.glGenTextures(2, textures, 0);
+		gl.glGenTextures(3, textures, 0);
 
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
@@ -517,6 +528,15 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture02.getWidth(),
 				texture02.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
 				texture02.getPixels());
+
+		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
+				GL2.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+				GL2.GL_LINEAR);
+		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture03.getWidth(),
+				texture03.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
+				texture03.getPixels());
 
 	}
 

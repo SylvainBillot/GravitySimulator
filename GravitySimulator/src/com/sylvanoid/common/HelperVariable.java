@@ -10,6 +10,7 @@ public abstract class HelperVariable {
 	public static final double ONEYEAR = 60 * 60 * 24 * 365.25; // s
 	public static final double MINIMALSTARMASS = 0.07 * HelperVariable.M; // kg
 	public static final double MAXIMALSTARMASS = 300 * HelperVariable.M; // kg
+	public static final double MINIMALGALAXYMASS = 1E6 * HelperVariable.M; // kg
 	public static final double H0 = (67.8 *1E3) /( HelperVariable.PC * 1E6); // m s-1
 
 }

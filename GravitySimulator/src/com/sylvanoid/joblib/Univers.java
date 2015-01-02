@@ -79,7 +79,7 @@ public class Univers {
 			createDoubleStars();
 		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomInitialExpension) {
-			createRandomStaticUvivers();
+			createRandomExpensionUvivers();
 		}
 	}
 
@@ -501,6 +501,15 @@ public class Univers {
 				new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), 0,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 1));
 		listMatter.putAll(subu01);
+	}
+
+	private void createRandomExpensionUvivers() {
+		createRandomStaticUvivers();
+		for (Matter m : listMatter.values()) {
+			m.setColor(new Vector3d(1, 1, 1));
+			m.setAngles(new Vector3d(Math.random() * 2 * Math.PI, Math.random()
+					* 2 * Math.PI, Math.random() * 2 * Math.PI));
+		}
 	}
 
 	private void createRandomRotateUnivers() {

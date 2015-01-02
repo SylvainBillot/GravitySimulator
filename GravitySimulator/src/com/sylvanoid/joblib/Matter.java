@@ -19,6 +19,7 @@ public class Matter implements Comparable<Matter> {
 	private double mass;
 	private Vector3d pointBefore = new Vector3d(0, 0, 0);
 	private Vector3d point = new Vector3d(0, 0, 0);
+	private Vector3d angles = new Vector3d(0, 0, 0);
 	private Vector3d a = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
 	private Vector3d color = new Vector3d(1, 1, 1);
@@ -104,6 +105,16 @@ public class Matter implements Comparable<Matter> {
 
 	public void setPointBefore(Vector3d pointBefore) {
 		this.pointBefore = pointBefore;
+	}
+
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
+	public Vector3d getAngles() {
+		return angles;
+	}
+
+	public void setAngles(Vector3d angles) {
+		this.angles = angles;
 	}
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)

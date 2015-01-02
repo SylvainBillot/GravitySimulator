@@ -68,7 +68,7 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.Planetary);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(6000);
+					timeFactor.setValue(6E3);
 					scala.setValue(1E-9);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -85,8 +85,8 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					densiteMin.setValue(1);
 					nebulaRadius.setValue(HelperVariable.UA*5);
-					massObjectMin.setValue(HelperVariable.M/1000);
-					massObjectMax.setValue(HelperVariable.M/100);
+					massObjectMin.setValue(HelperVariable.M/1E3);
+					massObjectMax.setValue(HelperVariable.M/1E2);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
 					expensionOfUnivers.setValue(0);
@@ -102,23 +102,23 @@ public class GUIParam extends JDialog {
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(0.1);
 					nebulaRadius.setValue(HelperVariable.UA*5);
-					massObjectMin.setValue(HelperVariable.M/1000);
-					massObjectMax.setValue(HelperVariable.M/100);
+					massObjectMin.setValue(HelperVariable.M/1E3);
+					massObjectMax.setValue(HelperVariable.M/1E2);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomRotateUnivers);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(HelperVariable.ONEYEAR*1000000);
+					timeFactor.setValue(HelperVariable.ONEYEAR*1E6);
 					scala.setValue(4E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(1E-21);
-					nebulaRadius.setValue(HelperVariable.PC*30000);
-					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1000);
-					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1000);
+					nebulaRadius.setValue(HelperVariable.PC*3E4);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1E3);
+					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1E3);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-20);
 					expensionOfUnivers.setValue(0);
@@ -127,15 +127,15 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.GalaxiesCollision);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(HelperVariable.ONEYEAR*1000000);
+					timeFactor.setValue(HelperVariable.ONEYEAR*1E6);
 					scala.setValue(1E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
 					densiteMin.setValue(1E-21);
-					nebulaRadius.setValue(HelperVariable.PC*30000);
-					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1000);
-					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1000);
+					nebulaRadius.setValue(HelperVariable.PC*3E4);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1E3);
+					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1E3);
 					darkMatterMass.setValue(5E42);
 					darkMatterDensity.setValue(1E-20);
 					expensionOfUnivers.setValue(HelperVariable.H0);
@@ -181,15 +181,15 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomInitialExpension);
 					manageImpact.setSelected(true);
-					timeFactor.setValue(HelperVariable.ONEYEAR*1E7);
-					scala.setValue(1E-20);
+					timeFactor.setValue(HelperVariable.ONEYEAR*3E7);
+					scala.setValue(3E-21);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
-					numberOfObjects.setValue(1000);
+					numberOfObjects.setValue(1500);
 					densiteMin.setValue(1E-22);
 					nebulaRadius.setValue(HelperVariable.PC*1E6);
 					massObjectMin.setValue(HelperVariable.M*1E2);
-					massObjectMax.setValue(HelperVariable.M*1E10);
+					massObjectMax.setValue(HelperVariable.M*2E9);
 					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				}
