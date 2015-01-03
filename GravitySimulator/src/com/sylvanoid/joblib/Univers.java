@@ -380,10 +380,7 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			double exp = 1 + parameters.getTimeFactor()
 					* parameters.getExpensionOfUnivers();
-			m.getPoint().x *= exp;
-			m.getPoint().y *= exp;
-			m.getPoint().z *= exp;
-
+			HelperVector.addDouble(m.getPoint(),exp);
 			m.move();
 		}
 	}
@@ -505,10 +502,16 @@ public class Univers {
 
 	private void createRandomExpensionUvivers() {
 		createRandomStaticUvivers();
+		computeCentroidOfUnivers();
 		for (Matter m : listMatter.values()) {
 			m.setColor(new Vector3d(1, 1, 1));
 			m.setAngles(new Vector3d(Math.random() * 2 * Math.PI, Math.random()
 					* 2 * Math.PI, Math.random() * 2 * Math.PI));
+			/* initial explosion test */
+			/*
+			 * m.getSpeed().sub( HelperVector.acceleration(m.getPoint(), new
+			 * Vector3d(0, 0, 0), 1E5));
+			 */
 		}
 	}
 

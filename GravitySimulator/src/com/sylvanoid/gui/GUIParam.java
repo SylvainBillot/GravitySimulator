@@ -14,6 +14,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JSlider;
+import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfUnivers;
@@ -181,13 +182,13 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomInitialExpension);
 					manageImpact.setSelected(true);
-					timeFactor.setValue(HelperVariable.ONEYEAR*3E7);
-					scala.setValue(3E-21);
+					timeFactor.setValue(HelperVariable.ONEYEAR*3E6);
+					scala.setValue(3E-20);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1500);
 					densiteMin.setValue(1E-22);
-					nebulaRadius.setValue(HelperVariable.PC*1E6*0.95);
+					nebulaRadius.setValue(HelperVariable.PC*1E6);
 					massObjectMin.setValue(HelperVariable.M*1E2);
 					massObjectMax.setValue(HelperVariable.M*2E9);
 					expensionOfUnivers.setValue(HelperVariable.H0);
@@ -318,6 +319,9 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setExpensionOfUnivers(
 							Double.parseDouble(me.expensionOfUnivers.getValue()
 									.toString()));
+					
+					me.mother.getParameters().setEyes(new Vector3d(0,0,900));
+					me.mother.getParameters().setLookAt(new Vector3d(0,0,-900));
 					me.getMother().reset();
 					me.setVisible(false);
 					me.mother.setVisible(true);

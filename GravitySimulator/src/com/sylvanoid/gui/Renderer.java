@@ -122,6 +122,12 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		parameters.setElapsedTime(parameters.getElapsedTime()
 				+ parameters.getTimeFactor());
 
+		/*Univers expension for camera and lookup */
+		double exp = 1 + parameters.getTimeFactor()
+				* parameters.getExpensionOfUnivers();
+		HelperVector.addDouble(parameters.getEyes(),exp);
+		HelperVector.addDouble(parameters.getLookAt(),exp);
+		
 		if (parameters.isFollowCentroid()) {
 			univers.computeCentroidOfUnivers();
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
@@ -184,211 +190,21 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 		if (parameters.isShowgrid()) {
 			// Show grid
-			double gridStep = parameters.getGridStep() * parameters.getScala();
-			double gridRadius = 10 * parameters.getGridStep()
-					* parameters.getScala();
-			for (double i = 0; i <= gridRadius; i += gridStep) {
-				for (double j = 0; j <= gridRadius; j += gridStep) {
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, j, -gridRadius);
-					gl.glVertex3d(i, j, gridRadius);
-					gl.glEnd();
-
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, -gridRadius, j);
-					gl.glVertex3d(i, gridRadius, j);
-					gl.glEnd();
-
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(-gridRadius, i, j);
-					gl.glVertex3d(gridRadius, i, j);
-					gl.glEnd();
-
-				}
-				for (double j = 0; j >= -gridRadius; j -= gridStep) {
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, j, -gridRadius);
-					gl.glVertex3d(i, j, gridRadius);
-					gl.glEnd();
-
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, -gridRadius, j);
-					gl.glVertex3d(i, gridRadius, j);
-					gl.glEnd();
-
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(-gridRadius, i, j);
-					gl.glVertex3d(gridRadius, i, j);
-					gl.glEnd();
-				}
-			}
-			for (double i = 0; i >= -gridRadius; i -= gridStep) {
-				for (double j = 0; j <= gridRadius; j += gridStep) {
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, j, -gridRadius);
-					gl.glVertex3d(i, j, gridRadius);
-					gl.glEnd();
-
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, -gridRadius, j);
-					gl.glVertex3d(i, gridRadius, j);
-					gl.glEnd();
-
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(-gridRadius, i, j);
-					gl.glVertex3d(gridRadius, i, j);
-					gl.glEnd();
-
-				}
-				for (double j = 0; j >= -gridRadius; j -= gridStep) {
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, j, -gridRadius);
-					gl.glVertex3d(i, j, gridRadius);
-					gl.glEnd();
-
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(i, -gridRadius, j);
-					gl.glVertex3d(i, gridRadius, j);
-					gl.glEnd();
-
-					gl.glBegin(GL2.GL_LINES);
-					gl.glColor3d(0.08, 0.08, 0.08);
-					gl.glVertex3d(-gridRadius, i, j);
-					gl.glVertex3d(gridRadius, i, j);
-					gl.glEnd();
-				}
-			}
+			drawGrid(gl);
 		}
 
 		if (parameters.isShowAxis()) {
 			// Show Axis
-			gl.glBegin(GL2.GL_LINES);
-			gl.glColor3d(0.3, 0, 0);
-			gl.glVertex3d(0, 0, -1E5);
-			gl.glVertex3d(0, 0, 1E5);
-			gl.glEnd();
-			gl.glBegin(GL2.GL_LINES);
-			gl.glColor3d(0, 0.3, 0);
-			gl.glVertex3d(0, -1E5, 0);
-			gl.glVertex3d(0, 1E5, 0);
-			gl.glEnd();
-			gl.glBegin(GL2.GL_LINES);
-			gl.glColor3d(0, 0, 0.3);
-			gl.glVertex3d(-1E5, 0, 0);
-			gl.glVertex3d(1E5, 0, 0);
-			gl.glEnd();
+			drawAxis(gl);
 		}
 		if (parameters.isShowInfo()) {
-			DecimalFormat df2d = new DecimalFormat("0.0000");
-			DecimalFormat dfsc = new DecimalFormat("0.####E0");
-			textRenderer.beginRendering(drawable.getSurfaceWidth(),
-					drawable.getSurfaceHeight());
-			textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
-			textRenderer.draw(
-					"Scala: 1/" + dfsc.format(1 / parameters.getScala()), 10,
-					drawable.getSurfaceHeight() - textSize * 1);
-
-			if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525) {
-				textRenderer.draw(
-						"Elapsed time (day): "
-								+ df2d.format(parameters.getElapsedTime()
-										/ HelperVariable.ONEDAY), 10,
-						drawable.getSurfaceHeight() - textSize * 2);
-			} else if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525 * 1E3) {
-				textRenderer.draw(
-						"Elapsed time (year): "
-								+ df2d.format(parameters.getElapsedTime()
-										/ HelperVariable.ONEYEAR), 10,
-						drawable.getSurfaceHeight() - textSize * 2);
-			} else {
-				textRenderer.draw(
-						"Elapsed time (millions of year): "
-								+ df2d.format(parameters.getElapsedTime()
-										/ HelperVariable.ONEYEAR / 1E6), 10,
-						drawable.getSurfaceHeight() - textSize * 2);
-			}
-			if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525) {
-				textRenderer.draw(
-						"Time Step (day): "
-								+ df2d.format(parameters.getTimeFactor()
-										/ HelperVariable.ONEDAY), 10,
-						drawable.getSurfaceHeight() - textSize * 3);
-			} else if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525 * 1E3) {
-				textRenderer.draw(
-						"Time Step (year): "
-								+ df2d.format(parameters.getTimeFactor()
-										/ HelperVariable.ONEYEAR), 10,
-						drawable.getSurfaceHeight() - textSize * 3);
-			} else {
-				textRenderer.draw(
-						"Time Step (millions of year): "
-								+ df2d.format(parameters.getTimeFactor()
-										/ HelperVariable.ONEYEAR / 1E6), 10,
-						drawable.getSurfaceHeight() - textSize * 3);
-
-			}
-			textRenderer.draw("Num of Object: "
-					+ univers.getListMatter().size(), 10,
-					drawable.getSurfaceHeight() - textSize * 4);
-			textRenderer.draw(
-					"Max mass (M): "
-							+ dfsc.format(univers.getListMatter().firstEntry()
-									.getValue().getMass()
-									/ HelperVariable.M), 10,
-					drawable.getSurfaceHeight() - textSize * 5);
-			textRenderer.draw(
-					"Univers visible mass (M): "
-							+ dfsc.format(univers.getVisibleMass()
-									/ HelperVariable.M), 10,
-					drawable.getSurfaceHeight() - textSize * 6);
-			textRenderer.draw(
-					"Univers dark mass (M): "
-							+ dfsc.format(univers.getDarkMass()
-									/ HelperVariable.M), 10,
-					drawable.getSurfaceHeight() - textSize * 7);
-			textRenderer.draw(
-					"Univers exp factor: "
-							+ dfsc.format(parameters.getExpensionOfUnivers()),
-					10, drawable.getSurfaceHeight() - textSize * 8);
-
-			textRenderer.draw(
-					"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()),
-					10, 10);
-
-			textRenderer.draw(
-					"https://github.com/SylvainBillot/GravitySimulator",
-					drawable.getSurfaceWidth() - 275, 10);
-			textRenderer.endRendering();
+			// Show info
+			drawInfo(drawable);
 		}
 
 		if (parameters.isShowTrace()) {
 			/* Show trace */
-			gl.glPushMatrix();
-			gl.glColor3d(0.20, 0.20, 0.20);
-			for (List<Vector3d[]> tmpList : forTrace) {
-				for (Vector3d[] p : tmpList) {
-					gl.glBegin(GL2.GL_LINES);
-					gl.glVertex3d(parameters.getScala() * p[0].x,
-							parameters.getScala() * p[0].y,
-							parameters.getScala() * p[0].z);
-					gl.glVertex3d(parameters.getScala() * p[1].x,
-							parameters.getScala() * p[1].y,
-							parameters.getScala() * p[1].z);
-					gl.glEnd();
-				}
-			}
-			gl.glPopMatrix();
+			drawTrace(gl);
 		}
 
 		/* Show current univers */
@@ -551,7 +367,214 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				texture03.getPixels());
 
 	}
+	
+	private void drawGrid(GL2 gl){
+		double gridStep = parameters.getGridStep() * parameters.getScala();
+		double gridRadius = 10 * parameters.getGridStep()
+				* parameters.getScala();
+		for (double i = 0; i <= gridRadius; i += gridStep) {
+			for (double j = 0; j <= gridRadius; j += gridStep) {
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(i, j, -gridRadius);
+				gl.glVertex3d(i, j, gridRadius);
+				gl.glEnd();
 
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(i, -gridRadius, j);
+				gl.glVertex3d(i, gridRadius, j);
+				gl.glEnd();
+
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(-gridRadius, i, j);
+				gl.glVertex3d(gridRadius, i, j);
+				gl.glEnd();
+
+			}
+			for (double j = 0; j >= -gridRadius; j -= gridStep) {
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(i, j, -gridRadius);
+				gl.glVertex3d(i, j, gridRadius);
+				gl.glEnd();
+
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(i, -gridRadius, j);
+				gl.glVertex3d(i, gridRadius, j);
+				gl.glEnd();
+
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(-gridRadius, i, j);
+				gl.glVertex3d(gridRadius, i, j);
+				gl.glEnd();
+			}
+		}
+		for (double i = 0; i >= -gridRadius; i -= gridStep) {
+			for (double j = 0; j <= gridRadius; j += gridStep) {
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(i, j, -gridRadius);
+				gl.glVertex3d(i, j, gridRadius);
+				gl.glEnd();
+
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(i, -gridRadius, j);
+				gl.glVertex3d(i, gridRadius, j);
+				gl.glEnd();
+
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(-gridRadius, i, j);
+				gl.glVertex3d(gridRadius, i, j);
+				gl.glEnd();
+
+			}
+			for (double j = 0; j >= -gridRadius; j -= gridStep) {
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(i, j, -gridRadius);
+				gl.glVertex3d(i, j, gridRadius);
+				gl.glEnd();
+
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(i, -gridRadius, j);
+				gl.glVertex3d(i, gridRadius, j);
+				gl.glEnd();
+
+				gl.glBegin(GL2.GL_LINES);
+				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glVertex3d(-gridRadius, i, j);
+				gl.glVertex3d(gridRadius, i, j);
+				gl.glEnd();
+			}
+		}
+	}
+	
+	private void drawAxis(GL2 gl){
+		gl.glBegin(GL2.GL_LINES);
+		gl.glColor3d(0.3, 0, 0);
+		gl.glVertex3d(0, 0, -1E5);
+		gl.glVertex3d(0, 0, 1E5);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glColor3d(0, 0.3, 0);
+		gl.glVertex3d(0, -1E5, 0);
+		gl.glVertex3d(0, 1E5, 0);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glColor3d(0, 0, 0.3);
+		gl.glVertex3d(-1E5, 0, 0);
+		gl.glVertex3d(1E5, 0, 0);
+		gl.glEnd();
+	}
+
+	private void drawInfo(GLAutoDrawable drawable){
+		DecimalFormat df2d = new DecimalFormat("0.0000");
+		DecimalFormat dfsc = new DecimalFormat("0.####E0");
+		textRenderer.beginRendering(drawable.getSurfaceWidth(),
+				drawable.getSurfaceHeight());
+		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
+		textRenderer.draw(
+				"Scala: 1/" + dfsc.format(1 / parameters.getScala()), 10,
+				drawable.getSurfaceHeight() - textSize * 1);
+
+		if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525) {
+			textRenderer.draw(
+					"Elapsed time (day): "
+							+ df2d.format(parameters.getElapsedTime()
+									/ HelperVariable.ONEDAY), 10,
+					drawable.getSurfaceHeight() - textSize * 2);
+		} else if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525 * 1E3) {
+			textRenderer.draw(
+					"Elapsed time (year): "
+							+ df2d.format(parameters.getElapsedTime()
+									/ HelperVariable.ONEYEAR), 10,
+					drawable.getSurfaceHeight() - textSize * 2);
+		} else {
+			textRenderer.draw(
+					"Elapsed time (millions of year): "
+							+ df2d.format(parameters.getElapsedTime()
+									/ HelperVariable.ONEYEAR / 1E6), 10,
+					drawable.getSurfaceHeight() - textSize * 2);
+		}
+		if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525) {
+			textRenderer.draw(
+					"Time Step (day): "
+							+ df2d.format(parameters.getTimeFactor()
+									/ HelperVariable.ONEDAY), 10,
+					drawable.getSurfaceHeight() - textSize * 3);
+		} else if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525 * 1E3) {
+			textRenderer.draw(
+					"Time Step (year): "
+							+ df2d.format(parameters.getTimeFactor()
+									/ HelperVariable.ONEYEAR), 10,
+					drawable.getSurfaceHeight() - textSize * 3);
+		} else {
+			textRenderer.draw(
+					"Time Step (millions of year): "
+							+ df2d.format(parameters.getTimeFactor()
+									/ HelperVariable.ONEYEAR / 1E6), 10,
+					drawable.getSurfaceHeight() - textSize * 3);
+
+		}
+		textRenderer.draw("Num of Object: "
+				+ univers.getListMatter().size(), 10,
+				drawable.getSurfaceHeight() - textSize * 4);
+		textRenderer.draw(
+				"Max mass (M): "
+						+ dfsc.format(univers.getListMatter().firstEntry()
+								.getValue().getMass()
+								/ HelperVariable.M), 10,
+				drawable.getSurfaceHeight() - textSize * 5);
+		textRenderer.draw(
+				"Univers visible mass (M): "
+						+ dfsc.format(univers.getVisibleMass()
+								/ HelperVariable.M), 10,
+				drawable.getSurfaceHeight() - textSize * 6);
+		textRenderer.draw(
+				"Univers dark mass (M): "
+						+ dfsc.format(univers.getDarkMass()
+								/ HelperVariable.M), 10,
+				drawable.getSurfaceHeight() - textSize * 7);
+		textRenderer.draw(
+				"Univers exp factor: "
+						+ dfsc.format(parameters.getExpensionOfUnivers()),
+				10, drawable.getSurfaceHeight() - textSize * 8);
+
+		textRenderer.draw(
+				"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()),
+				10, 10);
+
+		textRenderer.draw(
+				"https://github.com/SylvainBillot/GravitySimulator",
+				drawable.getSurfaceWidth() - 275, 10);
+		textRenderer.endRendering();
+	}
+	
+	private void drawTrace(GL2 gl){
+		gl.glPushMatrix();
+		gl.glColor3d(0.20, 0.20, 0.20);
+		for (List<Vector3d[]> tmpList : forTrace) {
+			for (Vector3d[] p : tmpList) {
+				gl.glBegin(GL2.GL_LINES);
+				gl.glVertex3d(parameters.getScala() * p[0].x,
+						parameters.getScala() * p[0].y,
+						parameters.getScala() * p[0].z);
+				gl.glVertex3d(parameters.getScala() * p[1].x,
+						parameters.getScala() * p[1].y,
+						parameters.getScala() * p[1].z);
+				gl.glEnd();
+			}
+		}
+		gl.glPopMatrix();
+	}
+	
 	private BufferedImage toImage(GL2 gl, int w, int h) {
 		gl.glReadBuffer(GL2.GL_FRONT);
 		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h);

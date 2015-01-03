@@ -34,6 +34,13 @@ public abstract class HelperVector {
 						* Math.cos(angles[1]));
 	}
 
+	public static Vector3d addDouble(Vector3d vector, double toAdd){
+		vector.x *= toAdd;
+		vector.y *= toAdd;
+		vector.z *= toAdd;
+		return vector;
+	}
+	
 	public static DoubleBuffer make3DTransformMatrix(Vector3d angles) {
 		double[] matrix = new double[16];
 		double x = angles.x;
