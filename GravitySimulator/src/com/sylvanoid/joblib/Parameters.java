@@ -38,6 +38,9 @@ public class Parameters {
 	private boolean showDarkMatter = false;
 	private Matter objectToFollow = null;
 	private boolean showTrace = false;
+	private int numOfCompute = 0;
+	private int numOfAccelCompute = 0;
+	private double negligeableMass = 0;
 
 	public Parameters() {
 
@@ -261,5 +264,29 @@ public class Parameters {
 
 	public void setShowTrace(boolean showTrace) {
 		this.showTrace = showTrace;
+	}
+
+	public int getNumOfCompute() {
+		return numOfCompute;
+	}
+
+	public void setNumOfCompute(int numOfCompute) {
+		this.numOfCompute = numOfCompute;
+	}
+
+	public int getNumOfAccelCompute() {
+		return numOfAccelCompute;
+	}
+
+	public void setNumOfAccelCompute(int numOfAccelCompute) {
+		this.numOfAccelCompute = numOfAccelCompute;
+	}
+
+	public double getNegligeableMass() {
+		return negligeableMass;
+	}
+
+	public void setNegligeableMass(double negligeableMass) {
+		this.negligeableMass = negligeableMass;
 	}
 }

@@ -63,7 +63,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	public void display(GLAutoDrawable drawable) {
 		// TODO Auto-generated method stub
 		univers.process();
-		
+
 		List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
 		for (Matter m : univers.getListMatter().values()) {
 			Vector3d[] myLine = new Vector3d[2];
@@ -210,107 +210,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		}
 
 		/* Show current univers */
-		gl.glEnable(GL2.GL_BLEND);
-		gl.glEnable(GL2.GL_TEXTURE_2D);
-		gl.glPushMatrix();
-		for (Matter m : univers.getListMatter().values()) {
-			if (!m.isDark()) {
-				gl.glLoadIdentity();
-				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-				if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
-					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
-				}
-				if (m.getMass() > HelperVariable.MINIMALGALAXYMASS) {
-					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
-				}
-
-				gl.glTranslated(parameters.getScala() * m.getPoint().x,
-						parameters.getScala() * m.getPoint().y,
-						parameters.getScala() * m.getPoint().z);
-
-				double phi01 = new Vector3d(0, 0, 1).angle(parameters
-						.getLookAt()) * -Math.signum(parameters.getLookAt().y);
-				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0,
-						1), new Vector3d(1, 0, 0), phi01);
-				double phi02 = afterRotateX.angle(parameters.getLookAt())
-						* Math.signum(parameters.getLookAt().x);
-
-				if (m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
-					gl.glMultMatrixd(HelperVector
-							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
-									Math.random() * 2 * Math.PI)));
-				} else {
-					gl.glMultMatrixd(HelperVector.make3DTransformMatrix(m
-							.getAngles()));
-				}
-
-				double r;
-				if (m.getMass() > HelperVariable.MINIMALSTARMASS
-						&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
-					r = (Math.random() * 0.5 + 2.5)
-							* (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-									.getRayon() * parameters.getScala());
-				} else {
-					r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-							.getRayon() * parameters.getScala());
-				}
-				Vector3d[] pts = new Vector3d[4];
-				pts[0] = new Vector3d(-r, -r, 0); // BL
-				pts[1] = new Vector3d(r, -r, 0); // BR
-				pts[2] = new Vector3d(r, r, 0); // TR
-				pts[3] = new Vector3d(-r, r, 0); // TL
-				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-				gl.glBegin(GL2.GL_TRIANGLE_FAN);
-				gl.glTexCoord2d(0, 0);
-				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
-				gl.glTexCoord2d(1, 0);
-				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
-				gl.glTexCoord2d(1, 1);
-				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
-				gl.glTexCoord2d(0, 1);
-				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
-				gl.glEnd();
-			} else {
-				if (parameters.isShowDarkMatter()) {
-					// If you want show dark mass, code here
-					gl.glLoadIdentity();
-					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-					gl.glTranslated(parameters.getScala() * m.getPoint().x,
-							parameters.getScala() * m.getPoint().y,
-							parameters.getScala() * m.getPoint().z);
-
-					double phi01 = new Vector3d(0, 0, 1).angle(parameters
-							.getLookAt())
-							* -Math.signum(parameters.getLookAt().y);
-					Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0,
-							0, 1), new Vector3d(1, 0, 0), phi01);
-					double phi02 = afterRotateX.angle(parameters.getLookAt())
-							* Math.signum(parameters.getLookAt().x);
-					gl.glMultMatrixd(HelperVector
-							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
-									0)));
-					double r = 5 * m.getRayon() * parameters.getScala();
-					Vector3d[] pts = new Vector3d[4];
-					pts[0] = new Vector3d(-r, -r, 0); // BL
-					pts[1] = new Vector3d(r, -r, 0); // BR
-					pts[2] = new Vector3d(r, r, 0); // TR
-					pts[3] = new Vector3d(-r, r, 0); // TL
-					gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-					gl.glBegin(GL2.GL_TRIANGLE_FAN);
-					gl.glTexCoord2d(0, 0);
-					gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
-					gl.glTexCoord2d(1, 0);
-					gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
-					gl.glTexCoord2d(1, 1);
-					gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
-					gl.glTexCoord2d(0, 1);
-					gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
-					gl.glEnd();
-				}
-			}
-		}
-		gl.glDisable(GL2.GL_BLEND);
-		gl.glDisable(GL2.GL_TEXTURE_2D);
+		drawUnivers(gl);
 	}
 
 	private void LoadGLTextures(GL gl) {
@@ -545,6 +445,13 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				"Univers exp factor: "
 						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
 				drawable.getSurfaceHeight() - textSize * 8);
+		textRenderer.draw(
+				"Num of recusive compute: " + parameters.getNumOfCompute(), 10,
+				drawable.getSurfaceHeight() - textSize * 10);
+		textRenderer.draw(
+				"Num of acceleration compute: "
+						+ parameters.getNumOfAccelCompute(), 10,
+				drawable.getSurfaceHeight() - textSize * 11);
 
 		textRenderer.draw(
 				"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()), 10,
@@ -573,9 +480,122 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glPopMatrix();
 	}
 
+	/*
+	 * private void drawUnivers(GL2 gl) { for (Matter m :
+	 * univers.getListMatter().values()) { gl.glBegin(GL2.GL_POINTS);
+	 * gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+	 * gl.glVertex3d(parameters.getScala() * m.getPoint().x,
+	 * parameters.getScala() * m.getPoint().y, parameters.getScala() *
+	 * m.getPoint().z); gl.glEnd(); } }
+	 */
+
+	private void drawUnivers(GL2 gl) {
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glEnable(GL2.GL_TEXTURE_2D);
+		gl.glPushMatrix();
+		for (Matter m : univers.getListMatter().values()) {
+			if (!m.isDark()) {
+				gl.glLoadIdentity();
+				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
+				if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
+				}
+				if (m.getMass() > HelperVariable.MINIMALGALAXYMASS) {
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
+				}
+
+				gl.glTranslated(parameters.getScala() * m.getPoint().x,
+						parameters.getScala() * m.getPoint().y,
+						parameters.getScala() * m.getPoint().z);
+
+				double phi01 = new Vector3d(0, 0, 1).angle(parameters
+						.getLookAt()) * -Math.signum(parameters.getLookAt().y);
+				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0,
+						1), new Vector3d(1, 0, 0), phi01);
+				double phi02 = afterRotateX.angle(parameters.getLookAt())
+						* Math.signum(parameters.getLookAt().x);
+
+				if (m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
+					gl.glMultMatrixd(HelperVector
+							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
+									Math.random() * 2 * Math.PI)));
+				} else {
+					gl.glMultMatrixd(HelperVector.make3DTransformMatrix(m
+							.getAngles()));
+				}
+
+				double r;
+				if (m.getMass() > HelperVariable.MINIMALSTARMASS
+						&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
+					r = (Math.random() * 0.5 + 2.5)
+							* (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+									.getRayon() * parameters.getScala());
+				} else {
+					r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+							.getRayon() * parameters.getScala());
+				}
+				Vector3d[] pts = new Vector3d[4];
+				pts[0] = new Vector3d(-r, -r, 0); // BL
+				pts[1] = new Vector3d(r, -r, 0); // BR
+				pts[2] = new Vector3d(r, r, 0); // TR
+				pts[3] = new Vector3d(-r, r, 0); // TL
+				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+				gl.glBegin(GL2.GL_TRIANGLE_FAN);
+				gl.glTexCoord2d(0, 0);
+				gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
+				gl.glTexCoord2d(1, 0);
+				gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
+				gl.glTexCoord2d(1, 1);
+				gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
+				gl.glTexCoord2d(0, 1);
+				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
+				gl.glEnd();
+			} else {
+				if (parameters.isShowDarkMatter()) {
+					// If you want show dark mass, code here
+					gl.glLoadIdentity();
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
+					gl.glTranslated(parameters.getScala() * m.getPoint().x,
+							parameters.getScala() * m.getPoint().y,
+							parameters.getScala() * m.getPoint().z);
+
+					double phi01 = new Vector3d(0, 0, 1).angle(parameters
+							.getLookAt())
+							* -Math.signum(parameters.getLookAt().y);
+					Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0,
+							0, 1), new Vector3d(1, 0, 0), phi01);
+					double phi02 = afterRotateX.angle(parameters.getLookAt())
+							* Math.signum(parameters.getLookAt().x);
+					gl.glMultMatrixd(HelperVector
+							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
+									0)));
+					double r = 5 * m.getRayon() * parameters.getScala();
+					Vector3d[] pts = new Vector3d[4];
+					pts[0] = new Vector3d(-r, -r, 0); // BL
+					pts[1] = new Vector3d(r, -r, 0); // BR
+					pts[2] = new Vector3d(r, r, 0); // TR
+					pts[3] = new Vector3d(-r, r, 0); // TL
+					gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+					gl.glBegin(GL2.GL_TRIANGLE_FAN);
+					gl.glTexCoord2d(0, 0);
+					gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
+					gl.glTexCoord2d(1, 0);
+					gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
+					gl.glTexCoord2d(1, 1);
+					gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
+					gl.glTexCoord2d(0, 1);
+					gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
+					gl.glEnd();
+				}
+			}
+		}
+		gl.glDisable(GL2.GL_BLEND);
+		gl.glDisable(GL2.GL_TEXTURE_2D);
+	}
+
 	private BufferedImage toImage(GL2 gl, int w, int h) {
 		gl.glReadBuffer(GL2.GL_FRONT);
-		ByteBuffer glBB = ByteBuffer.allocate(3 * w*10 * h*10);
+		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h );
 		gl.glReadPixels(0, 0, w, h, GL2.GL_BGR, GL2.GL_BYTE, glBB);
 		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		int[] bd = ((DataBufferInt) bi.getRaster().getDataBuffer()).getData();
@@ -697,7 +717,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
 					new Vector3d(0, 0, 1), -theta));
 			break;
-
 		}
 	}
 

@@ -35,6 +35,7 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField densiteMin;
 	private JFormattedTextField massObjectMin;
 	private JFormattedTextField massObjectMax;
+	private JFormattedTextField negligeableMass;
 	private JFormattedTextField expensionOfUnivers;
 	private JCheckBox fusion;
 	private JSlider typeOfImpact;
@@ -53,7 +54,7 @@ public class GUIParam extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(15, 2));
+		setLayout(new GridLayout(16, 2));
 
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
@@ -73,6 +74,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(1E-9);
 					fusion.setSelected(true);
 					nebulaRadius.setValue(HelperVariable.UA*10);
+					negligeableMass.setValue(0);
 					typeOfImpact.setValue(100);
 					expensionOfUnivers.setValue(0);
 					break;
@@ -89,6 +91,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.UA*5);
 					massObjectMin.setValue(HelperVariable.M/1E3);
 					massObjectMax.setValue(HelperVariable.M/1E2);
+					negligeableMass.setValue(0);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
 					expensionOfUnivers.setValue(0);
@@ -106,6 +109,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.UA*5);
 					massObjectMin.setValue(HelperVariable.M/1E3);
 					massObjectMax.setValue(HelperVariable.M/1E2);
+					negligeableMass.setValue(0);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 3:
@@ -121,6 +125,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.PC*3E4);
 					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1E3);
 					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1E3);
+					negligeableMass.setValue(0);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-20);
 					expensionOfUnivers.setValue(0);
@@ -134,10 +139,11 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
-					densiteMin.setValue(1E-21);
-					nebulaRadius.setValue(HelperVariable.PC*3E4);
+					densiteMin.setValue(1E-23);
+					nebulaRadius.setValue(HelperVariable.PC*1E5);
 					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1E3);
 					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1E3);
+					negligeableMass.setValue(0);
 					darkMatterMass.setValue(6E42);
 					darkMatterDensity.setValue(1E-20);
 					expensionOfUnivers.setValue(HelperVariable.H0);
@@ -155,6 +161,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.UA*3);
 					massObjectMin.setValue(HelperVariable.M/1000000);
 					massObjectMax.setValue(HelperVariable.M/100000);
+					negligeableMass.setValue(0);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
 					expensionOfUnivers.setValue(0);
@@ -173,6 +180,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.PC*1E6);
 					massObjectMin.setValue(HelperVariable.M*1E2);
 					massObjectMax.setValue(HelperVariable.M*2E9);
+					negligeableMass.setValue(0);
 					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
 				}
@@ -217,6 +225,11 @@ public class GUIParam extends JDialog {
 		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
 		add(massObjectMax);
 
+		add(new Label("Negligeable mass:"));
+		negligeableMass = new JFormattedTextField(dfsc);
+		negligeableMass.setValue(me.mother.getParameters().getNegligeableMass());
+		add(negligeableMass);
+		
 		add(new Label("Dark Matter or central star Mass:"));
 		darkMatterMass = new JFormattedTextField(dfsc);
 		darkMatterMass.setValue(me.mother.getParameters().getDarkMatterMass());
@@ -287,6 +300,9 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setMassObjectMax(
 							Double.parseDouble(me.massObjectMax.getValue()
 									.toString()));
+					me.mother.getParameters().setNegligeableMass(
+							Double.parseDouble(me.negligeableMass.getValue()
+									.toString()));
 					me.mother.getParameters().setManageImpact(
 							me.manageImpact.isSelected());
 					me.mother.getParameters().setFusion(me.fusion.isSelected());
@@ -334,6 +350,7 @@ public class GUIParam extends JDialog {
 		densiteMin.setEnabled(false);
 		massObjectMin.setEnabled(false);
 		massObjectMax.setEnabled(false);
+		negligeableMass.setEnabled(false);
 		fusion.setEnabled(false);
 		typeOfImpact.setEnabled(false);
 		darkMatterMass.setEnabled(false);
@@ -377,6 +394,7 @@ public class GUIParam extends JDialog {
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
+			negligeableMass.setEnabled(true);
 			expensionOfUnivers.setEnabled(true);
 			break;
 		case 3:
@@ -392,6 +410,7 @@ public class GUIParam extends JDialog {
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
 			darkMatterMass.setEnabled(true);
+			negligeableMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			expensionOfUnivers.setEnabled(true);
 			break;
@@ -407,6 +426,7 @@ public class GUIParam extends JDialog {
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
+			negligeableMass.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			expensionOfUnivers.setEnabled(true);
@@ -423,6 +443,7 @@ public class GUIParam extends JDialog {
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
+			negligeableMass.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			darkMatterMass.setEnabled(true);
@@ -438,6 +459,7 @@ public class GUIParam extends JDialog {
 			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
+			negligeableMass.setEnabled(true);
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);

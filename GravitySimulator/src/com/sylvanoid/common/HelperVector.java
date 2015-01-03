@@ -15,32 +15,33 @@ public abstract class HelperVector {
 		return result;
 	}
 
-	public static double[] angles(Vector3d obj1, Vector3d obj2) {
-		double values[] = new double[2];
-		double x = obj2.x - obj1.x;
-		double y = obj2.y - obj1.y;
-		double z = obj2.z - obj1.z;
-		values[0] = Math.atan2(y, x);
-		values[1] = Math.atan2(Math.pow(Math.pow(x, 2) + Math.pow(y, 2), 0.5),
-				z);
-		return values;
+	public static Vector3d rThetaPhi(Vector3d obj1, Vector3d obj2) {
+		Vector3d tmpVect = new Vector3d(obj2);
+		tmpVect.sub(obj1);
+		return new Vector3d(tmpVect.length(), Math.atan2(tmpVect.y, tmpVect.x),
+				Math.atan2(Math.pow(
+						Math.pow(tmpVect.x, 2) + Math.pow(tmpVect.y, 2), 0.5),
+						tmpVect.z));
 	}
 
-	public static Vector3d acceleration(Vector3d obj1, Vector3d obj2, double attraction) {
-		double angles[] = new double[2];
-		angles = HelperVector.angles(obj1, obj2);
-		return new Vector3d(attraction * Math.cos(angles[0]) * Math.sin(angles[1]),
-				attraction * Math.sin(angles[0]) * Math.sin(angles[1]), attraction
-						* Math.cos(angles[1]));
+	public static Vector3d polToCoord(double radius, double theta, double phi) {
+		return new Vector3d(radius * Math.cos(theta) * Math.sin(phi), radius
+				* Math.sin(theta) * Math.sin(phi), radius * Math.cos(phi));
 	}
 
-	public static Vector3d addDouble(Vector3d vector, double toAdd){
+	public static Vector3d acceleration(Vector3d obj1, Vector3d obj2,
+			double attraction) {
+		Vector3d tmpVect = rThetaPhi(obj1, obj2); 
+		return polToCoord(attraction, tmpVect.y, tmpVect.z);
+	}
+
+	public static Vector3d addDouble(Vector3d vector, double toAdd) {
 		vector.x *= toAdd;
 		vector.y *= toAdd;
 		vector.z *= toAdd;
 		return vector;
 	}
-	
+
 	public static DoubleBuffer make3DTransformMatrix(Vector3d angles) {
 		double[] matrix = new double[16];
 		double x = angles.x;

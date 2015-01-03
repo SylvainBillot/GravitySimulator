@@ -228,6 +228,7 @@ public class Matter implements Comparable<Matter> {
 		 */
 		// End of
 		point = getPlusV();
+		a = new Vector3d(0, 0, 0);
 	}
 
 	public void fusion(Matter m) {

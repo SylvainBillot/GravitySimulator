@@ -133,38 +133,28 @@ public class Univers {
 		}
 	}
 
-	public void computeLimits() {
-		boolean firstTime = true;
-		for (Matter o : listMatter.values()) {
-			if (!firstTime) {
-				if (min.x > o.getPoint().getX()) {
-					min.x = o.getPoint().getX();
-				}
-				if (max.x < o.getPoint().getX()) {
-					max.x = o.getPoint().getX();
-				}
-				if (min.y > o.getPoint().getY()) {
-					min.y = o.getPoint().getY();
-				}
-				if (max.y < o.getPoint().getY()) {
-					max.y = o.getPoint().getY();
-				}
-				if (min.z > o.getPoint().getZ()) {
-					min.z = o.getPoint().getZ();
-				}
-				if (max.z < o.getPoint().getZ()) {
-					max.z = o.getPoint().getZ();
-				}
-			} else {
-				min.x = o.getPoint().getX();
-				max.x = o.getPoint().getX();
-				min.y = o.getPoint().getY();
-				max.y = o.getPoint().getY();
-				min.z = o.getPoint().getZ();
-				max.z = o.getPoint().getZ();
-				firstTime = false;
-			}
-		}
+	public Parameters getParameters() {
+		return parameters;
+	}
+
+	public TreeMap<Matter, Matter> getListMatter() {
+		return listMatter;
+	}
+
+	public Vector3d getGPoint() {
+		return gPoint;
+	}
+
+	public double getMass() {
+		return mass;
+	}
+
+	public double getVisibleMass() {
+		return visibleMass;
+	}
+
+	public double getDarkMass() {
+		return darkMass;
 	}
 
 	public void computeCentroidOfUnivers() {
@@ -180,15 +170,10 @@ public class Univers {
 				/ getMass());
 	}
 
-	public void resetAcceleration() {
-		for (Matter m : listMatter.values()) {
-			m.setA(new Vector3d(0, 0, 0));
-		}
-	}
-
 	/* Barnes Hutt implementation */
 	public void compute() {
-		if (listMatter.size() > 1 && mass > HelperVariable.NEGLIGEABLEMASS) {
+		parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
+		if (listMatter.size() > 1 && mass > parameters.getNegligeableMass()) {
 			double cx = min.x + (max.x - min.x) / 2;
 			double cy = min.y + (max.y - min.y) / 2;
 			double cz = min.z + (max.z - min.z) / 2;
@@ -229,12 +214,14 @@ public class Univers {
 				u.compute();
 				for (Univers uvoisin : subUnivers) {
 					if (u != uvoisin && uvoisin.getListMatter().size() > 0
-							&& uvoisin.mass > HelperVariable.NEGLIGEABLEMASS) {
+							&& uvoisin.mass > parameters.getNegligeableMass()) {
 						uvoisin.computeCentroidOfUnivers();
 						TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 								new MassComparator());
 						sortByMass.putAll(u.listMatter);
 						for (Matter m : sortByMass.values()) {
+							parameters.setNumOfAccelCompute(parameters
+									.getNumOfAccelCompute() + 1);
 							double distance = new Point3d(m.getPoint())
 									.distance(new Point3d(uvoisin.getGPoint()));
 							double attraction = parameters.getTimeFactor()
@@ -255,82 +242,6 @@ public class Univers {
 					} else {
 						visibleMass += m.getMass();
 					}
-				}
-			}
-		}
-	}
-
-	private void treatNeighborFusion(Matter m1, TreeMap<Double, Matter> sortX,
-			HashMap<Matter, String> treated, List<Matter[]> toTreat) {
-		if (treated.get(m1) == null) {
-			treated.put(m1, "");
-			SortedMap<Double, Matter> selectX = sortX.subMap(m1.minWithR().x,
-					true, m1.maxWithR().x, false);
-			TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
-			for (Matter m : selectX.values()) {
-				sortY.put(m.minWithR().y, m);
-				sortY.put(m.getPoint().y, m);
-				sortY.put(m.maxWithR().y, m);
-			}
-			SortedMap<Double, Matter> selectY = sortY.subMap(m1.minWithR().y,
-					true, m1.maxWithR().y, false);
-			TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
-			for (Matter m : selectY.values()) {
-				sortZ.put(m.minWithR().z, m);
-				sortZ.put(m.getPoint().z, m);
-				sortZ.put(m.maxWithR().z, m);
-			}
-			SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z,
-					true, m1.maxWithR().z, false);
-
-			for (Matter m2 : selectZ.values()) {
-				if (treated.get(m2) == null && m1.collision(m2)) {
-					treated.put(m2, "");
-					Matter element[] = new Matter[2];
-					element[0] = m1;
-					element[1] = m2;
-					toTreat.add(element);
-				}
-			}
-		}
-	}
-
-	private void treatNeighborImpact(Matter m1, TreeMap<Double, Matter> sortX,
-			List<Matter[]> toTreat) {
-		SortedMap<Double, Matter> selectX = sortX.subMap(m1.minWithR().x, true,
-				m1.maxWithR().x, false);
-		TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
-		for (Matter m : selectX.values()) {
-			sortY.put(m.minWithR().y, m);
-			sortY.put(m.getPoint().y, m);
-			sortY.put(m.maxWithR().y, m);
-		}
-		SortedMap<Double, Matter> selectY = sortY.subMap(m1.minWithR().y, true,
-				m1.maxWithR().y, false);
-
-		TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
-		for (Matter m : selectY.values()) {
-			sortZ.put(m.minWithR().z, m);
-			sortZ.put(m.getPoint().z, m);
-			sortZ.put(m.maxWithR().z, m);
-		}
-		SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z, true,
-				m1.maxWithR().z, false);
-
-		for (Matter m2 : selectZ.values()) {
-			if (m1 != m2 && m1.collision(m2)) {
-				Matter element[] = new Matter[2];
-				element[0] = m1;
-				element[1] = m2;
-				boolean toadd = true;
-				for (Matter e[] : toTreat) {
-					if (e[0] == m1 && e[1] == m2 && e[0] == m2 && e[1] == m1) {
-						toadd = false;
-						break;
-					}
-				}
-				if (toadd) {
-					toTreat.add(element);
 				}
 			}
 		}
@@ -414,34 +325,121 @@ public class Univers {
 	}
 
 	public void process() {
-		resetAcceleration();
+		parameters.setNumOfCompute(0);
+		parameters.setNumOfAccelCompute(0);
 		computeLimits();
 		compute();
 		move();
 	}
 
-	public Parameters getParameters() {
-		return parameters;
+	private void computeLimits() {
+		boolean firstTime = true;
+		for (Matter o : listMatter.values()) {
+			if (!firstTime) {
+				if (min.x > o.getPoint().getX()) {
+					min.x = o.getPoint().getX();
+				}
+				if (max.x < o.getPoint().getX()) {
+					max.x = o.getPoint().getX();
+				}
+				if (min.y > o.getPoint().getY()) {
+					min.y = o.getPoint().getY();
+				}
+				if (max.y < o.getPoint().getY()) {
+					max.y = o.getPoint().getY();
+				}
+				if (min.z > o.getPoint().getZ()) {
+					min.z = o.getPoint().getZ();
+				}
+				if (max.z < o.getPoint().getZ()) {
+					max.z = o.getPoint().getZ();
+				}
+			} else {
+				min.x = o.getPoint().getX();
+				max.x = o.getPoint().getX();
+				min.y = o.getPoint().getY();
+				max.y = o.getPoint().getY();
+				min.z = o.getPoint().getZ();
+				max.z = o.getPoint().getZ();
+				firstTime = false;
+			}
+		}
 	}
 
-	public TreeMap<Matter, Matter> getListMatter() {
-		return listMatter;
+	private void treatNeighborFusion(Matter m1, TreeMap<Double, Matter> sortX,
+			HashMap<Matter, String> treated, List<Matter[]> toTreat) {
+		if (treated.get(m1) == null) {
+			treated.put(m1, "");
+			SortedMap<Double, Matter> selectX = sortX.subMap(m1.minWithR().x,
+					true, m1.maxWithR().x, false);
+			TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
+			for (Matter m : selectX.values()) {
+				sortY.put(m.minWithR().y, m);
+				sortY.put(m.getPoint().y, m);
+				sortY.put(m.maxWithR().y, m);
+			}
+			SortedMap<Double, Matter> selectY = sortY.subMap(m1.minWithR().y,
+					true, m1.maxWithR().y, false);
+			TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
+			for (Matter m : selectY.values()) {
+				sortZ.put(m.minWithR().z, m);
+				sortZ.put(m.getPoint().z, m);
+				sortZ.put(m.maxWithR().z, m);
+			}
+			SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z,
+					true, m1.maxWithR().z, false);
+
+			for (Matter m2 : selectZ.values()) {
+				if (treated.get(m2) == null && m1.collision(m2)) {
+					treated.put(m2, "");
+					Matter element[] = new Matter[2];
+					element[0] = m1;
+					element[1] = m2;
+					toTreat.add(element);
+				}
+			}
+		}
 	}
 
-	public Vector3d getGPoint() {
-		return gPoint;
-	}
+	private void treatNeighborImpact(Matter m1, TreeMap<Double, Matter> sortX,
+			List<Matter[]> toTreat) {
+		SortedMap<Double, Matter> selectX = sortX.subMap(m1.minWithR().x, true,
+				m1.maxWithR().x, false);
+		TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
+		for (Matter m : selectX.values()) {
+			sortY.put(m.minWithR().y, m);
+			sortY.put(m.getPoint().y, m);
+			sortY.put(m.maxWithR().y, m);
+		}
+		SortedMap<Double, Matter> selectY = sortY.subMap(m1.minWithR().y, true,
+				m1.maxWithR().y, false);
 
-	public double getMass() {
-		return mass;
-	}
+		TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
+		for (Matter m : selectY.values()) {
+			sortZ.put(m.minWithR().z, m);
+			sortZ.put(m.getPoint().z, m);
+			sortZ.put(m.maxWithR().z, m);
+		}
+		SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z, true,
+				m1.maxWithR().z, false);
 
-	public double getVisibleMass() {
-		return visibleMass;
-	}
-
-	public double getDarkMass() {
-		return darkMass;
+		for (Matter m2 : selectZ.values()) {
+			if (m1 != m2 && m1.collision(m2)) {
+				Matter element[] = new Matter[2];
+				element[0] = m1;
+				element[1] = m2;
+				boolean toadd = true;
+				for (Matter e[] : toTreat) {
+					if (e[0] == m1 && e[1] == m2 && e[0] == m2 && e[1] == m1) {
+						toadd = false;
+						break;
+					}
+				}
+				if (toadd) {
+					toTreat.add(element);
+				}
+			}
+		}
 	}
 
 	private TreeMap<Matter, Matter> createUvivers(Vector3d origine,
@@ -477,15 +475,13 @@ public class Univers {
 							|| (Math.pow(x, 2) + Math.pow(y, 2) < Math.pow(
 									radiusMin, 2));
 				}
-
 			}
-
 			m = new Matter(parameters, new Vector3d(origine.x + x * ratio.x,
 					origine.y + y * ratio.y, origine.z + z * ratio.z),
 					parameters.getMassObjectMin()
 							+ random.nextDouble()
 							* (parameters.getMassObjectMax() - parameters
-									.getMassObjectMin()) + random.nextDouble(),
+									.getMassObjectMin()) + 1E-100 * random.nextDouble(),
 					new Vector3d(0, 0, 0), parameters.getDensity(), false);
 			miniListMatter.put(m, m);
 			miniMass += m.getMass();
@@ -564,8 +560,8 @@ public class Univers {
 	private void createGalaxiesCollision() {
 		double initialSpeedx = 1E5;
 		double deltax = 70000;
-		double deltay = 20000;
-		double deltaz = 20000;
+		double deltay = 25000;
+		double deltaz = 25000;
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(
 				-HelperVariable.PC * deltax, -HelperVariable.PC * deltay,
 				-HelperVariable.PC * deltaz),
@@ -581,7 +577,7 @@ public class Univers {
 		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
 				* deltax + Math.random(), -HelperVariable.PC * deltay
 				+ Math.random(), -HelperVariable.PC * deltaz + Math.random()),
-				parameters.getDarkMatterMass() / 2 + Math.random(),
+				parameters.getDarkMatterMass() / 1.1 + Math.random(),
 				new Vector3d(initialSpeedx, 0, 0),
 				parameters.getDarkMatterDensity(), true);
 		m1.setColor(new Vector3d(0.25, 0.25, 0.25));
@@ -592,7 +588,7 @@ public class Univers {
 		Matter m2 = new Matter(parameters, new Vector3d(HelperVariable.PC
 				* deltax + Math.random(), HelperVariable.PC * deltay
 				+ Math.random(), HelperVariable.PC * deltaz + Math.random()),
-				parameters.getDarkMatterMass() / 2.0001 + Math.random(),
+				parameters.getDarkMatterMass() / 2 + Math.random(),
 				new Vector3d(-initialSpeedx, 0, 0),
 				parameters.getDarkMatterDensity(), true);
 		m2.setColor(new Vector3d(0.25, 0.25, 0.25));
