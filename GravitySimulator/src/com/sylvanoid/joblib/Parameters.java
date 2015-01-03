@@ -22,7 +22,7 @@ public class Parameters {
 	private double typeOfImpact = 1;
 	private double density = 100;
 	private int numberOfObjects = 1000;
-	private double nebulaRadius = 600;
+	private double nebulaRadius = HelperVariable.UA*10;
 	private double massObjectMin = 10000;
 	private double massObjectMax = 100000;
 	private Vector3d eyes = new Vector3d(0, 0, 900);
@@ -35,7 +35,6 @@ public class Parameters {
 	private boolean showAxis = true;
 	private boolean showgrid = false;
 	private boolean showInfo = true;
-	private double gridStep = HelperVariable.UA;
 	private boolean showDarkMatter = false;
 	private Matter objectToFollow = null;
 	private boolean showTrace = false;
@@ -238,14 +237,6 @@ public class Parameters {
 
 	public void setShowInfo(boolean showInfo) {
 		this.showInfo = showInfo;
-	}
-
-	public double getGridStep() {
-		return gridStep;
-	}
-
-	public void setGridStep(double gridStep) {
-		this.gridStep = gridStep;
 	}
 
 	public boolean isShowDarkMatter() {

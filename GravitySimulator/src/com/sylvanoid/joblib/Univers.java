@@ -100,19 +100,35 @@ public class Univers {
 		mass = 0;
 		visibleMass = 0;
 		darkMass = 0;
+
+		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : father.getListMatter().values()) {
-			if (m.getPoint().getX() >= min.x && m.getPoint().getX() <= max.x
-					&& m.getPoint().getY() >= min.y
-					&& m.getPoint().getY() <= max.y
-					&& m.getPoint().getZ() >= min.z
-					&& m.getPoint().getZ() <= max.z) {
-				listMatter.put(m, m);
-				mass += m.getMass();
-				if (m.isDark()) {
-					darkMass += m.getMass();
-				} else {
-					visibleMass += m.getMass();
-				}
+			sortX.put(m.getPoint().x, m);
+		}
+		SortedMap<Double, Matter> selectX = sortX.subMap(min.x, true, max.x,
+				true);
+
+		TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
+		for (Matter m : selectX.values()) {
+			sortY.put(m.getPoint().y, m);
+		}
+		SortedMap<Double, Matter> selectY = sortY.subMap(min.y, true, max.y,
+				true);
+
+		TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
+		for (Matter m : selectY.values()) {
+			sortZ.put(m.getPoint().z, m);
+		}
+		SortedMap<Double, Matter> selectZ = sortZ.subMap(min.z, true, max.z,
+				true);
+
+		for (Matter m : selectZ.values()) {
+			listMatter.put(m, m);
+			mass += m.getMass();
+			if (m.isDark()) {
+				darkMass += m.getMass();
+			} else {
+				visibleMass += m.getMass();
 			}
 		}
 	}
@@ -174,7 +190,7 @@ public class Univers {
 	public void compute() {
 		if (listMatter.size() > 1 && mass > HelperVariable.NEGLIGEABLEMASS) {
 			double cx = min.x + (max.x - min.x) / 2;
-			double cy = min.y + (max.z - min.y) / 2;
+			double cy = min.y + (max.y - min.y) / 2;
 			double cz = min.z + (max.z - min.z) / 2;
 			List<Univers> subUnivers = new ArrayList<Univers>();
 			Univers suba = new Univers(this, new Vector3d(min.x, min.y, min.z),
@@ -388,9 +404,11 @@ public class Univers {
 		}
 
 		for (Matter m : listMatter.values()) {
-			double exp = 1 + parameters.getTimeFactor()
-					* parameters.getExpensionOfUnivers();
-			HelperVector.addDouble(m.getPoint(), exp);
+			if (parameters.getExpensionOfUnivers() != 0) {
+				double exp = 1 + parameters.getTimeFactor()
+						* parameters.getExpensionOfUnivers();
+				HelperVector.addDouble(m.getPoint(), exp);
+			}
 			m.move();
 		}
 	}
