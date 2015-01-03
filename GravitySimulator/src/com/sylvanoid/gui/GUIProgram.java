@@ -474,6 +474,8 @@ public class GUIProgram extends JFrame {
 		forTrace = new LinkedList<List<Vector3d[]>>();
 		animator.stop();
 		parameters.setElapsedTime(0);
+		parameters.setEyes(new Vector3d(0,0,900));
+		parameters.setLookAt(new Vector3d(0,0,-900));
 		univers = new Univers(parameters);
 		renderer.reload(this);
 		animator.start();
