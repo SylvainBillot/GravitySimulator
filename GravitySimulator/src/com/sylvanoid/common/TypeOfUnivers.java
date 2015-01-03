@@ -7,7 +7,6 @@ public enum TypeOfUnivers {
 	RandomRotateUnivers			("Random Rotate Univers (With Dark Mass)"),
 	GalaxiesCollision			("Galaxies Collision"),
 	PlanetariesGenesis			("Planetaries Genenesis ?"),
-	DoubleStars					("Double Stars"),
 	RandomInitialExpension		("Random univers with expension")
 	;
 

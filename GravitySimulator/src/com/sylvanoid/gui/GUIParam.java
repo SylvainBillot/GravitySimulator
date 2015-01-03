@@ -137,7 +137,7 @@ public class GUIParam extends JDialog {
 					nebulaRadius.setValue(HelperVariable.PC*3E4);
 					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1E3);
 					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1E3);
-					darkMatterMass.setValue(5E42);
+					darkMatterMass.setValue(6E42);
 					darkMatterDensity.setValue(1E-20);
 					expensionOfUnivers.setValue(HelperVariable.H0);
 					break;
@@ -145,40 +145,21 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.PlanetariesGenesis);
 					manageImpact.setSelected(true);
-					timeFactor.setValue(50);
-					scala.setValue(1);
+					timeFactor.setValue(HelperVariable.ONEDAY);
+					scala.setValue(5E-10);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
-					numberOfObjects.setValue(1000);
-					densiteMin.setValue(1E5);
-					nebulaRadius.setValue(300);
-					massObjectMin.setValue(10000);
-					massObjectMax.setValue(100000);
-					darkMatterMass.setValue(1E12);
-					darkMatterDensity.setValue(1E10);
-					darkMatterMass.setValue(1E10);
-					darkMatterDensity.setValue(1E7);
+					numberOfObjects.setValue(2000);
+					densiteMin.setValue(1);
+					nebulaRadius.setValue(HelperVariable.UA*3);
+					massObjectMin.setValue(HelperVariable.M/1000000);
+					massObjectMax.setValue(HelperVariable.M/100000);
+					darkMatterMass.setValue(HelperVariable.M);
+					darkMatterDensity.setValue(1);
 					expensionOfUnivers.setValue(0);
 					break;
 
 				case 6:
-					me.mother.getParameters().setTypeOfUnivers(
-							TypeOfUnivers.DoubleStars);
-					manageImpact.setSelected(true);
-					timeFactor.setValue(5);
-					scala.setValue(1);
-					fusion.setSelected(true);
-					typeOfImpact.setValue(100);
-					numberOfObjects.setValue(1000);
-					densiteMin.setValue(1E6);
-					nebulaRadius.setValue(200);
-					massObjectMin.setValue(100000000);
-					massObjectMax.setValue(100000000);
-					darkMatterMass.setValue(1E12);
-					darkMatterDensity.setValue(1E10);
-					expensionOfUnivers.setValue(0);
-					break;
-				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomInitialExpension);
 					manageImpact.setSelected(true);
@@ -448,16 +429,6 @@ public class GUIParam extends JDialog {
 			expensionOfUnivers.setEnabled(true);
 			break;
 		case 6:
-			// TypeOfUnivers.DoubleStars;
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(true);
-			densiteMin.setEnabled(true);
-			expensionOfUnivers.setEnabled(true);
-			break;
-		case 7:
 			// TypeOfUnivers.RandomInitialExpension;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);

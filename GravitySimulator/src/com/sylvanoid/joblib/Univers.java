@@ -75,11 +75,20 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesis) {
 			createPlanetariesGenesis();
 		}
-		if (parameters.getTypeOfUnivers() == TypeOfUnivers.DoubleStars) {
-			createDoubleStars();
-		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomInitialExpension) {
 			createRandomExpensionUvivers();
+		}
+
+		mass = 0;
+		visibleMass = 0;
+		darkMass = 0;
+		for (Matter m : listMatter.values()) {
+			mass += m.getMass();
+			if (m.isDark()) {
+				darkMass += m.getMass();
+			} else {
+				visibleMass += m.getMass();
+			}
 		}
 	}
 
@@ -163,7 +172,7 @@ public class Univers {
 
 	/* Barnes Hutt implementation */
 	public void compute() {
-		if (listMatter.size() > 1) {
+		if (listMatter.size() > 1 && mass > HelperVariable.NEGLIGEABLEMASS) {
 			double cx = min.x + (max.x - min.x) / 2;
 			double cy = min.y + (max.z - min.y) / 2;
 			double cz = min.z + (max.z - min.z) / 2;
@@ -203,7 +212,8 @@ public class Univers {
 			for (Univers u : subUnivers) {
 				u.compute();
 				for (Univers uvoisin : subUnivers) {
-					if (u != uvoisin && uvoisin.getListMatter().size() > 0) {
+					if (u != uvoisin && uvoisin.getListMatter().size() > 0
+							&& uvoisin.mass > HelperVariable.NEGLIGEABLEMASS) {
 						uvoisin.computeCentroidOfUnivers();
 						TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
 								new MassComparator());
@@ -380,7 +390,7 @@ public class Univers {
 		for (Matter m : listMatter.values()) {
 			double exp = 1 + parameters.getTimeFactor()
 					* parameters.getExpensionOfUnivers();
-			HelperVector.addDouble(m.getPoint(),exp);
+			HelperVector.addDouble(m.getPoint(), exp);
 			m.move();
 		}
 	}
@@ -535,21 +545,24 @@ public class Univers {
 
 	private void createGalaxiesCollision() {
 		double initialSpeedx = 1E5;
+		double deltax = 70000;
+		double deltay = 20000;
+		double deltaz = 20000;
 		TreeMap<Matter, Matter> subu01 = createUvivers(new Vector3d(
-				-HelperVariable.PC * 70000, -HelperVariable.PC * 25000,
-				-HelperVariable.PC * 25000), new Vector3d(initialSpeedx, 0, 0),
-				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
-				new Vector3d(0.15, 1, 0.15));
+				-HelperVariable.PC * deltax, -HelperVariable.PC * deltay,
+				-HelperVariable.PC * deltaz),
+				new Vector3d(initialSpeedx, 0, 0), new Vector3d(0, 0, 0), 0,
+				parameters.getNebulaRadius(), new Vector3d(0.15, 1, 0.15));
 
 		TreeMap<Matter, Matter> subu02 = createUvivers(new Vector3d(
-				HelperVariable.PC * 70000, HelperVariable.PC * 25000,
-				HelperVariable.PC * 25000), new Vector3d(-initialSpeedx, 0, 0),
-				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius() / 2,
-				new Vector3d(1, 0.15, 0.15));
+				HelperVariable.PC * deltax, HelperVariable.PC * deltay,
+				HelperVariable.PC * deltaz),
+				new Vector3d(-initialSpeedx, 0, 0), new Vector3d(0, 0, 0), 0,
+				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.15, 0.15));
 
 		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
-				* 70000 + Math.random(), -HelperVariable.PC * 25000
-				+ Math.random(), -HelperVariable.PC * 25000 + Math.random()),
+				* deltax + Math.random(), -HelperVariable.PC * deltay
+				+ Math.random(), -HelperVariable.PC * deltaz + Math.random()),
 				parameters.getDarkMatterMass() / 2 + Math.random(),
 				new Vector3d(initialSpeedx, 0, 0),
 				parameters.getDarkMatterDensity(), true);
@@ -559,8 +572,8 @@ public class Univers {
 		darkMass += m1.getMass();
 
 		Matter m2 = new Matter(parameters, new Vector3d(HelperVariable.PC
-				* 70000 + Math.random(), HelperVariable.PC * 25000
-				+ Math.random(), HelperVariable.PC * 25000 + Math.random()),
+				* deltax + Math.random(), HelperVariable.PC * deltay
+				+ Math.random(), HelperVariable.PC * deltaz + Math.random()),
 				parameters.getDarkMatterMass() / 2.0001 + Math.random(),
 				new Vector3d(-initialSpeedx, 0, 0),
 				parameters.getDarkMatterDensity(), true);
@@ -697,7 +710,7 @@ public class Univers {
 	private void createPlanetariesGenesis() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.9,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.1));
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);
@@ -709,26 +722,5 @@ public class Univers {
 				m.setSpeed(m.orbitalSpeed(this, new Vector3d(0, 0, 1)));
 			}
 		}
-	}
-
-	private void createDoubleStars() {
-		Matter m1 = new Matter(parameters, new Vector3d(Math.random() - 50,
-				Math.random() - 90, Math.random()), 5E9 + 1E10 + Math.random(),
-				new Vector3d(0, 0, 0), parameters.getDensity(), false);
-		m1.setColor(new Vector3d(1, 0.7, 0.7));
-		listMatter.put(m1, m1);
-		mass += m1.getMass();
-		visibleMass += m1.getMass();
-
-		Matter m2 = new Matter(parameters, new Vector3d(Math.random() + 50,
-				Math.random() + 90, Math.random()), 1E10 + Math.random(),
-				new Vector3d(0, 0, 0), parameters.getDensity(), false);
-		m2.setColor(new Vector3d(0.8, 0.8, 1));
-		listMatter.put(m2, m2);
-		mass += m2.getMass();
-		visibleMass += m1.getMass();
-		m1.setSpeed(m1.orbitalSpeed(m2, new Vector3d(0, 0, 1)));
-		m2.setSpeed(m2.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
-
 	}
 }
