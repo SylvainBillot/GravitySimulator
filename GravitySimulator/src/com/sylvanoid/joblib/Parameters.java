@@ -40,13 +40,15 @@ public class Parameters {
 	private boolean showTrace = false;
 	private int numOfCompute = 0;
 	private int numOfAccelCompute = 0;
-	private double negligeableMass = 0;
 	private double cycleComputeTime = 0;
 	private double limitComputeTime = 0;
 	private double moveComputeTime = 0;
 	private double barnesHuttComputeTime = 0;
+
+	private double negligeableMass = 0;
 	private int numOfLowMassParticule = 0;
 	private double lowMassParticuleMass = 0;
+	private double lowMassDensity = 0;
 
 	public Parameters() {
 
@@ -342,6 +344,14 @@ public class Parameters {
 
 	public void setLowMassParticuleMass(double lowMassParticuleMass) {
 		this.lowMassParticuleMass = lowMassParticuleMass;
+	}
+
+	public double getLowMassDensity() {
+		return lowMassDensity;
+	}
+
+	public void setLowMassDensity(double lowMassDensity) {
+		this.lowMassDensity = lowMassDensity;
 	}
 
 }

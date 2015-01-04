@@ -313,13 +313,7 @@ public class Univers {
 
 	private void move() {
 		if (parameters.isManageImpact()) {
-			double oldMass = mass;
 			manageImpact();
-			if (Math.abs(mass - oldMass) > listMatter.lastEntry().getValue()
-					.getMass()) {
-				System.out.println("wtf :" + mass + " - " + oldMass + " = "
-						+ (mass - oldMass));
-			}
 		}
 
 		for (Matter m : listMatter.values()) {
@@ -446,6 +440,17 @@ public class Univers {
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
+		miniListMatter.putAll(createUviversMain(origine, initialSpeed,
+				axisOfRing, radiusMin, radiusMax, ratio));
+		miniListMatter.putAll(createUviversLowMass(origine, initialSpeed,
+				axisOfRing, radiusMin, radiusMax, ratio));
+		return miniListMatter;
+	}
+
+	private TreeMap<Matter, Matter> createUviversMain(Vector3d origine,
+			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
+			double radiusMax, Vector3d ratio) {
+		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		Random random = new Random();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < parameters.getNumberOfObjects(); cpt++) {
@@ -455,20 +460,17 @@ public class Univers {
 			double z = 1;
 			boolean IsNotOK = true;
 			while (IsNotOK) {
-				/*
-				 * double radius = radiusMax * random.nextDouble(); double theta
-				 * = 2* Math.PI * random.nextDouble(); double phi = Math.PI *
-				 * random.nextDouble(); Vector3d tmpVect =
-				 * HelperVector.polToCoord(radius, theta, phi); x = tmpVect.x; y
-				 * = tmpVect.y; z = tmpVect.z;
-				 */
 
-				x = 2 * (random.nextDouble() - 0.5) * radiusMax;
-				y = 2 * (random.nextDouble() - 0.5) * radiusMax;
-				z = 2 * (random.nextDouble() - 0.5) * radiusMax;
+				double radius = radiusMax
+						* Math.pow(random.nextDouble(), Math.pow(1, 3));
+				double s = 2 * (random.nextDouble() - 0.5);
+				double alpha = 2 * Math.PI * (random.nextDouble() - 0.5);
+				double c = radius * Math.pow(1 - Math.pow(s, 2), 0.5);
+				x = c * Math.cos(alpha);
+				y = c * Math.sin(alpha);
+				z = radius * s;
 
-				IsNotOK = (Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2) > Math
-						.pow(radiusMax, 2));
+				IsNotOK = false;
 				if (axisOfRing.x != 0) {
 					IsNotOK = IsNotOK
 							|| (Math.pow(y, 2) + Math.pow(z, 2) < Math.pow(
@@ -485,6 +487,7 @@ public class Univers {
 									radiusMin, 2));
 				}
 			}
+
 			m = new Matter(parameters, new Vector3d(origine.x + x * ratio.x,
 					origine.y + y * ratio.y, origine.z + z * ratio.z),
 					parameters.getMassObjectMin()
@@ -513,6 +516,70 @@ public class Univers {
 									.nextDouble() * 0.20, 0.9 + random
 									.nextDouble() * 0.10));
 				}
+			}
+		}
+
+		for (Matter m : miniListMatter.values()) {
+			m.setSpeed(new Vector3d(initialSpeed));
+		}
+
+		listMatter.putAll(miniListMatter);
+		mass += miniMass;
+
+		return miniListMatter;
+	}
+
+	private TreeMap<Matter, Matter> createUviversLowMass(Vector3d origine,
+			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
+			double radiusMax, Vector3d ratio) {
+		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
+		Random random = new Random();
+		double miniMass = 0;
+		for (int cpt = 0; cpt < parameters.getNumOfLowMassParticule(); cpt++) {
+			Matter m;
+			double x = 1;
+			double y = 1;
+			double z = 1;
+			boolean IsNotOK = true;
+			while (IsNotOK) {
+
+				double radius = radiusMax
+						* Math.pow(random.nextDouble(), Math.pow(1, 3));
+				double s = 2 * (random.nextDouble() - 0.5);
+				double alpha = 2 * Math.PI * (random.nextDouble() - 0.5);
+				double c = radius * Math.pow(1 - Math.pow(s, 2), 0.5);
+				x = c * Math.cos(alpha);
+				y = c * Math.sin(alpha);
+				z = radius * s;
+
+				IsNotOK = false;
+				if (axisOfRing.x != 0) {
+					IsNotOK = IsNotOK
+							|| (Math.pow(y, 2) + Math.pow(z, 2) < Math.pow(
+									radiusMin, 2));
+				}
+				if (axisOfRing.y != 0) {
+					IsNotOK = IsNotOK
+							|| (Math.pow(x, 2) + Math.pow(z, 2) < Math.pow(
+									radiusMin, 2));
+				}
+				if (axisOfRing.z != 0) {
+					IsNotOK = IsNotOK
+							|| (Math.pow(x, 2) + Math.pow(y, 2) < Math.pow(
+									radiusMin, 2));
+				}
+			}
+
+			m = new Matter(parameters, new Vector3d(origine.x + x * ratio.x,
+					origine.y + y * ratio.y, origine.z + z * ratio.z),
+					parameters.getLowMassParticuleMass() + random.nextDouble(),
+					new Vector3d(0, 0, 0), parameters.getLowMassDensity(),
+					false);
+			miniListMatter.put(m, m);
+			miniMass += m.getMass();
+
+			for (Matter mbis : miniListMatter.values()) {
+				mbis.setColor(new Vector3d(0.25, 0.25, 0.25));
 			}
 		}
 
