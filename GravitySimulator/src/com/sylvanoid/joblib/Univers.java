@@ -101,28 +101,15 @@ public class Univers {
 		visibleMass = 0;
 		darkMass = 0;
 
-		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : father.getListMatter().values()) {
-			sortX.put(m.getPoint().x, m);
+			if (m.getPoint().x >= min.x && m.getPoint().x <= max.x
+					&& m.getPoint().y >= min.y && m.getPoint().y <= max.y
+					&& m.getPoint().z >= min.z && m.getPoint().z <= max.z) {
+				listMatter.put(m, m);
+			}
 		}
-		SortedMap<Double, Matter> selectX = sortX.subMap(min.x, true, max.x,
-				true);
 
-		TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
-		for (Matter m : selectX.values()) {
-			sortY.put(m.getPoint().y, m);
-		}
-		SortedMap<Double, Matter> selectY = sortY.subMap(min.y, true, max.y,
-				true);
-
-		TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
-		for (Matter m : selectY.values()) {
-			sortZ.put(m.getPoint().z, m);
-		}
-		SortedMap<Double, Matter> selectZ = sortZ.subMap(min.z, true, max.z,
-				true);
-
-		for (Matter m : selectZ.values()) {
+		for (Matter m : listMatter.values()) {
 			listMatter.put(m, m);
 			mass += m.getMass();
 			if (m.isDark()) {
@@ -468,9 +455,17 @@ public class Univers {
 			double z = 1;
 			boolean IsNotOK = true;
 			while (IsNotOK) {
+				/*
+				 * double theta = 2* Math.PI * random.nextDouble(); double phi =
+				 * Math.PI * random.nextDouble(); Vector3d tmpVect =
+				 * HelperVector.polToCoord( radiusMax * random.nextDouble(),
+				 * theta, phi); x = tmpVect.x; y = tmpVect.y; z = tmpVect.z;
+				 */
+
 				x = 2 * (random.nextDouble() - 0.5) * radiusMax;
 				y = 2 * (random.nextDouble() - 0.5) * radiusMax;
 				z = 2 * (random.nextDouble() - 0.5) * radiusMax;
+
 				IsNotOK = (Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2) > Math
 						.pow(radiusMax, 2));
 				if (axisOfRing.x != 0) {
@@ -518,7 +513,6 @@ public class Univers {
 									.nextDouble() * 0.10));
 				}
 			}
-
 		}
 
 		for (Matter m : miniListMatter.values()) {

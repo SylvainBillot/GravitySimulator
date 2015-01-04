@@ -45,6 +45,8 @@ public class Parameters {
 	private double limitComputeTime = 0;
 	private double moveComputeTime = 0;
 	private double barnesHuttComputeTime = 0;
+	private int numOfLowMassParticule = 0;
+	private double lowMassParticuleMass = 0;
 
 	public Parameters() {
 
@@ -324,6 +326,22 @@ public class Parameters {
 
 	public void setBarnesHuttComputeTime(double barnesHuttComputeTime) {
 		this.barnesHuttComputeTime = barnesHuttComputeTime;
+	}
+
+	public int getNumOfLowMassParticule() {
+		return numOfLowMassParticule;
+	}
+
+	public void setNumOfLowMassParticule(int numOfLowMassParticule) {
+		this.numOfLowMassParticule = numOfLowMassParticule;
+	}
+
+	public double getLowMassParticuleMass() {
+		return lowMassParticuleMass;
+	}
+
+	public void setLowMassParticuleMass(double lowMassParticuleMass) {
+		this.lowMassParticuleMass = lowMassParticuleMass;
 	}
 
 }

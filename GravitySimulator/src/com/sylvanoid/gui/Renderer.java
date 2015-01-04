@@ -447,7 +447,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				"Univers exp factor: "
 						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
 				drawable.getSurfaceHeight() - textSize * 8);
-		textRenderer.draw("Num of recursive Barnes Hutt computed: "
+		textRenderer.draw("Num of recursive Barnes Hut computed: "
 				+ parameters.getNumOfCompute(), 10, drawable.getSurfaceHeight()
 				- textSize * 10);
 		textRenderer.draw(
@@ -615,7 +615,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	private BufferedImage toImage(GL2 gl, int w, int h) {
 		gl.glReadBuffer(GL2.GL_FRONT);
 		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h);
-		gl.glReadPixels(0, 0, w, h, GL2.GL_BGR, GL2.GL_BYTE, glBB);
+		gl.glReadPixels(0, 0, w, h, GL2.GL_RGB, GL2.GL_BYTE, glBB);
 		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		int[] bd = ((DataBufferInt) bi.getRaster().getDataBuffer()).getData();
 		for (int y = 0; y < h; y++) {
