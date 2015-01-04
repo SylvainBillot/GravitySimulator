@@ -101,6 +101,14 @@ public class Univers {
 		visibleMass = 0;
 		darkMass = 0;
 
+		/*
+		 * TreeMap<Matter, Matter> sortX = new TreeMap<Matter, Matter>( new
+		 * XComparator()); sortX.putAll(father.getListMatter());
+		 * SortedMap<Matter, Matter> selectX = sortX.subMap(new Matter( new
+		 * Vector3d(min.x, min.y, min.z)), true, new Matter( new Vector3d(min.x,
+		 * min.y, min.z)), true);
+		 */
+
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : father.getListMatter().values()) {
 			sortX.put(m.getPoint().x, m);
@@ -121,7 +129,7 @@ public class Univers {
 		}
 		SortedMap<Double, Matter> selectZ = sortZ.subMap(min.z, true, max.z,
 				true);
-		
+
 		for (Matter m : selectZ.values()) {
 			listMatter.put(m, m);
 			mass += m.getMass();
@@ -162,17 +170,21 @@ public class Univers {
 		parameters.setNumOfAccelCompute(0);
 		long startTimeCycle = System.currentTimeMillis();
 		computeLimits();
-		parameters.setLimitComputeTime(System.currentTimeMillis()-startTimeCycle);
-		
+		parameters.setLimitComputeTime(System.currentTimeMillis()
+				- startTimeCycle);
+
 		long startTimeBH = System.currentTimeMillis();
 		barnesHut();
-		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()-startTimeBH);
-		
+		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
+				- startTimeBH);
+
 		long startTimeMove = System.currentTimeMillis();
 		move();
-		parameters.setMoveComputeTime(System.currentTimeMillis()-startTimeMove);
-		parameters.setCycleComputeTime(System.currentTimeMillis()-startTimeCycle);
-		
+		parameters.setMoveComputeTime(System.currentTimeMillis()
+				- startTimeMove);
+		parameters.setCycleComputeTime(System.currentTimeMillis()
+				- startTimeCycle);
+
 	}
 
 	public void computeCentroidOfUnivers() {
@@ -490,8 +502,9 @@ public class Univers {
 					parameters.getMassObjectMin()
 							+ random.nextDouble()
 							* (parameters.getMassObjectMax() - parameters
-									.getMassObjectMin()) + 1E-100 * random.nextDouble(),
-					new Vector3d(0, 0, 0), parameters.getDensity(), false);
+									.getMassObjectMin()) + 1E-100
+							* random.nextDouble(), new Vector3d(0, 0, 0),
+					parameters.getDensity(), false);
 			miniListMatter.put(m, m);
 			miniMass += m.getMass();
 
