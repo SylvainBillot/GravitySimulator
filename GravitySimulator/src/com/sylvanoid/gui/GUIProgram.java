@@ -284,6 +284,7 @@ public class GUIProgram extends JFrame {
 				// TODO Auto-generated method stub
 				parameters.setShowTrace(!parameters.isShowTrace());
 				me.forTrace = new LinkedList<List<Vector3d[]>>();
+				renderer.reload(me);
 			}
 		});
 

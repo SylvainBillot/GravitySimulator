@@ -457,7 +457,17 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		textRenderer.draw(
 				"Cycle compute time (ms): " + parameters.getCycleComputeTime(),
 				10, drawable.getSurfaceHeight() - textSize * 12);
+		textRenderer.draw(
+				"Limit compute time (ms): " + parameters.getLimitComputeTime(),
+				10, drawable.getSurfaceHeight() - textSize * 13);
+		textRenderer.draw(
+				"Barnes Hut compute time (ms): " + parameters.getBarnesHuttComputeTime(),
+				10, drawable.getSurfaceHeight() - textSize * 14);
+		textRenderer.draw(
+				"Move compute time (ms): " + parameters.getMoveComputeTime(),
+				10, drawable.getSurfaceHeight() - textSize * 15);
 
+		
 		textRenderer.draw(
 				"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()), 10,
 				10);

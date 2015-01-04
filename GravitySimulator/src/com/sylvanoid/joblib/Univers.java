@@ -121,7 +121,7 @@ public class Univers {
 		}
 		SortedMap<Double, Matter> selectZ = sortZ.subMap(min.z, true, max.z,
 				true);
-
+		
 		for (Matter m : selectZ.values()) {
 			listMatter.put(m, m);
 			mass += m.getMass();
@@ -160,11 +160,18 @@ public class Univers {
 	public void process() {
 		parameters.setNumOfCompute(0);
 		parameters.setNumOfAccelCompute(0);
-		long startTime = System.currentTimeMillis();
+		long startTimeCycle = System.currentTimeMillis();
 		computeLimits();
-		compute();
+		parameters.setLimitComputeTime(System.currentTimeMillis()-startTimeCycle);
+		
+		long startTimeBH = System.currentTimeMillis();
+		barnesHut();
+		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()-startTimeBH);
+		
+		long startTimeMove = System.currentTimeMillis();
 		move();
-		parameters.setCycleComputeTime(System.currentTimeMillis()-startTime);
+		parameters.setMoveComputeTime(System.currentTimeMillis()-startTimeMove);
+		parameters.setCycleComputeTime(System.currentTimeMillis()-startTimeCycle);
 		
 	}
 
@@ -182,7 +189,7 @@ public class Univers {
 	}
 
 	/* Barnes Hutt implementation */
-	private void compute() {
+	private void barnesHut() {
 		parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
 		if (listMatter.size() > 1 && mass > parameters.getNegligeableMass()) {
 			double cx = min.x + (max.x - min.x) / 2;
@@ -222,7 +229,7 @@ public class Univers {
 			visibleMass = 0;
 			darkMass = 0;
 			for (Univers u : subUnivers) {
-				u.compute();
+				u.barnesHut();
 				for (Univers uvoisin : subUnivers) {
 					if (u != uvoisin && uvoisin.getListMatter().size() > 0
 							&& uvoisin.mass > parameters.getNegligeableMass()) {

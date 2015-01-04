@@ -42,6 +42,9 @@ public class Parameters {
 	private int numOfAccelCompute = 0;
 	private double negligeableMass = 0;
 	private double cycleComputeTime = 0;
+	private double limitComputeTime = 0;
+	private double moveComputeTime = 0;
+	private double barnesHuttComputeTime = 0;
 
 	public Parameters() {
 
@@ -298,4 +301,29 @@ public class Parameters {
 	public void setCycleComputeTime(double cycleComputeTime) {
 		this.cycleComputeTime = cycleComputeTime;
 	}
+
+	public double getLimitComputeTime() {
+		return limitComputeTime;
+	}
+
+	public void setLimitComputeTime(double limitComputeTime) {
+		this.limitComputeTime = limitComputeTime;
+	}
+
+	public double getMoveComputeTime() {
+		return moveComputeTime;
+	}
+
+	public void setMoveComputeTime(double moveComputeTime) {
+		this.moveComputeTime = moveComputeTime;
+	}
+
+	public double getBarnesHuttComputeTime() {
+		return barnesHuttComputeTime;
+	}
+
+	public void setBarnesHuttComputeTime(double barnesHuttComputeTime) {
+		this.barnesHuttComputeTime = barnesHuttComputeTime;
+	}
+
 }
