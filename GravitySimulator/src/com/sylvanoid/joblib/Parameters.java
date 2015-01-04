@@ -41,6 +41,7 @@ public class Parameters {
 	private int numOfCompute = 0;
 	private int numOfAccelCompute = 0;
 	private double negligeableMass = 0;
+	private double cycleComputeTime = 0;
 
 	public Parameters() {
 
@@ -288,5 +289,13 @@ public class Parameters {
 
 	public void setNegligeableMass(double negligeableMass) {
 		this.negligeableMass = negligeableMass;
+	}
+
+	public double getCycleComputeTime() {
+		return cycleComputeTime;
+	}
+
+	public void setCycleComputeTime(double cycleComputeTime) {
+		this.cycleComputeTime = cycleComputeTime;
 	}
 }

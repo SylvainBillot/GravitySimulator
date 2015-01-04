@@ -20,7 +20,6 @@ public class Matter implements Comparable<Matter> {
 	private Vector3d pointBefore = new Vector3d(0, 0, 0);
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d angles = new Vector3d(0, 0, 0);
-	private Vector3d a = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
@@ -129,16 +128,6 @@ public class Matter implements Comparable<Matter> {
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
-	public Vector3d getA() {
-		return a;
-	}
-
-	public void setA(Vector3d a) {
-		this.a = a;
-	}
-
-	@XmlJavaTypeAdapter(Vector3dAdapter.class)
-	@XmlElement
 	public Vector3d getSpeed() {
 		return speed;
 	}
@@ -219,7 +208,6 @@ public class Matter implements Comparable<Matter> {
 
 	public void move() {
 		pointBefore = new Vector3d(point);
-		speed.add(a);
 		// Relativity effet
 		/*
 		 * double gamma = Math.pow( 1 - speed.length() /
@@ -228,7 +216,6 @@ public class Matter implements Comparable<Matter> {
 		 */
 		// End of
 		point = getPlusV();
-		a = new Vector3d(0, 0, 0);
 	}
 
 	public void fusion(Matter m) {
@@ -243,10 +230,6 @@ public class Matter implements Comparable<Matter> {
 				* m.getMass())
 				/ (mass + m.getMass()), (speed.z * mass + m.getSpeed().z
 				* m.getMass())
-				/ (mass + m.getMass()));
-		a = new Vector3d((a.x * mass + m.a.x * m.getMass())
-				/ (mass + m.getMass()), (a.y * mass + m.a.y * m.getMass())
-				/ (mass + m.getMass()), (a.z * mass + m.a.z * m.getMass())
 				/ (mass + m.getMass()));
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
@@ -279,8 +262,6 @@ public class Matter implements Comparable<Matter> {
 
 		speed = new Vector3d(v1x, v1y, v1z);
 		m.setSpeed(new Vector3d(v2x, v2y, v2z));
-		setA(new Vector3d(0, 0, 0));
-		m.setA(new Vector3d(0, 0, 0));
 	}
 
 	public boolean collision(Matter m) {

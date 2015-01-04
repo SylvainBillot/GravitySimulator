@@ -64,18 +64,20 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		// TODO Auto-generated method stub
 		univers.process();
 
-		List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
-		for (Matter m : univers.getListMatter().values()) {
-			Vector3d[] myLine = new Vector3d[2];
-			myLine[0] = new Vector3d(m.getPointBefore().x,
-					m.getPointBefore().y, m.getPointBefore().z);
-			myLine[1] = new Vector3d(m.getPoint().x, m.getPoint().y,
-					m.getPoint().z);
-			tmpList.add(myLine);
-		}
-		forTrace.add(tmpList);
-		if (forTrace.size() > 1000) {
-			forTrace.pollFirst();
+		if (parameters.isShowTrace()) {
+			List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
+			for (Matter m : univers.getListMatter().values()) {
+				Vector3d[] myLine = new Vector3d[2];
+				myLine[0] = new Vector3d(m.getPointBefore().x,
+						m.getPointBefore().y, m.getPointBefore().z);
+				myLine[1] = new Vector3d(m.getPoint().x, m.getPoint().y,
+						m.getPoint().z);
+				tmpList.add(myLine);
+			}
+			forTrace.add(tmpList);
+			if (forTrace.size() > 1000) {
+				forTrace.pollFirst();
+			}
 		}
 
 		render(drawable);
@@ -445,13 +447,16 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				"Univers exp factor: "
 						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
 				drawable.getSurfaceHeight() - textSize * 8);
+		textRenderer.draw("Num of recursive Barnes Hutt computed: "
+				+ parameters.getNumOfCompute(), 10, drawable.getSurfaceHeight()
+				- textSize * 10);
 		textRenderer.draw(
-				"Num of recusive compute: " + parameters.getNumOfCompute(), 10,
-				drawable.getSurfaceHeight() - textSize * 10);
-		textRenderer.draw(
-				"Num of acceleration compute: "
+				"Num of acceleration computed: "
 						+ parameters.getNumOfAccelCompute(), 10,
 				drawable.getSurfaceHeight() - textSize * 11);
+		textRenderer.draw(
+				"Cycle compute time (ms): " + parameters.getCycleComputeTime(),
+				10, drawable.getSurfaceHeight() - textSize * 12);
 
 		textRenderer.draw(
 				"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()), 10,
@@ -480,14 +485,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glPopMatrix();
 	}
 
-	/*
-	 * private void drawUnivers(GL2 gl) { for (Matter m :
-	 * univers.getListMatter().values()) { gl.glBegin(GL2.GL_POINTS);
-	 * gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-	 * gl.glVertex3d(parameters.getScala() * m.getPoint().x,
-	 * parameters.getScala() * m.getPoint().y, parameters.getScala() *
-	 * m.getPoint().z); gl.glEnd(); } }
-	 */
+	@SuppressWarnings("unused")
+	private void drawUniversSimplePoint(GL2 gl) {
+		for (Matter m : univers.getListMatter().values()) {
+			gl.glBegin(GL2.GL_POINTS);
+			gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+			gl.glVertex3d(parameters.getScala() * m.getPoint().x,
+					parameters.getScala() * m.getPoint().y,
+					parameters.getScala() * m.getPoint().z);
+			gl.glEnd();
+		}
+
+	}
 
 	private void drawUnivers(GL2 gl) {
 		gl.glEnable(GL2.GL_BLEND);
@@ -595,7 +604,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	private BufferedImage toImage(GL2 gl, int w, int h) {
 		gl.glReadBuffer(GL2.GL_FRONT);
-		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h );
+		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h);
 		gl.glReadPixels(0, 0, w, h, GL2.GL_BGR, GL2.GL_BYTE, glBB);
 		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		int[] bd = ((DataBufferInt) bi.getRaster().getDataBuffer()).getData();

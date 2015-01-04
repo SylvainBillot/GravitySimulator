@@ -378,6 +378,7 @@ public class GUIParam extends JDialog {
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
 			massObjectMax.setEnabled(true);
+			negligeableMass.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			expensionOfUnivers.setEnabled(true);

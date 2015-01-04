@@ -157,6 +157,17 @@ public class Univers {
 		return darkMass;
 	}
 
+	public void process() {
+		parameters.setNumOfCompute(0);
+		parameters.setNumOfAccelCompute(0);
+		long startTime = System.currentTimeMillis();
+		computeLimits();
+		compute();
+		move();
+		parameters.setCycleComputeTime(System.currentTimeMillis()-startTime);
+		
+	}
+
 	public void computeCentroidOfUnivers() {
 		double tmpGx = 0;
 		double tmpGy = 0;
@@ -171,7 +182,7 @@ public class Univers {
 	}
 
 	/* Barnes Hutt implementation */
-	public void compute() {
+	private void compute() {
 		parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
 		if (listMatter.size() > 1 && mass > parameters.getNegligeableMass()) {
 			double cx = min.x + (max.x - min.x) / 2;
@@ -228,7 +239,7 @@ public class Univers {
 									* HelperVariable.G
 									* (((uvoisin.getMass()) / Math.pow(
 											distance, 2)));
-							m.getA().add(
+							m.getSpeed().add(
 									HelperVector.acceleration(m.getPoint(),
 											uvoisin.getGPoint(), attraction));
 						}
@@ -247,7 +258,7 @@ public class Univers {
 		}
 	}
 
-	public void manageImpact() {
+	private void manageImpact() {
 		// On recheche les collisions
 		LinkedList<Matter[]> toTreat = new LinkedList<Matter[]>();
 		HashMap<Matter, String> treatedFusion = new HashMap<Matter, String>();
@@ -302,8 +313,7 @@ public class Univers {
 		}
 	}
 
-	public void move() {
-
+	private void move() {
 		if (parameters.isManageImpact()) {
 			double oldMass = mass;
 			manageImpact();
@@ -322,14 +332,6 @@ public class Univers {
 			}
 			m.move();
 		}
-	}
-
-	public void process() {
-		parameters.setNumOfCompute(0);
-		parameters.setNumOfAccelCompute(0);
-		computeLimits();
-		compute();
-		move();
 	}
 
 	private void computeLimits() {
