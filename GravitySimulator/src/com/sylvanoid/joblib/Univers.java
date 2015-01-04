@@ -456,10 +456,11 @@ public class Univers {
 			boolean IsNotOK = true;
 			while (IsNotOK) {
 				/*
-				 * double theta = 2* Math.PI * random.nextDouble(); double phi =
-				 * Math.PI * random.nextDouble(); Vector3d tmpVect =
-				 * HelperVector.polToCoord( radiusMax * random.nextDouble(),
-				 * theta, phi); x = tmpVect.x; y = tmpVect.y; z = tmpVect.z;
+				 * double radius = radiusMax * random.nextDouble(); double theta
+				 * = 2* Math.PI * random.nextDouble(); double phi = Math.PI *
+				 * random.nextDouble(); Vector3d tmpVect =
+				 * HelperVector.polToCoord(radius, theta, phi); x = tmpVect.x; y
+				 * = tmpVect.y; z = tmpVect.z;
 				 */
 
 				x = 2 * (random.nextDouble() - 0.5) * radiusMax;
