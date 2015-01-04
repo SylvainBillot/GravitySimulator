@@ -101,14 +101,6 @@ public class Univers {
 		visibleMass = 0;
 		darkMass = 0;
 
-		/*
-		 * TreeMap<Matter, Matter> sortX = new TreeMap<Matter, Matter>( new
-		 * XComparator()); sortX.putAll(father.getListMatter());
-		 * SortedMap<Matter, Matter> selectX = sortX.subMap(new Matter( new
-		 * Vector3d(min.x, min.y, min.z)), true, new Matter( new Vector3d(min.x,
-		 * min.y, min.z)), true);
-		 */
-
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
 		for (Matter m : father.getListMatter().values()) {
 			sortX.put(m.getPoint().x, m);

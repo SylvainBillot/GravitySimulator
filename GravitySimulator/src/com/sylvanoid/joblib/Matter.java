@@ -47,11 +47,6 @@ public class Matter implements Comparable<Matter> {
 
 	}
 
-	/* for subMap parameters only */
-	public Matter(Vector3d point) {
-		this.setPoint(point);
-	}
-	
 	public Matter(Parameters parameters, Vector3d point, double mass,
 			Vector3d speed, double density, boolean isDark) {
 		this.parameters = parameters;
