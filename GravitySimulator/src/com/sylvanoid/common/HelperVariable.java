@@ -1,6 +1,8 @@
 package com.sylvanoid.common;
 
 public abstract class HelperVariable {
+	public static final int MAXFPS = 60;
+	
 	public static final double G = 6.67234E-11; // N.m2 kg-1 s-2
 	public static final double C = 299792458; // m s-1
 	public static final double M = 1.9884E30; // kg

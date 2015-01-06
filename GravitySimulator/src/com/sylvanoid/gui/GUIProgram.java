@@ -34,6 +34,7 @@ import javax.xml.bind.Unmarshaller;
 import org.jcodec.api.SequenceEncoder;
 
 import com.jogamp.opengl.util.FPSAnimator;
+import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.MpejFilter;
 import com.sylvanoid.common.XmlFilter;
 import com.sylvanoid.joblib.Matter;
@@ -431,7 +432,7 @@ public class GUIProgram extends JFrame {
 		gljpanel.addMouseListener(renderer);
 		gljpanel.addMouseMotionListener(renderer);
 		me.add(gljpanel, BorderLayout.CENTER);
-		animator = new FPSAnimator(gljpanel, 25, true);
+		animator = new FPSAnimator(gljpanel, HelperVariable.MAXFPS, true);
 		animator.start();
 	}
 
