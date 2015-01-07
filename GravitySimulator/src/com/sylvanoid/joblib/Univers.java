@@ -78,51 +78,12 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomInitialExpension) {
 			createRandomExpensionUvivers();
 		}
-
-		mass = 0;
-		visibleMass = 0;
-		darkMass = 0;
-		for (Matter m : listMatter.values()) {
-			mass += m.getMass();
-			if (m.isDark()) {
-				darkMass += m.getMass();
-			} else {
-				visibleMass += m.getMass();
-			}
-		}
+		computeMass();
 	}
 
 	public Univers(Univers father){
 		this.parameters = father.parameters;
 		listMatter = new TreeMap<Matter, Matter>();
-	}
-	
-	public Univers(Univers father, Vector3d min, Vector3d max) {
-		this.parameters = father.parameters;
-		this.min = min;
-		this.max = max;
-		listMatter = new TreeMap<Matter, Matter>();
-		mass = 0;
-		visibleMass = 0;
-		darkMass = 0;
-
-		for (Matter m : father.getListMatter().values()) {
-			if (m.getPoint().x >= min.x && m.getPoint().x <= max.x
-					&& m.getPoint().y >= min.y && m.getPoint().y <= max.y
-					&& m.getPoint().z >= min.z && m.getPoint().z <= max.z) {
-				listMatter.put(m, m);
-			}
-		}
-
-		for (Matter m : listMatter.values()) {
-			listMatter.put(m, m);
-			mass += m.getMass();
-			if (m.isDark()) {
-				darkMass += m.getMass();
-			} else {
-				visibleMass += m.getMass();
-			}
-		}
 	}
 
 	public Parameters getParameters() {
@@ -209,26 +170,7 @@ public class Univers {
 			double cx = min.x + (max.x - min.x) / 2;
 			double cy = min.y + (max.y - min.y) / 2;
 			double cz = min.z + (max.z - min.z) / 2;
-			
-/*
-			Univers suba = new Univers(this, new Vector3d(min.x, min.y, min.z),
-					new Vector3d(cx, cy, cz));
-			Univers subb = new Univers(this, new Vector3d(cx, min.y, min.z),
-					new Vector3d(max.x, cy, cz));
-			Univers subc = new Univers(this, new Vector3d(cx, cy, min.z),
-					new Vector3d(max.x, max.y, cz));
-			Univers subd = new Univers(this, new Vector3d(min.x, cy, min.z),
-					new Vector3d(cx, max.y, cz));
 
-			Univers sube = new Univers(this, new Vector3d(min.x, min.y, cz),
-					new Vector3d(cx, cy, max.z));
-			Univers subf = new Univers(this, new Vector3d(cx, min.y, cz),
-					new Vector3d(max.x, cy, max.z));
-			Univers subg = new Univers(this, new Vector3d(cx, cy, cz),
-					new Vector3d(max.x, max.y, max.z));
-			Univers subh = new Univers(this, new Vector3d(min.x, cy, cz),
-					new Vector3d(cx, max.y, max.z));
-*/
 			Univers suba = new Univers(this);
 			Univers subb = new Univers(this);
 			Univers subc = new Univers(this);
