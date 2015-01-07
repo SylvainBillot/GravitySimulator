@@ -92,6 +92,11 @@ public class Univers {
 		}
 	}
 
+	public Univers(Univers father){
+		this.parameters = father.parameters;
+		listMatter = new TreeMap<Matter, Matter>();
+	}
+	
 	public Univers(Univers father, Vector3d min, Vector3d max) {
 		this.parameters = father.parameters;
 		this.min = min;
@@ -165,7 +170,7 @@ public class Univers {
 				- startTimeCycle);
 
 	}
-
+	
 	public void computeCentroidOfUnivers() {
 		double tmpGx = 0;
 		double tmpGy = 0;
@@ -179,14 +184,33 @@ public class Univers {
 				/ getMass());
 	}
 
+	public void computeMass() {
+		mass = 0;
+		visibleMass = 0;
+		darkMass = 0;
+		for(Matter m:listMatter.values()){
+			listMatter.put(m, m);
+			mass += m.getMass();
+			if (m.isDark()) {
+				darkMass += m.getMass();
+			} else {
+				visibleMass += m.getMass();
+			}
+		}
+	}
+
+	
+	
 	/* Barnes Hutt implementation */
 	private void barnesHut() {
 		parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
+		computeLimits();
 		if (listMatter.size() > 1 && mass > parameters.getNegligeableMass()) {
 			double cx = min.x + (max.x - min.x) / 2;
 			double cy = min.y + (max.y - min.y) / 2;
 			double cz = min.z + (max.z - min.z) / 2;
-			List<Univers> subUnivers = new ArrayList<Univers>();
+			
+/*
 			Univers suba = new Univers(this, new Vector3d(min.x, min.y, min.z),
 					new Vector3d(cx, cy, cz));
 			Univers subb = new Univers(this, new Vector3d(cx, min.y, min.z),
@@ -204,12 +228,62 @@ public class Univers {
 					new Vector3d(max.x, max.y, max.z));
 			Univers subh = new Univers(this, new Vector3d(min.x, cy, cz),
 					new Vector3d(cx, max.y, max.z));
+*/
+			Univers suba = new Univers(this);
+			Univers subb = new Univers(this);
+			Univers subc = new Univers(this);
+			Univers subd = new Univers(this);
+			Univers sube = new Univers(this);
+			Univers subf = new Univers(this);
+			Univers subg = new Univers(this);
+			Univers subh = new Univers(this);
+			
+			for(Matter m:listMatter.values()){
+				if(m.getPoint().x>cx){
+					if(m.getPoint().y>cy){
+						if(m.getPoint().z>cz){
+							suba.getListMatter().put(m, m);							
+						} else {
+							subb.getListMatter().put(m, m);
+						}
+					} else {
+						if(m.getPoint().z>cz){
+							subc.getListMatter().put(m, m);
+						} else {
+							subd.getListMatter().put(m, m);
+						}
+					}
+				} else {
+					if(m.getPoint().y>cy){
+						if(m.getPoint().z>cz){
+							sube.getListMatter().put(m, m);
+						} else {
+							subf.getListMatter().put(m, m);
+						}
+					} else {
+						if(m.getPoint().z>cz){
+							subg.getListMatter().put(m, m);
+						} else {
+							subh.getListMatter().put(m, m);
+						}
+					}
+				}
+			}
+			suba.computeMass();
+			subb.computeMass();
+			subc.computeMass();
+			subd.computeMass();
+			sube.computeMass();
+			subf.computeMass();
+			subg.computeMass();
+			subh.computeMass();
 
+			List<Univers> subUnivers = new ArrayList<Univers>();
+			
 			subUnivers.add(suba);
 			subUnivers.add(subb);
 			subUnivers.add(subc);
 			subUnivers.add(subd);
-
 			subUnivers.add(sube);
 			subUnivers.add(subf);
 			subUnivers.add(subg);
