@@ -478,7 +478,7 @@ public class Univers {
 				x = c * Math.cos(alpha);
 				y = c * Math.sin(alpha);
 				z = r * s;
-
+				
 				IsNotOK = false;
 				if (axisOfRing.x != 0) {
 					IsNotOK = IsNotOK
