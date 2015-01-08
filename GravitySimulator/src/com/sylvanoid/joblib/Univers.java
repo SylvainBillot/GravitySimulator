@@ -239,10 +239,7 @@ public class Univers {
 					if (u != uvoisin && uvoisin.getListMatter().size() > 0
 							&& uvoisin.mass > parameters.getNegligeableMass()) {
 						uvoisin.computeCentroidOfUnivers();
-						TreeMap<Matter, Matter> sortByMass = new TreeMap<Matter, Matter>(
-								new MassComparator());
-						sortByMass.putAll(u.listMatter);
-						for (Matter m : sortByMass.values()) {
+						for (Matter m : u.listMatter.values()) {
 							parameters.setNumOfAccelCompute(parameters
 									.getNumOfAccelCompute() + 1);
 							double distance = new Point3d(m.getPoint())
