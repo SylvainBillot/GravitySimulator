@@ -470,15 +470,14 @@ public class Univers {
 			boolean IsNotOK = true;
 			while (IsNotOK) {
 
-				// double radius = radiusMax * random.nextDouble();
-				double radius = radiusMax
+				double r = radiusMax
 						* Math.pow(random.nextDouble(), Math.pow(1, 3));
 				double s = 2 * (random.nextDouble() - 0.5);
 				double alpha = 2 * Math.PI * (random.nextDouble() - 0.5);
-				double c = radius * Math.pow(1 - Math.pow(s, 2), 0.5);
+				double c = r * Math.pow(1 - Math.pow(s, 2), 0.5);
 				x = c * Math.cos(alpha);
 				y = c * Math.sin(alpha);
-				z = radius * s;
+				z = r * s;
 
 				IsNotOK = false;
 				if (axisOfRing.x != 0) {
@@ -728,7 +727,7 @@ public class Univers {
 
 	private void createPlanetaryRandom() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
+				new Vector3d(0, 1, 0), parameters.getNebulaRadius()*0.1, parameters.getNebulaRadius(),
 				new Vector3d(1, 0.1, 1));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
