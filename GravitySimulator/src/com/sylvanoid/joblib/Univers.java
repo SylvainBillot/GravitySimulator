@@ -162,9 +162,9 @@ public class Univers {
 
 	/* Barnes Hutt implementation */
 	private void barnesHut() {
-		parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
-		computeLimits();
 		if (listMatter.size() > 1 && mass > parameters.getNegligeableMass()) {
+			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
+			computeLimits();
 			double cx = min.x + (max.x - min.x) / 2;
 			double cy = min.y + (max.y - min.y) / 2;
 			double cz = min.z + (max.z - min.z) / 2;
