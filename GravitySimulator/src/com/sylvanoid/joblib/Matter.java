@@ -313,35 +313,4 @@ public class Matter implements Comparable<Matter> {
 
 		return accel;
 	}
-
-	public Vector3d orbitalSpeed(Univers u, Vector3d axis) {
-		u.computeCentroidOfUnivers();
-		double orbitalSpeedValue = Math.pow(
-				HelperVariable.G
-						* Math.pow(u.getMass(), 2)
-						/ ((mass + u.getMass()) * new Point3d(point)
-								.distance(new Point3d(u.getGPoint()))), 0.5);
-
-		Vector3d accel = HelperVector.acceleration(point, u.getGPoint(),
-				orbitalSpeedValue);
-
-		if (axis.x != 0) {
-			accel = HelperVector.rotate(accel,
-					new Vector3d(0, 0, Math.signum(axis.x) * Math.PI / 2),
-					Math.PI / 2);
-		}
-		if (axis.y != 0) {
-			accel = HelperVector.rotate(accel,
-					new Vector3d(0, Math.signum(axis.y) * Math.PI / 2, 0),
-					Math.signum(axis.y) * Math.PI / 2);
-		}
-		if (axis.z != 0) {
-			accel = HelperVector.rotate(accel,
-					new Vector3d(0, 0, Math.signum(axis.z) * Math.PI / 2),
-					Math.signum(axis.z) * Math.PI / 2);
-		}
-
-
-		return accel;
-	}
 }

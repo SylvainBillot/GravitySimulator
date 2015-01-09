@@ -132,7 +132,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		HelperVector.addDouble(parameters.getLookAt(), exp);
 
 		if (parameters.isFollowCentroid()) {
-			univers.computeCentroidOfUnivers();
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
 			Vector3d tmpvecScala = new Vector3d(univers.getGPoint().x

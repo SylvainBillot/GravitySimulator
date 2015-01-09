@@ -78,7 +78,7 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomInitialExpension) {
 			createRandomExpensionUvivers();
 		}
-		computeMass();
+		computeMassLimitsCentroid();
 	}
 
 	public Univers(Univers father) {
@@ -90,7 +90,7 @@ public class Univers {
 		parameters.setNumOfCompute(0);
 		parameters.setNumOfAccelCompute(0);
 		long startTimeCycle = System.currentTimeMillis();
-		computeLimits();
+		computeMassLimitsCentroid();
 		parameters.setLimitComputeTime(System.currentTimeMillis()
 				- startTimeCycle);
 
@@ -106,19 +106,6 @@ public class Univers {
 		parameters.setCycleComputeTime(System.currentTimeMillis()
 				- startTimeCycle);
 
-	}
-
-	public void computeCentroidOfUnivers() {
-		double tmpGx = 0;
-		double tmpGy = 0;
-		double tmpGz = 0;
-		for (Matter m : getListMatter().values()) {
-			tmpGx += (m.getPoint().getX() * m.getMass());
-			tmpGy += (m.getPoint().getY() * m.getMass());
-			tmpGz += (m.getPoint().getZ() * m.getMass());
-		}
-		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz
-				/ mass);
 	}
 
 	/* Barnes Hutt implementation */
@@ -346,55 +333,6 @@ public class Univers {
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz
 				/ mass);
 	}
-	
-	private void computeLimits() {
-		boolean firstTime = true;
-		for (Matter m : listMatter.values()) {
-			if (!firstTime) {
-				if (min.x > m.getPoint().getX()) {
-					min.x = m.getPoint().getX();
-				}
-				if (max.x < m.getPoint().getX()) {
-					max.x = m.getPoint().getX();
-				}
-				if (min.y > m.getPoint().getY()) {
-					min.y = m.getPoint().getY();
-				}
-				if (max.y < m.getPoint().getY()) {
-					max.y = m.getPoint().getY();
-				}
-				if (min.z > m.getPoint().getZ()) {
-					min.z = m.getPoint().getZ();
-				}
-				if (max.z < m.getPoint().getZ()) {
-					max.z = m.getPoint().getZ();
-				}
-			} else {
-				min.x = m.getPoint().getX();
-				max.x = m.getPoint().getX();
-				min.y = m.getPoint().getY();
-				max.y = m.getPoint().getY();
-				min.z = m.getPoint().getZ();
-				max.z = m.getPoint().getZ();
-				firstTime = false;
-			}
-		}
-	}
-	
-	private void computeMass() {
-		mass = 0;
-		visibleMass = 0;
-		darkMass = 0;
-		for (Matter m : listMatter.values()) {
-			mass += m.getMass();
-			if (m.isDark()) {
-				darkMass += m.getMass();
-			} else {
-				visibleMass += m.getMass();
-			}
-			
-		}
-	}
 
 	private void treatNeighborFusion(Matter m1, TreeMap<Double, Matter> sortX,
 			HashMap<Matter, String> treated, List<Matter[]> toTreat) {
@@ -572,7 +510,7 @@ public class Univers {
 
 	private void createRandomExpensionUvivers() {
 		createRandomStaticUvivers();
-		computeCentroidOfUnivers();
+		computeMassLimitsCentroid();
 		for (Matter m : listMatter.values()) {
 			m.setColor(new Vector3d(1, 1, 1));
 			m.setAngles(new Vector3d(Math.random() * 2 * Math.PI, Math.random()
@@ -598,7 +536,7 @@ public class Univers {
 		darkMass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(this, new Vector3d(0, 0, 1)));
+				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
 			}
 		}
 	}
