@@ -684,7 +684,7 @@ public class Univers {
 
 	private void createPlanetaryRandom() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 1, 0), parameters.getNebulaRadius() * 0.1,
+				new Vector3d(0, 1, 0), 0,
 				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
