@@ -175,11 +175,12 @@ public class Univers {
 			subf.computeMassLimitsCentroid();
 			subg.computeMassLimitsCentroid();
 			subh.computeMassLimitsCentroid();
-
+			/**/
 			listMatter = new TreeMap<Matter, Matter>();
 			mass = 0;
 			visibleMass = 0;
 			darkMass = 0;
+			/**/
 			for (Univers u : subUnivers) {
 				u.barnesHut();
 				for (Univers uvoisin : subUnivers) {
@@ -200,6 +201,7 @@ public class Univers {
 						}
 					}
 				}
+				/**/
 				for (Matter m : u.getListMatter().values()) {
 					listMatter.put(m, m);
 					mass += m.getMass();
@@ -209,12 +211,14 @@ public class Univers {
 						visibleMass += m.getMass();
 					}
 				}
+				/**/
 			}
 		}
 	}
 
 	private void manageImpact() {
-		// On recheche les collisions
+		// Collisions seach
+
 		LinkedList<Matter[]> toTreat = new LinkedList<Matter[]>();
 		HashMap<Matter, String> treatedFusion = new HashMap<Matter, String>();
 		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
@@ -255,17 +259,7 @@ public class Univers {
 				element[0].impact(element[1]);
 			}
 		}
-		mass = 0;
-		visibleMass = 0;
-		darkMass = 0;
-		for (Matter m : listMatter.values()) {
-			mass += m.getMass();
-			if (m.isDark()) {
-				darkMass += m.getMass();
-			} else {
-				visibleMass += m.getMass();
-			}
-		}
+
 	}
 
 	private void move() {
@@ -330,8 +324,7 @@ public class Univers {
 			tmpGy += (m.getPoint().getY() * m.getMass());
 			tmpGz += (m.getPoint().getZ() * m.getMass());
 		}
-		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz
-				/ mass);
+		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 	}
 
 	private void treatNeighborFusion(Matter m1, TreeMap<Double, Matter> sortX,
@@ -709,8 +702,8 @@ public class Univers {
 
 	private void createPlanetariesGenesis() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), parameters.getNebulaRadius()/2 * 0.9,
-				parameters.getNebulaRadius()/2, new Vector3d(1, 1, 0.05));
+				new Vector3d(0, 0, 1), parameters.getNebulaRadius() / 2 * 0.9,
+				parameters.getNebulaRadius() / 2, new Vector3d(1, 1, 0.05));
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.9,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05));
