@@ -117,30 +117,14 @@ public class Univers {
 			tmpGy += (m.getPoint().getY() * m.getMass());
 			tmpGz += (m.getPoint().getZ() * m.getMass());
 		}
-		gPoint = new Vector3d(tmpGx / getMass(), tmpGy / getMass(), tmpGz
-				/ getMass());
-	}
-
-	public void computeMass() {
-		mass = 0;
-		visibleMass = 0;
-		darkMass = 0;
-		for (Matter m : listMatter.values()) {
-			listMatter.put(m, m);
-			mass += m.getMass();
-			if (m.isDark()) {
-				darkMass += m.getMass();
-			} else {
-				visibleMass += m.getMass();
-			}
-		}
+		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz
+				/ mass);
 	}
 
 	/* Barnes Hutt implementation */
 	private void barnesHut() {
 		if (listMatter.size() > 1 && mass > parameters.getNegligeableMass()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
-			computeLimits();
 			double cx = min.x + (max.x - min.x) / 2;
 			double cy = min.y + (max.y - min.y) / 2;
 			double cz = min.z + (max.z - min.z) / 2;
@@ -196,14 +180,14 @@ public class Univers {
 			subUnivers.add(subg);
 			subUnivers.add(subh);
 
-			suba.computeMass();
-			subb.computeMass();
-			subc.computeMass();
-			subd.computeMass();
-			sube.computeMass();
-			subf.computeMass();
-			subg.computeMass();
-			subh.computeMass();
+			suba.computeMassLimitsCentroid();
+			subb.computeMassLimitsCentroid();
+			subc.computeMassLimitsCentroid();
+			subd.computeMassLimitsCentroid();
+			sube.computeMassLimitsCentroid();
+			subf.computeMassLimitsCentroid();
+			subg.computeMassLimitsCentroid();
+			subh.computeMassLimitsCentroid();
 
 			listMatter = new TreeMap<Matter, Matter>();
 			mass = 0;
@@ -214,7 +198,6 @@ public class Univers {
 				for (Univers uvoisin : subUnivers) {
 					if (u != uvoisin && uvoisin.getListMatter().size() > 0
 							&& uvoisin.mass > parameters.getNegligeableMass()) {
-						uvoisin.computeCentroidOfUnivers();
 						for (Matter m : u.listMatter.values()) {
 							parameters.setNumOfAccelCompute(parameters
 									.getNumOfAccelCompute() + 1);
@@ -313,37 +296,103 @@ public class Univers {
 		}
 	}
 
-	private void computeLimits() {
+	private void computeMassLimitsCentroid() {
 		boolean firstTime = true;
-		for (Matter o : listMatter.values()) {
+		mass = 0;
+		visibleMass = 0;
+		darkMass = 0;
+		double tmpGx = 0;
+		double tmpGy = 0;
+		double tmpGz = 0;
+		for (Matter m : listMatter.values()) {
+			mass += m.getMass();
+			if (m.isDark()) {
+				darkMass += m.getMass();
+			} else {
+				visibleMass += m.getMass();
+			}
 			if (!firstTime) {
-				if (min.x > o.getPoint().getX()) {
-					min.x = o.getPoint().getX();
+				if (min.x > m.getPoint().getX()) {
+					min.x = m.getPoint().getX();
 				}
-				if (max.x < o.getPoint().getX()) {
-					max.x = o.getPoint().getX();
+				if (max.x < m.getPoint().getX()) {
+					max.x = m.getPoint().getX();
 				}
-				if (min.y > o.getPoint().getY()) {
-					min.y = o.getPoint().getY();
+				if (min.y > m.getPoint().getY()) {
+					min.y = m.getPoint().getY();
 				}
-				if (max.y < o.getPoint().getY()) {
-					max.y = o.getPoint().getY();
+				if (max.y < m.getPoint().getY()) {
+					max.y = m.getPoint().getY();
 				}
-				if (min.z > o.getPoint().getZ()) {
-					min.z = o.getPoint().getZ();
+				if (min.z > m.getPoint().getZ()) {
+					min.z = m.getPoint().getZ();
 				}
-				if (max.z < o.getPoint().getZ()) {
-					max.z = o.getPoint().getZ();
+				if (max.z < m.getPoint().getZ()) {
+					max.z = m.getPoint().getZ();
 				}
 			} else {
-				min.x = o.getPoint().getX();
-				max.x = o.getPoint().getX();
-				min.y = o.getPoint().getY();
-				max.y = o.getPoint().getY();
-				min.z = o.getPoint().getZ();
-				max.z = o.getPoint().getZ();
+				min.x = m.getPoint().getX();
+				max.x = m.getPoint().getX();
+				min.y = m.getPoint().getY();
+				max.y = m.getPoint().getY();
+				min.z = m.getPoint().getZ();
+				max.z = m.getPoint().getZ();
 				firstTime = false;
 			}
+			tmpGx += (m.getPoint().getX() * m.getMass());
+			tmpGy += (m.getPoint().getY() * m.getMass());
+			tmpGz += (m.getPoint().getZ() * m.getMass());
+		}
+		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz
+				/ mass);
+	}
+	
+	private void computeLimits() {
+		boolean firstTime = true;
+		for (Matter m : listMatter.values()) {
+			if (!firstTime) {
+				if (min.x > m.getPoint().getX()) {
+					min.x = m.getPoint().getX();
+				}
+				if (max.x < m.getPoint().getX()) {
+					max.x = m.getPoint().getX();
+				}
+				if (min.y > m.getPoint().getY()) {
+					min.y = m.getPoint().getY();
+				}
+				if (max.y < m.getPoint().getY()) {
+					max.y = m.getPoint().getY();
+				}
+				if (min.z > m.getPoint().getZ()) {
+					min.z = m.getPoint().getZ();
+				}
+				if (max.z < m.getPoint().getZ()) {
+					max.z = m.getPoint().getZ();
+				}
+			} else {
+				min.x = m.getPoint().getX();
+				max.x = m.getPoint().getX();
+				min.y = m.getPoint().getY();
+				max.y = m.getPoint().getY();
+				min.z = m.getPoint().getZ();
+				max.z = m.getPoint().getZ();
+				firstTime = false;
+			}
+		}
+	}
+	
+	private void computeMass() {
+		mass = 0;
+		visibleMass = 0;
+		darkMass = 0;
+		for (Matter m : listMatter.values()) {
+			mass += m.getMass();
+			if (m.isDark()) {
+				darkMass += m.getMass();
+			} else {
+				visibleMass += m.getMass();
+			}
+			
 		}
 	}
 
