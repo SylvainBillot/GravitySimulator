@@ -613,7 +613,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	private BufferedImage toImage(GL2 gl, int w, int h) {
 		gl.glReadBuffer(GL2.GL_FRONT);
-		ByteBuffer glBB = ByteBuffer.allocate(3 * w * h);
+		ByteBuffer glBB = ByteBuffer.allocate(3 * (w+1) * (h+1));
 		gl.glReadPixels(0, 0, w, h, GL2.GL_RGB, GL2.GL_BYTE, glBB);
 		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		int[] bd = ((DataBufferInt) bi.getRaster().getDataBuffer()).getData();
