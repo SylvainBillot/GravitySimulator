@@ -156,7 +156,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(5E-10);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
-					numberOfObjects.setValue(2000);
+					numberOfObjects.setValue(1000);
 					densiteMin.setValue(1);
 					nebulaRadius.setValue(HelperVariable.UA*3);
 					massObjectMin.setValue(HelperVariable.M/1000000);
