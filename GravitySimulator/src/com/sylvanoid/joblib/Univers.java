@@ -518,7 +518,7 @@ public class Univers {
 
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
+				new Vector3d(0, 0, 1), 0,
 				parameters.getNebulaRadius(), new Vector3d(0.25, 1, 0.25));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
@@ -543,14 +543,14 @@ public class Univers {
 				-HelperVariable.PC * deltax, -HelperVariable.PC * deltay,
 				-HelperVariable.PC * deltaz),
 				new Vector3d(initialSpeedx, 0, 0), new Vector3d(0, 0, 1),
-				parameters.getNebulaRadius() * 0.1,
+				0,
 				parameters.getNebulaRadius(), new Vector3d(0.15, 1, 0.15));
 
 		TreeMap<Matter, Matter> subu02 = createUvivers(new Vector3d(
 				HelperVariable.PC * deltax, HelperVariable.PC * deltay,
 				HelperVariable.PC * deltaz),
 				new Vector3d(-initialSpeedx, 0, 0), new Vector3d(1, 0, 0),
-				parameters.getNebulaRadius() / 2 * 0.1,
+				0,
 				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.15, 0.15));
 
 		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
