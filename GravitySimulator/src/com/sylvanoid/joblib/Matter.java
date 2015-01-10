@@ -26,11 +26,11 @@ public class Matter implements Comparable<Matter> {
 	private double rayon;
 
 	@Override
-	public int compareTo(Matter o) {
+	public int compareTo(Matter m) {
 		// TODO Auto-generated method stub
-		if (mass < o.getMass()) {
+		if (mass < m.getMass()) {
 			return 1;
-		} else if (mass > o.getMass()) {
+		} else if (mass > m.getMass()) {
 			return -1;
 		}
 		return 0;
