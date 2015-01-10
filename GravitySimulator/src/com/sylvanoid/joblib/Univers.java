@@ -156,7 +156,7 @@ public class Univers {
 					}
 				}
 			}
-
+			
 			List<Univers> subUnivers = new ArrayList<Univers>();
 			subUnivers.add(suba);
 			subUnivers.add(subb);
