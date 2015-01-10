@@ -329,27 +329,24 @@ public class Univers {
 					parameters.getDensity(), false);
 			miniListMatter.put(m, m);
 			miniMass += m.getMass();
-
 			for (Matter mbis : miniListMatter.values()) {
 				double alea = random.nextDouble();
-				mbis.setColor(new Vector3d(0.80 + random.nextDouble() * 0.20,
-						0.80 + random.nextDouble() * 0.20, 0.80 + random
-								.nextDouble() * 0.20));
+				mbis.setColor(new Vector3d(0.45 + random.nextDouble() * 0.05,
+						0.45 + random.nextDouble() * 0.05, 0.45 + random
+								.nextDouble() * 0.05));
 				if (alea > 0.80) {
-					mbis.setColor(new Vector3d(
-							0.90 + random.nextDouble() * 0.1, 0.4 + random
-									.nextDouble() * 0.2, 0.4 + random
-									.nextDouble() * 0.2));
+					mbis.setColor(new Vector3d(0.55 + random.nextDouble() * 0.05,
+							0.45 + random.nextDouble() * 0.05, 0.45 + random
+									.nextDouble() * 0.05));
 				}
 				if (alea > 0.90) {
-					mbis.setColor(new Vector3d(
-							0.4 + random.nextDouble() * 0.20, 0.4 + random
-									.nextDouble() * 0.20, 0.9 + random
-									.nextDouble() * 0.10));
+					mbis.setColor(new Vector3d(0.45 + random.nextDouble() * 0.05,
+							0.45 + random.nextDouble() * 0.05, 0.55 + random
+									.nextDouble() * 0.05));
 				}
 			}
 		}
-
+			
 		for (Matter m : miniListMatter.values()) {
 			m.setSpeed(new Vector3d(initialSpeed));
 		}
@@ -384,8 +381,8 @@ public class Univers {
 
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(0.25, 1, 0.25));
+				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), true);

@@ -772,7 +772,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override

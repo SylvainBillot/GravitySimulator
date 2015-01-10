@@ -89,8 +89,8 @@ public class GUIParam extends JDialog {
 					fusion.setSelected(true);
 					densiteMin.setValue(1);
 					nebulaRadius.setValue(HelperVariable.UA*5);
-					massObjectMin.setValue(HelperVariable.M/1E3);
-					massObjectMax.setValue(HelperVariable.M/1E2);
+					massObjectMin.setValue(HelperVariable.M/2E3);
+					massObjectMax.setValue(HelperVariable.M/1E3);
 					negligeableMass.setValue(0);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
