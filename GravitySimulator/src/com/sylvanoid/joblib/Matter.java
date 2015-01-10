@@ -208,13 +208,6 @@ public class Matter implements Comparable<Matter> {
 
 	public void move() {
 		pointBefore = new Vector3d(point);
-		// Relativity effet
-		/*
-		 * double gamma = Math.pow( 1 - speed.length() /
-		 * Math.pow(HelperVariable.C, 2), 0.5); speed = new Vector3d(speed.x *
-		 * gamma, speed.y * gamma, speed.z * gamma);
-		 */
-		// End of
 		point = getPlusV();
 	}
 

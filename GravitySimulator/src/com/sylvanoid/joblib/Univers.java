@@ -1,11 +1,8 @@
 package com.sylvanoid.joblib;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.vecmath.Point3d;
@@ -176,8 +173,6 @@ public class Univers {
 			subg.computeMassLimitsCentroid();
 			subh.computeMassLimitsCentroid();
 
-			listMatter = new TreeMap<Matter, Matter>();
-
 			for (Univers u : subUnivers) {
 				u.barnesHut();
 				for (Univers uvoisin : subUnivers) {
@@ -195,65 +190,16 @@ public class Univers {
 							m.getSpeed().add(
 									HelperVector.acceleration(m.getPoint(),
 											uvoisin.getGPoint(), attraction));
-					
-							listMatter.put(m, m);
-						}
-					} else {
-						for (Matter m : u.listMatter.values()) {
-							listMatter.put(m, m);
 						}
 					}
 				}
-
-
 			}
 		}
 	}
 
 	private void manageImpact() {
 		// Collisions seach
-
-		LinkedList<Matter[]> toTreat = new LinkedList<Matter[]>();
-		HashMap<Matter, String> treatedFusion = new HashMap<Matter, String>();
-		TreeMap<Double, Matter> sortX = new TreeMap<Double, Matter>();
-		TreeMap<Double, Matter> sortXDark = new TreeMap<Double, Matter>();
-		for (Matter m : listMatter.values()) {
-			if (!m.isDark()) {
-				sortX.put(m.minWithR().x, m);
-				sortX.put(m.getPoint().x, m);
-				sortX.put(m.maxWithR().x, m);
-			} else {
-				sortXDark.put(m.minWithR().x, m);
-				sortXDark.put(m.getPoint().x, m);
-				sortXDark.put(m.maxWithR().x, m);
-			}
-		}
-
-		for (Matter m1 : listMatter.values()) {
-			if (!m1.isDark()) {
-				if (parameters.isFusion()) {
-					treatNeighborFusion(m1, sortX, treatedFusion, toTreat);
-				} else {
-					treatNeighborImpact(m1, sortX, toTreat);
-				}
-			} else {
-				if (parameters.isFusion()) {
-					treatNeighborFusion(m1, sortXDark, treatedFusion, toTreat);
-				} else {
-					treatNeighborImpact(m1, sortXDark, toTreat);
-				}
-			}
-		}
-
-		for (int cpt = 0; cpt < toTreat.size(); cpt++) {
-			Matter[] element = toTreat.get(cpt);
-			if (parameters.isFusion()) {
-				element[0].fusion(element[1]);
-				listMatter.remove(element[1]);
-			} else {
-				element[0].impact(element[1]);
-			}
-		}
+		
 
 	}
 
@@ -322,81 +268,6 @@ public class Univers {
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 	}
 
-	private void treatNeighborFusion(Matter m1, TreeMap<Double, Matter> sortX,
-			HashMap<Matter, String> treated, List<Matter[]> toTreat) {
-		if (treated.get(m1) == null) {
-			treated.put(m1, "");
-			SortedMap<Double, Matter> selectX = sortX.subMap(m1.minWithR().x,
-					true, m1.maxWithR().x, false);
-			TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
-			for (Matter m : selectX.values()) {
-				sortY.put(m.minWithR().y, m);
-				sortY.put(m.getPoint().y, m);
-				sortY.put(m.maxWithR().y, m);
-			}
-			SortedMap<Double, Matter> selectY = sortY.subMap(m1.minWithR().y,
-					true, m1.maxWithR().y, false);
-			TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
-			for (Matter m : selectY.values()) {
-				sortZ.put(m.minWithR().z, m);
-				sortZ.put(m.getPoint().z, m);
-				sortZ.put(m.maxWithR().z, m);
-			}
-			SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z,
-					true, m1.maxWithR().z, false);
-
-			for (Matter m2 : selectZ.values()) {
-				if (treated.get(m2) == null && m1.collision(m2)) {
-					treated.put(m2, "");
-					Matter element[] = new Matter[2];
-					element[0] = m1;
-					element[1] = m2;
-					toTreat.add(element);
-				}
-			}
-		}
-	}
-
-	private void treatNeighborImpact(Matter m1, TreeMap<Double, Matter> sortX,
-			List<Matter[]> toTreat) {
-		SortedMap<Double, Matter> selectX = sortX.subMap(m1.minWithR().x, true,
-				m1.maxWithR().x, false);
-		TreeMap<Double, Matter> sortY = new TreeMap<Double, Matter>();
-		for (Matter m : selectX.values()) {
-			sortY.put(m.minWithR().y, m);
-			sortY.put(m.getPoint().y, m);
-			sortY.put(m.maxWithR().y, m);
-		}
-		SortedMap<Double, Matter> selectY = sortY.subMap(m1.minWithR().y, true,
-				m1.maxWithR().y, false);
-
-		TreeMap<Double, Matter> sortZ = new TreeMap<Double, Matter>();
-		for (Matter m : selectY.values()) {
-			sortZ.put(m.minWithR().z, m);
-			sortZ.put(m.getPoint().z, m);
-			sortZ.put(m.maxWithR().z, m);
-		}
-		SortedMap<Double, Matter> selectZ = sortZ.subMap(m1.minWithR().z, true,
-				m1.maxWithR().z, false);
-
-		for (Matter m2 : selectZ.values()) {
-			if (m1 != m2 && m1.collision(m2)) {
-				Matter element[] = new Matter[2];
-				element[0] = m1;
-				element[1] = m2;
-				boolean toadd = true;
-				for (Matter e[] : toTreat) {
-					if (e[0] == m1 && e[1] == m2 && e[0] == m2 && e[1] == m1) {
-						toadd = false;
-						break;
-					}
-				}
-				if (toadd) {
-					toTreat.add(element);
-				}
-			}
-		}
-	}
 
 	private TreeMap<Matter, Matter> createUvivers(Vector3d origine,
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
