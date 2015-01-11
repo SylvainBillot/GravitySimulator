@@ -28,12 +28,7 @@ public class Matter implements Comparable<Matter> {
 	@Override
 	public int compareTo(Matter m) {
 		// TODO Auto-generated method stub
-		if (mass < m.getMass()) {
-			return 1;
-		} else if (mass > m.getMass()) {
-			return -1;
-		}
-		return 0;
+		return mass < m.getMass() ? 1 : -1;
 	}
 
 	@Override
@@ -288,21 +283,14 @@ public class Matter implements Comparable<Matter> {
 		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
 				orbitalSpeedValue);
 
-		if (axis.x != 0) {
-			accel = HelperVector.rotate(accel,
-					new Vector3d(0, 0, Math.signum(axis.x) * Math.PI / 2),
-					Math.PI / 2);
-		}
-		if (axis.y != 0) {
-			accel = HelperVector.rotate(accel,
-					new Vector3d(0, Math.signum(axis.y) * Math.PI / 2, 0),
-					Math.signum(axis.y) * Math.PI / 2);
-		}
-		if (axis.z != 0) {
-			accel = HelperVector.rotate(accel,
-					new Vector3d(0, 0, Math.signum(axis.z) * Math.PI / 2),
-					Math.signum(axis.z) * Math.PI / 2);
-		}
+		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
+				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
+		accel = axis.y != 0 ?HelperVector.rotate(accel,
+				new Vector3d(0, Math.signum(axis.y) * Math.PI / 2, 0),
+				Math.signum(axis.y) * Math.PI / 2):accel;
+		accel = axis.z != 0?HelperVector.rotate(accel,
+				new Vector3d(0, 0, Math.signum(axis.z) * Math.PI / 2),
+				Math.signum(axis.z) * Math.PI / 2):accel;
 
 		return accel;
 	}

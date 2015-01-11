@@ -383,6 +383,7 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
+		
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), true);
