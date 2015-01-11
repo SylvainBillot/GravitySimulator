@@ -2,7 +2,6 @@ package com.sylvanoid.joblib;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.TreeMap;
 
 import javax.vecmath.Point3d;
@@ -199,7 +198,6 @@ public class Univers {
 
 	private void manageImpact() {
 		// Collisions seach
-		
 
 	}
 
@@ -282,7 +280,6 @@ public class Univers {
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
-		Random random = new Random();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < parameters.getNumberOfObjects(); cpt++) {
 			Matter m;
@@ -293,9 +290,9 @@ public class Univers {
 			while (IsNotOK) {
 
 				double r = radiusMin + (radiusMax - radiusMin)
-						* Math.pow(random.nextDouble(), Math.pow(1, 3));
-				double s = 2 * (random.nextDouble() - 0.5);
-				double alpha = 2 * Math.PI * (random.nextDouble() - 0.5);
+						* Math.pow(Math.random(), Math.pow(1, 3));
+				double s = 2 * (Math.random() - 0.5);
+				double alpha = 2 * Math.PI * (Math.random() - 0.5);
 				double c = r * Math.pow(1 - Math.pow(s, 2), 0.5);
 				x = c * Math.cos(alpha);
 				y = c * Math.sin(alpha);
@@ -322,27 +319,24 @@ public class Univers {
 			m = new Matter(parameters, new Vector3d(origine.x + x * ratio.x,
 					origine.y + y * ratio.y, origine.z + z * ratio.z),
 					parameters.getMassObjectMin()
-							+ random.nextDouble()
+							+ Math.random()
 							* (parameters.getMassObjectMax() - parameters
 									.getMassObjectMin()) + 1E-100
-							* random.nextDouble(), new Vector3d(0, 0, 0),
+							* Math.random(), new Vector3d(0, 0, 0),
 					parameters.getDensity(), false);
 			miniListMatter.put(m, m);
 			miniMass += m.getMass();
 			for (Matter mbis : miniListMatter.values()) {
-				double alea = random.nextDouble();
-				mbis.setColor(new Vector3d(0.45 + random.nextDouble() * 0.05,
-						0.45 + random.nextDouble() * 0.05, 0.45 + random
-								.nextDouble() * 0.05));
+				double alea = Math.random();
+				mbis.setColor(new Vector3d(0.45 + Math.random() * 0.05,
+						0.45 + Math.random() * 0.05, 0.45 + Math.random() * 0.05));
 				if (alea > 0.80) {
-					mbis.setColor(new Vector3d(0.55 + random.nextDouble() * 0.05,
-							0.45 + random.nextDouble() * 0.05, 0.45 + random
-									.nextDouble() * 0.05));
+					mbis.setColor(new Vector3d(0.55 + Math.random() * 0.05,
+							0.45 + Math.random() * 0.05, 0.45 + Math.random() * 0.05));
 				}
 				if (alea > 0.90) {
-					mbis.setColor(new Vector3d(0.45 + random.nextDouble() * 0.05,
-							0.45 + random.nextDouble() * 0.05, 0.55 + random
-									.nextDouble() * 0.05));
+					mbis.setColor(new Vector3d(0.45 + Math.random() * 0.05,
+							0.45 + Math.random() * 0.05, 0.55 + Math.random() * 0.05));
 				}
 			}
 		}
