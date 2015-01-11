@@ -28,7 +28,13 @@ public class Matter implements Comparable<Matter> {
 	@Override
 	public int compareTo(Matter m) {
 		// TODO Auto-generated method stub
-		return mass < m.getMass() ? 1 : -1;
+		if(mass < m.getMass()) {
+			return 1;
+		}
+		if(mass > m.getMass()) {
+			return -1;
+		}
+		return 0;
 	}
 
 	@Override
