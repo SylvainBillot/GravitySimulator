@@ -127,7 +127,7 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1E3);
 					negligeableMass.setValue(0);
 					darkMatterMass.setValue(1E40);
-					darkMatterDensity.setValue(1E-20);
+					darkMatterDensity.setValue(1E-23);
 					expensionOfUnivers.setValue(0);
 					break;
 				case 4:

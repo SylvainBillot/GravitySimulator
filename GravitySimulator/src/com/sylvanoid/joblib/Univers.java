@@ -33,6 +33,9 @@ public class Univers {
 	private Vector3d gPoint = new Vector3d(0, 0, 0);
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
+	private Vector3d speed = new Vector3d(0, 0, 0);
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
 	private Vector3d min = new Vector3d(0, 0, 0);
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
@@ -74,7 +77,7 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomInitialExpension) {
 			createRandomExpensionUvivers();
 		}
-		computeMassLimitsCentroid();
+		computeMassLimitsCentroidSpeed();
 	}
 
 	public Univers(Univers father) {
@@ -86,7 +89,7 @@ public class Univers {
 		parameters.setNumOfCompute(0);
 		parameters.setNumOfAccelCompute(0);
 		long startTimeCycle = System.currentTimeMillis();
-		computeMassLimitsCentroid();
+		computeMassLimitsCentroidSpeed();
 		parameters.setLimitComputeTime(System.currentTimeMillis()
 				- startTimeCycle);
 
@@ -152,7 +155,7 @@ public class Univers {
 					}
 				}
 			}
-			
+
 			List<Univers> subUnivers = new ArrayList<Univers>();
 			subUnivers.add(suba);
 			subUnivers.add(subb);
@@ -163,14 +166,14 @@ public class Univers {
 			subUnivers.add(subg);
 			subUnivers.add(subh);
 
-			suba.computeMassLimitsCentroid();
-			subb.computeMassLimitsCentroid();
-			subc.computeMassLimitsCentroid();
-			subd.computeMassLimitsCentroid();
-			sube.computeMassLimitsCentroid();
-			subf.computeMassLimitsCentroid();
-			subg.computeMassLimitsCentroid();
-			subh.computeMassLimitsCentroid();
+			suba.computeMassLimitsCentroidSpeed();
+			subb.computeMassLimitsCentroidSpeed();
+			subc.computeMassLimitsCentroidSpeed();
+			subd.computeMassLimitsCentroidSpeed();
+			sube.computeMassLimitsCentroidSpeed();
+			subf.computeMassLimitsCentroidSpeed();
+			subg.computeMassLimitsCentroidSpeed();
+			subh.computeMassLimitsCentroidSpeed();
 
 			for (Univers u : subUnivers) {
 				u.barnesHut();
@@ -186,9 +189,15 @@ public class Univers {
 									* HelperVariable.G
 									* (((uvoisin.getMass()) / Math.pow(
 											distance, 2)));
-							m.getSpeed().add(
-									HelperVector.acceleration(m.getPoint(),
-											uvoisin.getGPoint(), attraction));
+							if (distance > m.getRayon()) {
+								m.getSpeed()
+										.add(HelperVector.acceleration(
+												m.getPoint(),
+												uvoisin.getGPoint(), attraction));
+							} else {
+								// ???
+							}
+
 						}
 					}
 				}
@@ -197,8 +206,7 @@ public class Univers {
 	}
 
 	private void manageImpact() {
-		// Collisions seach
-
+		// Collisions search
 	}
 
 	private void move() {
@@ -216,8 +224,9 @@ public class Univers {
 		}
 	}
 
-	private void computeMassLimitsCentroid() {
+	private void computeMassLimitsCentroidSpeed() {
 		boolean firstTime = true;
+		speed = new Vector3d(0, 0, 0);
 		mass = 0;
 		visibleMass = 0;
 		darkMass = 0;
@@ -262,26 +271,36 @@ public class Univers {
 			tmpGx += (m.getPoint().getX() * m.getMass());
 			tmpGy += (m.getPoint().getY() * m.getMass());
 			tmpGz += (m.getPoint().getZ() * m.getMass());
+			speed.add(m.getSpeed());
 		}
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 	}
-
 
 	private TreeMap<Matter, Matter> createUvivers(Vector3d origine,
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		miniListMatter.putAll(createUviversMain(origine, initialSpeed,
-				axisOfRing, radiusMin, radiusMax, ratio));
+				axisOfRing, radiusMin, radiusMax, ratio,
+				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
+				parameters.getMassObjectMax(), parameters.getDensity()));
+/*
+		miniListMatter.putAll(createUviversMain(origine, initialSpeed,
+				axisOfRing, radiusMin, radiusMax, ratio,
+				parameters.getNumberOfObjects() * 30,
+				parameters.getMassObjectMin() / 1E8,
+				parameters.getMassObjectMax() / 1E8, parameters.getDensity()));
+*/
 		return miniListMatter;
 	}
 
 	private TreeMap<Matter, Matter> createUviversMain(Vector3d origine,
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
-			double radiusMax, Vector3d ratio) {
+			double radiusMax, Vector3d ratio, int numberOfObjects,
+			double minMass, double maxMass, double density) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		double miniMass = 0;
-		for (int cpt = 0; cpt < parameters.getNumberOfObjects(); cpt++) {
+		for (int cpt = 0; cpt < numberOfObjects; cpt++) {
 			Matter m;
 			double x = 1;
 			double y = 1;
@@ -317,30 +336,29 @@ public class Univers {
 			}
 
 			m = new Matter(parameters, new Vector3d(origine.x + x * ratio.x,
-					origine.y + y * ratio.y, origine.z + z * ratio.z),
-					parameters.getMassObjectMin()
-							+ Math.random()
-							* (parameters.getMassObjectMax() - parameters
-									.getMassObjectMin()) + 1E-100
-							* Math.random(), new Vector3d(0, 0, 0),
-					parameters.getDensity(), false);
+					origine.y + y * ratio.y, origine.z + z * ratio.z), minMass
+					+ Math.random() * (maxMass - minMass) + 1E-100
+					* Math.random(), new Vector3d(0, 0, 0), density, false);
 			miniListMatter.put(m, m);
 			miniMass += m.getMass();
 			for (Matter mbis : miniListMatter.values()) {
 				double alea = Math.random();
 				mbis.setColor(new Vector3d(0.45 + Math.random() * 0.05,
-						0.45 + Math.random() * 0.05, 0.45 + Math.random() * 0.05));
+						0.45 + Math.random() * 0.05,
+						0.45 + Math.random() * 0.05));
 				if (alea > 0.80) {
 					mbis.setColor(new Vector3d(0.55 + Math.random() * 0.05,
-							0.45 + Math.random() * 0.05, 0.45 + Math.random() * 0.05));
+							0.45 + Math.random() * 0.05,
+							0.45 + Math.random() * 0.05));
 				}
 				if (alea > 0.90) {
 					mbis.setColor(new Vector3d(0.45 + Math.random() * 0.05,
-							0.45 + Math.random() * 0.05, 0.55 + Math.random() * 0.05));
+							0.45 + Math.random() * 0.05,
+							0.55 + Math.random() * 0.05));
 				}
 			}
 		}
-			
+
 		for (Matter m : miniListMatter.values()) {
 			m.setSpeed(new Vector3d(initialSpeed));
 		}
@@ -360,7 +378,7 @@ public class Univers {
 
 	private void createRandomExpensionUvivers() {
 		createRandomStaticUvivers();
-		computeMassLimitsCentroid();
+		computeMassLimitsCentroidSpeed();
 		for (Matter m : listMatter.values()) {
 			m.setColor(new Vector3d(1, 1, 1));
 			m.setAngles(new Vector3d(Math.random() * 2 * Math.PI, Math.random()
@@ -377,7 +395,7 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
-		
+
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), true);
@@ -542,8 +560,8 @@ public class Univers {
 
 	private void createPlanetaryRandom() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 1, 0), parameters.getNebulaRadius()*0.1, parameters.getNebulaRadius(),
-				new Vector3d(1, 0.1, 1));
+				new Vector3d(0, 1, 0), parameters.getNebulaRadius() * 0.1,
+				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1));
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), Math.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), parameters.getDarkMatterDensity(), false);

@@ -28,10 +28,10 @@ public class Matter implements Comparable<Matter> {
 	@Override
 	public int compareTo(Matter m) {
 		// TODO Auto-generated method stub
-		if(mass < m.getMass()) {
+		if (mass < m.getMass()) {
 			return 1;
 		}
-		if(mass > m.getMass()) {
+		if (mass > m.getMass()) {
 			return -1;
 		}
 		return 0;
@@ -46,6 +46,12 @@ public class Matter implements Comparable<Matter> {
 
 	public Matter() {
 
+	}
+
+	/* For comaraison only */
+	public Matter(Vector3d point) {
+		this.setPoint(point);
+		mass = Math.random();
 	}
 
 	public Matter(Parameters parameters, Vector3d point, double mass,
@@ -291,12 +297,12 @@ public class Matter implements Comparable<Matter> {
 
 		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
 				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
-		accel = axis.y != 0 ?HelperVector.rotate(accel,
+		accel = axis.y != 0 ? HelperVector.rotate(accel,
 				new Vector3d(0, Math.signum(axis.y) * Math.PI / 2, 0),
-				Math.signum(axis.y) * Math.PI / 2):accel;
-		accel = axis.z != 0?HelperVector.rotate(accel,
-				new Vector3d(0, 0, Math.signum(axis.z) * Math.PI / 2),
-				Math.signum(axis.z) * Math.PI / 2):accel;
+				Math.signum(axis.y) * Math.PI / 2) : accel;
+		accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
+				Math.signum(axis.z) * Math.PI / 2), Math.signum(axis.z)
+				* Math.PI / 2) : accel;
 
 		return accel;
 	}
