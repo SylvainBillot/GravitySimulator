@@ -1,10 +1,8 @@
 package com.sylvanoid.joblib;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
+import java.util.concurrent.ForkJoinPool;
 
-import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -85,146 +83,7 @@ public class Univers {
 		listMatter = new TreeMap<Matter, Matter>();
 	}
 
-	public void process() {
-		parameters.setNumOfCompute(0);
-		parameters.setNumOfAccelCompute(0);
-		long startTimeCycle = System.currentTimeMillis();
-		computeMassLimitsCentroidSpeed();
-		parameters.setLimitComputeTime(System.currentTimeMillis()
-				- startTimeCycle);
-
-		long startTimeBH = System.currentTimeMillis();
-		barnesHut();
-		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
-				- startTimeBH);
-
-		long startTimeMove = System.currentTimeMillis();
-		move();
-		parameters.setMoveComputeTime(System.currentTimeMillis()
-				- startTimeMove);
-		parameters.setCycleComputeTime(System.currentTimeMillis()
-				- startTimeCycle);
-
-	}
-
-	/* Barnes Hutt implementation */
-	private void barnesHut() {
-		if (listMatter.size() > 1 && mass > parameters.getNegligeableMass()) {
-			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
-			double cx = min.x + (max.x - min.x) / 2;
-			double cy = min.y + (max.y - min.y) / 2;
-			double cz = min.z + (max.z - min.z) / 2;
-
-			Univers suba = new Univers(this);
-			Univers subb = new Univers(this);
-			Univers subc = new Univers(this);
-			Univers subd = new Univers(this);
-			Univers sube = new Univers(this);
-			Univers subf = new Univers(this);
-			Univers subg = new Univers(this);
-			Univers subh = new Univers(this);
-
-			for (Matter m : listMatter.values()) {
-				if (m.getPoint().x > cx) {
-					if (m.getPoint().y > cy) {
-						if (m.getPoint().z > cz) {
-							suba.getListMatter().put(m, m);
-						} else {
-							subb.getListMatter().put(m, m);
-						}
-					} else {
-						if (m.getPoint().z > cz) {
-							subc.getListMatter().put(m, m);
-						} else {
-							subd.getListMatter().put(m, m);
-						}
-					}
-				} else {
-					if (m.getPoint().y > cy) {
-						if (m.getPoint().z > cz) {
-							sube.getListMatter().put(m, m);
-						} else {
-							subf.getListMatter().put(m, m);
-						}
-					} else {
-						if (m.getPoint().z > cz) {
-							subg.getListMatter().put(m, m);
-						} else {
-							subh.getListMatter().put(m, m);
-						}
-					}
-				}
-			}
-
-			List<Univers> subUnivers = new ArrayList<Univers>();
-			subUnivers.add(suba);
-			subUnivers.add(subb);
-			subUnivers.add(subc);
-			subUnivers.add(subd);
-			subUnivers.add(sube);
-			subUnivers.add(subf);
-			subUnivers.add(subg);
-			subUnivers.add(subh);
-
-			suba.computeMassLimitsCentroidSpeed();
-			subb.computeMassLimitsCentroidSpeed();
-			subc.computeMassLimitsCentroidSpeed();
-			subd.computeMassLimitsCentroidSpeed();
-			sube.computeMassLimitsCentroidSpeed();
-			subf.computeMassLimitsCentroidSpeed();
-			subg.computeMassLimitsCentroidSpeed();
-			subh.computeMassLimitsCentroidSpeed();
-
-			for (Univers u : subUnivers) {
-				u.barnesHut();
-				for (Univers uvoisin : subUnivers) {
-					if (u != uvoisin && uvoisin.getListMatter().size() > 0
-							&& uvoisin.mass > parameters.getNegligeableMass()) {
-						for (Matter m : u.listMatter.values()) {
-							parameters.setNumOfAccelCompute(parameters
-									.getNumOfAccelCompute() + 1);
-							double distance = new Point3d(m.getPoint())
-									.distance(new Point3d(uvoisin.getGPoint()));
-							double attraction = parameters.getTimeFactor()
-									* HelperVariable.G
-									* (((uvoisin.getMass()) / Math.pow(
-											distance, 2)));
-							if (distance > m.getRayon()) {
-								m.getSpeed()
-										.add(HelperVector.acceleration(
-												m.getPoint(),
-												uvoisin.getGPoint(), attraction));
-							} else {
-								// ???
-							}
-
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private void manageImpact() {
-		// Collisions search
-	}
-
-	private void move() {
-		if (parameters.isManageImpact()) {
-			manageImpact();
-		}
-
-		for (Matter m : listMatter.values()) {
-			if (parameters.getExpensionOfUnivers() != 0) {
-				double exp = 1 + parameters.getTimeFactor()
-						* parameters.getExpensionOfUnivers();
-				HelperVector.addDouble(m.getPoint(), exp);
-			}
-			m.move();
-		}
-	}
-
-	private void computeMassLimitsCentroidSpeed() {
+	public void computeMassLimitsCentroidSpeed() {
 		boolean firstTime = true;
 		speed = new Vector3d(0, 0, 0);
 		mass = 0;
@@ -276,6 +135,42 @@ public class Univers {
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 	}
 
+	public void process() {
+		parameters.setNumOfCompute(0);
+		parameters.setNumOfAccelCompute(0);
+		long startTimeCycle = System.currentTimeMillis();
+		computeMassLimitsCentroidSpeed();
+		parameters.setLimitComputeTime(System.currentTimeMillis()
+				- startTimeCycle);
+		long startTimeBH = System.currentTimeMillis();
+		BarnesHut barnesHut = new BarnesHut(this);
+		ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
+				.availableProcessors());
+		pool.invoke(barnesHut);
+
+		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
+				- startTimeBH);
+
+		long startTimeMove = System.currentTimeMillis();
+		move();
+		parameters.setMoveComputeTime(System.currentTimeMillis()
+				- startTimeMove);
+		parameters.setCycleComputeTime(System.currentTimeMillis()
+				- startTimeCycle);
+
+	}
+
+	private void move() {
+		for (Matter m : listMatter.values()) {
+			if (parameters.getExpensionOfUnivers() != 0) {
+				double exp = 1 + parameters.getTimeFactor()
+						* parameters.getExpensionOfUnivers();
+				HelperVector.addDouble(m.getPoint(), exp);
+			}
+			m.move();
+		}
+	}
+
 	private TreeMap<Matter, Matter> createUvivers(Vector3d origine,
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio) {
@@ -284,13 +179,12 @@ public class Univers {
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
 				parameters.getMassObjectMax(), parameters.getDensity()));
-/*
-		miniListMatter.putAll(createUviversMain(origine, initialSpeed,
-				axisOfRing, radiusMin, radiusMax, ratio,
-				parameters.getNumberOfObjects() * 30,
-				parameters.getMassObjectMin() / 1E8,
-				parameters.getMassObjectMax() / 1E8, parameters.getDensity()));
-*/
+		/*
+		 * miniListMatter.putAll(createUviversMain(origine, initialSpeed,
+		 * axisOfRing, radiusMin, radiusMax, ratio,
+		 * parameters.getNumberOfObjects() * 30, parameters.getMassObjectMin() /
+		 * 1E8, parameters.getMassObjectMax() / 1E8, parameters.getDensity()));
+		 */
 		return miniListMatter;
 	}
 
@@ -604,6 +498,14 @@ public class Univers {
 
 	public Vector3d getGPoint() {
 		return gPoint;
+	}
+
+	public Vector3d getMin() {
+		return min;
+	}
+
+	public Vector3d getMax() {
+		return max;
 	}
 
 	public double getMass() {

@@ -25,6 +25,8 @@ public class Matter implements Comparable<Matter> {
 	private double density;
 	private double rayon;
 
+	private Vector3d impactSpeed = new Vector3d(0, 0, 0);
+
 	@Override
 	public int compareTo(Matter m) {
 		// TODO Auto-generated method stub
@@ -215,6 +217,10 @@ public class Matter implements Comparable<Matter> {
 
 	public void move() {
 		pointBefore = new Vector3d(point);
+		if(!impactSpeed.equals(new Vector3d(0, 0, 0))){
+			speed = new Vector3d(impactSpeed);
+			impactSpeed = new Vector3d(0, 0, 0);
+		}
 		point = getPlusV();
 	}
 
@@ -225,12 +231,14 @@ public class Matter implements Comparable<Matter> {
 				/ (mass + m.getMass()), (point.z * mass + m.getPoint().z
 				* m.getMass())
 				/ (mass + m.getMass()));
+
 		speed = new Vector3d((speed.x * mass + m.getSpeed().x * m.getMass())
 				/ (mass + m.getMass()), (speed.y * mass + m.getSpeed().y
 				* m.getMass())
 				/ (mass + m.getMass()), (speed.z * mass + m.getSpeed().z
 				* m.getMass())
 				/ (mass + m.getMass()));
+
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
 		mass += m.getMass();
@@ -249,19 +257,7 @@ public class Matter implements Comparable<Matter> {
 		double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass
 				* speed.z + m.getMass() * m.getSpeed().z)
 				/ (mass + m.getMass());
-
-		double v2x = (Cr * mass * (speed.x - m.getSpeed().x) + m.getMass()
-				* m.getSpeed().x + mass * speed.x)
-				/ (m.getMass() + mass);
-		double v2y = (Cr * mass * (speed.y - m.getSpeed().y) + m.getMass()
-				* m.getSpeed().y + mass * speed.y)
-				/ (m.getMass() + mass);
-		double v2z = (Cr * mass * (speed.z - m.getSpeed().z) + m.getMass()
-				* m.getSpeed().z + mass * speed.z)
-				/ (m.getMass() + mass);
-
-		speed = new Vector3d(v1x, v1y, v1z);
-		m.setSpeed(new Vector3d(v2x, v2y, v2z));
+		impactSpeed.add(new Vector3d(v1x, v1y, v1z));
 	}
 
 	public boolean collision(Matter m) {
