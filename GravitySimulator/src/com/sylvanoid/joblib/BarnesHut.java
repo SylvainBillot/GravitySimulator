@@ -163,11 +163,10 @@ public class BarnesHut extends RecursiveTask<Integer> {
 													.firstEntry().getValue(),
 											uvoisin.getListMatter()
 													.firstEntry().getValue());
-									/*
+									
 									uvoisin.getListMatter().firstEntry()
 											.getValue().getFusionWith()
 											.put(m, m);
-									*/
 								} else {
 									m.impact(uvoisin.getListMatter()
 											.firstEntry().getValue());

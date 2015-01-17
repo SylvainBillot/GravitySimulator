@@ -236,34 +236,45 @@ public class Matter implements Comparable<Matter> {
 		point = getPlusV();
 	}
 
-	public void fusion(Matter m) {
-		point = new Vector3d((point.x * mass + m.getPoint().x * m.getMass())
-				/ (mass + m.getMass()), (point.y * mass + m.getPoint().y
-				* m.getMass())
-				/ (mass + m.getMass()), (point.z * mass + m.getPoint().z
-				* m.getMass())
-				/ (mass + m.getMass()));
-		speed = new Vector3d((speed.x * mass + m.getSpeed().x * m.getMass())
-				/ (mass + m.getMass()), (speed.y * mass + m.getSpeed().y
-				* m.getMass())
-				/ (mass + m.getMass()), (speed.z * mass + m.getSpeed().z
-				* m.getMass())
-				/ (mass + m.getMass()));
-		density = (density * mass + m.getDensity() * m.getMass())
-				/ (mass + m.getMass());
-		mass += m.getMass();
-		rayon = Math.pow(3 * (mass / density) / (4 * Math.PI), (double) 1
-				/ (double) 3);
+	public void fusion(TreeMap<Matter, Matter> toRemove) {
+		if (!toRemove.containsKey(this)) {
+			for (Matter m : fusionWith.values()) {
+				if (!toRemove.containsKey(m)) {
+					point = new Vector3d((point.x * mass + m.getPoint().x
+							* m.getMass())
+							/ (mass + m.getMass()),
+							(point.y * mass + m.getPoint().y * m.getMass())
+									/ (mass + m.getMass()),
+							(point.z * mass + m.getPoint().z * m.getMass())
+									/ (mass + m.getMass()));
+					speed = new Vector3d((speed.x * mass + m.getSpeed().x
+							* m.getMass())
+							/ (mass + m.getMass()),
+							(speed.y * mass + m.getSpeed().y * m.getMass())
+									/ (mass + m.getMass()),
+							(speed.z * mass + m.getSpeed().z * m.getMass())
+									/ (mass + m.getMass()));
+					density = (density * mass + m.getDensity() * m.getMass())
+							/ (mass + m.getMass());
+					mass += m.getMass();
+					rayon = Math.pow(3 * (mass / density) / (4 * Math.PI),
+							(double) 1 / (double) 3);
+					toRemove.put(m, m);
+				}
+			}
+		}
+		fusionWith = new TreeMap<Matter, Matter>();
 	}
 
-	public void elastic(Matter m) {
-		double k = 1E-11;
-		double distance = new Point3d(point)
-				.distance(new Point3d(m.getPoint()));
-		double dx = rayon + m.getRayon() - distance;
-		double elasticForceAccel = dx * k * parameters.getTimeFactor();
-		speed.sub(HelperVector.acceleration(point, m.getPoint(),
-				elasticForceAccel));
+	public void elastic(double k) {
+		for (Matter m : fusionWith.values()) {
+			double distance = new Point3d(point).distance(new Point3d(m
+					.getPoint()));
+			double dx = rayon + m.getRayon() - distance;
+			double elasticForceAccel = dx * k * parameters.getTimeFactor();
+			speed.sub(HelperVector.acceleration(point, m.getPoint(),
+					elasticForceAccel));
+		}
 	}
 
 	public void impact(Matter m) {

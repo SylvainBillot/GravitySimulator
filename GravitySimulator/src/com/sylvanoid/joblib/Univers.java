@@ -147,7 +147,7 @@ public class Univers {
 		ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
 				.availableProcessors());
 		pool.invoke(barnesHut);
-
+		
 		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 				- startTimeBH);
 
@@ -181,22 +181,15 @@ public class Univers {
 						* parameters.getExpensionOfUnivers();
 				HelperVector.addDouble(m.getPoint(), exp);
 			}
-			if (!toRemove.containsKey(m)) {
-				if (m.getFusionWith().size() > 0) {
-					for (Matter m1 : m.getFusionWith().values()) {
-						if (!toRemove.containsKey(m1)) {
-							m.fusion(m1);
-							toRemove.put(m1, m1);
-						}
-					}
-				}
-			}
-			m.setFusionWith(new TreeMap<Matter, Matter>());
+			m.fusion(toRemove);
+			//m.elastic(1E-11);
 			m.move();
 		}
+		
 		for (Matter m : toRemove.keySet()) {
 			listMatter.remove(m);
 		}
+		
 	}
 
 	private TreeMap<Matter, Matter> createUvivers(Vector3d origine,
@@ -208,10 +201,10 @@ public class Univers {
 				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
 				parameters.getMassObjectMax(), parameters.getDensity()));
 		/*
-		 * miniListMatter.putAll(createUviversMain(origine, initialSpeed,
-		 * axisOfRing, radiusMin, radiusMax, ratio,
-		 * parameters.getNumberOfObjects() * 30, parameters.getMassObjectMin() /
-		 * 1E8, parameters.getMassObjectMax() / 1E8, parameters.getDensity()));
+		  miniListMatter.putAll(createUviversMain(origine, initialSpeed,
+		  axisOfRing, radiusMin, radiusMax, ratio,
+		  parameters.getNumberOfObjects() * 50, parameters.getMassObjectMin() /
+		  1E8, parameters.getMassObjectMax() / 1E8, parameters.getDensity()));
 		 */
 		return miniListMatter;
 	}
@@ -258,15 +251,15 @@ public class Univers {
 			}
 
 			double alea = Math.random();
-			Vector3d color = new Vector3d(0.45 + Math.random() * 0.05,
-					0.45 + Math.random() * 0.05, 0.45 + Math.random() * 0.05);
+			Vector3d color = new Vector3d(0.25 + Math.random() * 0.05,
+					0.25 + Math.random() * 0.05, 0.25 + Math.random() * 0.05);
 			if (alea > 0.80) {
-				color.set(new Vector3d(0.55 + Math.random() * 0.05, 0.45 + Math
-						.random() * 0.05, 0.45 + Math.random() * 0.05));
+				color.set(new Vector3d(0.35 + Math.random() * 0.05, 0.25 + Math
+						.random() * 0.05, 0.25 + Math.random() * 0.05));
 			}
 			if (alea > 0.90) {
-				color.set(new Vector3d(0.45 + Math.random() * 0.05, 0.45 + Math
-						.random() * 0.05, 0.55 + Math.random() * 0.05));
+				color.set(new Vector3d(0.25 + Math.random() * 0.05, 0.25 + Math
+						.random() * 0.05, 0.35 + Math.random() * 0.05));
 			}
 
 			m = new Matter(parameters, new Vector3d(origine.x + x * ratio.x,
