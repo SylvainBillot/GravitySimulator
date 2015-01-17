@@ -1,5 +1,7 @@
 package com.sylvanoid.joblib;
 
+import java.util.TreeMap;
+
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
@@ -24,6 +26,7 @@ public class Matter implements Comparable<Matter> {
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private double rayon;
+	private TreeMap<Matter, Matter> fusionWith = new TreeMap<Matter, Matter>();
 
 	private Vector3d impactSpeed = new Vector3d(0, 0, 0);
 
@@ -57,11 +60,12 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public Matter(Parameters parameters, Vector3d point, double mass,
-			Vector3d speed, double density, boolean isDark) {
+			Vector3d speed, Vector3d color, double density, boolean isDark) {
 		this.parameters = parameters;
 		this.setPoint(point);
 		this.mass = mass;
 		this.speed = speed;
+		this.color = color;
 		this.density = density;
 		if (isDark) {
 			typeOfObject = TypeOfObject.Dark;
@@ -171,6 +175,14 @@ public class Matter implements Comparable<Matter> {
 		return rayon;
 	}
 
+	public TreeMap<Matter, Matter> getFusionWith() {
+		return fusionWith;
+	}
+
+	public void setFusionWith(TreeMap<Matter, Matter> fusionWith) {
+		this.fusionWith = fusionWith;
+	}
+
 	public Vector3d getPlusV() {
 		return new Vector3d(point.x + speed.x * parameters.getTimeFactor(),
 				point.y + speed.y * parameters.getTimeFactor(), point.z
@@ -217,7 +229,7 @@ public class Matter implements Comparable<Matter> {
 
 	public void move() {
 		pointBefore = new Vector3d(point);
-		if(!impactSpeed.equals(new Vector3d(0, 0, 0))){
+		if (!impactSpeed.equals(new Vector3d(0, 0, 0))) {
 			speed = new Vector3d(impactSpeed);
 			impactSpeed = new Vector3d(0, 0, 0);
 		}
@@ -231,19 +243,27 @@ public class Matter implements Comparable<Matter> {
 				/ (mass + m.getMass()), (point.z * mass + m.getPoint().z
 				* m.getMass())
 				/ (mass + m.getMass()));
-
 		speed = new Vector3d((speed.x * mass + m.getSpeed().x * m.getMass())
 				/ (mass + m.getMass()), (speed.y * mass + m.getSpeed().y
 				* m.getMass())
 				/ (mass + m.getMass()), (speed.z * mass + m.getSpeed().z
 				* m.getMass())
 				/ (mass + m.getMass()));
-
 		density = (density * mass + m.getDensity() * m.getMass())
 				/ (mass + m.getMass());
 		mass += m.getMass();
 		rayon = Math.pow(3 * (mass / density) / (4 * Math.PI), (double) 1
 				/ (double) 3);
+	}
+
+	public void elastic(Matter m) {
+		double k = 1E-11;
+		double distance = new Point3d(point)
+				.distance(new Point3d(m.getPoint()));
+		double dx = rayon + m.getRayon() - distance;
+		double elasticForceAccel = dx * k * parameters.getTimeFactor();
+		speed.sub(HelperVector.acceleration(point, m.getPoint(),
+				elasticForceAccel));
 	}
 
 	public void impact(Matter m) {
@@ -258,27 +278,6 @@ public class Matter implements Comparable<Matter> {
 				* speed.z + m.getMass() * m.getSpeed().z)
 				/ (mass + m.getMass());
 		impactSpeed.add(new Vector3d(v1x, v1y, v1z));
-	}
-
-	public boolean collision(Matter m) {
-		if (new Point3d(point).distance(new Point3d(m.getPoint())) < rayon
-				+ m.rayon
-				|| new Point3d(getPlusV()).distance(new Point3d(m.getPlusV())) < rayon
-						+ m.rayon) {
-			return true;
-		} else {
-			if ((Math.max(max().x, m.max().x) - Math.min(min().x, m.min().x) <= (max().x
-					- min().x + m.max().x - m.min().x))
-					&& (Math.max(max().y, m.max().y)
-							- Math.min(min().y, m.min().y) <= (max().y
-							- min().y + m.max().y - m.min().y))
-					&& (Math.max(max().z, m.max().z)
-							- Math.min(min().z, m.min().z) <= (max().z
-							- min().z + m.max().z - m.min().z))) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public Vector3d orbitalSpeed(Matter m, Vector3d axis) {

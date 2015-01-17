@@ -211,6 +211,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			drawTrace(gl);
 		}
 
+		//drawElastic(gl);
+		
 		/* Show current univers */
 		drawUnivers(gl);
 	}
@@ -495,6 +497,28 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glPopMatrix();
 	}
 
+	
+	@SuppressWarnings("unused")
+	private void drawElastic(GL2 gl) {
+		gl.glPushMatrix();
+		gl.glColor3d(0, 0.25, 0);
+		for (Matter m : univers.getListMatter().values()) {
+			if(m.getFusionWith().size()>0){
+				for(Matter m1:m.getFusionWith().values()){
+					gl.glBegin(GL2.GL_LINES);
+					gl.glVertex3d(parameters.getScala() * m.getPoint().x,
+							parameters.getScala() * m.getPoint().y, parameters.getScala()
+									* m.getPoint().z);
+					gl.glVertex3d(parameters.getScala() * m1.getPoint().x,
+							parameters.getScala() * m1.getPoint().y, parameters.getScala()
+									* m1.getPoint().z);
+					gl.glEnd();
+				}
+			}
+		}
+		gl.glPopMatrix();
+	}
+	
 	@SuppressWarnings("unused")
 	private void drawUniversSimplePoint(GL2 gl) {
 		for (Matter m : univers.getListMatter().values()) {

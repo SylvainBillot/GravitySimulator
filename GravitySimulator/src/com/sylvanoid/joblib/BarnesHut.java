@@ -26,8 +26,8 @@ public class BarnesHut extends RecursiveTask<Integer> {
 	protected Integer compute() {
 		// TODO Auto-generated method stub
 
-		if (univers.getListMatter().size() > 1
-				&& univers.getMass() > parameters.getNegligeableMass()) {
+		if (univers.getMass() > parameters.getNegligeableMass()
+				&& !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
 			double cx = univers.getMin().x
 					+ (univers.getMax().x - univers.getMin().x) / 2;
@@ -105,7 +105,8 @@ public class BarnesHut extends RecursiveTask<Integer> {
 			BarnesHut bhg = new BarnesHut(subg);
 			BarnesHut bhh = new BarnesHut(subh);
 
-			// Parallelization x 4
+			// Parallelization
+
 			bha.fork();
 			bhb.fork();
 			bhc.fork();
@@ -124,6 +125,10 @@ public class BarnesHut extends RecursiveTask<Integer> {
 			bhg.join();
 			bhh.join();
 
+			/*
+			 * bha.compute(); bhb.compute(); bhc.compute(); bhd.compute();
+			 * bhe.compute(); bhf.compute(); bhg.compute(); bhh.compute();
+			 */
 			for (Univers u : subUnivers) {
 				for (Univers uvoisin : subUnivers) {
 					if (u != uvoisin
@@ -153,7 +158,16 @@ public class BarnesHut extends RecursiveTask<Integer> {
 							} else {
 								// ???
 								if (parameters.isFusion()) {
-									//m.fusion(uvoisin.getListMatter().firstEntry().getValue());
+									m.getFusionWith().put(
+											uvoisin.getListMatter()
+													.firstEntry().getValue(),
+											uvoisin.getListMatter()
+													.firstEntry().getValue());
+									/*
+									uvoisin.getListMatter().firstEntry()
+											.getValue().getFusionWith()
+											.put(m, m);
+									*/
 								} else {
 									m.impact(uvoisin.getListMatter()
 											.firstEntry().getValue());
@@ -165,7 +179,7 @@ public class BarnesHut extends RecursiveTask<Integer> {
 				}
 			}
 		}
-		return null;
+		return univers.getListMatter().size();
 	}
 
 }
