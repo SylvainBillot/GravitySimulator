@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
@@ -143,11 +142,12 @@ public class BarnesHut extends RecursiveTask<Integer> {
 									.distance(new Point3d(uvoisin.getGPoint()));
 
 							// gravite rise at C; approximation
-							Vector3d diffSpeed = new Vector3d(uvoisin.getSpeed()); 
-							diffSpeed.sub(m.getSpeed());
-							distance += diffSpeed.length() * distance
-									/ HelperVariable.C;
-
+							/*
+							 * Vector3d diffSpeed = new
+							 * Vector3d(uvoisin.getSpeed());
+							 * diffSpeed.sub(m.getSpeed()); distance +=
+							 * diffSpeed.length() * distance / HelperVariable.C;
+							 */
 							double attraction = parameters.getTimeFactor()
 									* HelperVariable.G
 									* (((uvoisin.getMass()) / Math.pow(
