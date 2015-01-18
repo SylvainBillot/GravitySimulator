@@ -501,6 +501,10 @@ public class Univers {
 		return gPoint;
 	}
 
+	public Vector3d getSpeed() {
+		return speed;
+	}
+	
 	public Vector3d getMin() {
 		return min;
 	}
