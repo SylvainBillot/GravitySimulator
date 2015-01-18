@@ -126,12 +126,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		parameters.setElapsedTime(parameters.getElapsedTime()
 				+ parameters.getTimeFactor());
 
-		/* Univers expension for camera and lookup */
-		double exp = 1 + parameters.getTimeFactor()
-				* parameters.getExpensionOfUnivers();
-		HelperVector.addDouble(parameters.getEyes(), exp);
-		HelperVector.addDouble(parameters.getLookAt(), exp);
-
 		if (parameters.isFollowCentroid()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
@@ -445,10 +439,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				.draw("Univers dark mass (M): "
 						+ dfsc.format(univers.getDarkMass() / HelperVariable.M),
 						10, drawable.getSurfaceHeight() - textSize * 7);
-		textRenderer.draw(
-				"Univers exp factor: "
-						+ dfsc.format(parameters.getExpensionOfUnivers()), 10,
-				drawable.getSurfaceHeight() - textSize * 8);
+
 		textRenderer.draw("Num of recursive Barnes Hut computed: "
 				+ parameters.getNumOfCompute(), 10, drawable.getSurfaceHeight()
 				- textSize * 10);

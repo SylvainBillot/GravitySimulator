@@ -157,20 +157,14 @@ public class BarnesHut extends RecursiveTask<Integer> {
 												uvoisin.getGPoint(), attraction));
 							} else {
 								// ???
-								if (parameters.isFusion()) {
-									m.getFusionWith().put(
-											uvoisin.getListMatter()
-													.firstEntry().getValue(),
-											uvoisin.getListMatter()
-													.firstEntry().getValue());
-									
-									uvoisin.getListMatter().firstEntry()
-											.getValue().getFusionWith()
-											.put(m, m);
-								} else {
-									m.impact(uvoisin.getListMatter()
-											.firstEntry().getValue());
-								}
+								m.getFusionWith().put(
+										uvoisin.getListMatter().firstEntry()
+												.getValue(),
+										uvoisin.getListMatter().firstEntry()
+												.getValue());
+
+								uvoisin.getListMatter().firstEntry().getValue()
+										.getFusionWith().put(m, m);
 							}
 
 						}

@@ -263,32 +263,35 @@ public class Matter implements Comparable<Matter> {
 				}
 			}
 		}
-		fusionWith = new TreeMap<Matter, Matter>();
+		fusionWith.clear();
 	}
 
 	public void elastic(double k) {
 		for (Matter m : fusionWith.values()) {
 			double distance = new Point3d(point).distance(new Point3d(m
 					.getPoint()));
-			double dx = rayon + m.getRayon() - distance;
+			double dx = distance - rayon + m.getRayon();
 			double elasticForceAccel = dx * k * parameters.getTimeFactor();
-			speed.sub(HelperVector.acceleration(point, m.getPoint(),
+			speed.add(HelperVector.acceleration(point, m.getPoint(),
 					elasticForceAccel));
 		}
 	}
 
-	public void impact(Matter m) {
-		double Cr = parameters.getTypeOfImpact();
-		double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
-				* speed.x + m.getMass() * m.getSpeed().x)
-				/ (mass + m.getMass());
-		double v1y = (Cr * m.getMass() * (m.getSpeed().y - speed.y) + mass
-				* speed.y + m.getMass() * m.getSpeed().y)
-				/ (mass + m.getMass());
-		double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass
-				* speed.z + m.getMass() * m.getSpeed().z)
-				/ (mass + m.getMass());
-		impactSpeed.add(new Vector3d(v1x, v1y, v1z));
+	public void impact() {
+		for (Matter m : fusionWith.values()) {
+			double Cr = parameters.getTypeOfImpact();
+			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
+					* speed.x + m.getMass() * m.getSpeed().x)
+					/ (mass + m.getMass());
+			double v1y = (Cr * m.getMass() * (m.getSpeed().y - speed.y) + mass
+					* speed.y + m.getMass() * m.getSpeed().y)
+					/ (mass + m.getMass());
+			double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass
+					* speed.z + m.getMass() * m.getSpeed().z)
+					/ (mass + m.getMass());
+			impactSpeed.add(new Vector3d(v1x, v1y, v1z));
+		}
+		fusionWith.clear();
 	}
 
 	public Vector3d orbitalSpeed(Matter m, Vector3d axis) {

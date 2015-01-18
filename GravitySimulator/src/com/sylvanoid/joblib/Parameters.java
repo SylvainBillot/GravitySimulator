@@ -29,7 +29,6 @@ public class Parameters {
 	private Vector3d lookAt = new Vector3d(0.001, 0, -900);
 	private boolean followMaxMass = false;
 	private boolean followCentroid = false;
-	private double expensionOfUnivers = 0;
 	private boolean permanentRotationy = false;
 	private double scala = 1E-9;
 	private boolean showAxis = true;
@@ -47,8 +46,8 @@ public class Parameters {
 
 	private double negligeableMass = 0;
 	private int numOfLowMassParticule = 0;
-	private double lowMassParticuleMass = 0;
-	private double lowMassDensity = 0;
+	private double lowMassParticuleMass = 1;
+	private double lowMassDensity = 1;
 
 	public Parameters() {
 
@@ -200,14 +199,6 @@ public class Parameters {
 
 	public void setFollowCentroid(boolean followCentroid) {
 		this.followCentroid = followCentroid;
-	}
-
-	public double getExpensionOfUnivers() {
-		return expensionOfUnivers;
-	}
-
-	public void setExpensionOfUnivers(double expensionOfUnivers) {
-		this.expensionOfUnivers = expensionOfUnivers;
 	}
 
 	public boolean isPermanentRotationy() {

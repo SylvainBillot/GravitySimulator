@@ -72,9 +72,6 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesis) {
 			createPlanetariesGenesis();
 		}
-		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomInitialExpension) {
-			createRandomExpensionUvivers();
-		}
 		computeMassLimitsCentroidSpeed();
 	}
 
@@ -147,7 +144,7 @@ public class Univers {
 		ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
 				.availableProcessors());
 		pool.invoke(barnesHut);
-		
+
 		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 				- startTimeBH);
 
@@ -175,21 +172,23 @@ public class Univers {
 
 	private void move() {
 		TreeMap<Matter, Matter> toRemove = new TreeMap<Matter, Matter>();
-		for (Matter m : listMatter.values()) {
-			if (parameters.getExpensionOfUnivers() != 0) {
-				double exp = 1 + parameters.getTimeFactor()
-						* parameters.getExpensionOfUnivers();
-				HelperVector.addDouble(m.getPoint(), exp);
+		if (parameters.isManageImpact()) {
+			for (Matter m : listMatter.values()) {
+				if (parameters.isFusion()) {
+					// m.fusion(toRemove);
+					// m.elastic(1E-13);
+				} else {
+					m.impact();
+				}
 			}
-			m.fusion(toRemove);
-			//m.elastic(1E-11);
-			m.move();
 		}
-		
 		for (Matter m : toRemove.keySet()) {
 			listMatter.remove(m);
 		}
-		
+
+		for (Matter m : listMatter.values()) {
+			m.move();
+		}
 	}
 
 	private TreeMap<Matter, Matter> createUvivers(Vector3d origine,
@@ -199,20 +198,21 @@ public class Univers {
 		miniListMatter.putAll(createUviversMain(origine, initialSpeed,
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
-				parameters.getMassObjectMax(), parameters.getDensity()));
-		/*
-		  miniListMatter.putAll(createUviversMain(origine, initialSpeed,
-		  axisOfRing, radiusMin, radiusMax, ratio,
-		  parameters.getNumberOfObjects() * 50, parameters.getMassObjectMin() /
-		  1E8, parameters.getMassObjectMax() / 1E8, parameters.getDensity()));
-		 */
+				parameters.getMassObjectMax(), parameters.getDensity(), new Vector3d(0,0,0)));
+
+		miniListMatter.putAll(createUviversMain(origine, initialSpeed,
+				axisOfRing, radiusMin, radiusMax, ratio,
+				parameters.getNumOfLowMassParticule(), 0,
+				parameters.getLowMassParticuleMass(),
+				parameters.getLowMassDensity(),new Vector3d(0.1,0.1,0.1)));
+
 		return miniListMatter;
 	}
 
 	private TreeMap<Matter, Matter> createUviversMain(Vector3d origine,
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio, int numberOfObjects,
-			double minMass, double maxMass, double density) {
+			double minMass, double maxMass, double density, Vector3d defaultColor) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < numberOfObjects; cpt++) {
@@ -250,18 +250,23 @@ public class Univers {
 				}
 			}
 
-			double alea = Math.random();
-			Vector3d color = new Vector3d(0.25 + Math.random() * 0.05,
-					0.25 + Math.random() * 0.05, 0.25 + Math.random() * 0.05);
-			if (alea > 0.80) {
-				color.set(new Vector3d(0.35 + Math.random() * 0.05, 0.25 + Math
-						.random() * 0.05, 0.25 + Math.random() * 0.05));
+			Vector3d color = defaultColor;
+			if (defaultColor.equals(new Vector3d(0, 0, 0))) {
+				double alea = Math.random();
+				color = new Vector3d(0.45 + Math.random() * 0.05,
+						0.45 + Math.random() * 0.05,
+						0.45 + Math.random() * 0.05);
+				if (alea > 0.80) {
+					color.set(new Vector3d(0.55 + Math.random() * 0.05,
+							0.45 + Math.random() * 0.05,
+							0.45 + Math.random() * 0.05));
+				}
+				if (alea > 0.90) {
+					color.set(new Vector3d(0.45 + Math.random() * 0.05,
+							0.45 + Math.random() * 0.05,
+							0.55 + Math.random() * 0.05));
+				}
 			}
-			if (alea > 0.90) {
-				color.set(new Vector3d(0.25 + Math.random() * 0.05, 0.25 + Math
-						.random() * 0.05, 0.35 + Math.random() * 0.05));
-			}
-
 			m = new Matter(parameters, new Vector3d(origine.x + x * ratio.x,
 					origine.y + y * ratio.y, origine.z + z * ratio.z), minMass
 					+ Math.random() * (maxMass - minMass) + 1E-100
@@ -286,21 +291,6 @@ public class Univers {
 				new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), 0,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 1));
 		listMatter.putAll(subu01);
-	}
-
-	private void createRandomExpensionUvivers() {
-		createRandomStaticUvivers();
-		computeMassLimitsCentroidSpeed();
-		for (Matter m : listMatter.values()) {
-			m.setColor(new Vector3d(1, 1, 1));
-			m.setAngles(new Vector3d(Math.random() * 2 * Math.PI, Math.random()
-					* 2 * Math.PI, Math.random() * 2 * Math.PI));
-			/* initial explosion test */
-			/*
-			 * m.getSpeed().sub( HelperVector.acceleration(m.getPoint(), new
-			 * Vector3d(0, 0, 0), 1E5));
-			 */
-		}
 	}
 
 	private void createRandomRotateUnivers() {
