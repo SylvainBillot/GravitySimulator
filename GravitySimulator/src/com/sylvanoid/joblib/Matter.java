@@ -27,6 +27,7 @@ public class Matter implements Comparable<Matter> {
 	private double density;
 	private double rayon;
 	private TreeMap<Matter, Matter> fusionWith = new TreeMap<Matter, Matter>();
+	private boolean toRemove = false;
 
 	private Vector3d impactSpeed = new Vector3d(0, 0, 0);
 
@@ -183,6 +184,14 @@ public class Matter implements Comparable<Matter> {
 		this.fusionWith = fusionWith;
 	}
 
+	public boolean isToRemove() {
+		return toRemove;
+	}
+
+	public void setToRemove(boolean toRemove) {
+		this.toRemove = toRemove;
+	}
+
 	public Vector3d getPlusV() {
 		return new Vector3d(point.x + speed.x * parameters.getTimeFactor(),
 				point.y + speed.y * parameters.getTimeFactor(), point.z
@@ -236,10 +245,12 @@ public class Matter implements Comparable<Matter> {
 		point = getPlusV();
 	}
 
-	public void fusion(TreeMap<Matter, Matter> toRemove) {
-		if (!toRemove.containsKey(this)) {
+	public void fusion() {
+		if (!toRemove) {
+			// System.out.println(this);
 			for (Matter m : fusionWith.values()) {
-				if (!toRemove.containsKey(m)) {
+				if (!m.isToRemove()) {
+					// System.out.println("--->"+m);
 					point = new Vector3d((point.x * mass + m.getPoint().x
 							* m.getMass())
 							/ (mass + m.getMass()),
@@ -256,10 +267,10 @@ public class Matter implements Comparable<Matter> {
 									/ (mass + m.getMass()));
 					density = (density * mass + m.getDensity() * m.getMass())
 							/ (mass + m.getMass());
-					mass += m.getMass();
+					mass = mass + m.getMass();
 					rayon = Math.pow(3 * (mass / density) / (4 * Math.PI),
 							(double) 1 / (double) 3);
-					toRemove.put(m, m);
+					m.setToRemove(true);
 				}
 			}
 		}
@@ -294,7 +305,7 @@ public class Matter implements Comparable<Matter> {
 		fusionWith.clear();
 	}
 
-	public Vector3d orbitalSpeed(Matter m, Vector3d axis) {
+	public Vector3d orbitalCircularSpeed(Matter m, Vector3d axis) {
 		double orbitalSpeedValue = Math.pow(
 				HelperVariable.G
 						* Math.pow(m.getMass(), 2)
@@ -315,4 +326,26 @@ public class Matter implements Comparable<Matter> {
 
 		return accel;
 	}
+
+	public Vector3d orbitalEllipticSpeed(Matter m, double demiaxisratio, Vector3d axis) {
+		double distance = new Point3d(point)
+				.distance(new Point3d(m.getPoint()));
+		double orbitalSpeedValue = Math.pow(HelperVariable.G * m.getMass()
+				* (2 / distance - 1 / (distance*demiaxisratio)), 0.5);
+
+		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
+				orbitalSpeedValue);
+
+		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
+				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
+		accel = axis.y != 0 ? HelperVector.rotate(accel,
+				new Vector3d(0, Math.signum(axis.y) * Math.PI / 2, 0),
+				Math.signum(axis.y) * Math.PI / 2) : accel;
+		accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
+				Math.signum(axis.z) * Math.PI / 2), Math.signum(axis.z)
+				* Math.PI / 2) : accel;
+
+		return accel;
+	}
+
 }

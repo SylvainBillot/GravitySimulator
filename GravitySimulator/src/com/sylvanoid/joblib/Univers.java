@@ -171,21 +171,29 @@ public class Univers {
 	}
 
 	private void move() {
-		TreeMap<Matter, Matter> toRemove = new TreeMap<Matter, Matter>();
+		
 		if (parameters.isManageImpact()) {
 			for (Matter m : listMatter.values()) {
-				if (parameters.isFusion()) {
-					// m.fusion(toRemove);
-					// m.elastic(1E-13);
-				} else {
-					m.impact();
+				if (m.getFusionWith().size() > 0) {
+					if (parameters.isFusion()) {
+						// m.fusion();
+						// m.elastic(1E-15);
+					} else {
+						m.impact();
+					}
 				}
 			}
+			TreeMap<Matter, Matter> toRemove = new TreeMap<Matter, Matter>();
+			for (Matter m : listMatter.values()) {
+				if(m.isToRemove()){
+					toRemove.put(m, m);
+				}
+			}
+			for (Matter m : toRemove.keySet()) {
+				listMatter.remove(m);
+			}
 		}
-		for (Matter m : toRemove.keySet()) {
-			listMatter.remove(m);
-		}
-
+		
 		for (Matter m : listMatter.values()) {
 			m.move();
 		}
@@ -198,13 +206,14 @@ public class Univers {
 		miniListMatter.putAll(createUviversMain(origine, initialSpeed,
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
-				parameters.getMassObjectMax(), parameters.getDensity(), new Vector3d(0,0,0)));
+				parameters.getMassObjectMax(), parameters.getDensity(),
+				new Vector3d(0, 0, 0)));
 
 		miniListMatter.putAll(createUviversMain(origine, initialSpeed,
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumOfLowMassParticule(), 0,
 				parameters.getLowMassParticuleMass(),
-				parameters.getLowMassDensity(),new Vector3d(0.1,0.1,0.1)));
+				parameters.getLowMassDensity(), new Vector3d(0.1, 0.1, 0.1)));
 
 		return miniListMatter;
 	}
@@ -212,7 +221,8 @@ public class Univers {
 	private TreeMap<Matter, Matter> createUviversMain(Vector3d origine,
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio, int numberOfObjects,
-			double minMass, double maxMass, double density, Vector3d defaultColor) {
+			double minMass, double maxMass, double density,
+			Vector3d defaultColor) {
 		TreeMap<Matter, Matter> miniListMatter = new TreeMap<Matter, Matter>();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < numberOfObjects; cpt++) {
@@ -307,7 +317,10 @@ public class Univers {
 		darkMass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+				double distance = Math.abs(m.getPoint().x-m1.getPoint().x);
+				double rotate = Math.sin(Math.PI*distance/parameters.getNebulaRadius());
+				m.setSpeed(m.orbitalEllipticSpeed(m1,0.60, new Vector3d(0, 0, 1)));
+				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0, 0, 1), rotate));
 			}
 		}
 	}
@@ -354,7 +367,7 @@ public class Univers {
 		for (Matter m : subu01.values()) {
 			if (m != m1) {
 				Vector3d newSpeed = new Vector3d(m.getSpeed());
-				newSpeed.add(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+				newSpeed.add(m.orbitalCircularSpeed(m1, new Vector3d(0, 0, 1)));
 				m.setSpeed(newSpeed);
 			}
 		}
@@ -362,7 +375,7 @@ public class Univers {
 		for (Matter m : subu02.values()) {
 			if (m != m2) {
 				Vector3d newSpeed = new Vector3d(m.getSpeed());
-				newSpeed.add(m.orbitalSpeed(m2, new Vector3d(0, 1, 0)));
+				newSpeed.add(m.orbitalCircularSpeed(m2, new Vector3d(0, 1, 0)));
 				m.setSpeed(newSpeed);
 			}
 		}
@@ -431,7 +444,7 @@ public class Univers {
 
 		for (Matter m : listMatter.values()) {
 			if (m != sun) {
-				m.setSpeed(m.orbitalSpeed(sun, new Vector3d(0, 1, 0)));
+				m.setSpeed(m.orbitalCircularSpeed(sun, new Vector3d(0, 1, 0)));
 			}
 		}
 
@@ -447,7 +460,7 @@ public class Univers {
 				0, 1), 2.48 * Math.PI / 180));
 
 		Vector3d newSpeed = new Vector3d(moon.getSpeed());
-		newSpeed.add(moon.orbitalSpeed(earth, new Vector3d(0, 1, 0)));
+		newSpeed.add(moon.orbitalCircularSpeed(earth, new Vector3d(0, 1, 0)));
 		moon.setSpeed(newSpeed);
 	}
 
@@ -464,7 +477,7 @@ public class Univers {
 		visibleMass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 1, 0)));
+				m.setSpeed(m.orbitalCircularSpeed(m1, new Vector3d(0, 1, 0)));
 				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
 		}
@@ -484,7 +497,7 @@ public class Univers {
 		listMatter.put(m1, m1);
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalSpeed(m1, new Vector3d(0, 0, 1)));
+				m.setSpeed(m.orbitalCircularSpeed(m1, new Vector3d(0, 0, 1)));
 			}
 		}
 	}
@@ -504,7 +517,7 @@ public class Univers {
 	public Vector3d getSpeed() {
 		return speed;
 	}
-	
+
 	public Vector3d getMin() {
 		return min;
 	}
