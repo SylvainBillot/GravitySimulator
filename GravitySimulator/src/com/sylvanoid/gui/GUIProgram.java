@@ -173,7 +173,7 @@ public class GUIProgram extends JFrame {
 					e1.printStackTrace();
 				}
 				me.setParameters(univers.getParameters());
-				for (Matter m : univers.getListMatter().values()) {
+				for (Matter m : univers.getListMatter()) {
 					m.setParameters(univers.getParameters());
 				}
 				animator.start();

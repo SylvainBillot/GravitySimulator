@@ -1,6 +1,7 @@
 package com.sylvanoid.joblib;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -14,7 +15,7 @@ import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.common.Vector3dAdapter;
 
 @XmlRootElement(name = "matter")
-public class Matter implements Comparable<Matter> {
+public class Matter {
 	private Parameters parameters;
 	private String name;
 	private TypeOfObject typeOfObject = TypeOfObject.Star;
@@ -26,21 +27,9 @@ public class Matter implements Comparable<Matter> {
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private double rayon;
-	private TreeMap<Matter, Matter> fusionWith = new TreeMap<Matter, Matter>();
+	private List<Matter> fusionWith = new ArrayList<Matter>();
 
 	private Vector3d impactSpeed = new Vector3d(0, 0, 0);
-
-	@Override
-	public int compareTo(Matter m) {
-		// TODO Auto-generated method stub
-		if (mass < m.getMass()) {
-			return 1;
-		}
-		if (mass > m.getMass()) {
-			return -1;
-		}
-		return 0;
-	}
 
 	@Override
 	public String toString() {
@@ -175,11 +164,11 @@ public class Matter implements Comparable<Matter> {
 		return rayon;
 	}
 
-	public TreeMap<Matter, Matter> getFusionWith() {
+	public List<Matter> getFusionWith() {
 		return fusionWith;
 	}
 
-	public void setFusionWith(TreeMap<Matter, Matter> fusionWith) {
+	public void setFusionWith(List<Matter> fusionWith) {
 		this.fusionWith = fusionWith;
 	}
 
@@ -236,15 +225,15 @@ public class Matter implements Comparable<Matter> {
 		point = getPlusV();
 	}
 
-	public Matter fusion(TreeMap<Matter, Matter> listMatter) {
+	public Matter fusion(List<Matter> listMatter) {
 		Vector3d newPoint = new Vector3d(point);
 		Vector3d newSpeed = new Vector3d(speed);
 		Vector3d newColor = new Vector3d(color);
 		double newDensity = density;
 		double newMass = mass;
 		boolean newIsDark = isDark();
-		for (Matter m : fusionWith.values()) {
-			if (listMatter.containsKey(m)) {
+		for (Matter m : fusionWith) {
+			if (listMatter.contains(m) ) {
 				//m.fusion(listMatter);
 				if(m.mass>newMass) {
 					newColor = new Vector3d(m.getColor());
@@ -269,13 +258,12 @@ public class Matter implements Comparable<Matter> {
 				newMass = newMass + m.getMass();
 			}
 		}
-		fusionWith.clear();
 		return new Matter(parameters, newPoint, newMass, newSpeed, newColor,
 				newDensity, newIsDark);
 	}
 
 	public void elastic(double k) {
-		for (Matter m : fusionWith.values()) {
+		for (Matter m : fusionWith) {
 			double distance = new Point3d(point).distance(new Point3d(m
 					.getPoint()));
 			double dx = distance - rayon + m.getRayon();
@@ -286,7 +274,9 @@ public class Matter implements Comparable<Matter> {
 	}
 
 	public void impact() {
-		for (Matter m : fusionWith.values()) {
+		System.out.println(fusionWith.size());
+		for (Matter m : fusionWith) {
+			System.out.println(hashCode() +"->"+m.hashCode());
 			double Cr = parameters.getTypeOfImpact();
 			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
 					* speed.x + m.getMass() * m.getSpeed().x)
@@ -299,7 +289,6 @@ public class Matter implements Comparable<Matter> {
 					/ (mass + m.getMass());
 			impactSpeed.add(new Vector3d(v1x, v1y, v1z));
 		}
-		fusionWith.clear();
 	}
 
 	public Vector3d orbitalCircularSpeed(Matter m, Vector3d axis) {

@@ -45,33 +45,33 @@ public class BarnesHut extends RecursiveTask<Integer> {
 			Univers subg = new Univers(univers);
 			Univers subh = new Univers(univers);
 
-			for (Matter m : univers.getListMatter().values()) {
+			for (Matter m : univers.getListMatter()) {
 				if (m.getPoint().x > cx) {
 					if (m.getPoint().y > cy) {
 						if (m.getPoint().z > cz) {
-							suba.getListMatter().put(m, m);
+							suba.getListMatter().add(m);
 						} else {
-							subb.getListMatter().put(m, m);
+							subb.getListMatter().add(m);
 						}
 					} else {
 						if (m.getPoint().z > cz) {
-							subc.getListMatter().put(m, m);
+							subc.getListMatter().add(m);
 						} else {
-							subd.getListMatter().put(m, m);
+							subd.getListMatter().add(m);
 						}
 					}
 				} else {
 					if (m.getPoint().y > cy) {
 						if (m.getPoint().z > cz) {
-							sube.getListMatter().put(m, m);
+							sube.getListMatter().add(m);
 						} else {
-							subf.getListMatter().put(m, m);
+							subf.getListMatter().add(m);
 						}
 					} else {
 						if (m.getPoint().z > cz) {
-							subg.getListMatter().put(m, m);
+							subg.getListMatter().add(m);
 						} else {
-							subh.getListMatter().put(m, m);
+							subh.getListMatter().add(m);
 						}
 					}
 				}
@@ -129,7 +129,7 @@ public class BarnesHut extends RecursiveTask<Integer> {
 							&& uvoisin.getListMatter().size() > 0
 							&& uvoisin.getMass() > parameters
 									.getNegligeableMass()) {
-						for (Matter m : u.getListMatter().values()) {
+						for (Matter m : u.getListMatter()) {
 							parameters.setNumOfAccelCompute(parameters
 									.getNumOfAccelCompute() + 1);
 							double distance = new Point3d(m.getPoint())
@@ -146,27 +146,19 @@ public class BarnesHut extends RecursiveTask<Integer> {
 									* HelperVariable.G
 									* (((uvoisin.getMass()) / Math.pow(
 											distance, 2)));
+
 							if (!parameters.isManageImpact()
 									|| uvoisin.getListMatter().size() > 1
-									|| m.isDark() != uvoisin.getListMatter()
-											.firstEntry().getValue().isDark()
-									|| (distance > m.getRayon() && distance > uvoisin
-											.getListMatter().firstEntry()
-											.getValue().getRayon())) {
+									|| m.isDark() != uvoisin.getListMatter().get(0).isDark()
+									|| (distance > m.getRayon() + uvoisin
+											.getListMatter().get(0).getRayon())) {
 								m.getSpeed()
 										.add(HelperVector.acceleration(
 												m.getPoint(),
 												uvoisin.getGPoint(), attraction));
 							} else {
-								// ???
-								m.getFusionWith().put(
-										uvoisin.getListMatter().firstEntry()
-												.getValue(),
-										uvoisin.getListMatter().firstEntry()
-												.getValue());
-
-								uvoisin.getListMatter().firstEntry().getValue()
-										.getFusionWith().put(m, m);
+								m.getFusionWith().add(
+										uvoisin.getListMatter().get(0));
 							}
 
 						}

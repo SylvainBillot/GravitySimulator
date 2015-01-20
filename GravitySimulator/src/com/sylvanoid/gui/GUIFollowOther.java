@@ -38,7 +38,7 @@ public class GUIFollowOther extends JDialog {
 		setLayout(new GridLayout(2, 2));
 		add(new Label("Follow this:"));
 		matters = new JComboBox<Matter>();
-		for (Matter m : mother.getUnivers().getListMatter().values()) {
+		for (Matter m : mother.getUnivers().getListMatter()) {
 			matters.addItem(m);
 		}
 		add(matters);

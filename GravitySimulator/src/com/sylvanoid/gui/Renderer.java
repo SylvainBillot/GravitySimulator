@@ -66,7 +66,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 		if (parameters.isShowTrace()) {
 			List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
-			for (Matter m : univers.getListMatter().values()) {
+			for (Matter m : univers.getListMatter()) {
 				Vector3d[] myLine = new Vector3d[2];
 				myLine[0] = new Vector3d(m.getPointBefore().x,
 						m.getPointBefore().y, m.getPointBefore().z);
@@ -81,7 +81,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		}
 
 		render(drawable);
-		
+
 		if (parameters.isExportToVideo()) {
 			GL2 gl = drawable.getGL().getGL2();
 			BufferedImage img = toImage(gl, drawable.getSurfaceWidth(),
@@ -137,16 +137,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			parameters.setEyes(diffLookAt);
 		}
 		if (parameters.isFollowMaxMass()) {
+
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
-			Vector3d tmpvecScala = new Vector3d(univers.getListMatter()
-					.firstEntry().getValue().getPoint());
+			Vector3d tmpvecScala = new Vector3d(univers.getMaxMassElement()
+					.getPoint());
 			tmpvecScala = new Vector3d(tmpvecScala.x * parameters.getScala(),
 					tmpvecScala.y * parameters.getScala(), tmpvecScala.z
 							* parameters.getScala());
 			diffLookAt.add(tmpvecScala);
 
 			parameters.setEyes(diffLookAt);
+
 		}
 		if (parameters.getObjectToFollow() != null) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
@@ -205,8 +207,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			drawTrace(gl);
 		}
 
-		//drawElastic(gl);
-		
 		/* Show current univers */
 		drawUnivers(gl);
 	}
@@ -425,9 +425,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		textRenderer.draw("Num of Object: " + univers.getListMatter().size(),
 				10, drawable.getSurfaceHeight() - textSize * 4);
 		textRenderer.draw(
-				"Max mass (M): "
-						+ dfsc.format(univers.getListMatter().firstEntry()
-								.getValue().getMass()
+				"Maximum Mass Object (M): "
+						+ dfsc.format(univers.getMaxMassElement().getMass()
 								/ HelperVariable.M), 10,
 				drawable.getSurfaceHeight() - textSize * 5);
 		textRenderer.draw(
@@ -440,9 +439,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 						+ dfsc.format(univers.getDarkMass() / HelperVariable.M),
 						10, drawable.getSurfaceHeight() - textSize * 7);
 
-		textRenderer.draw("Num of recursive Barnes Hut computed: "
-				+ parameters.getNumOfCompute(), 10, drawable.getSurfaceHeight()
-				- textSize * 10);
+		textRenderer.draw(
+				"Num of recursive Barnes Hut computed: "
+						+ parameters.getNumOfCompute(), 10,
+				drawable.getSurfaceHeight() - textSize * 10);
 		textRenderer.draw(
 				"Num of acceleration computed: "
 						+ parameters.getNumOfAccelCompute(), 10,
@@ -454,13 +454,13 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				"Limit compute time (ms): " + parameters.getLimitComputeTime(),
 				10, drawable.getSurfaceHeight() - textSize * 13);
 		textRenderer.draw(
-				"Barnes Hut compute time (ms): " + parameters.getBarnesHuttComputeTime(),
-				10, drawable.getSurfaceHeight() - textSize * 14);
+				"Barnes Hut compute time (ms): "
+						+ parameters.getBarnesHuttComputeTime(), 10,
+				drawable.getSurfaceHeight() - textSize * 14);
 		textRenderer.draw(
 				"Move compute time (ms): " + parameters.getMoveComputeTime(),
 				10, drawable.getSurfaceHeight() - textSize * 15);
 
-		
 		textRenderer.draw(
 				"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()), 10,
 				10);
@@ -488,31 +488,9 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glPopMatrix();
 	}
 
-	
-	@SuppressWarnings("unused")
-	private void drawElastic(GL2 gl) {
-		gl.glPushMatrix();
-		gl.glColor3d(0, 0.25, 0);
-		for (Matter m : univers.getListMatter().values()) {
-			if(m.getFusionWith().size()>0){
-				for(Matter m1:m.getFusionWith().values()){
-					gl.glBegin(GL2.GL_LINES);
-					gl.glVertex3d(parameters.getScala() * m.getPoint().x,
-							parameters.getScala() * m.getPoint().y, parameters.getScala()
-									* m.getPoint().z);
-					gl.glVertex3d(parameters.getScala() * m1.getPoint().x,
-							parameters.getScala() * m1.getPoint().y, parameters.getScala()
-									* m1.getPoint().z);
-					gl.glEnd();
-				}
-			}
-		}
-		gl.glPopMatrix();
-	}
-	
 	@SuppressWarnings("unused")
 	private void drawUniversSimplePoint(GL2 gl) {
-		for (Matter m : univers.getListMatter().values()) {
+		for (Matter m : univers.getListMatter()) {
 			gl.glBegin(GL2.GL_POINTS);
 			gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 			gl.glVertex3d(parameters.getScala() * m.getPoint().x,
@@ -527,7 +505,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
-		for (Matter m : univers.getListMatter().values()) {
+		for (Matter m : univers.getListMatter()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
 				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
@@ -787,7 +765,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
