@@ -106,29 +106,23 @@ public class BarnesHut extends RecursiveTask<Integer> {
 			BarnesHut bhh = new BarnesHut(subh);
 
 			// Parallelization
-
-			bha.fork();
-			bhb.fork();
-			bhc.fork();
-			bhd.fork();
-			bhe.fork();
-			bhf.fork();
-			bhg.fork();
-			bhh.fork();
-
-			bha.join();
-			bhb.join();
-			bhc.join();
-			bhd.join();
-			bhe.join();
-			bhf.join();
-			bhg.join();
-			bhh.join();
-
 			/*
-			 * bha.compute(); bhb.compute(); bhc.compute(); bhd.compute();
-			 * bhe.compute(); bhf.compute(); bhg.compute(); bhh.compute();
+			 * bha.fork(); bhb.fork(); bhc.fork(); bhd.fork(); bhe.fork();
+			 * bhf.fork(); bhg.fork(); bhh.fork();
+			 * 
+			 * bha.join(); bhb.join(); bhc.join(); bhd.join(); bhe.join();
+			 * bhf.join(); bhg.join(); bhh.join();
 			 */
+
+			bha.compute();
+			bhb.compute();
+			bhc.compute();
+			bhd.compute();
+			bhe.compute();
+			bhf.compute();
+			bhg.compute();
+			bhh.compute();
+
 			for (Univers u : subUnivers) {
 				for (Univers uvoisin : subUnivers) {
 					if (u != uvoisin
@@ -142,13 +136,12 @@ public class BarnesHut extends RecursiveTask<Integer> {
 									.distance(new Point3d(uvoisin.getGPoint()));
 
 							// gravite rise at C; approximation
-/*
-							javax.vecmath.Vector3d diffSpeed = new javax.vecmath.Vector3d(
-									uvoisin.getSpeed());
-							diffSpeed.sub(m.getSpeed());
-							distance += diffSpeed.length() * distance
-									/ HelperVariable.C;
-*/
+							/*
+							 * javax.vecmath.Vector3d diffSpeed = new
+							 * javax.vecmath.Vector3d( uvoisin.getSpeed());
+							 * diffSpeed.sub(m.getSpeed()); distance +=
+							 * diffSpeed.length() * distance / HelperVariable.C;
+							 */
 							double attraction = parameters.getTimeFactor()
 									* HelperVariable.G
 									* (((uvoisin.getMass()) / Math.pow(

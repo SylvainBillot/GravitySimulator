@@ -1,7 +1,7 @@
 package com.sylvanoid.joblib;
 
 import java.util.TreeMap;
-import java.util.concurrent.ForkJoinPool;
+//import java.util.concurrent.ForkJoinPool;
 
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
@@ -141,10 +141,11 @@ public class Univers {
 				- startTimeCycle);
 		long startTimeBH = System.currentTimeMillis();
 		BarnesHut barnesHut = new BarnesHut(this);
-		ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
-				.availableProcessors());
-		pool.invoke(barnesHut);
-
+		barnesHut.compute();
+		/*
+		 * ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
+		 * .availableProcessors()); pool.invoke(barnesHut);
+		 */
 		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 				- startTimeBH);
 
@@ -171,7 +172,7 @@ public class Univers {
 	}
 
 	private void move() {
-		
+
 		if (parameters.isManageImpact()) {
 			for (Matter m : listMatter.values()) {
 				if (m.getFusionWith().size() > 0) {
@@ -185,7 +186,7 @@ public class Univers {
 			}
 			TreeMap<Matter, Matter> toRemove = new TreeMap<Matter, Matter>();
 			for (Matter m : listMatter.values()) {
-				if(m.isToRemove()){
+				if (m.isToRemove()) {
 					toRemove.put(m, m);
 				}
 			}
@@ -193,7 +194,7 @@ public class Univers {
 				listMatter.remove(m);
 			}
 		}
-		
+
 		for (Matter m : listMatter.values()) {
 			m.move();
 		}
@@ -317,10 +318,15 @@ public class Univers {
 		darkMass += m1.getMass();
 		for (Matter m : listMatter.values()) {
 			if (m != m1) {
-				double distance = Math.abs(m.getPoint().x-m1.getPoint().x);
-				double rotate = Math.sin(Math.PI*distance/parameters.getNebulaRadius());
-				m.setSpeed(m.orbitalEllipticSpeed(m1,0.60, new Vector3d(0, 0, 1)));
-				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0, 0, 1), rotate));
+				double distance = new javax.vecmath.Point3d(m1.getPoint())
+						.distance(new javax.vecmath.Point3d(m.getPoint()));
+				double distancey = Math.abs(m.getPoint().y - m1.getPoint().y);
+				double demiaxis = distance * 0.50 + 0.50 * distancey;
+				m.setSpeed(m.orbitalEllipticSpeed(m1, demiaxis, new Vector3d(0,
+						0, 1)));
+				double angle = -Math.PI/4*distance/parameters.getNebulaRadius();
+				m.setPoint(HelperVector.rotate(m.getPoint(), new Vector3d(0,0,1), angle));
+				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0,0,1), angle));
 			}
 		}
 	}

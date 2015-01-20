@@ -327,11 +327,11 @@ public class Matter implements Comparable<Matter> {
 		return accel;
 	}
 
-	public Vector3d orbitalEllipticSpeed(Matter m, double demiaxisratio, Vector3d axis) {
+	public Vector3d orbitalEllipticSpeed(Matter m, double demiaxis, Vector3d axis) {
 		double distance = new Point3d(point)
 				.distance(new Point3d(m.getPoint()));
 		double orbitalSpeedValue = Math.pow(HelperVariable.G * m.getMass()
-				* (2 / distance - 1 / (distance*demiaxisratio)), 0.5);
+				* (2 / distance - 1 / demiaxis), 0.5);
 
 		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
 				orbitalSpeedValue);
