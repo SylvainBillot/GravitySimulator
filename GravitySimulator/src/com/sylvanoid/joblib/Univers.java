@@ -184,7 +184,7 @@ public class Univers {
 						for(Matter mbis:m.getFusionWith().values()){
 							listMatter.remove(mbis);
 						}
-						// m.elastic(1E-15);
+						 // m.elastic(1E-15);
 					} else {
 						m.impact();
 					}

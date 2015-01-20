@@ -246,6 +246,9 @@ public class Matter implements Comparable<Matter> {
 		for (Matter m : fusionWith.values()) {
 			if (listMatter.containsKey(m)) {
 				//m.fusion(listMatter);
+				if(m.mass>newMass) {
+					newColor = new Vector3d(m.getColor());
+				}
 				newPoint = new Vector3d((newPoint.x * newMass + m.getPoint().x
 						* m.getMass())
 						/ (newMass + m.getMass()),
