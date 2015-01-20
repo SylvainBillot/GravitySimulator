@@ -218,7 +218,7 @@ public class Univers {
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumOfLowMassParticule(), 0,
 				parameters.getLowMassParticuleMass(),
-				parameters.getLowMassDensity(), new Vector3d(0.01, 0.01, 0.01)));
+				parameters.getLowMassDensity(), new Vector3d(0.05, 0.05, 0.05)));
 
 		return miniListMatter;
 	}

@@ -235,10 +235,9 @@ public class Matter {
 		for (Matter m : fusionWith) {
 			if (listMatter.contains(m) ) {
 				//m.fusion(listMatter);
-				//if(m.mass>newMass) {
-					//newColor = new Vector3d(m.getColor());
-				//}
-				newColor.add(m.getColor());
+				if(m.mass>newMass) {
+					newColor = new Vector3d(m.getColor());
+				}
 				newPoint = new Vector3d((newPoint.x * newMass + m.getPoint().x
 						* m.getMass())
 						/ (newMass + m.getMass()),
