@@ -43,6 +43,8 @@ public class Parameters {
 	private double limitComputeTime = 0;
 	private double moveComputeTime = 0;
 	private double barnesHuttComputeTime = 0;
+	private double ellipseRatio = 0.75;
+	private double ellipseShiftRatio = 3;
 
 	private double negligeableMass = 0;
 	private int numOfLowMassParticule = 0;
@@ -344,5 +346,22 @@ public class Parameters {
 	public void setLowMassDensity(double lowMassDensity) {
 		this.lowMassDensity = lowMassDensity;
 	}
+
+	public double getEllipseShiftRatio() {
+		return ellipseShiftRatio;
+	}
+
+	public void setEllipseShiftRatio(double ellipseShiftRatio) {
+		this.ellipseShiftRatio = ellipseShiftRatio;
+	}
+
+	public double getEllipseRatio() {
+		return ellipseRatio;
+	}
+
+	public void setEllipseRatio(double ellipseRatio) {
+		this.ellipseRatio = ellipseRatio;
+	}
+
 
 }

@@ -39,9 +39,9 @@ public class Univers {
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	private Vector3d max = new Vector3d(0, 0, 0);
-	
+
 	private Matter maxMassElement = null;
-	
+
 	@Override
 	public String toString() {
 		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y + " gz:" + gPoint.z);
@@ -196,7 +196,8 @@ public class Univers {
 			}
 		}
 		for (Matter m : listMatter) {
-			if(maxMassElement==null || maxMassElement.getMass()<m.getMass()){
+			if (maxMassElement == null
+					|| maxMassElement.getMass() < m.getMass()) {
 				maxMassElement = m;
 			}
 			m.move();
@@ -217,7 +218,7 @@ public class Univers {
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumOfLowMassParticule(), 0,
 				parameters.getLowMassParticuleMass(),
-				parameters.getLowMassDensity(), new Vector3d(0.1, 0.1, 0.1)));
+				parameters.getLowMassDensity(), new Vector3d(0.01, 0.01, 0.01)));
 
 		return miniListMatter;
 	}
@@ -323,11 +324,12 @@ public class Univers {
 				double distance = new javax.vecmath.Point3d(m1.getPoint())
 						.distance(new javax.vecmath.Point3d(m.getPoint()));
 				double distancey = Math.abs(m.getPoint().y - m1.getPoint().y);
-				double demiaxis = distance * 0.50 + 0.50 * distancey;
+				double demiaxis = distance * parameters.getEllipseRatio()
+						+ (1 - parameters.getEllipseRatio()) * distancey;
 				m.setSpeed(m.orbitalEllipticSpeed(m1, demiaxis, new Vector3d(0,
 						0, 1)));
-				double angle = -Math.PI / 4 * distance
-						/ parameters.getNebulaRadius();
+				double angle = parameters.getEllipseShiftRatio() * Math.PI
+						* distance / parameters.getNebulaRadius();
 				m.setPoint(HelperVector.rotate(m.getPoint(), new Vector3d(0, 0,
 						1), angle));
 				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0, 0,
@@ -345,13 +347,13 @@ public class Univers {
 				* deltax, -HelperVariable.PC * deltay, -HelperVariable.PC
 				* deltaz), new Vector3d(initialSpeedx, 0, 0), new Vector3d(0,
 				0, 1), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(0.15, 1, 0.15));
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.15));
 
 		List<Matter> subu02 = createUvivers(new Vector3d(HelperVariable.PC
 				* deltax, HelperVariable.PC * deltay, HelperVariable.PC
 				* deltaz), new Vector3d(-initialSpeedx, 0, 0), new Vector3d(1,
 				0, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.15, 0.15));
+				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.15, 1));
 
 		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
 				* deltax + Math.random(), -HelperVariable.PC * deltay
@@ -535,8 +537,8 @@ public class Univers {
 	public double getMass() {
 		return mass;
 	}
-	
-	public Matter getMaxMassElement(){
+
+	public Matter getMaxMassElement() {
 		return maxMassElement;
 	}
 

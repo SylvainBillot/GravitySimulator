@@ -109,7 +109,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
+		gl.glBlendFunc(GL2.GL_DST_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
 		LoadGLTextures(gl);
 		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
 				java.awt.Font.PLAIN, textSize));
