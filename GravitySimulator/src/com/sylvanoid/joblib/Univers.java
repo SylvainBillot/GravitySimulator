@@ -172,26 +172,23 @@ public class Univers {
 	}
 
 	private void move() {
-
+		TreeMap<Matter, Matter> listMatterBis = new TreeMap<Matter, Matter>(
+				listMatter);
 		if (parameters.isManageImpact()) {
-			for (Matter m : listMatter.values()) {
+			for (Matter m : listMatterBis.values()) {
 				if (m.getFusionWith().size() > 0) {
-					if (parameters.isFusion()) {
-						// m.fusion();
+					if (parameters.isFusion() ) {
+						Matter newM = m.fusion(listMatter);
+						listMatter.put(newM, newM);
+						listMatter.remove(m);
+						for(Matter mbis:m.getFusionWith().values()){
+							listMatter.remove(mbis);
+						}
 						// m.elastic(1E-15);
 					} else {
 						m.impact();
 					}
 				}
-			}
-			TreeMap<Matter, Matter> toRemove = new TreeMap<Matter, Matter>();
-			for (Matter m : listMatter.values()) {
-				if (m.isToRemove()) {
-					toRemove.put(m, m);
-				}
-			}
-			for (Matter m : toRemove.keySet()) {
-				listMatter.remove(m);
 			}
 		}
 
@@ -324,9 +321,12 @@ public class Univers {
 				double demiaxis = distance * 0.50 + 0.50 * distancey;
 				m.setSpeed(m.orbitalEllipticSpeed(m1, demiaxis, new Vector3d(0,
 						0, 1)));
-				double angle = -Math.PI/4*distance/parameters.getNebulaRadius();
-				m.setPoint(HelperVector.rotate(m.getPoint(), new Vector3d(0,0,1), angle));
-				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0,0,1), angle));
+				double angle = -Math.PI / 4 * distance
+						/ parameters.getNebulaRadius();
+				m.setPoint(HelperVector.rotate(m.getPoint(), new Vector3d(0, 0,
+						1), angle));
+				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0, 0,
+						1), angle));
 			}
 		}
 	}

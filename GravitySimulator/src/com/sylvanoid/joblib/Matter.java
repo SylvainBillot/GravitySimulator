@@ -27,7 +27,6 @@ public class Matter implements Comparable<Matter> {
 	private double density;
 	private double rayon;
 	private TreeMap<Matter, Matter> fusionWith = new TreeMap<Matter, Matter>();
-	private boolean toRemove = false;
 
 	private Vector3d impactSpeed = new Vector3d(0, 0, 0);
 
@@ -184,14 +183,6 @@ public class Matter implements Comparable<Matter> {
 		this.fusionWith = fusionWith;
 	}
 
-	public boolean isToRemove() {
-		return toRemove;
-	}
-
-	public void setToRemove(boolean toRemove) {
-		this.toRemove = toRemove;
-	}
-
 	public Vector3d getPlusV() {
 		return new Vector3d(point.x + speed.x * parameters.getTimeFactor(),
 				point.y + speed.y * parameters.getTimeFactor(), point.z
@@ -245,36 +236,39 @@ public class Matter implements Comparable<Matter> {
 		point = getPlusV();
 	}
 
-	public void fusion() {
-		if (!toRemove) {
-			// System.out.println(this);
-			for (Matter m : fusionWith.values()) {
-				if (!m.isToRemove()) {
-					// System.out.println("--->"+m);
-					point = new Vector3d((point.x * mass + m.getPoint().x
-							* m.getMass())
-							/ (mass + m.getMass()),
-							(point.y * mass + m.getPoint().y * m.getMass())
-									/ (mass + m.getMass()),
-							(point.z * mass + m.getPoint().z * m.getMass())
-									/ (mass + m.getMass()));
-					speed = new Vector3d((speed.x * mass + m.getSpeed().x
-							* m.getMass())
-							/ (mass + m.getMass()),
-							(speed.y * mass + m.getSpeed().y * m.getMass())
-									/ (mass + m.getMass()),
-							(speed.z * mass + m.getSpeed().z * m.getMass())
-									/ (mass + m.getMass()));
-					density = (density * mass + m.getDensity() * m.getMass())
-							/ (mass + m.getMass());
-					mass = mass + m.getMass();
-					rayon = Math.pow(3 * (mass / density) / (4 * Math.PI),
-							(double) 1 / (double) 3);
-					m.setToRemove(true);
-				}
+	public Matter fusion(TreeMap<Matter, Matter> listMatter) {
+		Vector3d newPoint = new Vector3d(point);
+		Vector3d newSpeed = new Vector3d(speed);
+		Vector3d newColor = new Vector3d(color);
+		double newDensity = density;
+		double newMass = mass;
+		boolean newIsDark = isDark();
+		for (Matter m : fusionWith.values()) {
+			if (listMatter.containsKey(m)) {
+				//m.fusion(listMatter);
+				newPoint = new Vector3d((newPoint.x * newMass + m.getPoint().x
+						* m.getMass())
+						/ (newMass + m.getMass()),
+						(newPoint.y * newMass + m.getPoint().y * m.getMass())
+								/ (newMass + m.getMass()), (newPoint.z
+								* newMass + m.getPoint().z * m.getMass())
+								/ (newMass + m.getMass()));
+				newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
+						* m.getMass())
+						/ (newMass + m.getMass()),
+						(newSpeed.y * newMass + m.getSpeed().y * m.getMass())
+								/ (newMass + m.getMass()), (newSpeed.z
+								* newMass + m.getSpeed().z * m.getMass())
+								/ (newMass + m.getMass()));
+				newDensity = (newDensity * newMass + m.getDensity()
+						* m.getMass())
+						/ (newMass + m.getMass());
+				newMass = newMass + m.getMass();
 			}
 		}
 		fusionWith.clear();
+		return new Matter(parameters, newPoint, newMass, newSpeed, newColor,
+				newDensity, newIsDark);
 	}
 
 	public void elastic(double k) {
@@ -327,7 +321,8 @@ public class Matter implements Comparable<Matter> {
 		return accel;
 	}
 
-	public Vector3d orbitalEllipticSpeed(Matter m, double demiaxis, Vector3d axis) {
+	public Vector3d orbitalEllipticSpeed(Matter m, double demiaxis,
+			Vector3d axis) {
 		double distance = new Point3d(point)
 				.distance(new Point3d(m.getPoint()));
 		double orbitalSpeedValue = Math.pow(HelperVariable.G * m.getMass()
