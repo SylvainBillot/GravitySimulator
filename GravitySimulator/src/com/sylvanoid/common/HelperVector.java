@@ -7,6 +7,17 @@ import javax.vecmath.Matrix3d;
 import javax.vecmath.Vector3d;
 
 public abstract class HelperVector {
+	public static Vector3d rotate(Vector3d vector,Vector3d centroid, Vector3d axis, double angle) {
+		Vector3d newVector = new Vector3d(vector);
+		newVector.sub(centroid);
+		Matrix3d rotate = new Matrix3d();
+		rotate.set(new AxisAngle4d(axis, angle));
+		Vector3d result = new Vector3d();
+		rotate.transform(newVector, result);
+		result.add(centroid);
+		return result;
+	}
+
 	public static Vector3d rotate(Vector3d vector, Vector3d axis, double angle) {
 		Matrix3d rotate = new Matrix3d();
 		rotate.set(new AxisAngle4d(axis, angle));
@@ -14,7 +25,7 @@ public abstract class HelperVector {
 		rotate.transform(vector, result);
 		return result;
 	}
-
+	
 	public static Vector3d rThetaPhi(Vector3d obj1, Vector3d obj2) {
 		Vector3d tmpVect = new Vector3d(obj2);
 		tmpVect.sub(obj1);
