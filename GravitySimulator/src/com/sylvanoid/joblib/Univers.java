@@ -181,12 +181,7 @@ public class Univers {
 				if (m.getFusionWith().size() > 0) {
 					if (parameters.isFusion()) {
 						if (listMatter.contains(m)) {
-							Matter newM = m.fusion(listMatter);
-							listMatter.add(newM);
-							listMatter.remove(m);
-							for (Matter mbis : m.getFusionWith()) {
-								listMatter.remove(mbis);
-							}
+							m.fusion(listMatter);
 						}
 					} else {
 						m.impact();

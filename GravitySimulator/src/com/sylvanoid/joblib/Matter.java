@@ -225,41 +225,44 @@ public class Matter {
 		point = getPlusV();
 	}
 
-	public Matter fusion(List<Matter> listMatter) {
+	public void fusion(List<Matter> listMatter) {
 		Vector3d newPoint = new Vector3d(point);
 		Vector3d newSpeed = new Vector3d(speed);
 		Vector3d newColor = new Vector3d(color);
 		double newDensity = density;
 		double newMass = mass;
 		boolean newIsDark = isDark();
-		for (Matter m : fusionWith) {
-			if (listMatter.contains(m) ) {
-				//m.fusion(listMatter);
-				if(m.mass>newMass) {
-					newColor = new Vector3d(m.getColor());
+			for (Matter m : fusionWith) {
+				if (listMatter.contains(m)) {
+					if (m.mass > newMass) {
+						newColor = new Vector3d(m.getColor());
+					}
+					newPoint = new Vector3d(
+							(newPoint.x * newMass + m.getPoint().x
+									* m.getMass())
+									/ (newMass + m.getMass()), (newPoint.y
+									* newMass + m.getPoint().y * m.getMass())
+									/ (newMass + m.getMass()), (newPoint.z
+									* newMass + m.getPoint().z * m.getMass())
+									/ (newMass + m.getMass()));
+					newSpeed = new Vector3d(
+							(newSpeed.x * newMass + m.getSpeed().x
+									* m.getMass())
+									/ (newMass + m.getMass()), (newSpeed.y
+									* newMass + m.getSpeed().y * m.getMass())
+									/ (newMass + m.getMass()), (newSpeed.z
+									* newMass + m.getSpeed().z * m.getMass())
+									/ (newMass + m.getMass()));
+					newDensity = (newDensity * newMass + m.getDensity()
+							* m.getMass())
+							/ (newMass + m.getMass());
+					newMass = newMass + m.getMass();
+					listMatter.remove(m);
 				}
-				newPoint = new Vector3d((newPoint.x * newMass + m.getPoint().x
-						* m.getMass())
-						/ (newMass + m.getMass()),
-						(newPoint.y * newMass + m.getPoint().y * m.getMass())
-								/ (newMass + m.getMass()), (newPoint.z
-								* newMass + m.getPoint().z * m.getMass())
-								/ (newMass + m.getMass()));
-				newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
-						* m.getMass())
-						/ (newMass + m.getMass()),
-						(newSpeed.y * newMass + m.getSpeed().y * m.getMass())
-								/ (newMass + m.getMass()), (newSpeed.z
-								* newMass + m.getSpeed().z * m.getMass())
-								/ (newMass + m.getMass()));
-				newDensity = (newDensity * newMass + m.getDensity()
-						* m.getMass())
-						/ (newMass + m.getMass());
-				newMass = newMass + m.getMass();
 			}
-		}
-		return new Matter(parameters, newPoint, newMass, newSpeed, newColor,
-				newDensity, newIsDark);
+			listMatter.remove(this);
+			listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed,
+					newColor, newDensity, newIsDark));
 	}
 
 	public void elastic(double k) {
@@ -276,7 +279,7 @@ public class Matter {
 	public void impact() {
 		System.out.println(fusionWith.size());
 		for (Matter m : fusionWith) {
-			System.out.println(hashCode() +"->"+m.hashCode());
+			System.out.println(hashCode() + "->" + m.hashCode());
 			double Cr = parameters.getTypeOfImpact();
 			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
 					* speed.x + m.getMass() * m.getSpeed().x)
