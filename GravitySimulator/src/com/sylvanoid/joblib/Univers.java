@@ -307,7 +307,7 @@ public class Univers {
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05));
 
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
@@ -318,19 +318,8 @@ public class Univers {
 		darkMass += m1.getMass();
 		for (Matter m : listMatter) {
 			if (m != m1) {
-				double distance = new javax.vecmath.Point3d(m1.getPoint())
-						.distance(new javax.vecmath.Point3d(m.getPoint()));
-				double distancey = Math.abs(m.getPoint().y - m1.getPoint().y);
-				double demiaxis = distance * parameters.getEllipseRatio()
-						+ (1 - parameters.getEllipseRatio()) * distancey;
-				m.setSpeed(m.orbitalEllipticSpeed(m1, demiaxis, new Vector3d(0,
+				m.setSpeed(m.orbitalEllipticSpeed(m1, new Vector3d(0,
 						0, 1)));
-				double angle = parameters.getEllipseShiftRatio() * Math.PI
-						* distance / parameters.getNebulaRadius();
-				m.setPoint(HelperVector.rotate(m.getPoint(), m1.getPoint(),
-						new Vector3d(0, 0, 1), angle));
-				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0, 0,
-						1), angle));
 			}
 		}
 	}
@@ -374,39 +363,17 @@ public class Univers {
 
 		for (Matter m : subu01) {
 			if (m != m1) {
-				double distance = new javax.vecmath.Point3d(m1.getPoint())
-						.distance(new javax.vecmath.Point3d(m.getPoint()));
-				double distancey = Math.abs(m.getPoint().y - m1.getPoint().y);
-				double demiaxis = distance * parameters.getEllipseRatio()
-						+ (1 - parameters.getEllipseRatio()) * distancey;
 				m.getSpeed().add(
-						m.orbitalEllipticSpeed(m1, demiaxis, new Vector3d(0, 0,
+						m.orbitalEllipticSpeed(m1,new Vector3d(0, 0,
 								1)));
-				double angle = parameters.getEllipseShiftRatio() * Math.PI
-						* distance / parameters.getNebulaRadius();
-				m.setPoint(HelperVector.rotate(m.getPoint(), m1.getPoint(),
-						new Vector3d(0, 0, 1), angle));
-				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0, 0,
-						1), angle));
 			}
 		}
 
 		for (Matter m : subu02) {
 			if (m != m2) {
-				double distance = new javax.vecmath.Point3d(m2.getPoint())
-						.distance(new javax.vecmath.Point3d(m.getPoint()));
-				double distancey = Math.abs(m.getPoint().y - m2.getPoint().y);
-				double demiaxis = distance * parameters.getEllipseRatio()
-						+ (1 - parameters.getEllipseRatio()) * distancey;
 				m.getSpeed().add(
-						m.orbitalEllipticSpeed(m2, demiaxis, new Vector3d(0, 1,
+						m.orbitalEllipticSpeed(m2,new Vector3d(0, 1,
 								0)));
-				double angle = parameters.getEllipseShiftRatio() * Math.PI
-						* distance / parameters.getNebulaRadius()/2;
-				m.setPoint(HelperVector.rotate(m.getPoint(), m2.getPoint(),
-						new Vector3d(0, 1, 0), angle));
-				m.setSpeed(HelperVector.rotate(m.getSpeed(), new Vector3d(0, 1,
-						0), angle));
 			}
 		}
 	}

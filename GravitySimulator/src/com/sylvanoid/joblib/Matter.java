@@ -232,37 +232,35 @@ public class Matter {
 		double newDensity = density;
 		double newMass = mass;
 		boolean newIsDark = isDark();
-			for (Matter m : fusionWith) {
-				if (listMatter.contains(m)) {
-					if (m.mass > newMass) {
-						newColor = new Vector3d(m.getColor());
-					}
-					newPoint = new Vector3d(
-							(newPoint.x * newMass + m.getPoint().x
-									* m.getMass())
-									/ (newMass + m.getMass()), (newPoint.y
-									* newMass + m.getPoint().y * m.getMass())
-									/ (newMass + m.getMass()), (newPoint.z
-									* newMass + m.getPoint().z * m.getMass())
-									/ (newMass + m.getMass()));
-					newSpeed = new Vector3d(
-							(newSpeed.x * newMass + m.getSpeed().x
-									* m.getMass())
-									/ (newMass + m.getMass()), (newSpeed.y
-									* newMass + m.getSpeed().y * m.getMass())
-									/ (newMass + m.getMass()), (newSpeed.z
-									* newMass + m.getSpeed().z * m.getMass())
-									/ (newMass + m.getMass()));
-					newDensity = (newDensity * newMass + m.getDensity()
-							* m.getMass())
-							/ (newMass + m.getMass());
-					newMass = newMass + m.getMass();
-					listMatter.remove(m);
+		for (Matter m : fusionWith) {
+			if (listMatter.contains(m)) {
+				if (m.mass > newMass) {
+					newColor = new Vector3d(m.getColor());
 				}
+				newPoint = new Vector3d((newPoint.x * newMass + m.getPoint().x
+						* m.getMass())
+						/ (newMass + m.getMass()),
+						(newPoint.y * newMass + m.getPoint().y * m.getMass())
+								/ (newMass + m.getMass()), (newPoint.z
+								* newMass + m.getPoint().z * m.getMass())
+								/ (newMass + m.getMass()));
+				newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
+						* m.getMass())
+						/ (newMass + m.getMass()),
+						(newSpeed.y * newMass + m.getSpeed().y * m.getMass())
+								/ (newMass + m.getMass()), (newSpeed.z
+								* newMass + m.getSpeed().z * m.getMass())
+								/ (newMass + m.getMass()));
+				newDensity = (newDensity * newMass + m.getDensity()
+						* m.getMass())
+						/ (newMass + m.getMass());
+				newMass = newMass + m.getMass();
+				listMatter.remove(m);
 			}
-			listMatter.remove(this);
-			listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed,
-					newColor, newDensity, newIsDark));
+		}
+		listMatter.remove(this);
+		listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed,
+				newColor, newDensity, newIsDark));
 	}
 
 	public void elastic(double k) {
@@ -295,11 +293,11 @@ public class Matter {
 	}
 
 	public Vector3d orbitalCircularSpeed(Matter m, Vector3d axis) {
+		double distance = new Point3d(point)
+				.distance(new Point3d(m.getPoint()));
 		double orbitalSpeedValue = Math.pow(
-				HelperVariable.G
-						* Math.pow(m.getMass(), 2)
-						/ ((mass + m.getMass()) * new Point3d(point)
-								.distance(new Point3d(m.getPoint()))), 0.5);
+				HelperVariable.G * Math.pow(m.getMass(), 2)
+						/ ((mass + m.getMass()) * distance), 0.5);
 
 		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
 				orbitalSpeedValue);
@@ -316,16 +314,29 @@ public class Matter {
 		return accel;
 	}
 
-	public Vector3d orbitalEllipticSpeed(Matter m, double demiaxis,
+	public Vector3d orbitalEllipticSpeed(Matter m,
 			Vector3d axis) {
 		double distance = new Point3d(point)
 				.distance(new Point3d(m.getPoint()));
+		//double dx = Math.abs(point.x - m.getPoint().x);
+		double dy = Math.abs(point.y - m.getPoint().y);
+		
+		double a = distance * parameters.getEllipseRatio()
+				+ (1 - parameters.getEllipseRatio()) * dy;
+		
 		double orbitalSpeedValue = Math.pow(HelperVariable.G * m.getMass()
-				* (2 / distance - 1 / demiaxis), 0.5);
-
+				* ((2 / distance) - (1 / a)), 0.5);
+		
 		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
 				orbitalSpeedValue);
 
+		double angle = parameters.getEllipseShiftRatio() * Math.PI
+				* distance / parameters.getNebulaRadius();
+		point = HelperVector.rotate(point, m.getPoint(),
+				axis, angle);
+		accel = HelperVector.rotate(accel, axis, angle);
+		
+		
 		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
 				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
 		accel = axis.y != 0 ? HelperVector.rotate(accel,
@@ -337,5 +348,4 @@ public class Matter {
 
 		return accel;
 	}
-
 }
