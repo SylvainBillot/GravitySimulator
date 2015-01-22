@@ -314,29 +314,29 @@ public class Matter {
 		return accel;
 	}
 
-	public Vector3d orbitalEllipticSpeed(Matter m,
-			Vector3d axis) {
+	public Vector3d orbitalEllipticSpeed(Matter m, Vector3d axis) {
 		double distance = new Point3d(point)
 				.distance(new Point3d(m.getPoint()));
-		//double dx = Math.abs(point.x - m.getPoint().x);
-		double dy = Math.abs(point.y - m.getPoint().y);
+
+		double d = 0;
+		d = axis.x != 0 ? Math.abs(point.y - m.getPoint().y) : d;
+		d = axis.y != 0 ? Math.abs(point.z - m.getPoint().z) : d;
+		d = axis.z != 0 ? Math.abs(point.x - m.getPoint().x) : d;
 		
 		double a = distance * parameters.getEllipseRatio()
-				+ (1 - parameters.getEllipseRatio()) * dy;
-		
+				+ (1 - parameters.getEllipseRatio()) * d;
+
 		double orbitalSpeedValue = Math.pow(HelperVariable.G * m.getMass()
 				* ((2 / distance) - (1 / a)), 0.5);
-		
+
 		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
 				orbitalSpeedValue);
 
-		double angle = parameters.getEllipseShiftRatio() * Math.PI
-				* distance / parameters.getNebulaRadius();
-		point = HelperVector.rotate(point, m.getPoint(),
-				axis, angle);
+		double angle = parameters.getEllipseShiftRatio() * Math.PI * distance
+				/ parameters.getNebulaRadius();
+		point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 		accel = HelperVector.rotate(accel, axis, angle);
-		
-		
+
 		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
 				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
 		accel = axis.y != 0 ? HelperVector.rotate(accel,
