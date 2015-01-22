@@ -149,9 +149,11 @@ public class BarnesHut extends RecursiveTask<Integer> {
 
 							if (!parameters.isManageImpact()
 									|| uvoisin.getListMatter().size() > 1
-									|| m.isDark() != uvoisin.getListMatter().get(0).isDark()
-									|| (distance > m.getRayon() + uvoisin
-											.getListMatter().get(0).getRayon())) {
+									|| m.isDark() != uvoisin.getListMatter()
+											.get(0).isDark()
+									|| (distance > m.getRayon()
+											+ uvoisin.getListMatter().get(0)
+													.getRayon())) {
 								m.getSpeed()
 										.add(HelperVector.acceleration(
 												m.getPoint(),

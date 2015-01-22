@@ -317,19 +317,41 @@ public class Matter {
 	public Vector3d orbitalEllipticSpeed(Matter m, Vector3d axis) {
 		double distance = new Point3d(point)
 				.distance(new Point3d(m.getPoint()));
+		double a = 0;
+		double c = 0;
+		double dx = Math.abs(point.x - m.getPoint().x);
+		double dy = Math.abs(point.y - m.getPoint().y);
+		double dz = Math.abs(point.z - m.getPoint().z);
 
-		double d = 0;
-		d = axis.x != 0 ? Math.abs(point.y - m.getPoint().y) : d;
-		d = axis.y != 0 ? Math.abs(point.z - m.getPoint().z) : d;
-		d = axis.z != 0 ? Math.abs(point.x - m.getPoint().x) : d;
+		if (axis.x != 0) {
+			if (Math.abs(dy) > Math.abs(dz)) {
+				c = dy;
+			} else {
+				c = dz;
+			}
+		}
+		if (axis.y != 0) {
+			if (Math.abs(dz) > Math.abs(dx)) {
+				c = dz;
+			} else {
+				c = dx;
+			}
+		}
+		if (axis.z != 0) {
+			if (Math.abs(dy) > Math.abs(dx)) {
+				c = dy;
+			} else {
+				c = dx;
+			}
+		}
 		
-		double a = distance * parameters.getEllipseRatio()
-				+ (1 - parameters.getEllipseRatio()) * d;
+		a = c / parameters.getEllipseRatio();
 
 		double orbitalSpeedValue = Math.pow(HelperVariable.G * m.getMass()
 				* ((2 / distance) - (1 / a)), 0.5);
 
-		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
+		Vector3d accel = HelperVector.acceleration(point,
+				m.getPoint(),
 				orbitalSpeedValue);
 
 		double angle = parameters.getEllipseShiftRatio() * Math.PI * distance
