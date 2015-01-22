@@ -149,7 +149,7 @@ public class GUIParam extends JDialog {
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-23);
 					ellipseRatio.setValue(0.5);
-					ellipseShiftRatio.setValue(-0.25);
+					ellipseShiftRatio.setValue(0.5);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -171,7 +171,7 @@ public class GUIParam extends JDialog {
 					darkMatterMass.setValue(6E42);
 					darkMatterDensity.setValue(1E-20);
 					ellipseRatio.setValue(0.5);
-					ellipseShiftRatio.setValue(-0.25);
+					ellipseShiftRatio.setValue(0.5);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
