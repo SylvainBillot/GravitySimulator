@@ -307,7 +307,7 @@ public class Univers {
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.01));
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
 
 		Matter m1 = new Matter(parameters, new Vector3d(Math.random(),
 				Math.random(), 0), parameters.getDarkMatterMass(),
@@ -333,13 +333,13 @@ public class Univers {
 				* deltax, -HelperVariable.PC * deltay, -HelperVariable.PC
 				* deltaz), new Vector3d(initialSpeedx, 0, 0), new Vector3d(0,
 				0, 1), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.01));
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.15));
 
 		List<Matter> subu02 = createUvivers(new Vector3d(HelperVariable.PC
 				* deltax, HelperVariable.PC * deltay, HelperVariable.PC
 				* deltaz), new Vector3d(-initialSpeedx, 0, 0), new Vector3d(1,
 				0, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.01, 1));
+				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.15, 1));
 
 		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
 				* deltax + Math.random(), -HelperVariable.PC * deltay
@@ -364,7 +364,7 @@ public class Univers {
 		for (Matter m : subu01) {
 			if (m != m1) {
 				m.getSpeed().add(
-						m.orbitalEllipticSpeed(m1,new Vector3d(0, 0,
+						m.orbitalCircularSpeed(m1,new Vector3d(0, 0,
 								1)));
 			}
 		}
@@ -372,7 +372,7 @@ public class Univers {
 		for (Matter m : subu02) {
 			if (m != m2) {
 				m.getSpeed().add(
-						m.orbitalEllipticSpeed(m2,new Vector3d(0, 1,
+						m.orbitalCircularSpeed(m2,new Vector3d(0, 1,
 								0)));
 			}
 		}

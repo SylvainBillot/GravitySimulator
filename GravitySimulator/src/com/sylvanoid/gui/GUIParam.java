@@ -106,7 +106,7 @@ public class GUIParam extends JDialog {
 					lowMassDensity.setValue(1);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
-					ellipseRatio.setValue(0.5);
+					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
 					break;
 				case 2:
@@ -126,7 +126,7 @@ public class GUIParam extends JDialog {
 					numOfLowMassParticule.setValue(0);
 					lowMassParticuleMass.setValue(1);
 					lowMassDensity.setValue(1);
-					ellipseRatio.setValue(0.5);
+					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
 					break;
 				case 3:
@@ -148,7 +148,7 @@ public class GUIParam extends JDialog {
 					lowMassDensity.setValue(1);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-23);
-					ellipseRatio.setValue(0.95);
+					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					break;
 				case 4:
@@ -170,7 +170,7 @@ public class GUIParam extends JDialog {
 					lowMassDensity.setValue(1);
 					darkMatterMass.setValue(6E42);
 					darkMatterDensity.setValue(1E-20);
-					ellipseRatio.setValue(0.95);
+					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					break;
 				case 5:
@@ -237,7 +237,7 @@ public class GUIParam extends JDialog {
 		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
 		add(massObjectMax);
 
-		add(new Label("Ellipses ratio (min 50%):"));
+		add(new Label("Ellipses eccentricity (]0-1[):"));
 		ellipseRatio = new JFormattedTextField(fdpc);
 		ellipseRatio.setValue(me.mother.getParameters().getEllipseRatio());
 		add(ellipseRatio);
