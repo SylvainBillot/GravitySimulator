@@ -292,16 +292,14 @@ public class Matter {
 		}
 	}
 
-	public Vector3d orbitalCircularSpeed(Matter m, Vector3d axis) {
+	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		double distance = new Point3d(point)
 				.distance(new Point3d(m.getPoint()));
 		double orbitalSpeedValue = Math.pow(
 				HelperVariable.G * Math.pow(m.getMass(), 2)
 						/ ((mass + m.getMass()) * distance), 0.5);
-
 		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
 				orbitalSpeedValue);
-
 		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
 				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
 		accel = axis.y != 0 ? HelperVector.rotate(accel,
@@ -311,10 +309,10 @@ public class Matter {
 				Math.signum(axis.z) * Math.PI / 2), Math.signum(axis.z)
 				* Math.PI / 2) : accel;
 
-		return accel;
+		speed.add(accel);
 	}
 
-	public Vector3d orbitalEllipticSpeed(Matter m, Vector3d axis) {
+	public void orbitalEllipticSpeed(Matter m, Vector3d axis) {
 		double distance = new Point3d(m.getPoint())
 				.distance(new Point3d(point));
 
@@ -350,6 +348,6 @@ public class Matter {
 				new Vector3d(0, 0, Math.signum(axis.z) * Math.PI / 2),
 				Math.signum(axis.z) * Math.PI / 2);
 
-		return accel;
+		speed.add(accel);
 	}
 }

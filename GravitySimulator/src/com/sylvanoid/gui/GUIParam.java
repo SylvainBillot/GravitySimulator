@@ -155,13 +155,13 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.GalaxiesCollision);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(HelperVariable.ONEYEAR*1E6);
-					scala.setValue(1E-19);
+					timeFactor.setValue(HelperVariable.ONEYEAR*5E6);
+					scala.setValue(4E-20);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
 					densiteMin.setValue(1E-23);
-					nebulaRadius.setValue(HelperVariable.PC*1E5);
+					nebulaRadius.setValue(HelperVariable.PC*2E5);
 					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS*1E3);
 					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS*1E3);
 					negligeableMass.setValue(0);

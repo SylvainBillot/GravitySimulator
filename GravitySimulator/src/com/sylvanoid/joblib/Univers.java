@@ -318,34 +318,21 @@ public class Univers {
 		darkMass += m1.getMass();
 		for (Matter m : listMatter) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalEllipticSpeed(m1, new Vector3d(0,
-						0, 1)));
+				m.orbitalEllipticSpeed(m1, new Vector3d(0, 0, 1));
 			}
 		}
 	}
 
 	private void createGalaxiesCollision() {
-		double initialSpeedx = 1E5;
-		double deltax = 70000;
-		double deltay = 25000;
-		double deltaz = 25000;
-		List<Matter> subu01 = createUvivers(new Vector3d(-HelperVariable.PC
-				* deltax, -HelperVariable.PC * deltay, -HelperVariable.PC
-				* deltaz), new Vector3d(initialSpeedx, 0, 0), new Vector3d(0,
-				0, 1), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.15));
-
-		List<Matter> subu02 = createUvivers(new Vector3d(HelperVariable.PC
-				* deltax, HelperVariable.PC * deltay, HelperVariable.PC
-				* deltaz), new Vector3d(-initialSpeedx, 0, 0), new Vector3d(1,
-				0, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius() / 2, new Vector3d(1, 0.15, 1));
+		double deltax = 300000;
+		double deltay = 0;
+		double deltaz = 0;
 
 		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
 				* deltax + Math.random(), -HelperVariable.PC * deltay
 				+ Math.random(), -HelperVariable.PC * deltaz + Math.random()),
 				parameters.getDarkMatterMass() / 1.1 + Math.random(),
-				new Vector3d(initialSpeedx, 0, 0), new Vector3d(0.25, 0.25,
+				new Vector3d(0, 0, 0), new Vector3d(0.25, 0.25,
 						0.25), parameters.getDarkMatterDensity(), true);
 		listMatter.add(m1);
 		mass += m1.getMass();
@@ -355,25 +342,36 @@ public class Univers {
 				* deltax + Math.random(), HelperVariable.PC * deltay
 				+ Math.random(), HelperVariable.PC * deltaz + Math.random()),
 				parameters.getDarkMatterMass() / 2 + Math.random(),
-				new Vector3d(-initialSpeedx, 0, 0), new Vector3d(0.25, 0.25,
+				new Vector3d(0, 0, 0), new Vector3d(0.25, 0.25,
 						0.25), parameters.getDarkMatterDensity(), true);
 		listMatter.add(m2);
 		mass += m2.getMass();
 		darkMass += m2.getMass();
 
+		m1.orbitalCircularSpeed(m2, new Vector3d(0,1,0));
+		m2.orbitalCircularSpeed(m1, new Vector3d(0,1,0));
+		
+		List<Matter> subu01 = createUvivers(new Vector3d(-HelperVariable.PC
+				* deltax, -HelperVariable.PC * deltay, -HelperVariable.PC
+				* deltaz), m1.getSpeed(), new Vector3d(0,
+				0, 1), parameters.getNebulaRadius() * 0.1,
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
+
+		List<Matter> subu02 = createUvivers(new Vector3d(HelperVariable.PC
+				* deltax, HelperVariable.PC * deltay, HelperVariable.PC
+				* deltaz), m2.getSpeed(), new Vector3d(1,
+				0, 0), parameters.getNebulaRadius() * 0.1,
+				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1));
+
 		for (Matter m : subu01) {
 			if (m != m1) {
-				m.getSpeed().add(
-						m.orbitalCircularSpeed(m1,new Vector3d(0, 0,
-								1)));
+				m.orbitalCircularSpeed(m1, new Vector3d(0, 0, 1));
 			}
 		}
 
 		for (Matter m : subu02) {
 			if (m != m2) {
-				m.getSpeed().add(
-						m.orbitalCircularSpeed(m2,new Vector3d(0, 1,
-								0)));
+				m.orbitalCircularSpeed(m2, new Vector3d(0, 1, 0));
 			}
 		}
 	}
@@ -438,7 +436,7 @@ public class Univers {
 
 		for (Matter m : listMatter) {
 			if (m != sun) {
-				m.setSpeed(m.orbitalCircularSpeed(sun, new Vector3d(0, 1, 0)));
+				m.orbitalCircularSpeed(sun, new Vector3d(0, 1, 0));
 			}
 		}
 
@@ -454,7 +452,7 @@ public class Univers {
 				0, 1), 2.48 * Math.PI / 180));
 
 		Vector3d newSpeed = new Vector3d(moon.getSpeed());
-		newSpeed.add(moon.orbitalCircularSpeed(earth, new Vector3d(0, 1, 0)));
+		moon.orbitalCircularSpeed(earth, new Vector3d(0, 1, 0));
 		moon.setSpeed(newSpeed);
 	}
 
@@ -471,7 +469,7 @@ public class Univers {
 		visibleMass += m1.getMass();
 		for (Matter m : listMatter) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalCircularSpeed(m1, new Vector3d(0, 1, 0)));
+				m.orbitalCircularSpeed(m1, new Vector3d(0, 1, 0));
 				m.setTypeOfObject(TypeOfObject.Planetary);
 			}
 		}
@@ -491,7 +489,7 @@ public class Univers {
 		listMatter.add(m1);
 		for (Matter m : listMatter) {
 			if (m != m1) {
-				m.setSpeed(m.orbitalCircularSpeed(m1, new Vector3d(0, 0, 1)));
+				m.orbitalCircularSpeed(m1, new Vector3d(0, 0, 1));
 			}
 		}
 	}
