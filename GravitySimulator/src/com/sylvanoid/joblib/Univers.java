@@ -324,43 +324,43 @@ public class Univers {
 	}
 
 	private void createGalaxiesCollision() {
-		double deltax = 200000;
-		double deltay = 0;
-		double deltaz = 0;
+		Vector3d dbg1 = new Vector3d(parameters.getDemiDistanceBetweenGalaxies());
+		Vector3d dbg2 = new Vector3d(parameters.getDemiDistanceBetweenGalaxies());
+		dbg2.negate();
+		
+		double deltax = parameters.getDemiDistanceBetweenGalaxies().x;
+		double deltay = parameters.getDemiDistanceBetweenGalaxies().y;
+		double deltaz = parameters.getDemiDistanceBetweenGalaxies().z;
 
-		Matter m1 = new Matter(parameters, new Vector3d(-HelperVariable.PC
-				* deltax + Math.random(), -HelperVariable.PC * deltay
-				+ Math.random(), -HelperVariable.PC * deltaz + Math.random()),
-				parameters.getDarkMatterMass() / 1.1 + Math.random(),
-				new Vector3d(0, 0, 0), new Vector3d(0.25, 0.25,
-						0.25), parameters.getDarkMatterDensity(), true);
+		Matter m1 = new Matter(parameters, new Vector3d(
+				-deltax + Math.random(), -deltay + Math.random(), -deltaz
+						+ Math.random()), parameters.getDarkMatterMass() / 1.1
+				+ Math.random(), new Vector3d(0, 0, 0), new Vector3d(0.25,
+				0.25, 0.25), parameters.getDarkMatterDensity(), true);
 		listMatter.add(m1);
 		mass += m1.getMass();
 		darkMass += m1.getMass();
 
-		Matter m2 = new Matter(parameters, new Vector3d(HelperVariable.PC
-				* deltax + Math.random(), HelperVariable.PC * deltay
-				+ Math.random(), HelperVariable.PC * deltaz + Math.random()),
+		Matter m2 = new Matter(parameters, new Vector3d(deltax + Math.random(),
+				deltay + Math.random(), deltaz + Math.random()),
 				parameters.getDarkMatterMass() / 2 + Math.random(),
-				new Vector3d(0, 0, 0), new Vector3d(0.25, 0.25,
-						0.25), parameters.getDarkMatterDensity(), true);
+				new Vector3d(0, 0, 0), new Vector3d(0.25, 0.25, 0.25),
+				parameters.getDarkMatterDensity(), true);
 		listMatter.add(m2);
 		mass += m2.getMass();
 		darkMass += m2.getMass();
 
-		m1.orbitalCircularSpeed(m2, new Vector3d(0,1,0));
-		m2.orbitalCircularSpeed(m1, new Vector3d(0,1,0));
-		
-		List<Matter> subu01 = createUvivers(new Vector3d(-HelperVariable.PC
-				* deltax, -HelperVariable.PC * deltay, -HelperVariable.PC
-				* deltaz), m1.getSpeed(), new Vector3d(0,
-				0, 1), parameters.getNebulaRadius() * 0.1,
+		m1.orbitalCircularSpeed(m2, new Vector3d(0, 1, 0));
+		m2.orbitalCircularSpeed(m1, new Vector3d(0, 1, 0));
+
+		List<Matter> subu01 = createUvivers(new Vector3d(-deltax, -deltay,
+				-deltaz), m1.getSpeed(), new Vector3d(0, 0, 1),
+				parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
 
-		List<Matter> subu02 = createUvivers(new Vector3d(HelperVariable.PC
-				* deltax, HelperVariable.PC * deltay, HelperVariable.PC
-				* deltaz), m2.getSpeed(), new Vector3d(1,
-				0, 0), parameters.getNebulaRadius() * 0.1,
+		List<Matter> subu02 = createUvivers(
+				new Vector3d(deltax, deltay, deltaz), m2.getSpeed(),
+				new Vector3d(1, 0, 0), parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1));
 
 		for (Matter m : subu01) {

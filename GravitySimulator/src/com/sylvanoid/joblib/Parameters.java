@@ -22,7 +22,7 @@ public class Parameters {
 	private double typeOfImpact = 1;
 	private double density = 100;
 	private int numberOfObjects = 1000;
-	private double nebulaRadius = HelperVariable.UA*10;
+	private double nebulaRadius = HelperVariable.UA * 10;
 	private double massObjectMin = 10000;
 	private double massObjectMax = 100000;
 	private Vector3d eyes = new Vector3d(0, 0, 900);
@@ -45,11 +45,12 @@ public class Parameters {
 	private double barnesHuttComputeTime = 0;
 	private double ellipseRatio = 0.75;
 	private double ellipseShiftRatio = 3;
-
 	private double negligeableMass = 0;
 	private int numOfLowMassParticule = 0;
 	private double lowMassParticuleMass = 1;
 	private double lowMassDensity = 1;
+	private Vector3d demiDistanceBetweenGalaxies = new Vector3d(
+			200000 * HelperVariable.PC, 0, 0);
 
 	public Parameters() {
 
@@ -363,5 +364,15 @@ public class Parameters {
 		this.ellipseRatio = ellipseRatio;
 	}
 
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
+	public Vector3d getDemiDistanceBetweenGalaxies() {
+		return demiDistanceBetweenGalaxies;
+	}
+
+	public void setDemiDistanceBetweenGalaxies(
+			Vector3d demiDistanceBetweenGalaxies) {
+		this.demiDistanceBetweenGalaxies = demiDistanceBetweenGalaxies;
+	}
 
 }
