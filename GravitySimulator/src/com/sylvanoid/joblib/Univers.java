@@ -2,7 +2,6 @@ package com.sylvanoid.joblib;
 
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.concurrent.ForkJoinPool;
 
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
@@ -100,24 +99,19 @@ public class Univers {
 				visibleMass += m.getMass();
 			}
 			if (!firstTime) {
-				if (min.x > m.getPoint().getX()) {
-					min.x = m.getPoint().getX();
-				}
-				if (max.x < m.getPoint().getX()) {
-					max.x = m.getPoint().getX();
-				}
-				if (min.y > m.getPoint().getY()) {
-					min.y = m.getPoint().getY();
-				}
-				if (max.y < m.getPoint().getY()) {
-					max.y = m.getPoint().getY();
-				}
-				if (min.z > m.getPoint().getZ()) {
-					min.z = m.getPoint().getZ();
-				}
-				if (max.z < m.getPoint().getZ()) {
-					max.z = m.getPoint().getZ();
-				}
+				min.x = min.x > m.getPoint().getX() ? m.getPoint().getX()
+						: min.x;
+				max.x = max.x < m.getPoint().getX() ? m.getPoint().getX()
+						: max.x;
+				min.y = min.y > m.getPoint().getX() ? m.getPoint().getX()
+						: min.y;
+				max.y = max.y < m.getPoint().getX() ? m.getPoint().getX()
+						: max.y;
+				min.z = min.z > m.getPoint().getX() ? m.getPoint().getX()
+						: min.z;
+				max.z = max.z < m.getPoint().getX() ? m.getPoint().getX()
+						: max.z;
+
 			} else {
 				min.x = m.getPoint().getX();
 				max.x = m.getPoint().getX();
@@ -324,21 +318,22 @@ public class Univers {
 	}
 
 	private void createGalaxiesCollision() {
-		Vector3d dbg1 = new Vector3d(parameters.getDemiDistanceBetweenGalaxies());
-		Vector3d dbg2 = new Vector3d(parameters.getDemiDistanceBetweenGalaxies());
+		Vector3d dbg1 = new Vector3d(
+				parameters.getDemiDistanceBetweenGalaxies());
+		Vector3d dbg2 = new Vector3d(
+				parameters.getDemiDistanceBetweenGalaxies());
 		dbg2.negate();
 
-		Matter m1 = new Matter(parameters, dbg2, parameters.getDarkMatterMass() / 1.1
-				+ Math.random(), new Vector3d(0, 0, 0), new Vector3d(0.25,
-				0.25, 0.25), parameters.getDarkMatterDensity(), true);
+		Matter m1 = new Matter(parameters, dbg2, parameters.getDarkMatterMass()
+				/ 1.1 + Math.random(), new Vector3d(0, 0, 0), new Vector3d(
+				0.25, 0.25, 0.25), parameters.getDarkMatterDensity(), true);
 		listMatter.add(m1);
 		mass += m1.getMass();
 		darkMass += m1.getMass();
 
-		Matter m2 = new Matter(parameters, dbg1,
-				parameters.getDarkMatterMass() / 2 + Math.random(),
-				new Vector3d(0, 0, 0), new Vector3d(0.25, 0.25, 0.25),
-				parameters.getDarkMatterDensity(), true);
+		Matter m2 = new Matter(parameters, dbg1, parameters.getDarkMatterMass()
+				/ 2 + Math.random(), new Vector3d(0, 0, 0), new Vector3d(0.25,
+				0.25, 0.25), parameters.getDarkMatterDensity(), true);
 		listMatter.add(m2);
 		mass += m2.getMass();
 		darkMass += m2.getMass();
@@ -346,12 +341,11 @@ public class Univers {
 		m1.orbitalCircularSpeed(m2, new Vector3d(0, 1, 0));
 		m2.orbitalCircularSpeed(m1, new Vector3d(0, 1, 0));
 
-		List<Matter> subu01 = createUvivers(m1.getPoint(), m1.getSpeed(), new Vector3d(0, 0, 1),
-				parameters.getNebulaRadius() * 0.1,
+		List<Matter> subu01 = createUvivers(m1.getPoint(), m1.getSpeed(),
+				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
 
-		List<Matter> subu02 = createUvivers(
-				m2.getPoint(), m2.getSpeed(),
+		List<Matter> subu02 = createUvivers(m2.getPoint(), m2.getSpeed(),
 				new Vector3d(1, 0, 0), parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1));
 
