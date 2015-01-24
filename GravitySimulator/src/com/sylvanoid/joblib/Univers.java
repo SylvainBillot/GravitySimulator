@@ -450,10 +450,7 @@ public class Univers {
 				0, 0, 1), 1.3 * Math.PI / 180));
 		saturn.setPoint(HelperVector.rotate(saturn.getPoint(), new Vector3d(0,
 				0, 1), 2.48 * Math.PI / 180));
-
-		Vector3d newSpeed = new Vector3d(moon.getSpeed());
 		moon.orbitalCircularSpeed(earth, new Vector3d(0, 1, 0));
-		moon.setSpeed(newSpeed);
 	}
 
 	private void createPlanetaryRandom() {
