@@ -313,49 +313,71 @@ public class Matter {
 	}
 
 	public void orbitalEllipticSpeed(Matter m, Vector3d axis) {
+		// axis x --> ellipse on y
+		// axis y --> ellipse on z
+		// axis z --> ellipse on x
+
 		double distance = new Point3d(m.getPoint())
 				.distance(new Point3d(point));
+		double p1 = 0;
+		double p2 = 0;
+
+		p1 = axis.x != 0 ? point.y : p1;
+		p1 = axis.y != 0 ? point.z : p1;
+		p1 = axis.z != 0 ? point.x : p1;
+		p2 = axis.x != 0 ? m.getPoint().y : p2;
+		p2 = axis.y != 0 ? m.getPoint().z : p2;
+		p2 = axis.z != 0 ? m.getPoint().x : p2;
 
 		double e = parameters.getEllipseRatio();
-		double base = (e * point.x - distance) / e;
-		double h = m.getPoint().x - base;
+		double base = (e * p1 - distance) / e;
+		double h = p2 - base;
 		double a = e * h / (1 - Math.pow(e, 2));
 		double b = e * h / Math.pow(1 - Math.pow(e, 2), 0.5);
 		double c = Math.pow(e, 2) * h / (1 - Math.pow(e, 2));
-		Vector3d o = new Vector3d(m.getPoint());
-		o.x = o.x + c;
+		double n = p1 - Math.pow(b, 2) * (p1 - p2 - c) / Math.pow(a, 2);
+		Vector3d normalOnAxis = new Vector3d();
 
-		double nx = point.x - Math.pow(b, 2) * (point.x - o.x) / Math.pow(a, 2);
-		Vector3d tmpVect = new Vector3d(nx, o.y, o.z);
+		normalOnAxis = axis.x != 0 ? new Vector3d(m.getPoint().x, n,
+				m.getPoint().z) : normalOnAxis;
+		normalOnAxis = axis.y != 0 ? new Vector3d(m.getPoint().x,
+				m.getPoint().y, n) : normalOnAxis;
+		normalOnAxis = axis.z != 0 ? new Vector3d(n, m.getPoint().y,
+				m.getPoint().z) : normalOnAxis;
+
 		double orbitalSpeed = Math.pow(HelperVariable.G * m.getMass()
 				* (2 / distance - 1 / a), 0.5);
-		Vector3d accel = HelperVector
-				.acceleration(point, tmpVect, orbitalSpeed);
+		Vector3d accel = HelperVector.acceleration(point, normalOnAxis,
+				orbitalSpeed);
 
-		double alea = Math.random(); 
+		double alea = Math.random();
 		if (alea < 0.25) {
-			double angle = Math.PI/2;
+			double angle = Math.PI / 2;
 			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
-		}else if (alea < 0.5) {
+		} else if (alea < 0.5) {
 			double angle = Math.PI;
 			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
-		}else if (alea < 0.75) {
-			double angle = Math.PI/2 + Math.PI;
+		} else if (alea < 0.75) {
+			double angle = Math.PI / 2 + Math.PI;
 			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 		}
-
 
 		double angle = parameters.getEllipseShiftRatio() * Math.PI
 				* (distance / parameters.getNebulaRadius());
 		accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 		point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 
-		accel = HelperVector.rotate(accel,
-				new Vector3d(0, 0, Math.signum(axis.z) * Math.PI / 2),
-				Math.signum(axis.z) * Math.PI / 2);
+		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
+				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
+		accel = axis.y != 0 ? HelperVector.rotate(accel,
+				new Vector3d(0, Math.signum(axis.y) * Math.PI / 2, 0),
+				Math.signum(axis.y) * Math.PI / 2) : accel;
+		accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
+				Math.signum(axis.z) * Math.PI / 2), Math.signum(axis.z)
+				* Math.PI / 2) : accel;
 
 		speed.add(accel);
 	}
