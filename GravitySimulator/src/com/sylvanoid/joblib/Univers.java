@@ -324,7 +324,7 @@ public class Univers {
 	}
 
 	private void createGalaxiesCollision() {
-		double deltax = 300000;
+		double deltax = 200000;
 		double deltay = 0;
 		double deltaz = 0;
 
