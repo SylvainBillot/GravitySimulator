@@ -332,12 +332,21 @@ public class Matter {
 		Vector3d accel = HelperVector
 				.acceleration(point, tmpVect, orbitalSpeed);
 
-		
-		if (Math.random() > 0.5) {
+		double alea = Math.random(); 
+		if (alea < 0.25) {
+			double angle = Math.PI/2;
+			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
+			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
+		}else if (alea < 0.5) {
 			double angle = Math.PI;
 			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
+		}else if (alea < 0.75) {
+			double angle = Math.PI/2 + Math.PI;
+			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
+			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 		}
+
 
 		double angle = parameters.getEllipseShiftRatio() * Math.PI
 				* (distance / parameters.getNebulaRadius());

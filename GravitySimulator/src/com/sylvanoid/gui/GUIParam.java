@@ -487,8 +487,6 @@ public class GUIParam extends JDialog {
 			lowMassDensity.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
-			ellipseRatio.setEnabled(true);
-			ellipseShiftRatio.setEnabled(true);
 			break;
 		case 5:
 			// TypeOfUnivers.PlanetariesGenesis;
