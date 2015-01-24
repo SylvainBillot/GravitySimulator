@@ -168,7 +168,7 @@ public class GUIParam extends JDialog {
 					numOfLowMassParticule.setValue(0);
 					lowMassParticuleMass.setValue(1);
 					lowMassDensity.setValue(1);
-					darkMatterMass.setValue(6E42);
+					darkMatterMass.setValue(1E42);
 					darkMatterDensity.setValue(1E-20);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
