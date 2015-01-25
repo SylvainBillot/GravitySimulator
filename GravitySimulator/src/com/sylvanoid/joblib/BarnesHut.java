@@ -135,13 +135,6 @@ public class BarnesHut extends RecursiveTask<Integer> {
 							double distance = new Point3d(m.getPoint())
 									.distance(new Point3d(uvoisin.getGPoint()));
 
-							// gravite rise at C; approximation
-							/*
-							 * javax.vecmath.Vector3d diffSpeed = new
-							 * javax.vecmath.Vector3d( uvoisin.getSpeed());
-							 * diffSpeed.sub(m.getSpeed()); distance +=
-							 * diffSpeed.length() * distance / HelperVariable.C;
-							 */
 							double attraction = parameters.getTimeFactor()
 									* HelperVariable.G
 									* (((uvoisin.getMass()) / Math.pow(
