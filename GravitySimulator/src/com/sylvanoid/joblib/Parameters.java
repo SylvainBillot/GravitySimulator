@@ -49,6 +49,7 @@ public class Parameters {
 	private int numOfLowMassParticule = 0;
 	private double lowMassParticuleMass = 1;
 	private double lowMassDensity = 1;
+	
 	private Vector3d demiDistanceBetweenGalaxies = new Vector3d(
 			200000 * HelperVariable.PC, 0, 0);
 
