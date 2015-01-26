@@ -295,9 +295,9 @@ public class Matter {
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		double distance = new Point3d(point)
 				.distance(new Point3d(m.getPoint()));
-		double orbitalSpeedValue = net.jafama.FastMath.pow(
-				HelperVariable.G * net.jafama.FastMath.pow(m.getMass(), 2)
-						/ ((mass + m.getMass()) * distance), 0.5);
+		double orbitalSpeedValue = net.jafama.FastMath.sqrt(
+				HelperVariable.G * net.jafama.FastMath.pow2(m.getMass())
+						/ ((mass + m.getMass()) * distance));
 		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
 				orbitalSpeedValue);
 		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
@@ -332,10 +332,10 @@ public class Matter {
 		double e = parameters.getEllipseRatio();
 		double base = (e * p1 - distance) / e;
 		double h = p2 - base;
-		double a = e * h / (1 - net.jafama.FastMath.pow(e, 2));
-		double b = e * h / net.jafama.FastMath.pow(1 - net.jafama.FastMath.pow(e, 2), 0.5);
-		double c = net.jafama.FastMath.pow(e, 2) * h / (1 - net.jafama.FastMath.pow(e, 2));
-		double n = p1 - net.jafama.FastMath.pow(b, 2) * (p1 - p2 - c) / net.jafama.FastMath.pow(a, 2);
+		double a = e * h / (1 - net.jafama.FastMath.pow2(e));
+		double b = e * h / net.jafama.FastMath.sqrt(1 - net.jafama.FastMath.pow2(e));
+		double c = net.jafama.FastMath.pow2(e) * h / (1 - net.jafama.FastMath.pow2(e));
+		double n = p1 - net.jafama.FastMath.pow2(b) * (p1 - p2 - c) / net.jafama.FastMath.pow2(a);
 		Vector3d normalOnAxis = new Vector3d();
 
 		normalOnAxis = axis.x != 0 ? new Vector3d(m.getPoint().x, n,
@@ -345,8 +345,8 @@ public class Matter {
 		normalOnAxis = axis.z != 0 ? new Vector3d(n, m.getPoint().y,
 				m.getPoint().z) : normalOnAxis;
 
-		double orbitalSpeed = net.jafama.FastMath.pow(HelperVariable.G * m.getMass()
-				* (2 / distance - 1 / a), 0.5);
+		double orbitalSpeed = net.jafama.FastMath.sqrt(HelperVariable.G * m.getMass()
+				* (2 / distance - 1 / a));
 		Vector3d accel = HelperVector.acceleration(point, normalOnAxis,
 				orbitalSpeed);
 

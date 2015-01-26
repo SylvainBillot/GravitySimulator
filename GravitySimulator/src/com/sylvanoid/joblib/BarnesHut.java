@@ -137,8 +137,8 @@ public class BarnesHut extends RecursiveTask<Integer> {
 
 							double attraction = parameters.getTimeFactor()
 									* HelperVariable.G
-									* (((uvoisin.getMass()) / net.jafama.FastMath.pow(
-											distance, 2)));
+									* (((uvoisin.getMass()) / net.jafama.FastMath.pow2(
+											distance)));
 
 							if (!parameters.isManageImpact()
 									|| uvoisin.getListMatter().size() > 1

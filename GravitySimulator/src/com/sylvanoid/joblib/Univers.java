@@ -25,6 +25,8 @@ public class Univers {
 	@XmlElement
 	private double darkMass;
 	@XmlElement
+	private double volumicMass;
+	@XmlElement
 	private List<Matter> listMatter;
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
@@ -84,6 +86,7 @@ public class Univers {
 
 	public void computeMassLimitsCentroidSpeed() {
 		boolean firstTime = true;
+		volumicMass = 0;
 		speed = new Vector3d(0, 0, 0);
 		mass = 0;
 		visibleMass = 0;
@@ -126,6 +129,10 @@ public class Univers {
 			tmpGz += (m.getPoint().getZ() * m.getMass());
 			speed.add(m.getSpeed());
 		}
+		double maxCote = max.x - min.x;
+		maxCote = max.y - min.y > maxCote ? max.y - min.y : maxCote;
+		maxCote = max.z - min.z > maxCote ? max.z - min.z : maxCote;
+		volumicMass = mass / net.jafama.FastMath.pow3(maxCote);
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 	}
 
@@ -229,11 +236,16 @@ public class Univers {
 			boolean IsNotOK = true;
 			while (IsNotOK) {
 
-				double r = radiusMin + (radiusMax - radiusMin)
-						* net.jafama.FastMath.pow(net.jafama.FastMath.random(), net.jafama.FastMath.pow(1, 3));
+				double r = radiusMin
+						+ (radiusMax - radiusMin)
+						* net.jafama.FastMath.pow(net.jafama.FastMath.random(),
+								1d / 3d);
 				double s = 2 * (net.jafama.FastMath.random() - 0.5);
-				double alpha = 2 * net.jafama.FastMath.PI * (net.jafama.FastMath.random() - 0.5);
-				double c = r * net.jafama.FastMath.pow(1 - net.jafama.FastMath.pow(s, 2), 0.5);
+				double alpha = 2 * net.jafama.FastMath.PI
+						* (net.jafama.FastMath.random() - 0.5);
+				double c = r
+						* net.jafama.FastMath.sqrt(1 - net.jafama.FastMath
+								.pow2(s));
 				x = c * net.jafama.FastMath.cos(alpha);
 				y = c * net.jafama.FastMath.sin(alpha);
 				z = r * s;
@@ -241,43 +253,49 @@ public class Univers {
 				IsNotOK = false;
 				if (axisOfRing.x != 0) {
 					IsNotOK = IsNotOK
-							|| (net.jafama.FastMath.pow(y, 2) + net.jafama.FastMath.pow(z, 2) < net.jafama.FastMath.pow(
-									radiusMin, 2));
+							|| (net.jafama.FastMath.pow2(y)
+									+ net.jafama.FastMath.pow2(z) < net.jafama.FastMath
+										.pow2(radiusMin));
 				}
 				if (axisOfRing.y != 0) {
 					IsNotOK = IsNotOK
-							|| (net.jafama.FastMath.pow(x, 2) + net.jafama.FastMath.pow(z, 2) < net.jafama.FastMath.pow(
-									radiusMin, 2));
+							|| (net.jafama.FastMath.pow2(x)
+									+ net.jafama.FastMath.pow2(z) < net.jafama.FastMath
+										.pow2(radiusMin));
 				}
 				if (axisOfRing.z != 0) {
 					IsNotOK = IsNotOK
-							|| (net.jafama.FastMath.pow(x, 2) + net.jafama.FastMath.pow(y, 2) < net.jafama.FastMath.pow(
-									radiusMin, 2));
+							|| (net.jafama.FastMath.pow2(x)
+									+ net.jafama.FastMath.pow2(y) < net.jafama.FastMath
+										.pow2(radiusMin));
 				}
 			}
 
 			Vector3d color = defaultColor;
 			if (defaultColor.equals(new Vector3d(0, 0, 0))) {
 				double alea = net.jafama.FastMath.random();
-				color = new Vector3d(0.45 + net.jafama.FastMath.random() * 0.05,
+				color = new Vector3d(
+						0.45 + net.jafama.FastMath.random() * 0.05,
 						0.45 + net.jafama.FastMath.random() * 0.05,
 						0.45 + net.jafama.FastMath.random() * 0.05);
 				if (alea > 0.80) {
-					color.set(new Vector3d(0.55 + net.jafama.FastMath.random() * 0.05,
+					color.set(new Vector3d(
+							0.55 + net.jafama.FastMath.random() * 0.05,
 							0.45 + net.jafama.FastMath.random() * 0.05,
 							0.45 + net.jafama.FastMath.random() * 0.05));
 				}
 				if (alea > 0.90) {
-					color.set(new Vector3d(0.45 + net.jafama.FastMath.random() * 0.05,
+					color.set(new Vector3d(
+							0.45 + net.jafama.FastMath.random() * 0.05,
 							0.45 + net.jafama.FastMath.random() * 0.05,
 							0.55 + net.jafama.FastMath.random() * 0.05));
 				}
 			}
 			m = new Matter(parameters, new Vector3d(origine.x + x * ratio.x,
 					origine.y + y * ratio.y, origine.z + z * ratio.z), minMass
-					+ net.jafama.FastMath.random() * (maxMass - minMass) + 1E-100
-					* net.jafama.FastMath.random(), new Vector3d(0, 0, 0), color, density,
-					false);
+					+ net.jafama.FastMath.random() * (maxMass - minMass)
+					+ 1E-100 * net.jafama.FastMath.random(), new Vector3d(0, 0,
+					0), color, density, false);
 			miniListMatter.add(m);
 			miniMass += m.getMass();
 		}
@@ -303,9 +321,10 @@ public class Univers {
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
 
-		Matter m1 = new Matter(parameters, new Vector3d(net.jafama.FastMath.random(),
-				net.jafama.FastMath.random(), 0), parameters.getDarkMatterMass(),
-				new Vector3d(0, 0, 0), new Vector3d(0.25, 0.25, 0.25),
+		Matter m1 = new Matter(parameters, new Vector3d(
+				net.jafama.FastMath.random(), net.jafama.FastMath.random(), 0),
+				parameters.getDarkMatterMass(), new Vector3d(0, 0, 0),
+				new Vector3d(0.25, 0.25, 0.25),
 				parameters.getDarkMatterDensity(), true);
 		listMatter.add(m1);
 		mass += m1.getMass();
@@ -325,15 +344,17 @@ public class Univers {
 		dbg2.negate();
 
 		Matter m1 = new Matter(parameters, dbg2, parameters.getDarkMatterMass()
-				/ 1.1 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0), new Vector3d(
-				0.25, 0.25, 0.25), parameters.getDarkMatterDensity(), true);
+				/ 1.1 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
+				new Vector3d(0.25, 0.25, 0.25),
+				parameters.getDarkMatterDensity(), true);
 		listMatter.add(m1);
 		mass += m1.getMass();
 		darkMass += m1.getMass();
 
 		Matter m2 = new Matter(parameters, dbg1, parameters.getDarkMatterMass()
-				/ 2 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0), new Vector3d(0.25,
-				0.25, 0.25), parameters.getDarkMatterDensity(), true);
+				/ 2 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
+				new Vector3d(0.25, 0.25, 0.25),
+				parameters.getDarkMatterDensity(), true);
 		listMatter.add(m2);
 		mass += m2.getMass();
 		darkMass += m2.getMass();
@@ -363,59 +384,67 @@ public class Univers {
 	}
 
 	private void createPlanetary() {
-		Matter sun = new Matter(parameters, new Vector3d(net.jafama.FastMath.random(),
-				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
-				HelperVariable.M + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
+		Matter sun = new Matter(parameters, new Vector3d(
+				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
+				net.jafama.FastMath.random()), HelperVariable.M
+				+ net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
 				new Vector3d(1, 1, 0.5), 1408, false);
 		sun.setName("Sun");
 		listMatter.add(sun);
 
 		Matter mercure = new Matter(parameters, new Vector3d(0.38709893
-				* HelperVariable.UA + net.jafama.FastMath.random(), net.jafama.FastMath.random(),
-				net.jafama.FastMath.random()), 330.2E21 + net.jafama.FastMath.random(),
-				new Vector3d(0, 0, 0), new Vector3d(1, 0.8, 0.8), 5427, false);
+				* HelperVariable.UA + net.jafama.FastMath.random(),
+				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
+				330.2E21 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
+				new Vector3d(1, 0.8, 0.8), 5427, false);
 		mercure.setName("Mercure");
 		listMatter.add(mercure);
 
 		Matter venus = new Matter(parameters, new Vector3d(0.723332
-				* HelperVariable.UA + net.jafama.FastMath.random(), net.jafama.FastMath.random(),
-				net.jafama.FastMath.random()), 5.972E24 + net.jafama.FastMath.random(),
-				new Vector3d(0, 0, 0), new Vector3d(1, 1, 0.8), 5.204E3, false);
+				* HelperVariable.UA + net.jafama.FastMath.random(),
+				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
+				5.972E24 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
+				new Vector3d(1, 1, 0.8), 5.204E3, false);
 		venus.setName("Venus");
 		listMatter.add(venus);
 
 		Matter earth = new Matter(parameters, new Vector3d(1
-				* HelperVariable.UA + net.jafama.FastMath.random(), net.jafama.FastMath.random(),
-				net.jafama.FastMath.random()), 4.8685E24 + net.jafama.FastMath.random(),
+				* HelperVariable.UA + net.jafama.FastMath.random(),
+				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
+				4.8685E24 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(0.7, 0.7, 1), 5.52E3, false);
 		earth.setName("Earth");
 		listMatter.add(earth);
 
 		Matter mars = new Matter(parameters, new Vector3d(1.52366231
-				* HelperVariable.UA + net.jafama.FastMath.random(), net.jafama.FastMath.random(),
-				net.jafama.FastMath.random()), 641.85E21 + net.jafama.FastMath.random(),
+				* HelperVariable.UA + net.jafama.FastMath.random(),
+				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
+				641.85E21 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 0.7, 0.7), 3933.5, false);
 		mars.setName("Mars");
 		listMatter.add(mars);
 
 		Matter jupiter = new Matter(parameters, new Vector3d(5.20336301
-				* HelperVariable.UA + net.jafama.FastMath.random(), net.jafama.FastMath.random(),
-				net.jafama.FastMath.random()), 1.8986E27 + net.jafama.FastMath.random(),
+				* HelperVariable.UA + net.jafama.FastMath.random(),
+				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
+				1.8986E27 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 0.8, 0.8), 1326, false);
 		jupiter.setName("Jupiter");
 		listMatter.add(jupiter);
 
 		Matter saturn = new Matter(parameters, new Vector3d(9.53707032
-				* HelperVariable.UA + net.jafama.FastMath.random(), net.jafama.FastMath.random(),
-				net.jafama.FastMath.random()), 568.46E24 + net.jafama.FastMath.random(),
+				* HelperVariable.UA + net.jafama.FastMath.random(),
+				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
+				568.46E24 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(0.9, 0.9, 0.9), 687.3,
 				false);
 		saturn.setName("Saturn");
 		listMatter.add(saturn);
 
 		Matter moon = new Matter(parameters, new Vector3d((1 + 0.00257)
-				* HelperVariable.UA + net.jafama.FastMath.random(), net.jafama.FastMath.random(),
-				net.jafama.FastMath.random()), 7.3477E22 + net.jafama.FastMath.random(),
+				* HelperVariable.UA + net.jafama.FastMath.random(),
+				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
+				7.3477E22 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 1, 1), 3.3464E3, false);
 		moon.setName("Moon");
 		listMatter.add(moon);
@@ -443,8 +472,9 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 1, 0), parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1));
-		Matter m1 = new Matter(parameters, new Vector3d(net.jafama.FastMath.random(),
-				net.jafama.FastMath.random(), net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
+		Matter m1 = new Matter(parameters, new Vector3d(
+				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
+				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
 				parameters.getDarkMatterDensity(), false);
 		listMatter.add(m1);
@@ -465,8 +495,9 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.9,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05));
-		Matter m1 = new Matter(parameters, new Vector3d(net.jafama.FastMath.random(),
-				net.jafama.FastMath.random(), net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
+		Matter m1 = new Matter(parameters, new Vector3d(
+				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
+				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
 				parameters.getDarkMatterDensity(), false);
 		listMatter.add(m1);
@@ -515,5 +546,9 @@ public class Univers {
 
 	public double getDarkMass() {
 		return darkMass;
+	}
+
+	public double getVolumicMass() {
+		return volumicMass;
 	}
 }

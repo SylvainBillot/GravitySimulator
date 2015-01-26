@@ -30,8 +30,8 @@ public abstract class HelperVector {
 		Vector3d tmpVect = new Vector3d(obj2);
 		tmpVect.sub(obj1);
 		return new Vector3d(tmpVect.length(), net.jafama.FastMath.atan2(tmpVect.y, tmpVect.x),
-				net.jafama.FastMath.atan2(net.jafama.FastMath.pow(
-						net.jafama.FastMath.pow(tmpVect.x, 2) + net.jafama.FastMath.pow(tmpVect.y, 2), 0.5),
+				net.jafama.FastMath.atan2(net.jafama.FastMath.sqrt(
+						net.jafama.FastMath.pow2(tmpVect.x) + net.jafama.FastMath.pow2(tmpVect.y)),
 						tmpVect.z));
 	}
 
