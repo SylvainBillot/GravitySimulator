@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/jogl-all-natives-macosx-universal.jar"/>
 	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/jogl-all-natives-windows-amd64.jar"/>
 	<classpathentry kind="lib" path="/home/sylvain/git/jogamp-all-platforms/jar/jogl-all-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="/home/sylvain/git/GravitySimulator/GravitySimulator/jafama.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

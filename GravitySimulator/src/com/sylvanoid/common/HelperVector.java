@@ -29,15 +29,15 @@ public abstract class HelperVector {
 	public static Vector3d rThetaPhi(Vector3d obj1, Vector3d obj2) {
 		Vector3d tmpVect = new Vector3d(obj2);
 		tmpVect.sub(obj1);
-		return new Vector3d(tmpVect.length(), Math.atan2(tmpVect.y, tmpVect.x),
-				Math.atan2(Math.pow(
-						Math.pow(tmpVect.x, 2) + Math.pow(tmpVect.y, 2), 0.5),
+		return new Vector3d(tmpVect.length(), net.jafama.FastMath.atan2(tmpVect.y, tmpVect.x),
+				net.jafama.FastMath.atan2(net.jafama.FastMath.pow(
+						net.jafama.FastMath.pow(tmpVect.x, 2) + net.jafama.FastMath.pow(tmpVect.y, 2), 0.5),
 						tmpVect.z));
 	}
 
 	public static Vector3d polToCoord(double radius, double theta, double phi) {
-		return new Vector3d(radius * Math.cos(theta) * Math.sin(phi), radius
-				* Math.sin(theta) * Math.sin(phi), radius * Math.cos(phi));
+		return new Vector3d(radius * net.jafama.FastMath.cos(theta) * net.jafama.FastMath.sin(phi), radius
+				* net.jafama.FastMath.sin(theta) * net.jafama.FastMath.sin(phi), radius * net.jafama.FastMath.cos(phi));
 	}
 
 	public static Vector3d acceleration(Vector3d obj1, Vector3d obj2,
@@ -51,12 +51,12 @@ public abstract class HelperVector {
 		double x = angles.x;
 		double y = angles.y;
 		double z = angles.z;
-		double cosx = Math.cos(x);
-		double cosy = Math.cos(y);
-		double cosz = Math.cos(z);
-		double sinx = Math.sin(x);
-		double siny = Math.sin(y);
-		double sinz = Math.sin(z);
+		double cosx = net.jafama.FastMath.cos(x);
+		double cosy = net.jafama.FastMath.cos(y);
+		double cosz = net.jafama.FastMath.cos(z);
+		double sinx = net.jafama.FastMath.sin(x);
+		double siny = net.jafama.FastMath.sin(y);
+		double sinz = net.jafama.FastMath.sin(z);
 
 		matrix[0] = cosy * cosz;
 		matrix[1] = -cosx * sinz + sinx * siny * cosz;

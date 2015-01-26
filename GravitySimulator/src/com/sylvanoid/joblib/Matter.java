@@ -45,7 +45,7 @@ public class Matter {
 	/* For comaraison only */
 	public Matter(Vector3d point) {
 		this.setPoint(point);
-		mass = Math.random();
+		mass = net.jafama.FastMath.random();
 	}
 
 	public Matter(Parameters parameters, Vector3d point, double mass,
@@ -60,7 +60,7 @@ public class Matter {
 			typeOfObject = TypeOfObject.Dark;
 		}
 		this.name = "id: " + this.hashCode();
-		this.rayon = Math.pow(3 * (mass / density) / (4 * Math.PI), (double) 1
+		this.rayon = net.jafama.FastMath.pow(3 * (mass / density) / (4 * net.jafama.FastMath.PI), (double) 1
 				/ (double) 3);
 	}
 
@@ -143,7 +143,7 @@ public class Matter {
 	}
 
 	public void setMass(double mass) {
-		rayon = Math.pow(3 * (mass / density) / (4 * Math.PI), (double) 1
+		rayon = net.jafama.FastMath.pow(3 * (mass / density) / (4 * net.jafama.FastMath.PI), (double) 1
 				/ (double) 3);
 		this.mass = mass;
 	}
@@ -295,19 +295,19 @@ public class Matter {
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		double distance = new Point3d(point)
 				.distance(new Point3d(m.getPoint()));
-		double orbitalSpeedValue = Math.pow(
-				HelperVariable.G * Math.pow(m.getMass(), 2)
+		double orbitalSpeedValue = net.jafama.FastMath.pow(
+				HelperVariable.G * net.jafama.FastMath.pow(m.getMass(), 2)
 						/ ((mass + m.getMass()) * distance), 0.5);
 		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
 				orbitalSpeedValue);
 		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
+				net.jafama.FastMath.signum(axis.x) * net.jafama.FastMath.PI / 2), net.jafama.FastMath.PI / 2) : accel;
 		accel = axis.y != 0 ? HelperVector.rotate(accel,
-				new Vector3d(0, Math.signum(axis.y) * Math.PI / 2, 0),
-				Math.signum(axis.y) * Math.PI / 2) : accel;
+				new Vector3d(0, net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI / 2, 0),
+				net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI / 2) : accel;
 		accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-				Math.signum(axis.z) * Math.PI / 2), Math.signum(axis.z)
-				* Math.PI / 2) : accel;
+				net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI / 2), net.jafama.FastMath.signum(axis.z)
+				* net.jafama.FastMath.PI / 2) : accel;
 
 		speed.add(accel);
 	}
@@ -332,10 +332,10 @@ public class Matter {
 		double e = parameters.getEllipseRatio();
 		double base = (e * p1 - distance) / e;
 		double h = p2 - base;
-		double a = e * h / (1 - Math.pow(e, 2));
-		double b = e * h / Math.pow(1 - Math.pow(e, 2), 0.5);
-		double c = Math.pow(e, 2) * h / (1 - Math.pow(e, 2));
-		double n = p1 - Math.pow(b, 2) * (p1 - p2 - c) / Math.pow(a, 2);
+		double a = e * h / (1 - net.jafama.FastMath.pow(e, 2));
+		double b = e * h / net.jafama.FastMath.pow(1 - net.jafama.FastMath.pow(e, 2), 0.5);
+		double c = net.jafama.FastMath.pow(e, 2) * h / (1 - net.jafama.FastMath.pow(e, 2));
+		double n = p1 - net.jafama.FastMath.pow(b, 2) * (p1 - p2 - c) / net.jafama.FastMath.pow(a, 2);
 		Vector3d normalOnAxis = new Vector3d();
 
 		normalOnAxis = axis.x != 0 ? new Vector3d(m.getPoint().x, n,
@@ -345,39 +345,39 @@ public class Matter {
 		normalOnAxis = axis.z != 0 ? new Vector3d(n, m.getPoint().y,
 				m.getPoint().z) : normalOnAxis;
 
-		double orbitalSpeed = Math.pow(HelperVariable.G * m.getMass()
+		double orbitalSpeed = net.jafama.FastMath.pow(HelperVariable.G * m.getMass()
 				* (2 / distance - 1 / a), 0.5);
 		Vector3d accel = HelperVector.acceleration(point, normalOnAxis,
 				orbitalSpeed);
 
-		double alea = Math.random();
+		double alea = net.jafama.FastMath.random();
 		if (alea < 0.25) {
-			double angle = Math.PI / 2;
+			double angle = net.jafama.FastMath.PI / 2;
 			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 		} else if (alea < 0.5) {
-			double angle = Math.PI;
+			double angle = net.jafama.FastMath.PI;
 			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 		} else if (alea < 0.75) {
-			double angle = Math.PI / 2 + Math.PI;
+			double angle = net.jafama.FastMath.PI / 2 + net.jafama.FastMath.PI;
 			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 		}
 
-		double angle = parameters.getEllipseShiftRatio() * Math.PI
+		double angle = parameters.getEllipseShiftRatio() * net.jafama.FastMath.PI
 				* (distance / parameters.getNebulaRadius());
 		accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 		point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 
 		accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-				Math.signum(axis.x) * Math.PI / 2), Math.PI / 2) : accel;
+				net.jafama.FastMath.signum(axis.x) * net.jafama.FastMath.PI / 2), net.jafama.FastMath.PI / 2) : accel;
 		accel = axis.y != 0 ? HelperVector.rotate(accel,
-				new Vector3d(0, Math.signum(axis.y) * Math.PI / 2, 0),
-				Math.signum(axis.y) * Math.PI / 2) : accel;
+				new Vector3d(0, net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI / 2, 0),
+				net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI / 2) : accel;
 		accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-				Math.signum(axis.z) * Math.PI / 2), Math.signum(axis.z)
-				* Math.PI / 2) : accel;
+				net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI / 2), net.jafama.FastMath.signum(axis.z)
+				* net.jafama.FastMath.PI / 2) : accel;
 
 		speed.add(accel);
 	}

@@ -35,7 +35,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		MouseMotionListener {
 
 	private int textSize = 10;
-	private double theta = Math.PI / 180;
+	private double theta = net.jafama.FastMath.PI / 180;
 
 	private GUIProgram guiProgram;
 	private Parameters parameters;
@@ -164,7 +164,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		if (parameters.isPermanentRotationy()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 1, 0), -Math.PI / 1000));
+					new Vector3d(0, 1, 0), -net.jafama.FastMath.PI / 1000));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 		}
@@ -521,16 +521,16 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 						parameters.getScala() * m.getPoint().z);
 
 				double phi01 = new Vector3d(0, 0, 1).angle(parameters
-						.getLookAt()) * -Math.signum(parameters.getLookAt().y);
+						.getLookAt()) * -net.jafama.FastMath.signum(parameters.getLookAt().y);
 				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0,
 						1), new Vector3d(1, 0, 0), phi01);
 				double phi02 = afterRotateX.angle(parameters.getLookAt())
-						* Math.signum(parameters.getLookAt().x);
+						* net.jafama.FastMath.signum(parameters.getLookAt().x);
 
 				if (m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
 					gl.glMultMatrixd(HelperVector
 							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
-									Math.random() * 2 * Math.PI)));
+									net.jafama.FastMath.random() * 2 * net.jafama.FastMath.PI)));
 				} else {
 					gl.glMultMatrixd(HelperVector.make3DTransformMatrix(m
 							.getAngles()));
@@ -539,7 +539,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				double r;
 				if (m.getMass() > HelperVariable.MINIMALSTARMASS
 						&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
-					r = (Math.random() * 0.5 + 2.5)
+					r = (net.jafama.FastMath.random() * 0.5 + 2.5)
 							* (m.getRayon() * parameters.getScala() < 1 ? 1 : m
 									.getRayon() * parameters.getScala());
 				} else {
@@ -573,11 +573,11 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 					double phi01 = new Vector3d(0, 0, 1).angle(parameters
 							.getLookAt())
-							* -Math.signum(parameters.getLookAt().y);
+							* -net.jafama.FastMath.signum(parameters.getLookAt().y);
 					Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0,
 							0, 1), new Vector3d(1, 0, 0), phi01);
 					double phi02 = afterRotateX.angle(parameters.getLookAt())
-							* Math.signum(parameters.getLookAt().x);
+							* net.jafama.FastMath.signum(parameters.getLookAt().x);
 					gl.glMultMatrixd(HelperVector
 							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
 									0)));
