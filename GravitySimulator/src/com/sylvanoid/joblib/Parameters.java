@@ -51,6 +51,8 @@ public class Parameters {
 	private double lowMassDensity = 1;
 	private Vector3d demiDistanceBetweenGalaxies = new Vector3d(
 			200000 * HelperVariable.PC, 0, 0);
+	
+	private double minimalVolumicMassBeforeFusion = 1d/0d;
 
 	public Parameters() {
 
@@ -373,6 +375,15 @@ public class Parameters {
 	public void setDemiDistanceBetweenGalaxies(
 			Vector3d demiDistanceBetweenGalaxies) {
 		this.demiDistanceBetweenGalaxies = demiDistanceBetweenGalaxies;
+	}
+
+	public double getMinimalVolumicMassBeforeFusion() {
+		return minimalVolumicMassBeforeFusion;
+	}
+
+	public void setMinimalVolumicMassBeforeFusion(
+			double minimalVolumicMassBeforeFusion) {
+		this.minimalVolumicMassBeforeFusion = minimalVolumicMassBeforeFusion;
 	}
 
 }

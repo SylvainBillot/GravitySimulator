@@ -275,9 +275,7 @@ public class Matter {
 	}
 
 	public void impact() {
-		System.out.println(fusionWith.size());
 		for (Matter m : fusionWith) {
-			System.out.println(hashCode() + "->" + m.hashCode());
 			double Cr = parameters.getTypeOfImpact();
 			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
 					* speed.x + m.getMass() * m.getSpeed().x)
