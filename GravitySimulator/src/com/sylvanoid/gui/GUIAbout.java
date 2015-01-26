@@ -37,6 +37,7 @@ public class GUIAbout extends JDialog {
 				"Credit: gluegen 2 library<br/>" +
 				"Credit: vecmath library<br/>" +
 				"Credit: jcodec-0.1.5 library<br/>" +
+				"Credit: jafama library<br/>" +
 				"</body></html>";
 		JLabel content = new JLabel(text);
 		content.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
