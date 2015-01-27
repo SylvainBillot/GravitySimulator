@@ -76,15 +76,17 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesis) {
 			createPlanetariesGenesis();
 		}
-		computeMassLimitsCentroidSpeed();
+		computeMassLimitsCentroidSpeed(true);
 	}
 
-	public Univers(Univers father) {
+	public Univers(Univers father,Vector3d min, Vector3d max) {
 		this.parameters = father.parameters;
 		listMatter = new ArrayList<Matter>();
+		this.min = new Vector3d(min);
+		this.max = new Vector3d(max);
 	}
 
-	public void computeMassLimitsCentroidSpeed() {
+	public void computeMassLimitsCentroidSpeed(boolean withLimit) {
 		boolean firstTime = true;
 		volumicMass = 0;
 		speed = new Vector3d(0, 0, 0);
@@ -101,28 +103,29 @@ public class Univers {
 			} else {
 				visibleMass += m.getMass();
 			}
-			if (!firstTime) {
-				min.x = min.x > m.getPoint().getX() ? m.getPoint().getX()
-						: min.x;
-				max.x = max.x < m.getPoint().getX() ? m.getPoint().getX()
-						: max.x;
-				min.y = min.y > m.getPoint().getX() ? m.getPoint().getX()
-						: min.y;
-				max.y = max.y < m.getPoint().getX() ? m.getPoint().getX()
-						: max.y;
-				min.z = min.z > m.getPoint().getX() ? m.getPoint().getX()
-						: min.z;
-				max.z = max.z < m.getPoint().getX() ? m.getPoint().getX()
-						: max.z;
-
-			} else {
-				min.x = m.getPoint().getX();
-				max.x = m.getPoint().getX();
-				min.y = m.getPoint().getY();
-				max.y = m.getPoint().getY();
-				min.z = m.getPoint().getZ();
-				max.z = m.getPoint().getZ();
-				firstTime = false;
+			if (withLimit) {
+				if (!firstTime) {
+					min.x = min.x > m.getPoint().getX() ? m.getPoint().getX()
+							: min.x;
+					max.x = max.x < m.getPoint().getX() ? m.getPoint().getX()
+							: max.x;
+					min.y = min.y > m.getPoint().getX() ? m.getPoint().getX()
+							: min.y;
+					max.y = max.y < m.getPoint().getX() ? m.getPoint().getX()
+							: max.y;
+					min.z = min.z > m.getPoint().getX() ? m.getPoint().getX()
+							: min.z;
+					max.z = max.z < m.getPoint().getX() ? m.getPoint().getX()
+							: max.z;
+				} else {
+					min.x = m.getPoint().getX();
+					max.x = m.getPoint().getX();
+					min.y = m.getPoint().getY();
+					max.y = m.getPoint().getY();
+					min.z = m.getPoint().getZ();
+					max.z = m.getPoint().getZ();
+					firstTime = false;
+				}
 			}
 			tmpGx += (m.getPoint().getX() * m.getMass());
 			tmpGy += (m.getPoint().getY() * m.getMass());
@@ -140,7 +143,7 @@ public class Univers {
 		parameters.setNumOfCompute(0);
 		parameters.setNumOfAccelCompute(0);
 		long startTimeCycle = System.currentTimeMillis();
-		computeMassLimitsCentroidSpeed();
+		computeMassLimitsCentroidSpeed(true);
 		parameters.setLimitComputeTime(System.currentTimeMillis()
 				- startTimeCycle);
 		long startTimeBH = System.currentTimeMillis();

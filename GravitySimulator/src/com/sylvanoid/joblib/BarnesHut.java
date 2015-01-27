@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
@@ -28,7 +29,7 @@ public class BarnesHut extends RecursiveTask<Integer> {
 		if (univers.getMass() > parameters.getNegligeableMass()
 				&& !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
-			
+
 			if (parameters.isManageImpact()
 					&& parameters.isFusion()
 					&& univers.getVolumicMass() > parameters
@@ -52,14 +53,30 @@ public class BarnesHut extends RecursiveTask<Integer> {
 				double cz = univers.getMin().z
 						+ (univers.getMax().z - univers.getMin().z) / 2;
 
-				Univers suba = new Univers(univers);
-				Univers subb = new Univers(univers);
-				Univers subc = new Univers(univers);
-				Univers subd = new Univers(univers);
-				Univers sube = new Univers(univers);
-				Univers subf = new Univers(univers);
-				Univers subg = new Univers(univers);
-				Univers subh = new Univers(univers);
+				Univers suba = new Univers(univers, new Vector3d(cx, cy, cz),
+						new Vector3d(univers.getMax().x, univers.getMax().y,
+								univers.getMax().z));
+				Univers subb = new Univers(univers, new Vector3d(cx, cy,
+						univers.getMin().z), new Vector3d(univers.getMax().x,
+						univers.getMax().y, cz));
+				Univers subc = new Univers(univers, new Vector3d(cx,
+						univers.getMin().y, cz), new Vector3d(
+						univers.getMax().x, cy, univers.getMax().z));
+				Univers subd = new Univers(univers, new Vector3d(cx,
+						univers.getMin().y, univers.getMin().z), new Vector3d(
+						univers.getMax().x, cy, cz));
+				Univers sube = new Univers(univers, new Vector3d(
+						univers.getMin().x, cy, cz), new Vector3d(cx,
+						univers.getMax().y, univers.getMax().z));
+				Univers subf = new Univers(univers, new Vector3d(
+						univers.getMin().x, cy, univers.getMin().z),
+						new Vector3d(cx, univers.getMax().y, cz));
+				Univers subg = new Univers(univers, new Vector3d(
+						univers.getMin().x, univers.getMin().y, cz),
+						new Vector3d(cx, cy, univers.getMax().z));
+				Univers subh = new Univers(univers, new Vector3d(
+						univers.getMin().x, univers.getMin().y,
+						univers.getMin().z), new Vector3d(cx, cy, cz));
 
 				for (Matter m : univers.getListMatter()) {
 					if (m.getPoint().x > cx) {
@@ -103,14 +120,14 @@ public class BarnesHut extends RecursiveTask<Integer> {
 				subUnivers.add(subg);
 				subUnivers.add(subh);
 
-				suba.computeMassLimitsCentroidSpeed();
-				subb.computeMassLimitsCentroidSpeed();
-				subc.computeMassLimitsCentroidSpeed();
-				subd.computeMassLimitsCentroidSpeed();
-				sube.computeMassLimitsCentroidSpeed();
-				subf.computeMassLimitsCentroidSpeed();
-				subg.computeMassLimitsCentroidSpeed();
-				subh.computeMassLimitsCentroidSpeed();
+				suba.computeMassLimitsCentroidSpeed(false);
+				subb.computeMassLimitsCentroidSpeed(false);
+				subc.computeMassLimitsCentroidSpeed(false);
+				subd.computeMassLimitsCentroidSpeed(false);
+				sube.computeMassLimitsCentroidSpeed(false);
+				subf.computeMassLimitsCentroidSpeed(false);
+				subg.computeMassLimitsCentroidSpeed(false);
+				subh.computeMassLimitsCentroidSpeed(false);
 
 				BarnesHut bha = new BarnesHut(suba);
 				BarnesHut bhb = new BarnesHut(subb);
