@@ -79,7 +79,7 @@ public class Univers {
 		computeMassLimitsCentroidSpeed(true);
 	}
 
-	public Univers(Univers father,Vector3d min, Vector3d max) {
+	public Univers(Univers father, Vector3d min, Vector3d max) {
 		this.parameters = father.parameters;
 		listMatter = new ArrayList<Matter>();
 		this.min = new Vector3d(min);
@@ -132,10 +132,8 @@ public class Univers {
 			tmpGz += (m.getPoint().getZ() * m.getMass());
 			speed.add(m.getSpeed());
 		}
-		double maxCote = max.x - min.x;
-		maxCote = max.y - min.y > maxCote ? max.y - min.y : maxCote;
-		maxCote = max.z - min.z > maxCote ? max.z - min.z : maxCote;
-		volumicMass = mass / net.jafama.FastMath.pow3(maxCote);
+		volumicMass = visibleMass
+				/ ((max.x - min.x) * (max.y - min.y) * (max.z - min.z));
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 	}
 

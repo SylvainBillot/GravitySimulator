@@ -29,19 +29,18 @@ public class BarnesHut extends RecursiveTask<Integer> {
 		if (univers.getMass() > parameters.getNegligeableMass()
 				&& !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
-
-			if (parameters.isManageImpact()
-					&& parameters.isFusion()
-					&& univers.getVolumicMass() > parameters
-							.getMinimalVolumicMassBeforeFusion()) {
+			if (parameters.isManageImpact() && parameters.isFusion()
+					&& univers.getVolumicMass() > parameters.getDensity()) {
 				Matter mFirst = new Matter();
 				boolean firstTime = true;
 				for (Matter m : univers.getListMatter()) {
-					if (firstTime) {
+					if (firstTime && !m.isDark()) {
 						mFirst = m;
 						firstTime = false;
 					} else {
-						mFirst.getFusionWith().add(m);
+						if (!m.isDark()) {
+							mFirst.getFusionWith().add(m);
+						}
 					}
 				}
 			} else {
@@ -174,24 +173,22 @@ public class BarnesHut extends RecursiveTask<Integer> {
 										* (((uvoisin.getMass()) / net.jafama.FastMath
 												.pow2(distance)));
 
-								if (!parameters.isManageImpact()
-										|| uvoisin.getListMatter().size() > 1
-										|| m.isDark() != uvoisin
-												.getListMatter().get(0)
-												.isDark()
-										|| (distance > m.getRayon()
-												+ uvoisin.getListMatter()
-														.get(0).getRayon())) {
-									m.getSpeed().add(
-											HelperVector.acceleration(
-													m.getPoint(),
-													uvoisin.getGPoint(),
-													attraction));
-								} else {
-									m.getFusionWith().add(
-											uvoisin.getListMatter().get(0));
-								}
-
+								m.getSpeed()
+										.add(HelperVector.acceleration(
+												m.getPoint(),
+												uvoisin.getGPoint(), attraction));
+								/*
+								 * if (!parameters.isManageImpact() ||
+								 * uvoisin.getListMatter().size() > 1 ||
+								 * m.isDark() != uvoisin .getListMatter().get(0)
+								 * .isDark() || (distance > m.getRayon() +
+								 * uvoisin.getListMatter() .get(0).getRayon()))
+								 * { m.getSpeed().add(
+								 * HelperVector.acceleration( m.getPoint(),
+								 * uvoisin.getGPoint(), attraction)); } else {
+								 * m.getFusionWith().add(
+								 * uvoisin.getListMatter().get(0)); }
+								 */
 							}
 						}
 					}
