@@ -388,7 +388,7 @@ public class GUIProgram extends JFrame {
 								out = new SequenceEncoder(new File(fileChooser
 										.getSelectedFile().getAbsolutePath()));
 							}
-							parameters.setExportToVideo(!parameters.isExportToVideo());
+							parameters.setExportToVideo(true);
 						} 
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
@@ -397,7 +397,7 @@ public class GUIProgram extends JFrame {
 				} else {
 					try {
 						out.finish();
-						parameters.setExportToVideo(!parameters.isExportToVideo());
+						parameters.setExportToVideo(false);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
