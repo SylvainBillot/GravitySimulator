@@ -216,7 +216,7 @@ public class Univers {
 						radiusMin, radiusMax, ratio, parameters
 								.getNumOfLowMassParticule(), 0, parameters
 								.getLowMassParticuleMass(), parameters
-								.getLowMassDensity(), new Vector3d(0.05, 0.05,
+								.getLowMassDensity(), new Vector3d(0.06, 0.05,
 								0.05)));
 
 		return miniListMatter;
@@ -332,7 +332,8 @@ public class Univers {
 		darkMass += m1.getMass();
 		for (Matter m : listMatter) {
 			if (m != m1) {
-				m.orbitalEllipticSpeed(m1, new Vector3d(0, 0, 1));
+				m.orbitalEllipticSpeed(m1, new Vector3d(0, 0, 1),
+						parameters.getNbARms());
 			}
 		}
 	}

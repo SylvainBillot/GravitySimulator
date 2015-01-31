@@ -37,6 +37,7 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField massObjectMax;
 	private JFormattedTextField negligeableMass;
 	private JFormattedTextField numOfLowMassParticule;
+	private JFormattedTextField nbArms;
 	private JFormattedTextField ellipseRatio;
 	private JFormattedTextField ellipseShiftRatio;
 	private JFormattedTextField lowMassParticuleMass;
@@ -58,11 +59,11 @@ public class GUIParam extends JDialog {
 		setTitle("Parameters");
 		setModal(true);
 		int w = 600;
-		int h = 600;
+		int h = 700;
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(23, 2));
+		setLayout(new GridLayout(24, 2));
 
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
@@ -89,6 +90,7 @@ public class GUIParam extends JDialog {
 					typeOfImpact.setValue(100);
 					ellipseRatio.setValue(0.5);
 					ellipseShiftRatio.setValue(-0.25);
+					nbArms.setValue(3);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -111,6 +113,7 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
+					nbArms.setValue(3);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -131,6 +134,7 @@ public class GUIParam extends JDialog {
 					lowMassDensity.setValue(1);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
+					nbArms.setValue(3);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -155,6 +159,7 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1E-23);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
+					nbArms.setValue(3);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -183,6 +188,7 @@ public class GUIParam extends JDialog {
 							.setValue(200000 * HelperVariable.PC);
 					demiDistanceBetweenGalaxiesY.setValue(0);
 					demiDistanceBetweenGalaxiesZ.setValue(0);
+					nbArms.setValue(3);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -205,6 +211,7 @@ public class GUIParam extends JDialog {
 					darkMatterDensity.setValue(1);
 					ellipseRatio.setValue(0.95);
 					ellipseShiftRatio.setValue(1);
+					nbArms.setValue(3);
 					break;
 				}
 				enableDisableParam();
@@ -248,6 +255,11 @@ public class GUIParam extends JDialog {
 		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
 		add(massObjectMax);
 
+		add(new Label("Nb galactic Arms:"));
+		nbArms = new JFormattedTextField(dfsc);
+		nbArms.setValue(me.mother.getParameters().getNbARms());
+		add(nbArms);
+		
 		add(new Label("Ellipses eccentricity (]0-1[):"));
 		ellipseRatio = new JFormattedTextField(fdpc);
 		ellipseRatio.setValue(me.mother.getParameters().getEllipseRatio());
@@ -363,6 +375,9 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setMassObjectMax(
 							Double.parseDouble(me.massObjectMax.getValue()
 									.toString()));
+					me.mother.getParameters().setNbARms(
+							Integer.parseInt(me.nbArms.getValue()
+									.toString()));
 					me.mother.getParameters().setEllipseRatio(
 							Double.parseDouble(me.ellipseRatio.getValue()
 									.toString()));
@@ -449,6 +464,7 @@ public class GUIParam extends JDialog {
 		demiDistanceBetweenGalaxiesX.setEnabled(false);
 		demiDistanceBetweenGalaxiesY.setEnabled(false);
 		demiDistanceBetweenGalaxiesZ.setEnabled(false);
+		nbArms.setEnabled(false);
 		switch (typeOfUnivers.getSelectedIndex()) {
 		case 0:
 			// TypeOfUnivers.Planetary;
@@ -514,6 +530,7 @@ public class GUIParam extends JDialog {
 			darkMatterDensity.setEnabled(true);
 			ellipseRatio.setEnabled(true);
 			ellipseShiftRatio.setEnabled(true);
+			nbArms.setEnabled(true);
 			break;
 		case 4:
 			// TypeOfUnivers.GalaxiesCollision;

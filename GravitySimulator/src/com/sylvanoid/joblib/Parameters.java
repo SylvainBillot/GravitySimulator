@@ -51,6 +51,7 @@ public class Parameters {
 	private double lowMassDensity = 1;
 	private Vector3d demiDistanceBetweenGalaxies = new Vector3d(
 			200000 * HelperVariable.PC, 0, 0);
+	private int nbARms = 3;
 
 	public Parameters() {
 
@@ -373,5 +374,13 @@ public class Parameters {
 	public void setDemiDistanceBetweenGalaxies(
 			Vector3d demiDistanceBetweenGalaxies) {
 		this.demiDistanceBetweenGalaxies = demiDistanceBetweenGalaxies;
+	}
+
+	public int getNbARms() {
+		return nbARms;
+	}
+
+	public void setNbARms(int nbARms) {
+		this.nbARms = nbARms;
 	}
 }

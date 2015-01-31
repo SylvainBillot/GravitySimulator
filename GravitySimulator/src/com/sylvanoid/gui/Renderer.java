@@ -109,7 +109,9 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		gl.glClearDepth(1.0f);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
-		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+		gl.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
+		gl.glBlendFuncSeparate(GL2.GL_SRC_ALPHA, GL2.GL_ONE,
+		GL2.GL_ONE, GL2.GL_ZERO);
 		LoadGLTextures(gl);
 		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
 				java.awt.Font.PLAIN, textSize));
@@ -521,7 +523,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 						parameters.getScala() * m.getPoint().z);
 
 				double phi01 = new Vector3d(0, 0, 1).angle(parameters
-						.getLookAt()) * -net.jafama.FastMath.signum(parameters.getLookAt().y);
+						.getLookAt())
+						* -net.jafama.FastMath.signum(parameters.getLookAt().y);
 				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0,
 						1), new Vector3d(1, 0, 0), phi01);
 				double phi02 = afterRotateX.angle(parameters.getLookAt())
@@ -530,7 +533,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				if (m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
 					gl.glMultMatrixd(HelperVector
 							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
-									net.jafama.FastMath.random() * 2 * net.jafama.FastMath.PI)));
+									net.jafama.FastMath.random() * 2
+											* net.jafama.FastMath.PI)));
 				} else {
 					gl.glMultMatrixd(HelperVector.make3DTransformMatrix(m
 							.getAngles()));
@@ -573,11 +577,13 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 					double phi01 = new Vector3d(0, 0, 1).angle(parameters
 							.getLookAt())
-							* -net.jafama.FastMath.signum(parameters.getLookAt().y);
+							* -net.jafama.FastMath.signum(parameters
+									.getLookAt().y);
 					Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0,
 							0, 1), new Vector3d(1, 0, 0), phi01);
 					double phi02 = afterRotateX.angle(parameters.getLookAt())
-							* net.jafama.FastMath.signum(parameters.getLookAt().x);
+							* net.jafama.FastMath
+									.signum(parameters.getLookAt().x);
 					gl.glMultMatrixd(HelperVector
 							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
 									0)));

@@ -54,7 +54,7 @@ public class GUIProgram extends JFrame {
 	private Parameters parameters;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
-	Renderer renderer;
+	private Renderer renderer;
 
 	public static void main(String[] args) {
 
@@ -128,6 +128,7 @@ public class GUIProgram extends JFrame {
 					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 					fileChooser.setMultiSelectionEnabled(false);
 					fileChooser.setFileFilter(new XmlFilter());
+					fileChooser.setSelectedFile(new File("univers.xml"));
 					int userSelection = fileChooser.showSaveDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						OutputStream output = new FileOutputStream(fileChooser
@@ -359,7 +360,7 @@ public class GUIProgram extends JFrame {
 		menuVisu.add(menuItemShowDM);
 
 		JMenu menuVideo = new JMenu("Video");
-		JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
+		final JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
 				"Record to ...", parameters.isExportToVideo());
 		menuItemExportVideo.addActionListener(new ActionListener() {
 			@Override
@@ -389,7 +390,7 @@ public class GUIProgram extends JFrame {
 										.getSelectedFile().getAbsolutePath()));
 							}
 							parameters.setExportToVideo(true);
-						} 
+						}
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -403,6 +404,7 @@ public class GUIProgram extends JFrame {
 						e1.printStackTrace();
 					}
 				}
+				menuItemExportVideo.setSelected(parameters.isExportToVideo());
 				renderer.reload(me);
 				animator.start();
 			}
