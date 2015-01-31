@@ -136,7 +136,7 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomRotateUnivers);
 					manageImpact.setSelected(false);
-					timeFactor.setValue(HelperVariable.ONEYEAR * 1E6);
+					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(4E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
@@ -146,8 +146,8 @@ public class GUIParam extends JDialog {
 					massObjectMin
 							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
 					massObjectMax
-							.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
-					negligeableMass.setValue(0);
+							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
+					negligeableMass.setValue(1E39);
 					numOfLowMassParticule.setValue(0);
 					lowMassParticuleMass.setValue(1);
 					lowMassDensity.setValue(1);
