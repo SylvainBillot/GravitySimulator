@@ -62,7 +62,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		// TODO Auto-generated method stub
-		univers.process();
+		univers.process(guiProgram.getDatafile(), guiProgram.getDataInputfile());
 
 		if (parameters.isShowTrace()) {
 			List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
@@ -110,8 +110,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glClearDepth(1.0f);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
 		gl.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
-		gl.glBlendFuncSeparate(GL2.GL_SRC_ALPHA, GL2.GL_ONE,
-		GL2.GL_ONE, GL2.GL_ZERO);
+		gl.glBlendFuncSeparate(GL2.GL_SRC_ALPHA, GL2.GL_ONE, GL2.GL_ONE,
+				GL2.GL_ZERO);
 		LoadGLTextures(gl);
 		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
 				java.awt.Font.PLAIN, textSize));

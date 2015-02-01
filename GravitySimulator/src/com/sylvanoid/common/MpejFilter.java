@@ -11,6 +11,6 @@ public class MpejFilter extends FileFilter{
     }
     @Override
     public String getDescription(){
-        return "Text files (*.mpeg)";
+        return "Video files (*.mpeg)";
     }
 }

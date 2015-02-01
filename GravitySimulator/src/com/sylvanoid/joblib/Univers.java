@@ -1,5 +1,8 @@
 package com.sylvanoid.joblib;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,30 +140,49 @@ public class Univers {
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 	}
 
-	public void process() {
-		parameters.setNumOfCompute(0);
-		parameters.setNumOfAccelCompute(0);
-		long startTimeCycle = System.currentTimeMillis();
-		computeMassLimitsCentroidSpeed(true);
-		parameters.setLimitComputeTime(System.currentTimeMillis()
-				- startTimeCycle);
-		long startTimeBH = System.currentTimeMillis();
-		BarnesHut barnesHut = new BarnesHut(this);
-		barnesHut.compute();
-		/*
-		 * ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
-		 * .availableProcessors()); pool.invoke(barnesHut);
-		 */
-		parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
-				- startTimeBH);
-
-		long startTimeMove = System.currentTimeMillis();
-		move();
-		parameters.setMoveComputeTime(System.currentTimeMillis()
-				- startTimeMove);
-		parameters.setCycleComputeTime(System.currentTimeMillis()
-				- startTimeCycle);
-
+	@SuppressWarnings("unchecked")
+	public void process(ObjectOutputStream objectOutputStream,
+			ObjectInputStream objectInputStream) {
+		if (!parameters.isPlayData()) {
+			parameters.setNumOfCompute(0);
+			parameters.setNumOfAccelCompute(0);
+			long startTimeCycle = System.currentTimeMillis();
+			computeMassLimitsCentroidSpeed(true);
+			parameters.setLimitComputeTime(System.currentTimeMillis()
+					- startTimeCycle);
+			long startTimeBH = System.currentTimeMillis();
+			BarnesHut barnesHut = new BarnesHut(this);
+			barnesHut.compute();
+			/*
+			 * ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
+			 * .availableProcessors()); pool.invoke(barnesHut);
+			 */
+			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
+					- startTimeBH);
+			long startTimeMove = System.currentTimeMillis();
+			move(objectOutputStream);
+			parameters.setMoveComputeTime(System.currentTimeMillis()
+					- startTimeMove);
+			parameters.setCycleComputeTime(System.currentTimeMillis()
+					- startTimeCycle);
+		} else {
+			parameters.setNumOfCompute(-9999);
+			parameters.setNumOfAccelCompute(-9999);
+			long startTimeCycle = System.currentTimeMillis();
+			try {
+				listMatter = new ArrayList<Matter>(
+						(List<Matter>) objectInputStream.readObject());
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				parameters.setPlayData(false);
+			}
+			computeMassLimitsCentroidSpeed(true);
+			parameters.setCycleComputeTime(System.currentTimeMillis()
+					- startTimeCycle);
+		}
 	}
 
 	public boolean sameCoordonate() {
@@ -176,7 +198,7 @@ public class Univers {
 		return true;
 	}
 
-	private void move() {
+	private void move(ObjectOutputStream objectOutputStream) {
 		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 		if (parameters.isManageImpact()) {
 			for (Matter m : listMatterBis) {
@@ -199,6 +221,15 @@ public class Univers {
 			}
 			m.move();
 		}
+		if (parameters.isExportData()) {
+			try {
+				objectOutputStream.writeObject(listMatter);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	private List<Matter> createUvivers(Vector3d origine, Vector3d initialSpeed,

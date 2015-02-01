@@ -1,5 +1,6 @@
 package com.sylvanoid.joblib;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,11 @@ import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.common.Vector3dAdapter;
 
 @XmlRootElement(name = "matter")
-public class Matter {
+public class Matter implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Parameters parameters;
 	private String name;
 	private TypeOfObject typeOfObject = TypeOfObject.Star;

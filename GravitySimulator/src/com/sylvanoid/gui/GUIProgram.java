@@ -8,8 +8,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +37,7 @@ import javax.xml.bind.Unmarshaller;
 import org.jcodec.api.SequenceEncoder;
 
 import com.jogamp.opengl.util.FPSAnimator;
+import com.sylvanoid.common.DataFilter;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.MpejFilter;
 import com.sylvanoid.common.XmlFilter;
@@ -54,6 +58,8 @@ public class GUIProgram extends JFrame {
 	private Parameters parameters;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
+	private ObjectOutputStream dataFile;
+	private ObjectInputStream dataFileInput;
 	private Renderer renderer;
 
 	public static void main(String[] args) {
@@ -93,6 +99,9 @@ public class GUIProgram extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				try {
 					me.getOut().finish();
+					me.getDatafile().flush();
+					me.getDatafile().close();
+					me.getDataInputfile().close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -359,6 +368,107 @@ public class GUIProgram extends JFrame {
 		menuVisu.add(menuItemShowGrid);
 		menuVisu.add(menuItemShowDM);
 
+		JMenu menuData = new JMenu("Data");
+		final JCheckBoxMenuItem menuItemExportData = new JCheckBoxMenuItem(
+				"Export to ...", parameters.isExportData());
+		menuItemExportData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				animator.stop();
+				if (!parameters.isExportData()) {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify data file name");
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new DataFilter());
+					fileChooser.setSelectedFile(new File("out.dat"));
+					int userSelection = fileChooser.showSaveDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						try {
+							if (!fileChooser.getSelectedFile()
+									.getAbsolutePath().toLowerCase()
+									.endsWith(".dat")) {
+								File myFile = new File(fileChooser
+										.getSelectedFile().getAbsolutePath()
+										+ ".dat");
+								FileOutputStream dataFileOut = new FileOutputStream(
+										myFile);
+								dataFile = new ObjectOutputStream(dataFileOut);
+							} else {
+								File myFile = new File(fileChooser
+										.getSelectedFile().getAbsolutePath());
+								FileOutputStream dataFileOut = new FileOutputStream(
+										myFile);
+								dataFile = new ObjectOutputStream(dataFileOut);
+							}
+							parameters.setExportData(true);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				} else {
+					try {
+						dataFile.flush();
+						dataFile.close();
+						parameters.setExportData(false);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				renderer.reload(me);
+				animator.start();
+				menuItemExportData.setSelected(parameters.isExportData());
+			}
+		});
+
+		final JCheckBoxMenuItem menuItemPlayData = new JCheckBoxMenuItem(
+				"Play data ...", parameters.isPlayData());
+		menuItemPlayData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				animator.stop();
+				if (!parameters.isPlayData()) {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new DataFilter());
+					fileChooser.setDialogTitle("Specify a file to load");
+					int userSelection = fileChooser.showOpenDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						try {
+							FileInputStream dataFileIn = new FileInputStream(
+									fileChooser.getSelectedFile()
+											.getAbsolutePath());
+							dataFileInput = new ObjectInputStream(dataFileIn);
+							parameters.setPlayData(true);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				} else {
+					try {
+						dataFileInput.close();
+						parameters.setPlayData(false);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				renderer.reload(me);
+				animator.start();
+				menuItemPlayData.setSelected(parameters.isPlayData());
+			}
+		});
+
+		menuBar.add(menuData);
+		menuData.add(menuItemExportData);
+		menuData.add(menuItemPlayData);
+
 		JMenu menuVideo = new JMenu("Video");
 		final JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
 				"Record to ...", parameters.isExportToVideo());
@@ -478,8 +588,8 @@ public class GUIProgram extends JFrame {
 		forTrace = new LinkedList<List<Vector3d[]>>();
 		animator.stop();
 		parameters.setElapsedTime(0);
-		parameters.setEyes(new Vector3d(0,0,900));
-		parameters.setLookAt(new Vector3d(0,0,-900));
+		parameters.setEyes(new Vector3d(0, 0, 900));
+		parameters.setLookAt(new Vector3d(0, 0, -900));
 		univers = new Univers(parameters);
 		renderer.reload(this);
 		animator.start();
@@ -487,5 +597,13 @@ public class GUIProgram extends JFrame {
 
 	public SequenceEncoder getOut() {
 		return out;
+	}
+
+	public ObjectOutputStream getDatafile() {
+		return dataFile;
+	}
+
+	public ObjectInputStream getDataInputfile() {
+		return dataFileInput;
 	}
 }

@@ -4,13 +4,13 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-public class XmlFilter extends FileFilter{
+public class DataFilter extends FileFilter{
     @Override
     public boolean accept(File f){
-        return f.getName().toLowerCase().endsWith(".xml")||f.isDirectory();
+        return f.getName().toLowerCase().endsWith(".dat")||f.isDirectory();
     }
     @Override
     public String getDescription(){
-        return "XML files (*.xml)";
+        return "Data files (*.dat)";
     }
 }

@@ -1,5 +1,7 @@
 package com.sylvanoid.joblib;
 
+import java.io.Serializable;
+
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,7 +12,11 @@ import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.common.Vector3dAdapter;
 
 @XmlRootElement
-public class Parameters {
+public class Parameters implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
 	private double elapsedTime = 0;
 	private double timeFactor = 6000;
@@ -52,6 +58,8 @@ public class Parameters {
 	private Vector3d demiDistanceBetweenGalaxies = new Vector3d(
 			200000 * HelperVariable.PC, 0, 0);
 	private int nbARms = 3;
+	private boolean exportData = false;
+	private boolean playData = false;
 
 	public Parameters() {
 
@@ -382,5 +390,21 @@ public class Parameters {
 
 	public void setNbARms(int nbARms) {
 		this.nbARms = nbARms;
+	}
+
+	public boolean isExportData() {
+		return exportData;
+	}
+
+	public void setExportData(boolean exportData) {
+		this.exportData = exportData;
+	}
+
+	public boolean isPlayData() {
+		return playData;
+	}
+
+	public void setPlayData(boolean playData) {
+		this.playData = playData;
 	}
 }
