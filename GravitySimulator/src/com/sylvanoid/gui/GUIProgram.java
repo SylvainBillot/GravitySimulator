@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -394,13 +396,17 @@ public class GUIProgram extends JFrame {
 										+ ".dat");
 								FileOutputStream dataFileOut = new FileOutputStream(
 										myFile);
-								dataFile = new DataOutputStream(dataFileOut);
+								GZIPOutputStream dataFileOutZip = new GZIPOutputStream(
+										dataFileOut);
+								dataFile = new DataOutputStream(dataFileOutZip);
 							} else {
 								File myFile = new File(fileChooser
 										.getSelectedFile().getAbsolutePath());
 								FileOutputStream dataFileOut = new FileOutputStream(
 										myFile);
-								dataFile = new DataOutputStream(dataFileOut);
+								GZIPOutputStream dataFileOutZip = new GZIPOutputStream(
+										dataFileOut);
+								dataFile = new DataOutputStream(dataFileOutZip);
 							}
 							parameters.setExportData(true);
 						} catch (IOException e) {
@@ -443,7 +449,9 @@ public class GUIProgram extends JFrame {
 							FileInputStream dataFileIn = new FileInputStream(
 									fileChooser.getSelectedFile()
 											.getAbsolutePath());
-							dataFileInput = new DataInputStream(dataFileIn);
+							GZIPInputStream dataFileInGzip = new GZIPInputStream(
+									dataFileIn);
+							dataFileInput = new DataInputStream(dataFileInGzip);
 							parameters.setPlayData(true);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
