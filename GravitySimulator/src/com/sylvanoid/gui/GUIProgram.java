@@ -7,12 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,8 +58,8 @@ public class GUIProgram extends JFrame {
 	private Parameters parameters;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
-	private ObjectOutputStream dataFile;
-	private ObjectInputStream dataFileInput;
+	private DataOutputStream dataFile;
+	private DataInputStream dataFileInput;
 	private Renderer renderer;
 
 	public static void main(String[] args) {
@@ -394,13 +394,13 @@ public class GUIProgram extends JFrame {
 										+ ".dat");
 								FileOutputStream dataFileOut = new FileOutputStream(
 										myFile);
-								dataFile = new ObjectOutputStream(dataFileOut);
+								dataFile = new DataOutputStream(dataFileOut);
 							} else {
 								File myFile = new File(fileChooser
 										.getSelectedFile().getAbsolutePath());
 								FileOutputStream dataFileOut = new FileOutputStream(
 										myFile);
-								dataFile = new ObjectOutputStream(dataFileOut);
+								dataFile = new DataOutputStream(dataFileOut);
 							}
 							parameters.setExportData(true);
 						} catch (IOException e) {
@@ -443,7 +443,7 @@ public class GUIProgram extends JFrame {
 							FileInputStream dataFileIn = new FileInputStream(
 									fileChooser.getSelectedFile()
 											.getAbsolutePath());
-							dataFileInput = new ObjectInputStream(dataFileIn);
+							dataFileInput = new DataInputStream(dataFileIn);
 							parameters.setPlayData(true);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -599,11 +599,11 @@ public class GUIProgram extends JFrame {
 		return out;
 	}
 
-	public ObjectOutputStream getDatafile() {
+	public DataOutputStream getDatafile() {
 		return dataFile;
 	}
 
-	public ObjectInputStream getDataInputfile() {
+	public DataInputStream getDataInputfile() {
 		return dataFileInput;
 	}
 }
