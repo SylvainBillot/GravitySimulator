@@ -1,7 +1,7 @@
 package com.sylvanoid.joblib;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -143,8 +143,8 @@ public class Univers {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void process(DataOutputStream dataOutputStream,
-			DataInputStream dataInputStream) {
+	public void process(BufferedWriter bufferedWriter,
+			BufferedReader bufferedReader) {
 		if (!parameters.isPlayData()) {
 			parameters.setNumOfCompute(0);
 			parameters.setNumOfAccelCompute(0);
@@ -162,7 +162,7 @@ public class Univers {
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			long startTimeMove = System.currentTimeMillis();
-			move(dataOutputStream);
+			move(bufferedWriter);
 			parameters.setMoveComputeTime(System.currentTimeMillis()
 					- startTimeMove);
 			parameters.setCycleComputeTime(System.currentTimeMillis()
@@ -172,20 +172,19 @@ public class Univers {
 			parameters.setNumOfAccelCompute(-9999);
 			long startTimeCycle = System.currentTimeMillis();
 			try {
-				StringBuilder sb = new StringBuilder();
-				int len = dataInputStream.read();
-				for (int cpt = 0; cpt < len; cpt++) {
-					sb.append(dataInputStream.readUTF());
+				String s = bufferedReader.readLine();
+				if (s != null) {
+					listMatter = new ArrayList<Matter>(
+							(List<Matter>) HelperTools.fromString(s));
+				} else {
+					parameters.setPlayData(false);
 				}
-				listMatter = new ArrayList<Matter>(
-						(List<Matter>) HelperTools.fromString(sb.toString()));
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				//e.printStackTrace();
-				parameters.setPlayData(false);
+				e.printStackTrace();
 			}
 			computeMassLimitsCentroidSpeed(true);
 			parameters.setCycleComputeTime(System.currentTimeMillis()
@@ -206,7 +205,7 @@ public class Univers {
 		return true;
 	}
 
-	private void move(DataOutputStream dataOutputStream) {
+	private void move(BufferedWriter bufferedWriter) {
 		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 		if (parameters.isManageImpact()) {
 			for (Matter m : listMatterBis) {
@@ -231,12 +230,9 @@ public class Univers {
 		}
 		if (parameters.isExportData()) {
 			try {
-				String tabString[] = HelperTools.splitString(
-						HelperTools.toString((Serializable) listMatter), 32000);
-				dataOutputStream.write(tabString.length);
-				for (int cpt = 0; cpt < tabString.length; cpt++) {
-					dataOutputStream.writeUTF(tabString[cpt]);
-				}
+				bufferedWriter.write(HelperTools
+						.toString((Serializable) listMatter));
+				bufferedWriter.newLine();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -7,17 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -60,8 +59,8 @@ public class GUIProgram extends JFrame {
 	private Parameters parameters;
 	private final FPSAnimator animator;
 	private SequenceEncoder out;
-	private DataOutputStream dataFile;
-	private DataInputStream dataFileInput;
+	private BufferedWriter dataFile;
+	private BufferedReader dataFileInput;
 	private Renderer renderer;
 
 	public static void main(String[] args) {
@@ -394,19 +393,11 @@ public class GUIProgram extends JFrame {
 								File myFile = new File(fileChooser
 										.getSelectedFile().getAbsolutePath()
 										+ ".dat");
-								FileOutputStream dataFileOut = new FileOutputStream(
-										myFile);
-								GZIPOutputStream dataFileOutZip = new GZIPOutputStream(
-										dataFileOut);
-								dataFile = new DataOutputStream(dataFileOutZip);
+								dataFile = new BufferedWriter(new FileWriter(myFile));
 							} else {
 								File myFile = new File(fileChooser
 										.getSelectedFile().getAbsolutePath());
-								FileOutputStream dataFileOut = new FileOutputStream(
-										myFile);
-								GZIPOutputStream dataFileOutZip = new GZIPOutputStream(
-										dataFileOut);
-								dataFile = new DataOutputStream(dataFileOutZip);
+								dataFile = new BufferedWriter(new FileWriter(myFile));
 							}
 							parameters.setExportData(true);
 						} catch (IOException e) {
@@ -446,12 +437,9 @@ public class GUIProgram extends JFrame {
 					int userSelection = fileChooser.showOpenDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						try {
-							FileInputStream dataFileIn = new FileInputStream(
+							dataFileInput = new BufferedReader(new FileReader(
 									fileChooser.getSelectedFile()
-											.getAbsolutePath());
-							GZIPInputStream dataFileInGzip = new GZIPInputStream(
-									dataFileIn);
-							dataFileInput = new DataInputStream(dataFileInGzip);
+									.getAbsolutePath()));
 							parameters.setPlayData(true);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -607,11 +595,11 @@ public class GUIProgram extends JFrame {
 		return out;
 	}
 
-	public DataOutputStream getDatafile() {
+	public BufferedWriter getDatafile() {
 		return dataFile;
 	}
 
-	public DataInputStream getDataInputfile() {
+	public BufferedReader getDataInputfile() {
 		return dataFileInput;
 	}
 }
