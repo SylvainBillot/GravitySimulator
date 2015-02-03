@@ -10,13 +10,16 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
@@ -393,11 +396,17 @@ public class GUIProgram extends JFrame {
 								File myFile = new File(fileChooser
 										.getSelectedFile().getAbsolutePath()
 										+ ".dat");
-								dataFile = new BufferedWriter(new FileWriter(myFile));
+								GZIPOutputStream zip = new GZIPOutputStream(
+										new FileOutputStream(myFile));
+								dataFile = new BufferedWriter(
+										new OutputStreamWriter(zip));
 							} else {
 								File myFile = new File(fileChooser
 										.getSelectedFile().getAbsolutePath());
-								dataFile = new BufferedWriter(new FileWriter(myFile));
+								GZIPOutputStream zip = new GZIPOutputStream(
+										new FileOutputStream(myFile));
+								dataFile = new BufferedWriter(
+										new OutputStreamWriter(zip));
 							}
 							parameters.setExportData(true);
 						} catch (IOException e) {
@@ -437,9 +446,12 @@ public class GUIProgram extends JFrame {
 					int userSelection = fileChooser.showOpenDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						try {
-							dataFileInput = new BufferedReader(new FileReader(
-									fileChooser.getSelectedFile()
-									.getAbsolutePath()));
+							GZIPInputStream zip = new GZIPInputStream(
+									new FileInputStream(fileChooser
+											.getSelectedFile()
+											.getAbsolutePath()));
+							dataFileInput = new BufferedReader(
+									new InputStreamReader(zip));
 							parameters.setPlayData(true);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
