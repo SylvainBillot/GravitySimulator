@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class HelperTools {
-
+	
 	public static Object fromString(String s) throws IOException,
 			ClassNotFoundException {
 		byte[] data = Base64Coder.decode(s);

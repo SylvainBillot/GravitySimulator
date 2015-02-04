@@ -272,10 +272,21 @@ public class Matter implements Serializable {
 		for (Matter m : fusionWith) {
 			double distance = new Point3d(point).distance(new Point3d(m
 					.getPoint()));
-			double dx = distance - rayon + m.getRayon();
+			double dx = distance - (rayon + m.getRayon());
 			double elasticForceAccel = dx * k * parameters.getTimeFactor();
 			speed.add(HelperVector.acceleration(point, m.getPoint(),
 					elasticForceAccel));
+		}
+	}
+	
+	public void barre() {
+		for (Matter m : fusionWith) {
+			double distance = new Point3d(point).distance(new Point3d(m
+					.getPoint()));
+			double distance2 = new Point3d(getPlusV()).distance(new Point3d(m
+					.getPoint()));
+			speed.sub(HelperVector.acceleration(point, m.getPoint(),
+					(distance-distance2)/parameters.getTimeFactor()));
 		}
 	}
 

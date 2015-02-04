@@ -213,6 +213,8 @@ public class Univers {
 					if (parameters.isFusion()) {
 						if (listMatter.contains(m)) {
 							m.fusion(listMatter);
+							//m.elastic(1E-13);
+							//m.barre();
 						}
 					} else {
 						m.impact();
@@ -245,14 +247,14 @@ public class Univers {
 			Vector3d axisOfRing, double radiusMin, double radiusMax,
 			Vector3d ratio) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
-		miniListMatter.addAll(createUviversMain(origine, initialSpeed,
+		miniListMatter.addAll(createUniversMain(origine, initialSpeed,
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
 				parameters.getMassObjectMax(), parameters.getDensity(),
 				new Vector3d(0, 0, 0)));
 
 		miniListMatter
-				.addAll(createUviversMain(origine, initialSpeed, axisOfRing,
+				.addAll(createUniversMain(origine, initialSpeed, axisOfRing,
 						radiusMin, radiusMax, ratio, parameters
 								.getNumOfLowMassParticule(), 0, parameters
 								.getLowMassParticuleMass(), parameters
@@ -262,7 +264,7 @@ public class Univers {
 		return miniListMatter;
 	}
 
-	private List<Matter> createUviversMain(Vector3d origine,
+	private List<Matter> createUniversMain(Vector3d origine,
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio, int numberOfObjects,
 			double minMass, double maxMass, double density,

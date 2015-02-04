@@ -148,12 +148,14 @@ public class BarnesHut extends RecursiveTask<Integer> {
 						for (Matter m : u.getListMatter()) {
 							parameters.setNumOfAccelCompute(parameters
 									.getNumOfAccelCompute() + 1);
+							
 							double distance = new Point3d(m.getPoint())
 									.distance(new Point3d(uvoisin.getGPoint()));
 							double attraction = parameters.getTimeFactor()
 									* HelperVariable.G
 									* (((uvoisin.getMass()) / net.jafama.FastMath
 											.pow2(distance)));
+							
 							if (!parameters.isManageImpact()
 									|| uvoisin.getListMatter().size() > 1
 									|| m.isDark() != uvoisin.getListMatter()
