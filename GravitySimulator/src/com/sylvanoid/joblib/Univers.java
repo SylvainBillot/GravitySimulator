@@ -211,11 +211,9 @@ public class Univers {
 			for (Matter m : listMatterBis) {
 				if (m.getFusionWith().size() > 0) {
 					if (parameters.isFusion()) {
-						if (listMatter.contains(m)) {
-							m.fusion(listMatter);
-							//m.elastic(1E-13);
-							//m.barre();
-						}
+						m.fusion(listMatter);
+						// m.elastic(1E-13);
+						// m.barre();
 					} else {
 						m.impact();
 					}

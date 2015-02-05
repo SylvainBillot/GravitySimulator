@@ -231,41 +231,45 @@ public class Matter implements Serializable {
 	}
 
 	public void fusion(List<Matter> listMatter) {
-		Vector3d newPoint = new Vector3d(point);
-		Vector3d newSpeed = new Vector3d(speed);
-		Vector3d newColor = new Vector3d(color);
-		double newDensity = density;
-		double newMass = mass;
-		boolean newIsDark = isDark();
-		for (Matter m : fusionWith) {
-			if (listMatter.contains(m)) {
-				if (m.mass > newMass) {
-					newColor = new Vector3d(m.getColor());
+		if (listMatter.contains(this)) {
+			Vector3d newPoint = new Vector3d(point);
+			Vector3d newSpeed = new Vector3d(speed);
+			Vector3d newColor = new Vector3d(color);
+			double newDensity = density;
+			double newMass = mass;
+			boolean newIsDark = isDark();
+			for (Matter m : fusionWith) {
+				if (listMatter.contains(m)) {
+					if (m.mass > newMass) {
+						newColor = new Vector3d(m.getColor());
+					}
+					newPoint = new Vector3d(
+							(newPoint.x * newMass + m.getPoint().x
+									* m.getMass())
+									/ (newMass + m.getMass()), (newPoint.y
+									* newMass + m.getPoint().y * m.getMass())
+									/ (newMass + m.getMass()), (newPoint.z
+									* newMass + m.getPoint().z * m.getMass())
+									/ (newMass + m.getMass()));
+					newSpeed = new Vector3d(
+							(newSpeed.x * newMass + m.getSpeed().x
+									* m.getMass())
+									/ (newMass + m.getMass()), (newSpeed.y
+									* newMass + m.getSpeed().y * m.getMass())
+									/ (newMass + m.getMass()), (newSpeed.z
+									* newMass + m.getSpeed().z * m.getMass())
+									/ (newMass + m.getMass()));
+					newDensity = (newDensity * newMass + m.getDensity()
+							* m.getMass())
+							/ (newMass + m.getMass());
+					newMass = newMass + m.getMass();
+					listMatter.remove(m);
 				}
-				newPoint = new Vector3d((newPoint.x * newMass + m.getPoint().x
-						* m.getMass())
-						/ (newMass + m.getMass()),
-						(newPoint.y * newMass + m.getPoint().y * m.getMass())
-								/ (newMass + m.getMass()), (newPoint.z
-								* newMass + m.getPoint().z * m.getMass())
-								/ (newMass + m.getMass()));
-				newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
-						* m.getMass())
-						/ (newMass + m.getMass()),
-						(newSpeed.y * newMass + m.getSpeed().y * m.getMass())
-								/ (newMass + m.getMass()), (newSpeed.z
-								* newMass + m.getSpeed().z * m.getMass())
-								/ (newMass + m.getMass()));
-				newDensity = (newDensity * newMass + m.getDensity()
-						* m.getMass())
-						/ (newMass + m.getMass());
-				newMass = newMass + m.getMass();
-				listMatter.remove(m);
 			}
+			listMatter.remove(this);
+			listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed,
+					newColor, newDensity, newIsDark));
 		}
-		listMatter.remove(this);
-		listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed,
-				newColor, newDensity, newIsDark));
 	}
 
 	public void elastic(double k) {
@@ -278,7 +282,7 @@ public class Matter implements Serializable {
 					elasticForceAccel));
 		}
 	}
-	
+
 	public void barre() {
 		for (Matter m : fusionWith) {
 			double distance = new Point3d(point).distance(new Point3d(m
@@ -286,7 +290,7 @@ public class Matter implements Serializable {
 			double distance2 = new Point3d(getPlusV()).distance(new Point3d(m
 					.getPoint()));
 			speed.sub(HelperVector.acceleration(point, m.getPoint(),
-					(distance-distance2)/parameters.getTimeFactor()));
+					(distance - distance2) / parameters.getTimeFactor()));
 		}
 	}
 
@@ -375,13 +379,13 @@ public class Matter implements Serializable {
 		Vector3d accel = HelperVector.acceleration(point, normalOnAxis,
 				orbitalSpeed);
 
-		double alea = 2*((int) (nbArm * net.jafama.FastMath.random()))/((double)nbArm);
+		double alea = 2 * ((int) (nbArm * net.jafama.FastMath.random()))
+				/ ((double) nbArm);
 		double angle = net.jafama.FastMath.PI * alea;
 		accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 		point = HelperVector.rotate(point, m.getPoint(), axis, angle);
 
-		angle = parameters.getEllipseShiftRatio()
-				* net.jafama.FastMath.PI
+		angle = parameters.getEllipseShiftRatio() * net.jafama.FastMath.PI
 				* (distance / parameters.getNebulaRadius());
 		accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
 		point = HelperVector.rotate(point, m.getPoint(), axis, angle);
