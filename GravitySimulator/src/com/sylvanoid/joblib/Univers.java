@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
+import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -90,6 +91,18 @@ public class Univers {
 		listMatter = new ArrayList<Matter>();
 		this.min = new Vector3d(min);
 		this.max = new Vector3d(max);
+	}
+
+	public Vector3d gravityAtThisPoint(Vector3d p) {
+		Vector3d accel = new Vector3d();
+		for (Matter m : listMatter) {
+			double distance = new Point3d(p)
+					.distance(new Point3d(m.getPoint()));
+			double attraction = parameters.getTimeFactor() * HelperVariable.G
+					* (((m.getMass()) / net.jafama.FastMath.pow2(distance)));
+			accel.add(HelperVector.acceleration(p, m.getPoint(), attraction));
+		}
+		return accel;
 	}
 
 	public void computeMassLimitsCentroidSpeed(boolean withLimit) {

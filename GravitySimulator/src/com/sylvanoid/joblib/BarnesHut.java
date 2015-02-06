@@ -174,16 +174,18 @@ public class BarnesHut extends RecursiveTask<Integer> {
 									|| (distance > m.getRayon()
 											+ uvoisin.getListMatter().get(0)
 													.getRayon())) {
+								
 								/* test relativist effect */
 								/*
-								 * Vector4d tmpVect = new Vector4d(
+								 * javax.vecmath.Vector4d tmpVect = new
+								 * javax.vecmath.Vector4d(
 								 * HelperVector.lorentzCoord(parameters
 								 * .getTimeFactor(), HelperVector
 								 * .acceleration(m.getPoint(),
 								 * uvoisin.getGPoint(), attraction), m
 								 * .getPoint()));
 								 * System.out.println(parameters.getTimeFactor()
-								 * + " " + tmpVect.x);
+								 * + " " + tmpVect + " " + m.getPoint());
 								 */
 								/* End of */
 

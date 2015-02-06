@@ -120,7 +120,7 @@ public abstract class HelperVector {
 
 	public static Vector4d lorentzCoord(double time, Vector3d speed,
 			Vector3d p1) {
-		Vector4d valReturn = new Vector4d(time,p1.x, p1.y, p1.z);
+		Vector4d valReturn = new Vector4d(p1.x, p1.y, p1.z,time);
 		lorentzMatrix(speed).transform(valReturn);
 		return valReturn;
 	}

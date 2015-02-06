@@ -209,6 +209,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			drawTrace(gl);
 		}
 
+		//drawGravitationalFields(gl);
+		
 		/* Show current univers */
 		drawUnivers(gl);
 	}
@@ -274,22 +276,23 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		double gridRadius = parameters.getNebulaRadius()
 				* parameters.getScala() * 2;
 		double gridStep = gridRadius / 10;
+		Vector3d color = new Vector3d(0.08, 0.08, 0.08);
 		for (double i = 0; i <= gridRadius; i += gridStep) {
 			for (double j = 0; j <= gridRadius; j += gridStep) {
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(i, j, -gridRadius);
 				gl.glVertex3d(i, j, gridRadius);
 				gl.glEnd();
 
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(i, -gridRadius, j);
 				gl.glVertex3d(i, gridRadius, j);
 				gl.glEnd();
 
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(-gridRadius, i, j);
 				gl.glVertex3d(gridRadius, i, j);
 				gl.glEnd();
@@ -297,19 +300,19 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			}
 			for (double j = 0; j >= -gridRadius; j -= gridStep) {
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(i, j, -gridRadius);
 				gl.glVertex3d(i, j, gridRadius);
 				gl.glEnd();
 
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(i, -gridRadius, j);
 				gl.glVertex3d(i, gridRadius, j);
 				gl.glEnd();
 
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(-gridRadius, i, j);
 				gl.glVertex3d(gridRadius, i, j);
 				gl.glEnd();
@@ -318,19 +321,19 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		for (double i = 0; i >= -gridRadius; i -= gridStep) {
 			for (double j = 0; j <= gridRadius; j += gridStep) {
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(i, j, -gridRadius);
 				gl.glVertex3d(i, j, gridRadius);
 				gl.glEnd();
 
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(i, -gridRadius, j);
 				gl.glVertex3d(i, gridRadius, j);
 				gl.glEnd();
 
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(-gridRadius, i, j);
 				gl.glVertex3d(gridRadius, i, j);
 				gl.glEnd();
@@ -338,22 +341,40 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			}
 			for (double j = 0; j >= -gridRadius; j -= gridStep) {
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(i, j, -gridRadius);
 				gl.glVertex3d(i, j, gridRadius);
 				gl.glEnd();
 
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(i, -gridRadius, j);
 				gl.glVertex3d(i, gridRadius, j);
 				gl.glEnd();
 
 				gl.glBegin(GL2.GL_LINES);
-				gl.glColor3d(0.08, 0.08, 0.08);
+				gl.glColor3d(color.x, color.y, color.z);
 				gl.glVertex3d(-gridRadius, i, j);
 				gl.glVertex3d(gridRadius, i, j);
 				gl.glEnd();
+			}
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void drawGravitationalFields(GL2 gl) {
+		double gridRadius = parameters.getNebulaRadius()
+				* parameters.getScala() * 2;
+		double gridStep = gridRadius / 10;
+		Vector3d color = new Vector3d(0.5, 0.5, 0.5);
+		for (double i = -gridRadius; i <= gridRadius; i += gridStep) {
+			for (double j = -gridRadius; j <= gridRadius; j += gridStep) {
+				for (double k = -gridRadius; k <= gridRadius; k += gridStep) {
+					gl.glBegin(GL2.GL_POINTS);
+					gl.glColor3d(color.x, color.y, color.z);
+					gl.glVertex3d(i, j, k);
+					gl.glEnd();
+				}
 			}
 		}
 	}

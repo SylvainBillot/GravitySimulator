@@ -60,7 +60,7 @@ public class Parameters implements Serializable{
 	private int nbARms = 3;
 	private boolean exportData = false;
 	private boolean playData = false;
-	private boolean parallelization = true;
+	private boolean parallelization = false;
 
 	public Parameters() {
 
