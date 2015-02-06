@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
@@ -154,11 +155,14 @@ public class Univers {
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
 			BarnesHut barnesHut = new BarnesHut(this);
-			barnesHut.compute();
-			/*
-			 * ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
-			 * .availableProcessors()); pool.invoke(barnesHut);
-			 */
+			if (parameters.isParallelization()) {
+				ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
+						.availableProcessors());
+				pool.invoke(barnesHut);
+			} else {
+				barnesHut.compute();
+			}
+
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			long startTimeMove = System.currentTimeMillis();

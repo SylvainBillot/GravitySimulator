@@ -60,6 +60,7 @@ public class Parameters implements Serializable{
 	private int nbARms = 3;
 	private boolean exportData = false;
 	private boolean playData = false;
+	private boolean parallelization = true;
 
 	public Parameters() {
 
@@ -406,5 +407,13 @@ public class Parameters implements Serializable{
 
 	public void setPlayData(boolean playData) {
 		this.playData = playData;
+	}
+
+	public boolean isParallelization() {
+		return parallelization;
+	}
+
+	public void setParallelization(boolean parallelization) {
+		this.parallelization = parallelization;
 	}
 }
