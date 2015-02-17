@@ -372,6 +372,7 @@ public class GUIProgram extends JFrame {
 		menuVisu.add(menuItemShowGrid);
 		menuVisu.add(menuItemShowDM);
 
+		@SuppressWarnings("unused")
 		JMenu menuData = new JMenu("Data");
 		final JCheckBoxMenuItem menuItemExportData = new JCheckBoxMenuItem(
 				"Export to ...", parameters.isExportData());
@@ -473,9 +474,9 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
-		menuBar.add(menuData);
-		menuData.add(menuItemExportData);
-		menuData.add(menuItemPlayData);
+		//menuBar.add(menuData);
+		//menuData.add(menuItemExportData);
+		//menuData.add(menuItemPlayData);
 
 		JMenu menuVideo = new JMenu("Video");
 		final JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
