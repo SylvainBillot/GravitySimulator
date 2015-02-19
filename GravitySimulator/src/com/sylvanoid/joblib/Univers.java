@@ -266,16 +266,22 @@ public class Univers {
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
 				parameters.getMassObjectMax(), parameters.getDensity(),
-				new Vector3d(0, 0, 0)));
+				new Vector3d(0, 0, 0), false));
 
-		miniListMatter
-				.addAll(createUniversMain(origine, initialSpeed, axisOfRing,
-						radiusMin, radiusMax, ratio, parameters
-								.getNumOfLowMassParticule(), 0, parameters
-								.getLowMassParticuleMass(), parameters
-								.getLowMassDensity(), new Vector3d(0.06, 0.05,
-								0.05)));
-
+		miniListMatter.addAll(createUniversMain(origine, initialSpeed,
+				axisOfRing, radiusMin, radiusMax, ratio,
+				parameters.getNumOfLowMassParticule(), 0,
+				parameters.getLowMassParticuleMass(),
+				parameters.getLowMassDensity(), new Vector3d(0.06, 0.05, 0.05),
+				false));
+/*
+		miniListMatter.addAll(createUniversMain(origine, initialSpeed,
+				axisOfRing, radiusMin, radiusMax, ratio,
+				parameters.getNumberOfObjects(),
+				parameters.getMassObjectMin() * 1E2,
+				parameters.getMassObjectMax() * 1E2, parameters.getDensity(),
+				new Vector3d(0.01, 0.01, 0.01), true));
+*/
 		return miniListMatter;
 	}
 
@@ -283,7 +289,7 @@ public class Univers {
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio, int numberOfObjects,
 			double minMass, double maxMass, double density,
-			Vector3d defaultColor) {
+			Vector3d defaultColor, boolean isDark) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < numberOfObjects; cpt++) {
@@ -353,7 +359,7 @@ public class Univers {
 					origine.y + y * ratio.y, origine.z + z * ratio.z), minMass
 					+ net.jafama.FastMath.random() * (maxMass - minMass)
 					+ 1E-100 * net.jafama.FastMath.random(), new Vector3d(0, 0,
-					0), color, density, false);
+					0), color, density, isDark);
 			miniListMatter.add(m);
 			miniMass += m.getMass();
 		}
@@ -387,12 +393,19 @@ public class Univers {
 		listMatter.add(m1);
 		mass += m1.getMass();
 		darkMass += m1.getMass();
+		/*
+		 * computeMassLimitsCentroidSpeed(true); BarnesHutOrbitalSpeed bhos =
+		 * new BarnesHutOrbitalSpeed(this); bhos.compute(); for (Matter m :
+		 * listMatter) { m.orbitalCircularSpeed(this, new Vector3d(0, 0, 1)); }
+		 */
+
 		for (Matter m : listMatter) {
 			if (m != m1) {
 				m.orbitalEllipticSpeed(m1, new Vector3d(0, 0, 1),
 						parameters.getNbARms());
 			}
 		}
+
 	}
 
 	private void createGalaxiesCollision() {

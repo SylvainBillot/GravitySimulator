@@ -58,12 +58,12 @@ public class GUIParam extends JDialog {
 		this.mother = mother;
 		setTitle("Parameters");
 		setModal(true);
-		int w = 600;
-		int h = 700;
+		int w = 1024;
+		int h = 400;
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(24, 2));
+		setLayout(new GridLayout(12, 4));
 
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();

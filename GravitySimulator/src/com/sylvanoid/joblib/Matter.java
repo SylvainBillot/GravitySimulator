@@ -311,12 +311,42 @@ public class Matter implements Serializable {
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
-		double distance = new Point3d(point)
-				.distance(new Point3d(m.getPoint()));
+		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
+	}
+
+	/* experimental */
+	public void orbitalCircularSpeed(Univers u, Vector3d axis) {
+		double orbitalSpeedValue = speed.length();
+		Vector3d accel = HelperVector.acceleration(point, u.getGPoint(),
+				orbitalSpeedValue);
+		accel = axis.x != 0 ? HelperVector.rotate(accel,
+				new Vector3d(0, 0, net.jafama.FastMath.signum(axis.x)
+						* net.jafama.FastMath.PI / 2),
+				net.jafama.FastMath.PI / 2) : accel;
+		accel = axis.y != 0 ? HelperVector
+				.rotate(accel,
+						new Vector3d(0, net.jafama.FastMath.signum(axis.y)
+								* net.jafama.FastMath.PI / 2, 0),
+						net.jafama.FastMath.signum(axis.y)
+								* net.jafama.FastMath.PI / 2) : accel;
+		accel = axis.z != 0 ? HelperVector
+				.rotate(accel,
+						new Vector3d(0, 0, net.jafama.FastMath.signum(axis.z)
+								* net.jafama.FastMath.PI / 2),
+						net.jafama.FastMath.signum(axis.z)
+								* net.jafama.FastMath.PI / 2) : accel;
+
+		speed.set(accel);
+
+	}
+
+	private void orbitalCircularSpeed(double totalMass, Vector3d gPoint,
+			Vector3d axis) {
+		double distance = new Point3d(point).distance(new Point3d(gPoint));
 		double orbitalSpeedValue = net.jafama.FastMath.sqrt(HelperVariable.G
-				* net.jafama.FastMath.pow2(m.getMass())
-				/ ((mass + m.getMass()) * distance));
-		Vector3d accel = HelperVector.acceleration(point, m.getPoint(),
+				* net.jafama.FastMath.pow2(totalMass)
+				/ ((mass + totalMass) * distance));
+		Vector3d accel = HelperVector.acceleration(point, gPoint,
 				orbitalSpeedValue);
 		accel = axis.x != 0 ? HelperVector.rotate(accel,
 				new Vector3d(0, 0, net.jafama.FastMath.signum(axis.x)
@@ -337,7 +367,7 @@ public class Matter implements Serializable {
 
 		speed.add(accel);
 	}
-
+	
 	public void orbitalEllipticSpeed(Matter m, Vector3d axis, int nbArm) {
 		// axis x --> ellipse on y
 		// axis y --> ellipse on z
