@@ -274,14 +274,13 @@ public class Univers {
 				parameters.getLowMassParticuleMass(),
 				parameters.getLowMassDensity(), new Vector3d(0.06, 0.05, 0.05),
 				false));
-/*
-		miniListMatter.addAll(createUniversMain(origine, initialSpeed,
-				axisOfRing, radiusMin, radiusMax, ratio,
-				parameters.getNumberOfObjects(),
-				parameters.getMassObjectMin() * 1E2,
-				parameters.getMassObjectMax() * 1E2, parameters.getDensity(),
-				new Vector3d(0.01, 0.01, 0.01), true));
-*/
+		/*
+		 * miniListMatter.addAll(createUniversMain(origine, initialSpeed,
+		 * axisOfRing, radiusMin, radiusMax, ratio,
+		 * parameters.getNumberOfObjects(), parameters.getMassObjectMin() * 1E2,
+		 * parameters.getMassObjectMax() * 1E2, parameters.getDensity(), new
+		 * Vector3d(0.01, 0.01, 0.01), true));
+		 */
 		return miniListMatter;
 	}
 
@@ -393,11 +392,6 @@ public class Univers {
 		listMatter.add(m1);
 		mass += m1.getMass();
 		darkMass += m1.getMass();
-		/*
-		 * computeMassLimitsCentroidSpeed(true); BarnesHutOrbitalSpeed bhos =
-		 * new BarnesHutOrbitalSpeed(this); bhos.compute(); for (Matter m :
-		 * listMatter) { m.orbitalCircularSpeed(this, new Vector3d(0, 0, 1)); }
-		 */
 
 		for (Matter m : listMatter) {
 			if (m != m1) {
@@ -405,7 +399,6 @@ public class Univers {
 						parameters.getNbARms());
 			}
 		}
-
 	}
 
 	private void createGalaxiesCollision() {
