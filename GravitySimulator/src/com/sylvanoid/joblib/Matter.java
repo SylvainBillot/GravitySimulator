@@ -314,30 +314,8 @@ public class Matter implements Serializable {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
 
-	/* experimental */
 	public void orbitalCircularSpeed(Univers u, Vector3d axis) {
-		double orbitalSpeedValue = speed.length();
-		Vector3d accel = HelperVector.acceleration(point, u.getGPoint(),
-				orbitalSpeedValue);
-		accel = axis.x != 0 ? HelperVector.rotate(accel,
-				new Vector3d(0, 0, net.jafama.FastMath.signum(axis.x)
-						* net.jafama.FastMath.PI / 2),
-				net.jafama.FastMath.PI / 2) : accel;
-		accel = axis.y != 0 ? HelperVector
-				.rotate(accel,
-						new Vector3d(0, net.jafama.FastMath.signum(axis.y)
-								* net.jafama.FastMath.PI / 2, 0),
-						net.jafama.FastMath.signum(axis.y)
-								* net.jafama.FastMath.PI / 2) : accel;
-		accel = axis.z != 0 ? HelperVector
-				.rotate(accel,
-						new Vector3d(0, 0, net.jafama.FastMath.signum(axis.z)
-								* net.jafama.FastMath.PI / 2),
-						net.jafama.FastMath.signum(axis.z)
-								* net.jafama.FastMath.PI / 2) : accel;
-
-		speed.set(accel);
-
+		orbitalCircularSpeed(u.getMass(), u.getGPoint(), axis);
 	}
 
 	private void orbitalCircularSpeed(double totalMass, Vector3d gPoint,
