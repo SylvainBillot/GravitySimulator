@@ -314,8 +314,41 @@ public class Matter implements Serializable {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
 
+	/* experimental */
 	public void orbitalCircularSpeed(Univers u, Vector3d axis) {
-		orbitalCircularSpeed(u.getMass(), u.getGPoint(), axis);
+		double distance = new Point3d(point)
+				.distance(new Point3d(u.getGPoint()));
+		double innerMass = 0; 
+		for(Matter m:u.getListMatter()){
+			double dbis = new Point3d(m.getPoint())
+			.distance(new Point3d(u.getGPoint()));
+			if(dbis<=distance){
+				innerMass+=m.getMass();
+			}
+		}
+		double orbitalSpeedValue = net.jafama.FastMath
+				.sqrt((HelperVariable.G * innerMass)
+						/ distance);
+		Vector3d accel = HelperVector.acceleration(point, u.getGPoint(),
+				orbitalSpeedValue);
+		accel = axis.x != 0 ? HelperVector.rotate(accel,
+				new Vector3d(0, 0, net.jafama.FastMath.signum(axis.x)
+						* net.jafama.FastMath.PI / 2),
+				net.jafama.FastMath.PI / 2) : accel;
+		accel = axis.y != 0 ? HelperVector
+				.rotate(accel,
+						new Vector3d(0, net.jafama.FastMath.signum(axis.y)
+								* net.jafama.FastMath.PI / 2, 0),
+						net.jafama.FastMath.signum(axis.y)
+								* net.jafama.FastMath.PI / 2) : accel;
+		accel = axis.z != 0 ? HelperVector
+				.rotate(accel,
+						new Vector3d(0, 0, net.jafama.FastMath.signum(axis.z)
+								* net.jafama.FastMath.PI / 2),
+						net.jafama.FastMath.signum(axis.z)
+								* net.jafama.FastMath.PI / 2) : accel;
+
+		speed.add(accel);
 	}
 
 	private void orbitalCircularSpeed(double totalMass, Vector3d gPoint,
@@ -345,7 +378,7 @@ public class Matter implements Serializable {
 
 		speed.add(accel);
 	}
-	
+
 	public void orbitalEllipticSpeed(Matter m, Vector3d axis, int nbArm) {
 		// axis x --> ellipse on y
 		// axis y --> ellipse on z

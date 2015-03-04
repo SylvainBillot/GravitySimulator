@@ -213,6 +213,32 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					break;
+				case 6:
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.RandomRotateUniversWithoutCentralMass);
+					manageImpact.setSelected(false);
+					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
+					scala.setValue(3E-19);
+					fusion.setSelected(true);
+					typeOfImpact.setValue(100);
+					numberOfObjects.setValue(0);
+					densiteMin.setValue(1E-21);
+					nebulaRadius.setValue(HelperVariable.PC * 3E4);
+					massObjectMin
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
+					massObjectMax
+							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
+					negligeableMass.setValue(0);
+					numOfLowMassParticule.setValue(10000);
+					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1E7);
+					lowMassDensity.setValue(1E-22);
+					darkMatterMass.setValue(0);
+					darkMatterDensity.setValue(1E-23);
+					ellipseRatio.setValue(0.15);
+					ellipseShiftRatio.setValue(1);
+					nbArms.setValue(3);
+					break;
+					
 				}
 				enableDisableParam();
 			}
@@ -576,6 +602,29 @@ public class GUIParam extends JDialog {
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			break;
+		case 6:
+			// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			ellipseRatio.setEnabled(true);
+			ellipseShiftRatio.setEnabled(true);
+			nbArms.setEnabled(true);
+			break;
+			
 		}
 	}
 

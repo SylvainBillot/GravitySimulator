@@ -83,6 +83,9 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesis) {
 			createPlanetariesGenesis();
 		}
+		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUniversWithoutCentralMass) {
+			createRandomRotateUniversWithoutCentralMass();
+		}
 		computeMassLimitsCentroidSpeed(true);
 	}
 
@@ -401,6 +404,28 @@ public class Univers {
 		}
 	}
 
+	private void createRandomRotateUniversWithoutCentralMass() {
+		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25));
+
+		Matter m1 = new Matter(parameters, new Vector3d(
+				net.jafama.FastMath.random(), net.jafama.FastMath.random(), 0),
+				parameters.getDarkMatterMass(), new Vector3d(0, 0, 0),
+				new Vector3d(0.25, 0.25, 0.25),
+				parameters.getDarkMatterDensity(), true);
+		listMatter.add(m1);
+		mass += m1.getMass();
+		darkMass += m1.getMass();
+
+		for (Matter m : listMatter) {
+			if (m != m1) {
+				m.orbitalCircularSpeed(this, new Vector3d(0, 0, 1));
+			}
+		}
+	}
+
+	
 	private void createGalaxiesCollision() {
 		Vector3d dbg1 = new Vector3d(
 				parameters.getDemiDistanceBetweenGalaxies());

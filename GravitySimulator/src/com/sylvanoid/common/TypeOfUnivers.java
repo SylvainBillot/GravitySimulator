@@ -6,7 +6,8 @@ public enum TypeOfUnivers {
 	Random						("Random Static Univers"),
 	RandomRotateUnivers			("Random Rotate Univers (With Dark Mass)"),
 	GalaxiesCollision			("Galaxies Interactions"),
-	PlanetariesGenesis			("Planetaries Genenesis ?")
+	PlanetariesGenesis			("Planetaries Genenesis ?"),
+	RandomRotateUniversWithoutCentralMass("Random Rotate Univers without central mass"),
 	;
 
 	private final String label;
