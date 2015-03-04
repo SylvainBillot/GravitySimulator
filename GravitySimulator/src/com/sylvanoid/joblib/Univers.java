@@ -279,9 +279,9 @@ public class Univers {
 				false));
 		/*
 		 * miniListMatter.addAll(createUniversMain(origine, initialSpeed,
-		 * axisOfRing, radiusMin, radiusMax, ratio,
-		 * parameters.getNumberOfObjects(), parameters.getMassObjectMin() * 1E2,
-		 * parameters.getMassObjectMax() * 1E2, parameters.getDensity(), new
+		 * axisOfRing, radiusMin, radiusMax*5, new Vector3d(1,1,1),
+		 * parameters.getNumberOfObjects(), parameters.getMassObjectMin() * 3,
+		 * parameters.getMassObjectMax() * 3, parameters.getDensity()* 1E10, new
 		 * Vector3d(0.01, 0.01, 0.01), true));
 		 */
 		return miniListMatter;
@@ -425,7 +425,6 @@ public class Univers {
 		}
 	}
 
-	
 	private void createGalaxiesCollision() {
 		Vector3d dbg1 = new Vector3d(
 				parameters.getDemiDistanceBetweenGalaxies());

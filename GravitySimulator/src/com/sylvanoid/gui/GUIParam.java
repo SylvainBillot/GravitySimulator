@@ -221,15 +221,15 @@ public class GUIParam extends JDialog {
 					scala.setValue(3E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
-					numberOfObjects.setValue(0);
-					densiteMin.setValue(1E-21);
+					numberOfObjects.setValue(1E4);
+					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 3E4);
 					massObjectMin
 							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
 					massObjectMax
 							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
 					negligeableMass.setValue(0);
-					numOfLowMassParticule.setValue(10000);
+					numOfLowMassParticule.setValue(0);
 					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1E7);
 					lowMassDensity.setValue(1E-22);
 					darkMatterMass.setValue(0);
