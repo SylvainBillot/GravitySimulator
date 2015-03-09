@@ -4,10 +4,10 @@ public enum TypeOfUnivers {
 	Planetary					("With Solar System values"),
 	PlanetaryRandom				("Random Planetary System"),
 	Random						("Random Static Univers"),
-	RandomRotateUnivers			("Random Rotate Univers (With Dark Mass)"),
+	RandomRotateUnivers			("Random Rotate Univers Eliptic"),
 	GalaxiesCollision			("Galaxies Interactions"),
 	PlanetariesGenesis			("Planetaries Genenesis ?"),
-	RandomRotateUniversWithoutCentralMass("Random Rotate Univers without central mass"),
+	RandomRotateUniverCircular  ("Random Rotate Univers Circular"),
 	;
 
 	private final String label;

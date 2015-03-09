@@ -1,7 +1,7 @@
 package com.sylvanoid.common;
 
 public enum TypeOfObject {
-		Star,
-		Planetary,
+		Matter,
+		Gas,
 		Dark
 }

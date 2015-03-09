@@ -167,14 +167,7 @@ public class BarnesHut extends RecursiveTask<Integer> {
 									* (((uvoisin.getMass()) / net.jafama.FastMath
 											.pow2(distance)));
 
-							if (!parameters.isManageImpact()
-									|| uvoisin.getListMatter().size() > 1
-									|| m.isDark() != uvoisin.getListMatter()
-											.get(0).isDark()
-									|| (distance > m.getRayon()
-											+ uvoisin.getListMatter().get(0)
-													.getRayon())) {
-								
+							if (!parameters.isStaticDarkMatter() || !m.isDark()) {
 								/* test relativist effect */
 								/*
 								 * javax.vecmath.Vector4d tmpVect = new
@@ -183,9 +176,9 @@ public class BarnesHut extends RecursiveTask<Integer> {
 								 * .getTimeFactor(), HelperVector
 								 * .acceleration(m.getPoint(),
 								 * uvoisin.getGPoint(), attraction), m
-								 * .getPoint()));
-								 * System.out.println(parameters.getTimeFactor()
-								 * + " " + tmpVect + " " + m.getPoint());
+								 * .getPoint())); System.out.println(parameters
+								 * .getTimeFactor() + " " + tmpVect + " " +
+								 * m.getPoint());
 								 */
 								/* End of */
 
@@ -194,9 +187,17 @@ public class BarnesHut extends RecursiveTask<Integer> {
 												m.getPoint(),
 												uvoisin.getGPoint(), attraction));
 
-							} else {
-								m.getFusionWith().add(
-										uvoisin.getListMatter().get(0));
+								if (parameters.isManageImpact()
+										&& uvoisin.getListMatter().size() == 1
+										&& m.getTypeOfObject() == uvoisin
+												.getListMatter().get(0)
+												.getTypeOfObject()
+										&& (distance < m.getRayon()
+												+ uvoisin.getListMatter()
+														.get(0).getRayon())) {
+									m.getFusionWith().add(
+											uvoisin.getListMatter().get(0));
+								}
 							}
 						}
 					}

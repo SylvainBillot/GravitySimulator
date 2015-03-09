@@ -61,6 +61,7 @@ public class Parameters implements Serializable{
 	private boolean exportData = false;
 	private boolean playData = false;
 	private boolean parallelization = false;
+	private boolean staticDarkMatter = false;
 
 	public Parameters() {
 
@@ -415,5 +416,13 @@ public class Parameters implements Serializable{
 
 	public void setParallelization(boolean parallelization) {
 		this.parallelization = parallelization;
+	}
+
+	public boolean isStaticDarkMatter() {
+		return staticDarkMatter;
+	}
+
+	public void setStaticDarkMatter(boolean staticDarkMatter) {
+		this.staticDarkMatter = staticDarkMatter;
 	}
 }

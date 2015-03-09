@@ -153,7 +153,8 @@ public class GUIParam extends JDialog {
 							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
 					negligeableMass.setValue(1E39);
 					numOfLowMassParticule.setValue(10000);
-					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1E2);
+					lowMassParticuleMass
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E2);
 					lowMassDensity.setValue(1E-27);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-23);
@@ -178,7 +179,8 @@ public class GUIParam extends JDialog {
 							.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
 					negligeableMass.setValue(1E39);
 					numOfLowMassParticule.setValue(10000);
-					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1E2);
+					lowMassParticuleMass
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E2);
 					lowMassDensity.setValue(5E-30);
 					darkMatterMass.setValue(1E42);
 					darkMatterDensity.setValue(1E-20);
@@ -215,30 +217,31 @@ public class GUIParam extends JDialog {
 					break;
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
-							TypeOfUnivers.RandomRotateUniversWithoutCentralMass);
+							TypeOfUnivers.RandomRotateUniverCircular);
 					manageImpact.setSelected(false);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
 					fusion.setSelected(true);
 					typeOfImpact.setValue(100);
-					numberOfObjects.setValue(1E4);
+					numberOfObjects.setValue(0);
 					densiteMin.setValue(1E-19);
-					nebulaRadius.setValue(HelperVariable.PC * 3E4);
+					nebulaRadius.setValue(HelperVariable.PC * 4E4);
 					massObjectMin
 							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
 					massObjectMax
 							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
 					negligeableMass.setValue(0);
-					numOfLowMassParticule.setValue(0);
-					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1E7);
-					lowMassDensity.setValue(1E-22);
-					darkMatterMass.setValue(0);
+					numOfLowMassParticule.setValue(10000);
+					lowMassParticuleMass
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
+					lowMassDensity.setValue(1E-24);
+					darkMatterMass.setValue(5E39);
 					darkMatterDensity.setValue(1E-23);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					break;
-					
+
 				}
 				enableDisableParam();
 			}
@@ -285,7 +288,7 @@ public class GUIParam extends JDialog {
 		nbArms = new JFormattedTextField(dfsc);
 		nbArms.setValue(me.mother.getParameters().getNbARms());
 		add(nbArms);
-		
+
 		add(new Label("Ellipses eccentricity (]0-1[):"));
 		ellipseRatio = new JFormattedTextField(fdpc);
 		ellipseRatio.setValue(me.mother.getParameters().getEllipseRatio());
@@ -303,19 +306,19 @@ public class GUIParam extends JDialog {
 				.setValue(me.mother.getParameters().getNegligeableMass());
 		add(negligeableMass);
 
-		add(new Label("Num of low mass particle:"));
+		add(new Label("Num of gas particle:"));
 		numOfLowMassParticule = new JFormattedTextField(dfsc);
 		numOfLowMassParticule.setValue(me.mother.getParameters()
 				.getNumOfLowMassParticule());
 		add(numOfLowMassParticule);
 
-		add(new Label("Low mass particles max mass:"));
+		add(new Label("Gas particles max mass:"));
 		lowMassParticuleMass = new JFormattedTextField(dfsc);
 		lowMassParticuleMass.setValue(me.mother.getParameters()
 				.getLowMassParticuleMass());
 		add(lowMassParticuleMass);
 
-		add(new Label("Low mass particle density:"));
+		add(new Label("Gas particle density:"));
 		lowMassDensity = new JFormattedTextField(dfsc);
 		lowMassDensity.setValue(me.mother.getParameters().getLowMassDensity());
 		add(lowMassDensity);
@@ -402,8 +405,7 @@ public class GUIParam extends JDialog {
 							Double.parseDouble(me.massObjectMax.getValue()
 									.toString()));
 					me.mother.getParameters().setNbARms(
-							Integer.parseInt(me.nbArms.getValue()
-									.toString()));
+							Integer.parseInt(me.nbArms.getValue().toString()));
 					me.mother.getParameters().setEllipseRatio(
 							Double.parseDouble(me.ellipseRatio.getValue()
 									.toString()));
@@ -443,6 +445,37 @@ public class GUIParam extends JDialog {
 													.getValue().toString()),
 											Double.parseDouble(me.demiDistanceBetweenGalaxiesZ
 													.getValue().toString())));
+
+					switch (typeOfUnivers.getSelectedIndex()) {
+					case 0:
+						// TypeOfUnivers.Planetary;
+						me.mother.getParameters().setStaticDarkMatter(false);
+						break;
+					case 1:
+						// TypeOfUnivers.PlanetaryRandom;
+						me.mother.getParameters().setStaticDarkMatter(false);
+						break;
+					case 2:
+						// TypeOfUnivers.Random;
+						me.mother.getParameters().setStaticDarkMatter(false);
+						break;
+					case 3:
+						// TypeOfUnivers.RandomRotateUnivers;
+						me.mother.getParameters().setStaticDarkMatter(false);
+						break;
+					case 4:
+						// TypeOfUnivers.GalaxiesCollision;
+						me.mother.getParameters().setStaticDarkMatter(false);
+						break;
+					case 5:
+						// TypeOfUnivers.PlanetariesGenesis;
+						me.mother.getParameters().setStaticDarkMatter(false);
+						break;
+					case 6:
+						// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
+						me.mother.getParameters().setStaticDarkMatter(true);
+						break;
+					}
 
 					me.mother.getParameters().setEyes(new Vector3d(0, 0, 900));
 					me.mother.getParameters().setLookAt(
@@ -620,11 +653,11 @@ public class GUIParam extends JDialog {
 			lowMassParticuleMass.setEnabled(true);
 			lowMassDensity.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
-			ellipseRatio.setEnabled(true);
-			ellipseShiftRatio.setEnabled(true);
-			nbArms.setEnabled(true);
+			ellipseRatio.setEnabled(false);
+			ellipseShiftRatio.setEnabled(false);
+			nbArms.setEnabled(false);
 			break;
-			
+
 		}
 	}
 

@@ -531,12 +531,24 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		for (Matter m : univers.getListMatter()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
-				gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-				if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
-					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
-				}
-				if (m.getMass() > HelperVariable.MINIMALGALAXYMASS) {
-					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
+				
+				switch (m.getTypeOfObject()) {
+				case Matter:
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
+					if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
+						gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
+					}
+					if (m.getMass() > HelperVariable.MINIMALGALAXYMASS) {
+						gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
+					}
+					break;
+
+				case Gas:
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
+					break;
+
+				default:
+					break;
 				}
 
 				gl.glTranslated(parameters.getScala() * m.getPoint().x,
