@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ForkJoinPool;
 
@@ -439,16 +440,18 @@ public class Univers {
 			}
 		}
 
+		TreeMap<Double, Double> innerMassTreeMapCumul = new TreeMap<Double, Double>();
+		double innerMass = 0;
+		for(Map.Entry<Double,Double> entry :innerMassTreeMap.entrySet()){
+			innerMass+=entry.getValue();
+			innerMassTreeMapCumul.put(entry.getKey(), innerMass);
+		}
+		
 		for (Matter m : listMatter) {
 			if (!parameters.isStaticDarkMatter() || !m.isDark()) {
 				double distance = new Point3d(m.getPoint())
 						.distance(new Point3d(gPoint));
-				double innerMass = 0;
-				for (double value : innerMassTreeMap.subMap(0d, true, distance,
-						true).values()) {
-					innerMass += value;
-				}
-				m.orbitalCircularSpeed(this, distance, innerMass, new Vector3d(
+				m.orbitalCircularSpeed(this, distance, innerMassTreeMapCumul.get(distance), new Vector3d(
 						0, 0, 1));
 			}
 		}
