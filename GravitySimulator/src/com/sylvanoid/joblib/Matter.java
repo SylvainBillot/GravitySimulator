@@ -54,7 +54,8 @@ public class Matter implements Serializable {
 	}
 
 	public Matter(Parameters parameters, Vector3d point, double mass,
-			Vector3d speed, Vector3d color, double density, TypeOfObject typeOfObject) {
+			Vector3d speed, Vector3d color, double density,
+			TypeOfObject typeOfObject) {
 		this.parameters = parameters;
 		this.setPoint(point);
 		this.mass = mass;
@@ -324,21 +325,12 @@ public class Matter implements Serializable {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
 
-	/* experimental */
-	public void orbitalCircularSpeed(Univers u, Vector3d axis) {
+	public void orbitalCircularSpeed(Univers u, double distance,
+			double innerMass, Vector3d axis) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
-			double distance = new Point3d(point).distance(new Point3d(u
-					.getGPoint()));
-			double innerMass = 0;
-			for (Matter m : u.getListMatter()) {
-				double dbis = new Point3d(m.getPoint()).distance(new Point3d(u
-						.getGPoint()));
-				if (dbis <= distance) {
-					innerMass += m.getMass();
-				}
-			}
 			double orbitalSpeedValue = net.jafama.FastMath
 					.sqrt((HelperVariable.G * innerMass) / distance);
+			
 			Vector3d accel = HelperVector.acceleration(point, u.getGPoint(),
 					orbitalSpeedValue);
 			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
@@ -352,7 +344,6 @@ public class Matter implements Serializable {
 					net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI
 							/ 2), net.jafama.FastMath.signum(axis.z)
 					* net.jafama.FastMath.PI / 2) : accel;
-
 			speed.add(accel);
 		}
 	}
