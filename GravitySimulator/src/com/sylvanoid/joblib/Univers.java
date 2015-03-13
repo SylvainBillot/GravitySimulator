@@ -408,7 +408,7 @@ public class Univers {
 	private void createRandomRotateUniversCircular() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 1.7);
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 10);
 
 		createUniversMain(
 				new Vector3d(0, 0, 0),
@@ -426,7 +426,7 @@ public class Univers {
 						/ (parameters.getNumberOfObjects() + parameters
 								.getNumOfLowMassParticule()),
 				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01,
-						0.01), 1.65, TypeOfObject.Dark);
+						0.01), 5, TypeOfObject.Dark);
 
 		TreeMap<Double, Double> innerMassTreeMap = new TreeMap<Double, Double>();
 		for (Matter m : listMatter) {
