@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperTools;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
@@ -101,10 +102,7 @@ public class Univers {
 	public Vector3d gravityAtThisPoint(Vector3d p) {
 		Vector3d accel = new Vector3d();
 		for (Matter m : listMatter) {
-			double distance = new Point3d(p)
-					.distance(new Point3d(m.getPoint()));
-			double attraction = parameters.getTimeFactor() * HelperVariable.G
-					* (((m.getMass()) / net.jafama.FastMath.pow2(distance)));
+			double attraction = HelperNewton.attraction(p, m, parameters);
 			accel.add(HelperVector.acceleration(p, m.getPoint(), attraction));
 		}
 		return accel;

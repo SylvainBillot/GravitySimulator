@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
-import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import com.sylvanoid.common.HelperVariable;
+import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVector;
 
 public class BarnesHut extends RecursiveTask<Integer> {
@@ -160,12 +159,8 @@ public class BarnesHut extends RecursiveTask<Integer> {
 							parameters.setNumOfAccelCompute(parameters
 									.getNumOfAccelCompute() + 1);
 
-							double distance = new Point3d(m.getPoint())
-									.distance(new Point3d(uvoisin.getGPoint()));
-							double attraction = parameters.getTimeFactor()
-									* HelperVariable.G
-									* (((uvoisin.getMass()) / net.jafama.FastMath
-											.pow2(distance)));
+							double attraction = HelperNewton.attraction(m,
+									uvoisin, parameters);
 
 							if (!parameters.isStaticDarkMatter() || !m.isDark()) {
 								/* test relativist effect */
@@ -188,11 +183,13 @@ public class BarnesHut extends RecursiveTask<Integer> {
 												uvoisin.getGPoint(), attraction));
 
 								if (parameters.isManageImpact()
+
 										&& uvoisin.getListMatter().size() == 1
 										&& m.getTypeOfObject() == uvoisin
 												.getListMatter().get(0)
 												.getTypeOfObject()
-										&& (distance < m.getRayon()
+										&& (HelperNewton.distance(m, uvoisin) < m
+												.getRayon()
 												+ uvoisin.getListMatter()
 														.get(0).getRayon())) {
 									m.getFusionWith().add(
