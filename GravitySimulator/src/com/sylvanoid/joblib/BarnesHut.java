@@ -176,12 +176,6 @@ public class BarnesHut extends RecursiveTask<Integer> {
 								 * m.getPoint());
 								 */
 								/* End of */
-
-								m.getSpeed()
-										.add(HelperVector.acceleration(
-												m.getPoint(),
-												uvoisin.getGPoint(), attraction));
-
 								if (parameters.isManageImpact()
 
 										&& uvoisin.getListMatter().size() == 1
@@ -194,6 +188,11 @@ public class BarnesHut extends RecursiveTask<Integer> {
 														.get(0).getRayon())) {
 									m.getFusionWith().add(
 											uvoisin.getListMatter().get(0));
+								} else {
+									m.getSpeed()
+									.add(HelperVector.acceleration(
+											m.getPoint(),
+											uvoisin.getGPoint(), attraction));
 								}
 							}
 						}

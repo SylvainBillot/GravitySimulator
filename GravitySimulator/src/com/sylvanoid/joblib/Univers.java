@@ -440,17 +440,17 @@ public class Univers {
 
 		TreeMap<Double, Double> innerMassTreeMapCumul = new TreeMap<Double, Double>();
 		double innerMass = 0;
-		for(Map.Entry<Double,Double> entry :innerMassTreeMap.entrySet()){
-			innerMass+=entry.getValue();
+		for (Map.Entry<Double, Double> entry : innerMassTreeMap.entrySet()) {
+			innerMass += entry.getValue();
 			innerMassTreeMapCumul.put(entry.getKey(), innerMass);
 		}
-		
+
 		for (Matter m : listMatter) {
 			if (!parameters.isStaticDarkMatter() || !m.isDark()) {
 				double distance = new Point3d(m.getPoint())
 						.distance(new Point3d(gPoint));
-				m.orbitalCircularSpeed(this, distance, innerMassTreeMapCumul.get(distance), new Vector3d(
-						0, 0, 1));
+				m.orbitalCircularSpeed(this, distance, innerMassTreeMapCumul
+						.get(distance), new Vector3d(0, 0, 1));
 			}
 		}
 
