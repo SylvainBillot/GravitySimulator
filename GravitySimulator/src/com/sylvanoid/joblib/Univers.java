@@ -259,7 +259,6 @@ public class Univers {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	private List<Matter> createUvivers(Vector3d origine, Vector3d initialSpeed,
@@ -305,6 +304,7 @@ public class Univers {
 
 				double r = radiusMin + (radiusMax - radiusMin)
 						* net.jafama.FastMath.pow(d, 1d / 3d);
+				
 				double s = 2 * (net.jafama.FastMath.random() - 0.5);
 				double alpha = 2 * net.jafama.FastMath.PI
 						* (net.jafama.FastMath.random() - 0.5);
@@ -407,7 +407,7 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 10);
-
+		
 		createUniversMain(
 				new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 0),

@@ -177,7 +177,6 @@ public class BarnesHut extends RecursiveTask<Integer> {
 								 */
 								/* End of */
 								if (parameters.isManageImpact()
-
 										&& uvoisin.getListMatter().size() == 1
 										&& m.getTypeOfObject() == uvoisin
 												.getListMatter().get(0)
