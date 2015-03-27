@@ -461,7 +461,7 @@ public class GUIParam extends JDialog {
 						break;
 					case 3:
 						// TypeOfUnivers.RandomRotateUnivers;
-						me.mother.getParameters().setStaticDarkMatter(false);
+						me.mother.getParameters().setStaticDarkMatter(true);
 						break;
 					case 4:
 						// TypeOfUnivers.GalaxiesCollision;

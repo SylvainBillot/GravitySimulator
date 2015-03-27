@@ -238,11 +238,11 @@ public class Univers {
 					} else {
 						m.impact();
 					}
-					m.getFusionWith().clear();
 				}
 			}
 		}
 		for (Matter m : listMatter) {
+			m.getFusionWith().clear();
 			if (maxMassElement == null
 					|| maxMassElement.getMass() < m.getMass()) {
 				maxMassElement = m;

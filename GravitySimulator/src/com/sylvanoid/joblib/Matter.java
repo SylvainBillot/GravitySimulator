@@ -307,17 +307,19 @@ public class Matter implements Serializable {
 
 	public void impact() {
 		for (Matter m : fusionWith) {
-			double Cr = parameters.getTypeOfImpact();
-			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
-					* speed.x + m.getMass() * m.getSpeed().x)
-					/ (mass + m.getMass());
-			double v1y = (Cr * m.getMass() * (m.getSpeed().y - speed.y) + mass
-					* speed.y + m.getMass() * m.getSpeed().y)
-					/ (mass + m.getMass());
-			double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass
-					* speed.z + m.getMass() * m.getSpeed().z)
-					/ (mass + m.getMass());
-			tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
+			if (m.getFusionWith().contains(this)) {
+				double Cr = parameters.getTypeOfImpact();
+				double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x)
+						+ mass * speed.x + m.getMass() * m.getSpeed().x)
+						/ (mass + m.getMass());
+				double v1y = (Cr * m.getMass() * (m.getSpeed().y - speed.y)
+						+ mass * speed.y + m.getMass() * m.getSpeed().y)
+						/ (mass + m.getMass());
+				double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z)
+						+ mass * speed.z + m.getMass() * m.getSpeed().z)
+						/ (mass + m.getMass());
+				tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
+			}
 		}
 	}
 
@@ -330,7 +332,7 @@ public class Matter implements Serializable {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
 			double orbitalSpeedValue = net.jafama.FastMath
 					.sqrt((HelperVariable.G * innerMass) / distance);
-			
+
 			Vector3d accel = HelperVector.acceleration(point, u.getGPoint(),
 					orbitalSpeedValue);
 			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,

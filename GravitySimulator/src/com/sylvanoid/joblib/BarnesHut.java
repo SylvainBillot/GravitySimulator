@@ -29,11 +29,11 @@ public class BarnesHut extends RecursiveTask<Integer> {
 				&& !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
 			double cx = univers.getMin().x
-					+ (univers.getMax().x - univers.getMin().x) / 2;
+					+ (univers.getMax().x - univers.getMin().x) / (1.5 + net.jafama.FastMath.random());
 			double cy = univers.getMin().y
-					+ (univers.getMax().y - univers.getMin().y) / 2;
+					+ (univers.getMax().y - univers.getMin().y) / (1.5 + net.jafama.FastMath.random());
 			double cz = univers.getMin().z
-					+ (univers.getMax().z - univers.getMin().z) / 2;
+					+ (univers.getMax().z - univers.getMin().z) / (1.5 + net.jafama.FastMath.random());
 
 			Univers suba = new Univers(univers, new Vector3d(cx, cy, cz),
 					new Vector3d(univers.getMax().x, univers.getMax().y,
