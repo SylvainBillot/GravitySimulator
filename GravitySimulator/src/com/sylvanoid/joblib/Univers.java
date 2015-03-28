@@ -224,7 +224,28 @@ public class Univers {
 		}
 		return true;
 	}
+	
+	public boolean containtSameTypeAs(Matter m) {
+		boolean valReturn = false;
+		for(Matter m1:listMatter){
+			if(m1.getTypeOfObject()==m.getTypeOfObject()){
+				return true;
+			}
+		}
+		return valReturn;
+	}
 
+	public List<Matter> listOfSameTypeAs(Matter m){
+		List<Matter> valReturn = new ArrayList<Matter>();
+		for(Matter m1:listMatter){
+			if(m1.getTypeOfObject()==m.getTypeOfObject()){
+				valReturn.add(m1);
+			}
+		}
+		return valReturn;
+	}
+	
+	
 	private void move(BufferedWriter bufferedWriter) {
 		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 		if (parameters.isManageImpact()) {
@@ -232,7 +253,7 @@ public class Univers {
 				if (m.getFusionWith().size() > 0) {
 					if (parameters.isFusion()) {
 						m.fusion(listMatter);
-						// m.friction(1);
+						// m.friction();
 						// m.elastic(1E-13);
 						// m.barre();
 					} else {

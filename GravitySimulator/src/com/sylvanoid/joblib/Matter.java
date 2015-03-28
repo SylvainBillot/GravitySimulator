@@ -292,8 +292,10 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void friction(double fluidity) {
+	public void friction() {
+		/*
 		for (Matter m : fusionWith) {
+			double fluidity = 1;
 			Vector3d relativSpeed = new Vector3d(speed);
 			relativSpeed.sub(m.getSpeed());
 
@@ -301,8 +303,9 @@ public class Matter implements Serializable {
 					relativSpeed.y * fluidity, relativSpeed.z * fluidity);
 
 			tmpSpeed = new Vector3d(relativSpeed);
-			tmpSpeed.sub(m.getSpeed());
+			tmpSpeed.add(m.getSpeed());
 		}
+		*/
 	}
 
 	public void impact() {
