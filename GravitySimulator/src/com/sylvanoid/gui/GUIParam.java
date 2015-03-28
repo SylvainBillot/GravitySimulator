@@ -151,7 +151,7 @@ public class GUIParam extends JDialog {
 							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
 					massObjectMax
 							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
-					negligeableMass.setValue(1E39);
+					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(10000);
 					lowMassParticuleMass
 							.setValue(HelperVariable.MINIMALSTARMASS * 1E2);

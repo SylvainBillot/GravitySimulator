@@ -376,23 +376,23 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void orbitalEllipticSpeed(Matter m, Vector3d axis, int nbArm) {
+	public void orbitalEllipticSpeed(double totalMass, Vector3d gPoint,
+			Vector3d axis, int nbArm) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
 			// axis x --> ellipse on y
 			// axis y --> ellipse on z
 			// axis z --> ellipse on x
 
-			double distance = new Point3d(m.getPoint()).distance(new Point3d(
-					point));
+			double distance = new Point3d(gPoint).distance(new Point3d(point));
 			double p1 = 0;
 			double p2 = 0;
 
 			p1 = axis.x != 0 ? point.y : p1;
 			p1 = axis.y != 0 ? point.z : p1;
 			p1 = axis.z != 0 ? point.x : p1;
-			p2 = axis.x != 0 ? m.getPoint().y : p2;
-			p2 = axis.y != 0 ? m.getPoint().z : p2;
-			p2 = axis.z != 0 ? m.getPoint().x : p2;
+			p2 = axis.x != 0 ? gPoint.y : p2;
+			p2 = axis.y != 0 ? gPoint.z : p2;
+			p2 = axis.z != 0 ? gPoint.x : p2;
 
 			double e = parameters.getEllipseRatio();
 			double base = (e * p1 - distance) / e;
@@ -406,28 +406,28 @@ public class Matter implements Serializable {
 					/ net.jafama.FastMath.pow2(a);
 			Vector3d normalOnAxis = new Vector3d();
 
-			normalOnAxis = axis.x != 0 ? new Vector3d(m.getPoint().x, n,
-					m.getPoint().z) : normalOnAxis;
-			normalOnAxis = axis.y != 0 ? new Vector3d(m.getPoint().x,
-					m.getPoint().y, n) : normalOnAxis;
-			normalOnAxis = axis.z != 0 ? new Vector3d(n, m.getPoint().y,
-					m.getPoint().z) : normalOnAxis;
+			normalOnAxis = axis.x != 0 ? new Vector3d(gPoint.x, n, gPoint.z)
+					: normalOnAxis;
+			normalOnAxis = axis.y != 0 ? new Vector3d(gPoint.x, gPoint.y, n)
+					: normalOnAxis;
+			normalOnAxis = axis.z != 0 ? new Vector3d(n, gPoint.y, gPoint.z)
+					: normalOnAxis;
 
 			double orbitalSpeed = net.jafama.FastMath.sqrt(HelperVariable.G
-					* m.getMass() * (2 / distance - 1 / a));
+					* totalMass * (2 / distance - 1 / a));
 			Vector3d accel = HelperVector.acceleration(point, normalOnAxis,
 					orbitalSpeed);
 
 			double alea = 2 * ((int) (nbArm * net.jafama.FastMath.random()))
 					/ ((double) nbArm);
 			double angle = net.jafama.FastMath.PI * alea;
-			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
-			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
+			accel = HelperVector.rotate(accel, gPoint, axis, angle);
+			point = HelperVector.rotate(point, gPoint, axis, angle);
 
 			angle = parameters.getEllipseShiftRatio() * net.jafama.FastMath.PI
 					* (distance / parameters.getNebulaRadius());
-			accel = HelperVector.rotate(accel, m.getPoint(), axis, angle);
-			point = HelperVector.rotate(point, m.getPoint(), axis, angle);
+			accel = HelperVector.rotate(accel, gPoint, axis, angle);
+			point = HelperVector.rotate(point, gPoint, axis, angle);
 
 			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
 					net.jafama.FastMath.signum(axis.x) * net.jafama.FastMath.PI

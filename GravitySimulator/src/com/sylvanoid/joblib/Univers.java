@@ -304,7 +304,7 @@ public class Univers {
 
 				double r = radiusMin + (radiusMax - radiusMin)
 						* net.jafama.FastMath.pow(d, 1d / 3d);
-				
+
 				double s = 2 * (net.jafama.FastMath.random() - 0.5);
 				double alpha = 2 * net.jafama.FastMath.PI
 						* (net.jafama.FastMath.random() - 0.5);
@@ -384,30 +384,66 @@ public class Univers {
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 1.5);
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 10);
+		
+		createUniversMain(
+				new Vector3d(0, 0, 0),
+				new Vector3d(0, 0, 0),
+				new Vector3d(0, 0, 1),
+				parameters.getNebulaRadius() * 0.01,
+				parameters.getNebulaRadius(),
+				new Vector3d(1, 1, 1),
+				parameters.getNumberOfObjects()
+						+ parameters.getNumOfLowMassParticule(),
+				parameters.getDarkMatterMass()
+						/ (parameters.getNumberOfObjects() + parameters
+								.getNumOfLowMassParticule()),
+				parameters.getDarkMatterMass()
+						/ (parameters.getNumberOfObjects() + parameters
+								.getNumOfLowMassParticule()),
+				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01,
+						0.01), 5, TypeOfObject.Dark);
 
-		Matter m1 = new Matter(parameters, new Vector3d(
-				net.jafama.FastMath.random(), net.jafama.FastMath.random(), 0),
-				parameters.getDarkMatterMass(), new Vector3d(0, 0, 0),
-				new Vector3d(0.25, 0.25, 0.25),
-				parameters.getDarkMatterDensity(), TypeOfObject.Dark);
-		listMatter.add(m1);
-		mass += m1.getMass();
-		darkMass += m1.getMass();
+		TreeMap<Double, Double> innerMassTreeMap = new TreeMap<Double, Double>();
+		for (Matter m : listMatter) {
+			double distance = new Point3d(m.getPoint()).distance(new Point3d(
+					gPoint));
+			if (innerMassTreeMap.get(distance) == null) {
+				innerMassTreeMap.put(distance, m.getMass());
+			} else {
+				innerMassTreeMap.put(distance,
+						m.getMass() + innerMassTreeMap.get(distance));
+			}
+		}
+
+		TreeMap<Double, Double> innerMassTreeMapCumul = new TreeMap<Double, Double>();
+		double innerMass = 0;
+		for (Map.Entry<Double, Double> entry : innerMassTreeMap.entrySet()) {
+			innerMass += entry.getValue();
+			innerMassTreeMapCumul.put(entry.getKey(), innerMass);
+		}
 
 		for (Matter m : listMatter) {
-			if (m != m1) {
-				m.orbitalEllipticSpeed(m1, new Vector3d(0, 0, 1),
+			if (!parameters.isStaticDarkMatter() || !m.isDark()) {
+				double distance = new Point3d(m.getPoint())
+						.distance(new Point3d(gPoint));
+				m.orbitalEllipticSpeed(innerMassTreeMapCumul.get(distance),
+						this.getGPoint(), new Vector3d(0, 0, 1),
 						parameters.getNbARms());
 			}
 		}
+		/*
+		 * for (Matter m : listMatter) { if (m != m1) {
+		 * m.orbitalEllipticSpeed(m1, new Vector3d(0, 0, 1),
+		 * parameters.getNbARms()); } }
+		 */
 	}
 
 	private void createRandomRotateUniversCircular() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 10);
-		
+
 		createUniversMain(
 				new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 0),
