@@ -1,10 +1,13 @@
 package com.sylvanoid.gui;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
@@ -32,7 +35,7 @@ import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
 
 public class Renderer implements GLEventListener, KeyListener, MouseListener,
-		MouseMotionListener {
+		MouseMotionListener, MouseWheelListener {
 
 	private int textSize = 10;
 	private double theta = net.jafama.FastMath.PI / 180;
@@ -46,6 +49,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	private int textures[] = new int[4]; // Storage For One textures
 
 	private TextRenderer textRenderer;
+
+	private java.awt.Point mousePoint = new Point(-1, -1);
 
 	public Renderer(GUIProgram guiProgram) {
 		reload(guiProgram);
@@ -209,8 +214,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			drawTrace(gl);
 		}
 
-		//drawGravitationalFields(gl);
-		
+		// drawGravitationalFields(gl);
+
 		/* Show current univers */
 		drawUnivers(gl);
 	}
@@ -531,7 +536,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		for (Matter m : univers.getListMatter()) {
 			if (!m.isDark()) {
 				gl.glLoadIdentity();
-				
+
 				switch (m.getTypeOfObject()) {
 				case Matter:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
@@ -774,7 +779,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		mousePoint = new Point(-1, -1);
 	}
 
 	@Override
@@ -792,7 +797,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		mousePoint = new Point(e.getX(), e.getY());
 	}
 
 	@Override
@@ -804,13 +809,39 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		double dx = (double) (mousePoint.x - e.getX()) / 3;
+		double dy = (double) (mousePoint.y - e.getY()) / 3;
+		if (dx != 0) {
+			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(0, 1, 0), theta * dx));
+			diffLookAt.sub(parameters.getLookAt());
+			parameters.getEyes().add(diffLookAt);
+		}
+		if (dy != 0) {
+			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
+					new Vector3d(1, 0, 0), theta * dy));
+			diffLookAt.sub(parameters.getLookAt());
+			parameters.getEyes().add(diffLookAt);
+		}
+		mousePoint = new Point(e.getX(), e.getY());
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getPreciseWheelRotation() == 1) {
+			parameters.setScala(parameters.getScala() * 1.05);
+		} else {
+			parameters.setScala(parameters.getScala() * (1 / 1.05));
+		}
 	}
 
 }

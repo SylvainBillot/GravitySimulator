@@ -552,6 +552,7 @@ public class GUIProgram extends JFrame {
 		gljpanel.addKeyListener(renderer);
 		gljpanel.addMouseListener(renderer);
 		gljpanel.addMouseMotionListener(renderer);
+		gljpanel.addMouseWheelListener(renderer);
 		me.add(gljpanel, BorderLayout.CENTER);
 		animator = new FPSAnimator(gljpanel, HelperVariable.MAXFPS, true);
 		animator.start();
