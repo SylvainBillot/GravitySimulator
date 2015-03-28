@@ -62,6 +62,8 @@ public class Parameters implements Serializable{
 	private boolean playData = false;
 	private boolean parallelization = false;
 	private boolean staticDarkMatter = false;
+	private double matterDistribution = 10;
+	private double darkMatterDistribution = 5;
 
 	public Parameters() {
 
@@ -424,5 +426,21 @@ public class Parameters implements Serializable{
 
 	public void setStaticDarkMatter(boolean staticDarkMatter) {
 		this.staticDarkMatter = staticDarkMatter;
+	}
+
+	public double getMatterDistribution() {
+		return matterDistribution;
+	}
+
+	public void setMatterDistribution(double matterDistribution) {
+		this.matterDistribution = matterDistribution;
+	}
+
+	public double getDarkMatterDistribution() {
+		return darkMatterDistribution;
+	}
+
+	public void setDarkMatterDistribution(double darkMatterDistribution) {
+		this.darkMatterDistribution = darkMatterDistribution;
 	}
 }
