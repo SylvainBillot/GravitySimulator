@@ -12,7 +12,7 @@ import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.common.Vector3dAdapter;
 
 @XmlRootElement
-public class Parameters implements Serializable{
+public class Parameters implements Serializable {
 	/**
 	 * 
 	 */
@@ -62,8 +62,10 @@ public class Parameters implements Serializable{
 	private boolean playData = false;
 	private boolean parallelization = false;
 	private boolean staticDarkMatter = false;
-	private double matterDistribution = 10;
+
+	private double matterDistribution = 5;
 	private double darkMatterDistribution = 5;
+	private double darkMatterNubulaFactor = 2;
 
 	public Parameters() {
 
@@ -442,5 +444,13 @@ public class Parameters implements Serializable{
 
 	public void setDarkMatterDistribution(double darkMatterDistribution) {
 		this.darkMatterDistribution = darkMatterDistribution;
+	}
+
+	public double getDarkMatterNubulaFactor() {
+		return darkMatterNubulaFactor;
+	}
+
+	public void setDarkMatterNubulaFactor(double darkMatterNubulaFactor) {
+		this.darkMatterNubulaFactor = darkMatterNubulaFactor;
 	}
 }

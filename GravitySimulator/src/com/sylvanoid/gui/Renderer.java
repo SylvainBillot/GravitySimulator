@@ -838,9 +838,9 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getPreciseWheelRotation() == 1) {
-			parameters.setScala(parameters.getScala() * 1.05);
-		} else {
 			parameters.setScala(parameters.getScala() * (1 / 1.05));
+		} else {
+			parameters.setScala(parameters.getScala() * 1.05);
 		}
 	}
 

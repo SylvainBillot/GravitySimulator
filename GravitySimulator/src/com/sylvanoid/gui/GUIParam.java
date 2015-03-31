@@ -132,6 +132,8 @@ public class GUIParam extends JDialog {
 					numOfLowMassParticule.setValue(0);
 					lowMassParticuleMass.setValue(1);
 					lowMassDensity.setValue(1);
+					darkMatterMass.setValue(0);
+					darkMatterDensity.setValue(1E-12);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
@@ -457,7 +459,7 @@ public class GUIParam extends JDialog {
 						break;
 					case 2:
 						// TypeOfUnivers.Random;
-						me.mother.getParameters().setStaticDarkMatter(false);
+						me.mother.getParameters().setStaticDarkMatter(true);
 						break;
 					case 3:
 						// TypeOfUnivers.RandomRotateUnivers;
@@ -568,6 +570,8 @@ public class GUIParam extends JDialog {
 			numOfLowMassParticule.setEnabled(true);
 			lowMassParticuleMass.setEnabled(true);
 			lowMassDensity.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
 			break;
 		case 3:
 			// TypeOfUnivers.RandomRotateUnivers;
