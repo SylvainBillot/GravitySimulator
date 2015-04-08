@@ -37,6 +37,8 @@ public class Univers {
 	@XmlElement
 	private double volumicMass;
 	@XmlElement
+	private double density;
+	@XmlElement
 	private List<Matter> listMatter;
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
@@ -111,6 +113,7 @@ public class Univers {
 	public void computeMassLimitsCentroidSpeed(boolean withLimit) {
 		boolean firstTime = true;
 		volumicMass = 0;
+		density = 0;
 		speed = new Vector3d(0, 0, 0);
 		mass = 0;
 		visibleMass = 0;
@@ -155,6 +158,8 @@ public class Univers {
 			speed.add(m.getSpeed());
 		}
 		volumicMass = visibleMass
+				/ ((max.x - min.x) * (max.y - min.y) * (max.z - min.z));
+		density = listMatter.size()
 				/ ((max.x - min.x) * (max.y - min.y) * (max.z - min.z));
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 	}
@@ -252,9 +257,6 @@ public class Univers {
 				if (m.getFusionWith().size() > 0) {
 					if (parameters.isFusion()) {
 						m.fusion(listMatter);
-						//m.friction();
-						// m.elastic(1E-13);
-						// m.barre();
 					} else {
 						m.impact();
 					}
@@ -755,5 +757,9 @@ public class Univers {
 
 	public double getVolumicMass() {
 		return volumicMass;
+	}
+
+	public double getDensity() {
+		return density;
 	}
 }

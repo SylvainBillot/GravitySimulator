@@ -270,44 +270,6 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void elastic(double k) {
-		for (Matter m : fusionWith) {
-			double distance = new Point3d(point).distance(new Point3d(m
-					.getPoint()));
-			double dx = distance - (rayon + m.getRayon());
-			double elasticForceAccel = dx * k * parameters.getTimeFactor();
-			speed.add(HelperVector.acceleration(point, m.getPoint(),
-					elasticForceAccel));
-		}
-	}
-
-	public void barre() {
-		for (Matter m : fusionWith) {
-			double distance = new Point3d(point).distance(new Point3d(m
-					.getPoint()));
-			double distance2 = new Point3d(getPlusV()).distance(new Point3d(m
-					.getPoint()));
-			speed.sub(HelperVector.acceleration(point, m.getPoint(),
-					(distance - distance2) / parameters.getTimeFactor()));
-		}
-	}
-
-	public void friction() {
-		/*
-		for (Matter m : fusionWith) {
-			double fluidity = 1;
-			Vector3d relativSpeed = new Vector3d(speed);
-			relativSpeed.sub(m.getSpeed());
-
-			relativSpeed = new Vector3d(relativSpeed.x * fluidity,
-					relativSpeed.y * fluidity, relativSpeed.z * fluidity);
-
-			tmpSpeed = new Vector3d(relativSpeed);
-			tmpSpeed.add(m.getSpeed());
-		}
-		*/
-	}
-
 	public void impact() {
 		for (Matter m : fusionWith) {
 			if (m.getFusionWith().contains(this)) {

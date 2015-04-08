@@ -166,20 +166,6 @@ public class BarnesHut extends RecursiveTask<Integer> {
 									uvoisin, parameters);
 
 							if (!parameters.isStaticDarkMatter() || !m.isDark()) {
-								/* test relativist effect */
-								/*
-								 * javax.vecmath.Vector4d tmpVect = new
-								 * javax.vecmath.Vector4d(
-								 * HelperVector.lorentzCoord(parameters
-								 * .getTimeFactor(), HelperVector
-								 * .acceleration(m.getPoint(),
-								 * uvoisin.getGPoint(), attraction), m
-								 * .getPoint())); System.out.println(parameters
-								 * .getTimeFactor() + " " + tmpVect + " " +
-								 * m.getPoint());
-								 */
-								/* End of */
-
 								if (parameters.isManageImpact()
 										&& (HelperNewton.distance(m, uvoisin) < m
 												.getRayon())

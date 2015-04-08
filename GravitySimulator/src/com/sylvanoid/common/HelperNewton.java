@@ -10,30 +10,39 @@ import com.sylvanoid.joblib.Univers;
 public class HelperNewton {
 
 	public static double distance(Matter m, Univers u) {
-		return new Point3d(m.getPoint()).distance(new Point3d(u.getGPoint()));
+		return distance(new Point3d(m.getPoint()), new Point3d(u.getGPoint()));
 	}
 
 	public static double distance(Matter m1, Matter m2) {
-		return new Point3d(m1.getPoint()).distance(new Point3d(m2.getPoint()));
+		return distance(new Point3d(m1.getPoint()), new Point3d(m2.getPoint()));
 	}
 
 	public static double distance(Vector3d p, Matter m) {
-		return new Point3d(p).distance(new Point3d(m.getPoint()));
+		return distance(new Point3d(p), new Point3d(m.getPoint()));
 	}
 
 	public static double attraction(Matter m, Univers u, Parameters parameters) {
-		return parameters.getTimeFactor() * HelperVariable.G
-				* (((u.getMass()) / net.jafama.FastMath.pow2(distance(m, u))));
+		return attraction(new Point3d(m.getPoint()),
+				new Point3d(u.getGPoint()), u.getMass(), parameters);
 	}
 
 	public static double attraction(Matter m1, Matter m2, Parameters parameters) {
-		return parameters.getTimeFactor()
-				* HelperVariable.G
-				* (((m2.getMass()) / net.jafama.FastMath.pow2(distance(m1, m2))));
+		return attraction(new Point3d(m1.getPoint()),
+				new Point3d(m2.getPoint()), m2.getMass(), parameters);
 	}
 
 	public static double attraction(Vector3d p, Matter m, Parameters parameters) {
+		return attraction(new Point3d(p), new Point3d(m.getPoint()),
+				m.getMass(), parameters);
+	}
+
+	private static double distance(Point3d p1, Point3d p2) {
+		return p1.distance(p2);
+	}
+
+	private static double attraction(Point3d p1, Point3d p2, double mass,
+			Parameters parameters) {
 		return parameters.getTimeFactor() * HelperVariable.G
-				* (((m.getMass()) / net.jafama.FastMath.pow2(distance(p, m))));
+				* ((mass / net.jafama.FastMath.pow2(distance(p1, p2))));
 	}
 }
