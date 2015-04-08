@@ -401,26 +401,6 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
 				new Vector3d(1, 1, 1), 1);
-		
-		createUniversMain(
-				new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1),
-				parameters.getNebulaRadius() * 0.01,
-				parameters.getNebulaRadius()
-						* parameters.getDarkMatterNubulaFactor(),
-				new Vector3d(1, 1, 1),
-				parameters.getNumberOfObjects()
-						+ parameters.getNumOfLowMassParticule(),
-				parameters.getDarkMatterMass()
-						/ (parameters.getNumberOfObjects() + parameters
-								.getNumOfLowMassParticule()),
-				parameters.getDarkMatterMass()
-						/ (parameters.getNumberOfObjects() + parameters
-								.getNumOfLowMassParticule()),
-				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01,
-						0.01), 1,
-				TypeOfObject.Dark);
 	}
 
 	private void createRandomRotateUnivers() {
