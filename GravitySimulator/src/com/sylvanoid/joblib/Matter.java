@@ -236,6 +236,7 @@ public class Matter implements Serializable {
 			Vector3d newColor = new Vector3d(color);
 			double newDensity = density;
 			double newMass = mass;
+
 			for (Matter m : fusionWith) {
 				if (listMatter.contains(m)) {
 					if (m.mass > newMass) {
