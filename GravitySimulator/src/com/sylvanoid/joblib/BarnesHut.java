@@ -164,7 +164,7 @@ public class BarnesHut extends RecursiveTask<Integer> {
 
 							double attraction = HelperNewton.attraction(m,
 									uvoisin, parameters);
-
+							
 							if (!parameters.isStaticDarkMatter() || !m.isDark()) {
 								if (parameters.isManageImpact()
 										&& (HelperNewton.distance(m, uvoisin) < m
