@@ -326,17 +326,17 @@ public class Matter implements Serializable {
 							/ ((mass + totalMass) * distance));
 			Vector3d accel = HelperVector.acceleration(point, gPoint,
 					orbitalSpeedValue);
-			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-					net.jafama.FastMath.signum(axis.x) * net.jafama.FastMath.PI
-							/ 2), net.jafama.FastMath.PI / 2) : accel;
+			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(
+					net.jafama.FastMath.signum(axis.x), 0, 0),
+					net.jafama.FastMath.PI / 2) : accel;
 			accel = axis.y != 0 ? HelperVector.rotate(accel, new Vector3d(0,
+					net.jafama.FastMath.signum(axis.y), 0),
 					net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI
-							/ 2, 0), net.jafama.FastMath.signum(axis.y)
-					* net.jafama.FastMath.PI / 2) : accel;
+							/ 2) : accel;
 			accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
+					net.jafama.FastMath.signum(axis.z)),
 					net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI
-							/ 2), net.jafama.FastMath.signum(axis.z)
-					* net.jafama.FastMath.PI / 2) : accel;
+							/ 2) : accel;
 
 			speed.add(accel);
 		}
@@ -395,17 +395,17 @@ public class Matter implements Serializable {
 			accel = HelperVector.rotate(accel, gPoint, axis, angle);
 			point = HelperVector.rotate(point, gPoint, axis, angle);
 
-			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-					net.jafama.FastMath.signum(axis.x) * net.jafama.FastMath.PI
-							/ 2), net.jafama.FastMath.PI / 2) : accel;
+			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(
+					net.jafama.FastMath.signum(axis.x), 0, 0),
+					net.jafama.FastMath.PI / 2) : accel;
 			accel = axis.y != 0 ? HelperVector.rotate(accel, new Vector3d(0,
+					net.jafama.FastMath.signum(axis.y), 0),
 					net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI
-							/ 2, 0), net.jafama.FastMath.signum(axis.y)
-					* net.jafama.FastMath.PI / 2) : accel;
+							/ 2) : accel;
 			accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
+					net.jafama.FastMath.signum(axis.z)),
 					net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI
-							/ 2), net.jafama.FastMath.signum(axis.z)
-					* net.jafama.FastMath.PI / 2) : accel;
+							/ 2) : accel;
 
 			speed.add(accel);
 		}
