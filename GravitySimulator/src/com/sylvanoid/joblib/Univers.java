@@ -54,6 +54,8 @@ public class Univers {
 	private Vector3d max = new Vector3d(0, 0, 0);
 
 	private Matter maxMassElement = null;
+	
+	private Univers father;
 
 	@Override
 	public String toString() {
@@ -95,6 +97,7 @@ public class Univers {
 	}
 
 	public Univers(Univers father, Vector3d min, Vector3d max) {
+		this.father = father;
 		this.parameters = father.parameters;
 		listMatter = new ArrayList<Matter>();
 		this.min = new Vector3d(min);
@@ -742,4 +745,9 @@ public class Univers {
 	public double getDensity() {
 		return density;
 	}
+	
+	public Univers getFather() {
+		return father;
+	}
+
 }

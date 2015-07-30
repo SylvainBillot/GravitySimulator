@@ -164,15 +164,36 @@ public class BarnesHut extends RecursiveTask<Integer> {
 
 							double attraction = HelperNewton.attraction(m,
 									uvoisin, parameters);
-							
+
 							if (!parameters.isStaticDarkMatter() || !m.isDark()) {
-								if (parameters.isManageImpact()
-										&& (HelperNewton.distance(m, uvoisin) < m
-												.getRayon())
-										&& uvoisin.containtSameTypeAs(m)) {
-									m.getFusionWith().addAll(
-											uvoisin.listOfSameTypeAs(m));
-								} else {
+								boolean fusionOrImpact = false;
+								if (u.getListMatter().size() == 1) {
+									Univers gu = new Univers();
+									if (u.getFather().getFather() != null) {
+										gu = u.getFather().getFather();
+									} else {
+										gu = u.getFather();
+									}
+									for (Matter mgu : gu.getListMatter()) {
+										if (m != mgu) {
+											// Fusion or Impact here
+											if (parameters.isManageImpact()
+													&& (HelperNewton.distance(
+															m, mgu) < (m
+															.getRayon() + mgu.getRayon()) )
+													&& (m.getTypeOfObject()
+															.equals(mgu
+																	.getTypeOfObject()))) {
+												m.getFusionWith().add(mgu);
+												fusionOrImpact = true;
+											}
+
+											// SPH here
+
+										}
+									}
+								}
+								if (!fusionOrImpact) {
 									m.getSpeed().add(
 											HelperVector.acceleration(
 													m.getPoint(),
