@@ -7,6 +7,7 @@ import java.util.concurrent.RecursiveTask;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperNewton;
+import com.sylvanoid.common.HelperVector;
 
 public class BarnesHutCollision extends RecursiveTask<Integer> {
 	/**
@@ -165,12 +166,17 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 					for (Matter mgu : gu.getListMatter()) {
 						if (m != mgu) {
 							// Fusion or Impact here
-							if ((HelperNewton.distance(m,
-									mgu) < (m.getRayon() + mgu
+							if ((HelperNewton.distance(m, mgu) < (m.getRayon() + mgu
 									.getRayon()))
 									&& (m.getTypeOfObject().equals(mgu
 											.getTypeOfObject()))) {
 								m.getFusionWith().add(mgu);
+								//disable gravity
+								double attraction = HelperNewton.attraction(m,
+										mgu, parameters);
+								m.getAccel().add(HelperVector.acceleration(
+										m.getPoint(),
+										mgu.getPoint(), -attraction));
 							}
 						}
 					}
@@ -179,5 +185,4 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 		}
 		return univers.getListMatter().size();
 	}
-
 }

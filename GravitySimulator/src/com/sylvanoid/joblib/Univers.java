@@ -281,8 +281,6 @@ public class Univers {
 				maxMassElement = m;
 			}
 			m.move();
-		}
-		for (Matter m : listMatter) {
 			m.getFusionWith().clear();
 		}
 

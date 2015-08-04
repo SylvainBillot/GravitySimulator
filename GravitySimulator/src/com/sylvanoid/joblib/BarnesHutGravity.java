@@ -166,7 +166,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 									uvoisin, parameters);
 
 							if ((!parameters.isStaticDarkMatter() || !m
-									.isDark())&&m.getFusionWith().size()==0) {
+									.isDark())) {
 								m.getAccel()
 										.add(HelperVector.acceleration(
 												m.getPoint(),
