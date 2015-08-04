@@ -29,6 +29,7 @@ public class Matter implements Serializable {
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d angles = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
+	private Vector3d accel = new Vector3d(0, 0, 0);
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private double rayon;
@@ -142,6 +143,14 @@ public class Matter implements Serializable {
 		this.speed = speed;
 	}
 
+	public Vector3d getAccel() {
+		return accel;
+	}
+
+	public void setAccel(Vector3d accel) {
+		this.accel = accel;
+	}
+
 	public double getMass() {
 		return mass;
 	}
@@ -226,7 +235,9 @@ public class Matter implements Serializable {
 			speed = new Vector3d(tmpSpeed);
 			tmpSpeed = new Vector3d(0, 0, 0);
 		}
+		speed.add(accel);
 		point = getPlusV();
+		accel = new Vector3d(0, 0, 0);
 	}
 
 	public void fusion(List<Matter> listMatter) {

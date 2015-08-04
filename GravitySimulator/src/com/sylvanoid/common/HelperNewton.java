@@ -20,6 +20,11 @@ public class HelperNewton {
 	public static double distance(Vector3d p, Matter m) {
 		return distance(new Point3d(p), new Point3d(m.getPoint()));
 	}
+	
+	public static double distance(Vector3d v1, Vector3d v2) {
+		return distance(new Point3d(v1), new Point3d(v2));
+	}
+	
 
 	public static double attraction(Matter m, Univers u, Parameters parameters) {
 		return attraction(new Point3d(m.getPoint()),

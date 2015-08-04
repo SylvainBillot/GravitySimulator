@@ -54,7 +54,7 @@ public class Univers {
 	private Vector3d max = new Vector3d(0, 0, 0);
 
 	private Matter maxMassElement = null;
-	
+
 	private Univers father;
 
 	@Override
@@ -178,13 +178,22 @@ public class Univers {
 			parameters.setLimitComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
-			BarnesHut barnesHut = new BarnesHut(this);
+			BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
+			BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
 			if (parameters.isParallelization()) {
+				if (parameters.isManageImpact()) {
+					ForkJoinPool poolCollision = new ForkJoinPool(Runtime
+							.getRuntime().availableProcessors());
+					poolCollision.invoke(barnesHutCollision);
+				}
 				ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
 						.availableProcessors());
-				pool.invoke(barnesHut);
+				pool.invoke(barnesHutGravity);
 			} else {
-				barnesHut.compute();
+				if (parameters.isManageImpact()) {
+					barnesHutCollision.compute();
+				}
+				barnesHutGravity.compute();
 			}
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
@@ -267,13 +276,16 @@ public class Univers {
 			}
 		}
 		for (Matter m : listMatter) {
-			m.getFusionWith().clear();
 			if (maxMassElement == null
 					|| maxMassElement.getMass() < m.getMass()) {
 				maxMassElement = m;
 			}
 			m.move();
 		}
+		for (Matter m : listMatter) {
+			m.getFusionWith().clear();
+		}
+
 		if (parameters.isExportData()) {
 			try {
 				bufferedWriter.write(HelperTools
@@ -745,7 +757,7 @@ public class Univers {
 	public double getDensity() {
 		return density;
 	}
-	
+
 	public Univers getFather() {
 		return father;
 	}

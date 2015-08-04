@@ -9,7 +9,7 @@ import javax.vecmath.Vector3d;
 import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVector;
 
-public class BarnesHut extends RecursiveTask<Integer> {
+public class BarnesHutGravity extends RecursiveTask<Integer> {
 	/**
 	 * 
 	 */
@@ -17,7 +17,7 @@ public class BarnesHut extends RecursiveTask<Integer> {
 	private Univers univers;
 	private Parameters parameters;
 
-	public BarnesHut(Univers univers) {
+	public BarnesHutGravity(Univers univers) {
 		this.univers = univers;
 		this.parameters = univers.getParameters();
 	}
@@ -114,14 +114,14 @@ public class BarnesHut extends RecursiveTask<Integer> {
 			subg.computeMassLimitsCentroidSpeed(false);
 			subh.computeMassLimitsCentroidSpeed(false);
 
-			BarnesHut bha = new BarnesHut(suba);
-			BarnesHut bhb = new BarnesHut(subb);
-			BarnesHut bhc = new BarnesHut(subc);
-			BarnesHut bhd = new BarnesHut(subd);
-			BarnesHut bhe = new BarnesHut(sube);
-			BarnesHut bhf = new BarnesHut(subf);
-			BarnesHut bhg = new BarnesHut(subg);
-			BarnesHut bhh = new BarnesHut(subh);
+			BarnesHutGravity bha = new BarnesHutGravity(suba);
+			BarnesHutGravity bhb = new BarnesHutGravity(subb);
+			BarnesHutGravity bhc = new BarnesHutGravity(subc);
+			BarnesHutGravity bhd = new BarnesHutGravity(subd);
+			BarnesHutGravity bhe = new BarnesHutGravity(sube);
+			BarnesHutGravity bhf = new BarnesHutGravity(subf);
+			BarnesHutGravity bhg = new BarnesHutGravity(subg);
+			BarnesHutGravity bhh = new BarnesHutGravity(subh);
 
 			// Parallelization
 			if (parameters.isParallelization()) {
@@ -165,41 +165,12 @@ public class BarnesHut extends RecursiveTask<Integer> {
 							double attraction = HelperNewton.attraction(m,
 									uvoisin, parameters);
 
-							if (!parameters.isStaticDarkMatter() || !m.isDark()) {
-								boolean fusionOrImpact = false;
-								if (u.getListMatter().size() == 1) {
-									Univers gu = new Univers();
-									if (u.getFather().getFather() != null) {
-										gu = u.getFather().getFather();
-									} else {
-										gu = u.getFather();
-									}
-									for (Matter mgu : gu.getListMatter()) {
-										if (m != mgu) {
-											// Fusion or Impact here
-											if (parameters.isManageImpact()
-													&& (HelperNewton.distance(
-															m, mgu) < (m
-															.getRayon() + mgu.getRayon()) )
-													&& (m.getTypeOfObject()
-															.equals(mgu
-																	.getTypeOfObject()))) {
-												m.getFusionWith().add(mgu);
-												fusionOrImpact = true;
-											}
-
-											// SPH here
-
-										}
-									}
-								}
-								if (!fusionOrImpact) {
-									m.getSpeed().add(
-											HelperVector.acceleration(
-													m.getPoint(),
-													uvoisin.getGPoint(),
-													attraction));
-								}
+							if ((!parameters.isStaticDarkMatter() || !m
+									.isDark())&&m.getFusionWith().size()==0) {
+								m.getAccel()
+										.add(HelperVector.acceleration(
+												m.getPoint(),
+												uvoisin.getGPoint(), attraction));
 							}
 						}
 					}
@@ -208,5 +179,4 @@ public class BarnesHut extends RecursiveTask<Integer> {
 		}
 		return univers.getListMatter().size();
 	}
-
 }
