@@ -294,6 +294,8 @@ public class Matter implements Serializable {
 				tmpSpeed.sub(speed);
 				accel.add(tmpSpeed);
 				tmpSpeed = new Vector3d(0,0,0);
+			} else {
+				System.out.println("Wtf ?!?");
 			}
 		}
 	}

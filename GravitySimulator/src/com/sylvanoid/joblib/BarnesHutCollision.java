@@ -170,13 +170,26 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 									.getRayon()))
 									&& (m.getTypeOfObject().equals(mgu
 											.getTypeOfObject()))) {
-								m.getFusionWith().add(mgu);
-								//disable gravity
-								double attraction = HelperNewton.attraction(m,
-										mgu, parameters);
-								m.getAccel().add(HelperVector.acceleration(
-										m.getPoint(),
-										mgu.getPoint(), -attraction));
+								if (!m.getFusionWith().contains(mgu)) {
+									m.getFusionWith().add(mgu);
+									// disable gravity
+									double attraction = HelperNewton
+											.attraction(m, mgu, parameters);
+									m.getAccel()
+											.add(HelperVector.acceleration(
+													m.getPoint(),
+													mgu.getPoint(), -attraction));
+								}
+								if (!mgu.getFusionWith().contains(m)) {
+									mgu.getFusionWith().add(m);
+									// disable gravity
+									double attraction = HelperNewton
+											.attraction(mgu, m, parameters);
+									mgu.getAccel()
+											.add(HelperVector.acceleration(
+													mgu.getPoint(),
+													m.getPoint(), -attraction));
+								}
 							}
 						}
 					}
