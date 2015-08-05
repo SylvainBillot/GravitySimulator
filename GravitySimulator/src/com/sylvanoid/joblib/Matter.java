@@ -35,8 +35,6 @@ public class Matter implements Serializable {
 	private double rayon;
 	private List<Matter> fusionWith = new ArrayList<Matter>();
 
-	private Vector3d tmpSpeed = new Vector3d(0, 0, 0);
-
 	@Override
 	public String toString() {
 		return name + " mass:" + mass + " x:" + point.x + " y:" + point.y
@@ -231,10 +229,6 @@ public class Matter implements Serializable {
 
 	public void move() {
 		pointBefore = new Vector3d(point);
-		if (!tmpSpeed.equals(new Vector3d(0, 0, 0))) {
-			speed = new Vector3d(tmpSpeed);
-			tmpSpeed = new Vector3d(0, 0, 0);
-		}
 		speed.add(accel);
 		point = getPlusV();
 		accel = new Vector3d(0, 0, 0);
@@ -295,7 +289,11 @@ public class Matter implements Serializable {
 				double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z)
 						+ mass * speed.z + m.getMass() * m.getSpeed().z)
 						/ (mass + m.getMass());
+				Vector3d tmpSpeed = new Vector3d(0,0,0); 
 				tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
+				tmpSpeed.sub(speed);
+				accel.add(tmpSpeed);
+				tmpSpeed = new Vector3d(0,0,0);
 			}
 		}
 	}
