@@ -186,9 +186,9 @@ public class Univers {
 							.getRuntime().availableProcessors());
 					poolCollision.invoke(barnesHutCollision);
 				}
-				ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
+				ForkJoinPool poolGravity = new ForkJoinPool(Runtime.getRuntime()
 						.availableProcessors());
-				pool.invoke(barnesHutGravity);
+				poolGravity.invoke(barnesHutGravity);
 			} else {
 				if (parameters.isManageImpact()) {
 					barnesHutCollision.compute();
