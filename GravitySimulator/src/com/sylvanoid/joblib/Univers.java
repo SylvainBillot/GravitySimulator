@@ -289,6 +289,7 @@ public class Univers {
 				maxMassElement = m;
 			}
 			m.move();
+//System.out.println(m.getFusionWith().size() + " " + m.getName());			
 			m.getFusionWith().clear();
 			m.getNeighbors().clear();
 		}

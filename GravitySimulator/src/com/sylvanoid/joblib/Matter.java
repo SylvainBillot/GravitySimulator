@@ -315,6 +315,12 @@ public class Matter implements Serializable {
 		}
 	}
 
+	public void fusionWithAdd(List<Matter> f, Matter m){
+		if(!f.contains(m)){
+			f.add(m);
+		}
+	}	
+	
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
