@@ -7,7 +7,6 @@ import java.util.concurrent.RecursiveTask;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperNewton;
-import com.sylvanoid.common.HelperVector;
 
 public class BarnesHutCollision extends RecursiveTask<Integer> {
 	/**
@@ -159,36 +158,25 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 				Univers gu = new Univers();
 				if (univers.getFather() != null) {
 					if (univers.getFather().getFather() != null) {
-						gu = univers.getFather().getFather();
+						if (univers.getFather().getFather().getFather() != null) {
+							gu = univers.getFather().getFather().getFather();
+						} else {
+							gu = univers.getFather().getFather();
+						}
 					} else {
 						gu = univers.getFather();
 					}
 					for (Matter mgu : gu.getListMatter()) {
 						if (m != mgu) {
-							// Fusion or Impact here
 							if ((HelperNewton.distance(m, mgu) < (m.getRayon() + mgu
 									.getRayon()))
 									&& (m.getTypeOfObject().equals(mgu
 											.getTypeOfObject()))) {
 								if (!m.getFusionWith().contains(mgu)) {
 									m.getFusionWith().add(mgu);
-									// disable gravity
-									double attraction = HelperNewton
-											.attraction(m, mgu, parameters);
-									m.getAccel()
-											.add(HelperVector.acceleration(
-													m.getPoint(),
-													mgu.getPoint(), -attraction));
 								}
 								if (!mgu.getFusionWith().contains(m)) {
 									mgu.getFusionWith().add(m);
-									// disable gravity
-									double attraction = HelperNewton
-											.attraction(mgu, m, parameters);
-									mgu.getAccel()
-											.add(HelperVector.acceleration(
-													mgu.getPoint(),
-													m.getPoint(), -attraction));
 								}
 							}
 						}

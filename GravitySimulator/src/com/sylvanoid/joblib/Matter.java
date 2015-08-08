@@ -28,12 +28,14 @@ public class Matter implements Serializable {
 	private Vector3d pointBefore = new Vector3d(0, 0, 0);
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d angles = new Vector3d(0, 0, 0);
+	private Vector3d speedBefore = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
 	private Vector3d accel = new Vector3d(0, 0, 0);
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private double rayon;
 	private List<Matter> fusionWith = new ArrayList<Matter>();
+	private List<Matter> neighbors = new ArrayList<Matter>();
 
 	@Override
 	public String toString() {
@@ -131,6 +133,14 @@ public class Matter implements Serializable {
 		this.color = color;
 	}
 
+	public Vector3d getSpeedBefore() {
+		return speedBefore;
+	}
+
+	public void setSpeedBefore(Vector3d speedBefore) {
+		this.speedBefore = speedBefore;
+	}
+
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	public Vector3d getSpeed() {
@@ -183,6 +193,14 @@ public class Matter implements Serializable {
 		this.fusionWith = fusionWith;
 	}
 
+	public List<Matter> getNeighbors() {
+		return neighbors;
+	}
+
+	public void setNeighbors(List<Matter> neighbors) {
+		this.neighbors = neighbors;
+	}
+
 	public Vector3d getPlusV() {
 		return new Vector3d(point.x + speed.x * parameters.getTimeFactor(),
 				point.y + speed.y * parameters.getTimeFactor(), point.z
@@ -229,6 +247,7 @@ public class Matter implements Serializable {
 
 	public void move() {
 		pointBefore = new Vector3d(point);
+		speedBefore = new Vector3d(speed);
 		speed.add(accel);
 		point = getPlusV();
 		accel = new Vector3d(0, 0, 0);
@@ -288,7 +307,7 @@ public class Matter implements Serializable {
 			double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass
 					* speed.z + m.getMass() * m.getSpeed().z)
 					/ (mass + m.getMass());
-			
+
 			Vector3d tmpSpeed = new Vector3d(0, 0, 0);
 			tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
 			tmpSpeed.sub(speed);

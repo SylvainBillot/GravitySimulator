@@ -178,21 +178,28 @@ public class Univers {
 			parameters.setLimitComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
-			BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
 			BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
+			//BarnesHutNeighbors barnesHutNeighbors = new BarnesHutNeighbors(this);
+			BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
 			if (parameters.isParallelization()) {
 				if (parameters.isManageImpact()) {
 					ForkJoinPool poolCollision = new ForkJoinPool(Runtime
 							.getRuntime().availableProcessors());
 					poolCollision.invoke(barnesHutCollision);
 				}
-				ForkJoinPool poolGravity = new ForkJoinPool(Runtime.getRuntime()
-						.availableProcessors());
+				/*
+				 * ForkJoinPool poolNeighbors = new
+				 * ForkJoinPool(Runtime.getRuntime() .availableProcessors());
+				 * poolNeighbors.invoke(barnesHutGravity);
+				 */
+				ForkJoinPool poolGravity = new ForkJoinPool(Runtime
+						.getRuntime().availableProcessors());
 				poolGravity.invoke(barnesHutGravity);
 			} else {
 				if (parameters.isManageImpact()) {
 					barnesHutCollision.compute();
 				}
+				// barnesHutNeighbors.compute();
 				barnesHutGravity.compute();
 			}
 
@@ -275,6 +282,7 @@ public class Univers {
 				}
 			}
 		}
+
 		for (Matter m : listMatter) {
 			if (maxMassElement == null
 					|| maxMassElement.getMass() < m.getMass()) {
@@ -282,6 +290,7 @@ public class Univers {
 			}
 			m.move();
 			m.getFusionWith().clear();
+			m.getNeighbors().clear();
 		}
 
 		if (parameters.isExportData()) {

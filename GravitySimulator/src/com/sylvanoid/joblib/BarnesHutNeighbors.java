@@ -7,9 +7,9 @@ import java.util.concurrent.RecursiveTask;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperNewton;
-import com.sylvanoid.common.HelperVector;
+import com.sylvanoid.common.TypeOfObject;
 
-public class BarnesHutGravity extends RecursiveTask<Integer> {
+public class BarnesHutNeighbors extends RecursiveTask<Integer> {
 	/**
 	 * 
 	 */
@@ -17,7 +17,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 	private Univers univers;
 	private Parameters parameters;
 
-	public BarnesHutGravity(Univers univers) {
+	public BarnesHutNeighbors(Univers univers) {
 		this.univers = univers;
 		this.parameters = univers.getParameters();
 	}
@@ -114,14 +114,14 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 			subg.computeMassLimitsCentroidSpeed(false);
 			subh.computeMassLimitsCentroidSpeed(false);
 
-			BarnesHutGravity bha = new BarnesHutGravity(suba);
-			BarnesHutGravity bhb = new BarnesHutGravity(subb);
-			BarnesHutGravity bhc = new BarnesHutGravity(subc);
-			BarnesHutGravity bhd = new BarnesHutGravity(subd);
-			BarnesHutGravity bhe = new BarnesHutGravity(sube);
-			BarnesHutGravity bhf = new BarnesHutGravity(subf);
-			BarnesHutGravity bhg = new BarnesHutGravity(subg);
-			BarnesHutGravity bhh = new BarnesHutGravity(subh);
+			BarnesHutNeighbors bha = new BarnesHutNeighbors(suba);
+			BarnesHutNeighbors bhb = new BarnesHutNeighbors(subb);
+			BarnesHutNeighbors bhc = new BarnesHutNeighbors(subc);
+			BarnesHutNeighbors bhd = new BarnesHutNeighbors(subd);
+			BarnesHutNeighbors bhe = new BarnesHutNeighbors(sube);
+			BarnesHutNeighbors bhf = new BarnesHutNeighbors(subf);
+			BarnesHutNeighbors bhg = new BarnesHutNeighbors(subg);
+			BarnesHutNeighbors bhh = new BarnesHutNeighbors(subh);
 
 			// Parallelization
 			if (parameters.isParallelization()) {
@@ -152,41 +152,32 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 				bhg.compute();
 				bhh.compute();
 			}
-			for (Univers u : subUnivers) {
-				for (Univers uvoisin : subUnivers) {
-					if (u != uvoisin
-							&& uvoisin.getListMatter().size() > 0
-							&& uvoisin.getMass() > parameters
-									.getNegligeableMass()) {
-						for (Matter m : u.getListMatter()) {
-							if ((!parameters.isStaticDarkMatter() || !m
-									.isDark())) {
-								List<Matter> listMatterBis = new ArrayList<>();
-								listMatterBis.addAll(uvoisin
-										.getListMatter());
-								listMatterBis.removeAll(m.getFusionWith());
-								if (uvoisin.getListMatter().size()==listMatterBis.size()) {
-									parameters.setNumOfAccelCompute(parameters
-											.getNumOfAccelCompute() + 1);
-									double attraction = HelperNewton.attraction(m,
-											uvoisin, parameters);
-									m.getAccel().add(
-											HelperVector.acceleration(
-													m.getPoint(),
-													uvoisin.getGPoint(),
-													attraction));
-								} else {
-									for (Matter m1 : listMatterBis) {
-										parameters.setNumOfAccelCompute(parameters
-												.getNumOfAccelCompute() + 1);
-										double attraction = HelperNewton.attraction(m,
-												m1, parameters);
-										m.getAccel().add(
-												HelperVector.acceleration(
-														m.getPoint(),
-														m1.getPoint(),
-														attraction));
-									}
+		}
+		if (univers.getListMatter().size() == 1) {
+			Matter m = univers.getListMatter().get(0);
+			if (m.getTypeOfObject()==TypeOfObject.Gas) {
+				Univers gu = new Univers();
+				if (univers.getFather() != null) {
+					if (univers.getFather().getFather() != null) {
+						if (univers.getFather().getFather().getFather() != null) {
+							gu = univers.getFather().getFather().getFather();
+						} else {
+							gu = univers.getFather().getFather();
+						}
+					} else {
+						gu = univers.getFather();
+					}
+					for (Matter mgu : gu.getListMatter()) {
+						if (m != mgu) {
+							if ((HelperNewton.distance(m, mgu) < (m.getRayon() + mgu
+									.getRayon()))
+									&& (m.getTypeOfObject().equals(mgu
+											.getTypeOfObject()))) {
+								if (!m.getNeighbors().contains(mgu)) {
+									m.getNeighbors().add(mgu);
+								}
+								if (!mgu.getNeighbors().contains(m)) {
+									mgu.getNeighbors().add(m);
 								}
 							}
 						}
