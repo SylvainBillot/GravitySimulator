@@ -314,18 +314,39 @@ public class Matter implements Serializable {
 			accel.add(tmpSpeed);
 		}
 	}
+	
+	public void glue() {
+		Vector3d newSpeed = new Vector3d(speed);
+		double newMass = mass;
+		for (Matter m : fusionWith) {
+			newSpeed = new Vector3d(
+					(newSpeed.x * newMass + m.getSpeed().x
+							* m.getMass())
+							/ (newMass + m.getMass()), (newSpeed.y
+							* newMass + m.getSpeed().y * m.getMass())
+							/ (newMass + m.getMass()), (newSpeed.z
+							* newMass + m.getSpeed().z * m.getMass())
+							/ (newMass + m.getMass()));
+			newMass = newMass + m.getMass();
+		}
+		newSpeed.sub(speed);
+		accel.add(newSpeed);
+	}
 
-	public static void fusionWithRecursiveAdd(Matter m, Matter m1) {
-		if (m != m1) {
-			if (!m.getFusionWith().contains(m1) ) {
-				m.getFusionWith().add(m1);
-				/*
-				for (Matter m2 : m1.getFusionWith()) {
-					fusionWithRecursiveAdd(m, m2);
-				}
-				*/
+	public static List<Matter> fusionWithRecursiveAdd(Matter m, Matter m1,
+			List<Matter> noMore) {
+		List<Matter> f = new ArrayList<Matter>();
+		if (!noMore.contains(m1)) {
+			noMore.add(m1);
+			if (!f.contains(m1) && m!=m1) {
+				f.add(m1);
+			}
+			
+			for (Matter m2 : m1.getFusionWith()) {
+				f.addAll(fusionWithRecursiveAdd(m, m2, noMore));
 			}
 		}
+		return f;
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {

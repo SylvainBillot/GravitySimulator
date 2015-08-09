@@ -194,6 +194,9 @@ public class Univers {
 				 * ForkJoinPool(Runtime.getRuntime() .availableProcessors());
 				 * poolNeighbors.invoke(barnesHutGravity);
 				 */
+				for(Matter m:listMatter){
+					m.setFusionWith(Matter.fusionWithRecursiveAdd(m, m, new ArrayList<Matter>()));
+				}
 				ForkJoinPool poolGravity = new ForkJoinPool(Runtime
 						.getRuntime().availableProcessors());
 				poolGravity.invoke(barnesHutGravity);
@@ -202,6 +205,9 @@ public class Univers {
 					barnesHutCollision.compute();
 				}
 				// barnesHutNeighbors.compute();
+				for(Matter m:listMatter){
+					m.setFusionWith(Matter.fusionWithRecursiveAdd(m, m, new ArrayList<Matter>()));
+				}
 				barnesHutGravity.compute();
 			}
 
@@ -280,6 +286,7 @@ public class Univers {
 						m.fusion(listMatter);
 					} else {
 						m.impact();
+						//m.glue();
 					}
 				}
 			}

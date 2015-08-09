@@ -172,18 +172,19 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 									.getRayon()))
 									&& (m.getTypeOfObject().equals(mgu
 											.getTypeOfObject()))) {
-								
-								Matter.fusionWithRecursiveAdd(m, mgu);
-								Matter.fusionWithRecursiveAdd(mgu, m);
-								/*
-								if(!m.getFusionWith().contains(mgu)){
+/*
+								m.setFusionWith(Matter.fusionWithRecursiveAdd(
+										m, mgu, new ArrayList<Matter>()));
+								mgu.setFusionWith(Matter
+										.fusionWithRecursiveAdd(mgu, m,
+												new ArrayList<Matter>()));
+*/												
+								if (!m.getFusionWith().contains(mgu)) {
 									m.getFusionWith().add(mgu);
 								}
-								if(!mgu.getFusionWith().contains(m)){
+								if (!mgu.getFusionWith().contains(m)) {
 									mgu.getFusionWith().add(m);
 								}
-								*/
-
 							}
 						}
 					}
