@@ -52,7 +52,7 @@ public class BitmapLoader {
             } else if (nBitCount == 8) {
                 image = read8BitBitmap(nColoursUsed, nBitCount, nSizeImage, nWidth, nHeight, input);
             } else {
-                System.out.println("Not a 24-bit or 8-bit Windows Bitmap, aborting...");
+                HelperDebug.info("Not a 24-bit or 8-bit Windows Bitmap, aborting...");
                 image = null;
             }
         } finally {

@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.sylvanoid.common.HelperDebug;
 import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperTools;
 import com.sylvanoid.common.HelperVariable;
@@ -179,7 +180,8 @@ public class Univers {
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
 			BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
-			//BarnesHutNeighbors barnesHutNeighbors = new BarnesHutNeighbors(this);
+			// BarnesHutNeighbors barnesHutNeighbors = new
+			// BarnesHutNeighbors(this);
 			BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
 			if (parameters.isParallelization()) {
 				if (parameters.isManageImpact()) {
@@ -282,14 +284,18 @@ public class Univers {
 				}
 			}
 		}
-
+		HelperDebug.info("---");
 		for (Matter m : listMatter) {
 			if (maxMassElement == null
 					|| maxMassElement.getMass() < m.getMass()) {
 				maxMassElement = m;
 			}
 			m.move();
-//System.out.println(m.getFusionWith().size() + " " + m.getName());			
+			String msg = m.getFusionWith().size() + " " + m.getName() + " - ";
+			for (Matter mf : m.getFusionWith()) {
+				msg +=mf.getName() + " ";
+			}
+			HelperDebug.info(msg);
 			m.getFusionWith().clear();
 			m.getNeighbors().clear();
 		}
