@@ -288,15 +288,21 @@ public class Univers {
 		}
 	}
 
-	private void moveImpact() {
+
+	
+	@SuppressWarnings("unused")
+	private void recusiveImpact() {
 		// recursive impact
-		/*
 		for (Matter m : listMatter) {
 			m.setFusionWith(Matter.fusionWithRecursiveAdd(m, m,
 					new ArrayList<Matter>()));
 		}
-		*/
-
+	}
+	
+	private void moveImpact() {
+		
+		//recusiveImpact();
+		
 		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 		HelperDebug.info("---Debug impact---");
 		for (Matter m : listMatterBis) {
@@ -304,8 +310,8 @@ public class Univers {
 				if (parameters.isFusion()) {
 					m.fusion(listMatter);
 				} else {
-					m.impact();
-					//m.glue();
+					//m.impact();
+					m.glue();
 				}
 			}
 		}

@@ -164,9 +164,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 
 								List<Matter> listMatterBis = new ArrayList<Matter>(
 										uvoisin.getListMatter());
-								listMatterBis.removeAll(m.getFusionWith());
-								if (listMatterBis.size() == uvoisin
-										.getListMatter().size()) {
+								if (!listMatterBis.removeAll(m.getFusionWith())) {
 									parameters.setNumOfAccelCompute(parameters
 											.getNumOfAccelCompute() + 1);
 									double attraction = HelperNewton
