@@ -184,37 +184,36 @@ public class Univers {
 			// BarnesHutNeighbors(this);
 			BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
 			if (parameters.isParallelization()) {
-				if (parameters.isManageImpact()) {
-					ForkJoinPool poolCollision = new ForkJoinPool(Runtime
-							.getRuntime().availableProcessors());
-					poolCollision.invoke(barnesHutCollision);
-				}
 				/*
 				 * ForkJoinPool poolNeighbors = new
 				 * ForkJoinPool(Runtime.getRuntime() .availableProcessors());
 				 * poolNeighbors.invoke(barnesHutGravity);
 				 */
-				for(Matter m:listMatter){
-					m.setFusionWith(Matter.fusionWithRecursiveAdd(m, m, new ArrayList<Matter>()));
-				}
 				ForkJoinPool poolGravity = new ForkJoinPool(Runtime
 						.getRuntime().availableProcessors());
 				poolGravity.invoke(barnesHutGravity);
+				move();
+				if (parameters.isManageImpact()) {
+					ForkJoinPool poolCollision = new ForkJoinPool(Runtime
+							.getRuntime().availableProcessors());
+					poolCollision.invoke(barnesHutCollision);
+					moveImpact();
+				}
+
 			} else {
+				// barnesHutNeighbors.compute();
+				barnesHutGravity.compute();
+				move();
 				if (parameters.isManageImpact()) {
 					barnesHutCollision.compute();
+					moveImpact();
 				}
-				// barnesHutNeighbors.compute();
-				for(Matter m:listMatter){
-					m.setFusionWith(Matter.fusionWithRecursiveAdd(m, m, new ArrayList<Matter>()));
-				}
-				barnesHutGravity.compute();
 			}
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			long startTimeMove = System.currentTimeMillis();
-			move(bufferedWriter);
+			moveEnd(bufferedWriter);
 			parameters.setMoveComputeTime(System.currentTimeMillis()
 					- startTimeMove);
 			parameters.setCycleComputeTime(System.currentTimeMillis()
@@ -277,36 +276,42 @@ public class Univers {
 		return valReturn;
 	}
 
-	private void move(BufferedWriter bufferedWriter) {
-		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
-		if (parameters.isManageImpact()) {
-			for (Matter m : listMatterBis) {
-				if (m.getFusionWith().size() > 0) {
-					if (parameters.isFusion()) {
-						m.fusion(listMatter);
-					} else {
-						m.impact();
-						//m.glue();
-					}
-				}
-			}
-		}
-		HelperDebug.info("---");
+	private void move() {
 		for (Matter m : listMatter) {
 			if (maxMassElement == null
 					|| maxMassElement.getMass() < m.getMass()) {
 				maxMassElement = m;
 			}
 			m.move();
-			String msg = m.getFusionWith().size() + " " + m.getName() + " - ";
-			for (Matter mf : m.getFusionWith()) {
-				msg +=mf.getName() + " ";
-			}
-			HelperDebug.info(msg);
 			m.getFusionWith().clear();
 			m.getNeighbors().clear();
 		}
+	}
 
+	private void moveImpact() {
+		// recursive impact
+		/*
+		for (Matter m : listMatter) {
+			m.setFusionWith(Matter.fusionWithRecursiveAdd(m, m,
+					new ArrayList<Matter>()));
+		}
+		*/
+
+		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
+		HelperDebug.info("---Debug impact---");
+		for (Matter m : listMatterBis) {
+			if (m.getFusionWith().size() > 0) {
+				if (parameters.isFusion()) {
+					m.fusion(listMatter);
+				} else {
+					m.impact();
+					//m.glue();
+				}
+			}
+		}
+	}
+
+	private void moveEnd(BufferedWriter bufferedWriter) {
 		if (parameters.isExportData()) {
 			try {
 				bufferedWriter.write(HelperTools

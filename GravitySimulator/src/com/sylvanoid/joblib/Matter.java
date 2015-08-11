@@ -10,6 +10,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import com.sylvanoid.common.HelperDebug;
+import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.TypeOfObject;
@@ -296,6 +298,11 @@ public class Matter implements Serializable {
 	}
 
 	public void impact() {
+		String msg = fusionWith.size() + " " + name + " - ";
+		for (Matter mf : fusionWith) {
+			msg += mf.getName() + " ";
+		}
+		HelperDebug.info(msg);
 		double Cr = parameters.getTypeOfImpact();
 		for (Matter m : fusionWith) {
 			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
@@ -307,27 +314,32 @@ public class Matter implements Serializable {
 			double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass
 					* speed.z + m.getMass() * m.getSpeed().z)
 					/ (mass + m.getMass());
-
 			Vector3d tmpSpeed = new Vector3d(0, 0, 0);
 			tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
 			tmpSpeed.sub(speed);
 			accel.add(tmpSpeed);
+			/*
+			accel.sub(HelperVector.acceleration(point, m.getPoint(),
+					HelperNewton.attraction(this, m, parameters)));
+					*/
 		}
+
 	}
-	
+
 	public void glue() {
 		Vector3d newSpeed = new Vector3d(speed);
 		double newMass = mass;
 		for (Matter m : fusionWith) {
-			newSpeed = new Vector3d(
-					(newSpeed.x * newMass + m.getSpeed().x
-							* m.getMass())
-							/ (newMass + m.getMass()), (newSpeed.y
-							* newMass + m.getSpeed().y * m.getMass())
-							/ (newMass + m.getMass()), (newSpeed.z
-							* newMass + m.getSpeed().z * m.getMass())
+			newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
+					* m.getMass())
+					/ (newMass + m.getMass()),
+					(newSpeed.y * newMass + m.getSpeed().y * m.getMass())
+							/ (newMass + m.getMass()),
+					(newSpeed.z * newMass + m.getSpeed().z * m.getMass())
 							/ (newMass + m.getMass()));
 			newMass = newMass + m.getMass();
+			accel.sub(HelperVector.acceleration(point, m.getPoint(),
+					HelperNewton.attraction(this, m, parameters)));
 		}
 		newSpeed.sub(speed);
 		accel.add(newSpeed);
@@ -338,10 +350,10 @@ public class Matter implements Serializable {
 		List<Matter> f = new ArrayList<Matter>();
 		if (!noMore.contains(m1)) {
 			noMore.add(m1);
-			if (!f.contains(m1) && m!=m1) {
+			if (!f.contains(m1) && m != m1) {
 				f.add(m1);
 			}
-			
+
 			for (Matter m2 : m1.getFusionWith()) {
 				f.addAll(fusionWithRecursiveAdd(m, m2, noMore));
 			}
