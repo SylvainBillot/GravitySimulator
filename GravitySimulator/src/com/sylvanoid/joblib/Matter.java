@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperDebug;
+import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.TypeOfObject;
@@ -317,6 +318,13 @@ public class Matter implements Serializable {
 			tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
 			tmpSpeed.sub(speed);
 			accel.add(tmpSpeed);
+			
+			double delta = (rayon+m.getRayon())/HelperNewton.distance(this, m);
+			Vector3d vectorDelta = new Vector3d(pointBefore);
+			vectorDelta.sub(m.getPointBefore());
+			vectorDelta.scale(delta);
+			point.add(vectorDelta);
+
 		}
 
 	}
@@ -333,6 +341,13 @@ public class Matter implements Serializable {
 					(newSpeed.z * newMass + m.getSpeed().z * m.getMass())
 							/ (newMass + m.getMass()));
 			newMass = newMass + m.getMass();
+			
+			double delta = (rayon+m.getRayon())/HelperNewton.distance(this, m);
+			Vector3d vectorDelta = new Vector3d(pointBefore);
+			vectorDelta.sub(m.getPointBefore());
+			vectorDelta.scale(delta);
+			point.add(vectorDelta);
+			
 		}
 		newSpeed.sub(speed);
 		accel.add(newSpeed);
