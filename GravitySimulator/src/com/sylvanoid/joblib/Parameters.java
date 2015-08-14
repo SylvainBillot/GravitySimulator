@@ -64,6 +64,8 @@ public class Parameters implements Serializable {
 	private boolean staticDarkMatter = false;
 
 	private double matterDistribution = 5;
+	private double gasDistribution = 1;
+	
 	private double darkMatterDistribution = 5;
 	private double darkMatterNubulaFactor = 2;
 
@@ -436,6 +438,14 @@ public class Parameters implements Serializable {
 
 	public void setMatterDistribution(double matterDistribution) {
 		this.matterDistribution = matterDistribution;
+	}
+
+	public double getGasDistribution() {
+		return gasDistribution;
+	}
+
+	public void setGasDistribution(double gasDistribution) {
+		this.gasDistribution = gasDistribution;
 	}
 
 	public double getDarkMatterDistribution() {

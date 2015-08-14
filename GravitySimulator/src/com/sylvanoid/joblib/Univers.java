@@ -301,39 +301,32 @@ public class Univers {
 
 		// recusiveImpact();
 
+		for (Matter m : listMatter) {
+			if (m.getFusionWith().size() != 0) {
+				m.adjustPosition();
+				m.adjustSpeed();
+			}
+		}
+		for (Matter m : listMatter) {
+			if (m.getFusionWith().size() != 0) {
+				m.setPoint(m.getPointAdjusted());
+			}
+		}
 		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 		HelperDebug.info("---Debug impact---");
 		for (Matter m : listMatterBis) {
-			if (m.getFusionWith().size() > 0) {
+			if (m.getFusionWith().size() != 0) {
 				if (parameters.isFusion()) {
 					m.fusion(listMatter);
 				} else {
-					//m.impact();
-					m.glue();
+					m.impact();
+					//m.glue();
 				}
-			}
-		}
-		for (Matter m : listMatterBis) {
-			if (m.getFusionWith().size() != 0) {
-				m.setPoint(m.getPointAdjusted());
 			}
 		}
 	}
 
 	private void moveEnd(BufferedWriter bufferedWriter) {
-		// speed adjust
-		/*
-		for (Matter m : listMatter) {
-			double tmpx = (m.getPoint().x - m.getPointBefore().x)
-					/ parameters.getTimeFactor();
-			double tmpy = (m.getPoint().y - m.getPointBefore().y)
-					/ parameters.getTimeFactor();
-			double tmpz = (m.getPoint().z - m.getPointBefore().z)
-					/ parameters.getTimeFactor();
-			m.setSpeed(new Vector3d(tmpx,tmpy,tmpz));
-		}
-		*/
-
 		if (parameters.isExportData()) {
 			try {
 				bufferedWriter.write(HelperTools
@@ -348,7 +341,8 @@ public class Univers {
 
 	private List<Matter> createUvivers(Vector3d origine, Vector3d initialSpeed,
 			Vector3d axisOfRing, double radiusMin, double radiusMax,
-			Vector3d ratio, double homogeneousDistributionPow) {
+			Vector3d ratio, double homogeneousDistributionPow,
+			double gasHomogeneousDistributionPow) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
 		miniListMatter.addAll(createUniversMain(origine, initialSpeed,
 				axisOfRing, radiusMin, radiusMax, ratio,
@@ -362,7 +356,7 @@ public class Univers {
 				parameters.getNumOfLowMassParticule(), 0,
 				parameters.getLowMassParticuleMass(),
 				parameters.getLowMassDensity(), new Vector3d(0.06, 0.05, 0.05),
-				homogeneousDistributionPow, TypeOfObject.Gas));
+				gasHomogeneousDistributionPow, TypeOfObject.Gas));
 
 		return miniListMatter;
 	}
@@ -463,14 +457,15 @@ public class Univers {
 	private void createRandomStaticUvivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
-				new Vector3d(1, 1, 1), 1);
+				new Vector3d(1, 1, 1), 1, 1);
 	}
 
 	private void createRandomRotateUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
-				parameters.getMatterDistribution());
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
 
 		createUniversMain(
 				new Vector3d(0, 0, 0),
@@ -531,7 +526,8 @@ public class Univers {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
-				parameters.getMatterDistribution());
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
 
 		createUniversMain(
 				new Vector3d(0, 0, 0),
@@ -611,11 +607,11 @@ public class Univers {
 
 		List<Matter> subu01 = createUvivers(m1.getPoint(), m1.getSpeed(),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 2);
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 2, 2);
 
 		List<Matter> subu02 = createUvivers(m2.getPoint(), m2.getSpeed(),
 				new Vector3d(1, 0, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1), 2);
+				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1), 2, 2);
 
 		for (Matter m : subu01) {
 			if (m != m1) {
@@ -722,7 +718,7 @@ public class Univers {
 	private void createPlanetaryRandom() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 1, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1), 1);
+				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1), 1, 1);
 		Matter m1 = new Matter(parameters, new Vector3d(
 				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
@@ -741,10 +737,11 @@ public class Univers {
 	private void createPlanetariesGenesis() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() / 2 * 0.9,
-				parameters.getNebulaRadius() / 2, new Vector3d(1, 1, 0.05), 1);
+				parameters.getNebulaRadius() / 2, new Vector3d(1, 1, 0.05), 1,
+				1);
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.9,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05), 1);
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05), 1, 1);
 		Matter m1 = new Matter(parameters, new Vector3d(
 				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),

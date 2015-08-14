@@ -312,9 +312,9 @@ public class Matter implements Serializable {
 			msg += mf.getName() + " ";
 		}
 		HelperDebug.info(msg);
-		pointAdjusted = new Vector3d(point);
 		double Cr = parameters.getTypeOfImpact();
 		for (Matter m : fusionWith) {
+
 			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
 					* speed.x + m.getMass() * m.getSpeed().x)
 					/ (mass + m.getMass());
@@ -328,19 +328,6 @@ public class Matter implements Serializable {
 			tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
 			tmpSpeed.sub(speed);
 			accel.add(tmpSpeed);
-
-			/*
-			double attraction = HelperNewton.attraction(this, m, parameters);
-			accel.sub(HelperVector.acceleration(point, m.getPoint(), attraction));
-			*/
-
-			Vector3d vectorDelta1=HelperNewton.mediaPoint(this,m);
-			vectorDelta1.sub(point);
-			Vector3d vectorDelta2 = new Vector3d(vectorDelta1); 
-			vectorDelta2.scale(rayon/vectorDelta1.length());
-			vectorDelta2.sub(vectorDelta1);
-			pointAdjusted.sub(vectorDelta2);
-
 		}
 
 	}
@@ -348,7 +335,6 @@ public class Matter implements Serializable {
 	public void glue() {
 		Vector3d newSpeed = new Vector3d(speed);
 		double newMass = mass;
-		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
 					* m.getMass())
@@ -358,36 +344,28 @@ public class Matter implements Serializable {
 					(newSpeed.z * newMass + m.getSpeed().z * m.getMass())
 							/ (newMass + m.getMass()));
 			newMass = newMass + m.getMass();
-/*
-			double attraction = HelperNewton.attraction(this, m, parameters);
-			accel.sub(HelperVector.acceleration(point, m.getPoint(), attraction));
-*/
-			Vector3d vectorDelta1=HelperNewton.mediaPoint(this,m);
-			vectorDelta1.sub(point);
-			Vector3d vectorDelta2 = new Vector3d(vectorDelta1); 
-			vectorDelta2.scale(rayon/vectorDelta1.length());
-			vectorDelta2.sub(vectorDelta1);
-			pointAdjusted.sub(vectorDelta2);
-
 		}
 		newSpeed.sub(speed);
 		accel.add(newSpeed);
 	}
 
-	public static List<Matter> fusionWithRecursiveAdd(Matter m, Matter m1,
-			List<Matter> noMore) {
-		List<Matter> f = new ArrayList<Matter>();
-		if (!noMore.contains(m1)) {
-			noMore.add(m1);
-			if (!f.contains(m1) && m != m1) {
-				f.add(m1);
-			}
-
-			for (Matter m2 : m1.getFusionWith()) {
-				f.addAll(fusionWithRecursiveAdd(m, m2, noMore));
-			}
+	public void adjustPosition() {
+		pointAdjusted = new Vector3d(point);
+		for (Matter m : fusionWith) {
+			Vector3d vectorDelta1 = HelperNewton.mediaPoint(this, m);
+			vectorDelta1.sub(point);
+			Vector3d vectorDelta2 = new Vector3d(vectorDelta1);
+			vectorDelta2.scale(rayon / vectorDelta1.length());
+			vectorDelta2.sub(vectorDelta1);
+			pointAdjusted.sub(vectorDelta2);
 		}
-		return f;
+	}
+
+	public void adjustSpeed() {
+		double tmpx = (point.x - pointBefore.x) / parameters.getTimeFactor();
+		double tmpy = (point.y - pointBefore.y) / parameters.getTimeFactor();
+		double tmpz = (point.z - pointBefore.z) / parameters.getTimeFactor();
+		speed = new Vector3d(tmpx, tmpy, tmpz);
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
@@ -510,5 +488,21 @@ public class Matter implements Serializable {
 
 			speed.add(accel);
 		}
+	}
+
+	public static List<Matter> fusionWithRecursiveAdd(Matter m, Matter m1,
+			List<Matter> noMore) {
+		List<Matter> f = new ArrayList<Matter>();
+		if (!noMore.contains(m1)) {
+			noMore.add(m1);
+			if (!f.contains(m1) && m != m1) {
+				f.add(m1);
+			}
+
+			for (Matter m2 : m1.getFusionWith()) {
+				f.addAll(fusionWithRecursiveAdd(m, m2, noMore));
+			}
+		}
+		return f;
 	}
 }
