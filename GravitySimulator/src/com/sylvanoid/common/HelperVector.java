@@ -51,7 +51,7 @@ public abstract class HelperVector {
 		Vector3d tmpVect = rThetaPhi(obj1, obj2);
 		return polToCoord(attraction, tmpVect.y, tmpVect.z);
 	}
-
+	
 	public static DoubleBuffer make3DTransformMatrix(Vector3d angles) {
 		double[] matrix = new double[16];
 		double x = angles.x;

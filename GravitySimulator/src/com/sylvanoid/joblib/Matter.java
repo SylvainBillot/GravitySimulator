@@ -29,6 +29,7 @@ public class Matter implements Serializable {
 	private double mass;
 	private Vector3d pointBefore = new Vector3d(0, 0, 0);
 	private Vector3d point = new Vector3d(0, 0, 0);
+	private Vector3d pointAdjusted = new Vector3d(0, 0, 0);
 	private Vector3d angles = new Vector3d(0, 0, 0);
 	private Vector3d speedBefore = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
@@ -109,6 +110,14 @@ public class Matter implements Serializable {
 	@XmlElement
 	public Vector3d getPointBefore() {
 		return pointBefore;
+	}
+
+	public Vector3d getPointAdjusted() {
+		return pointAdjusted;
+	}
+
+	public void setPointAdjusted(Vector3d pointAdjusted) {
+		this.pointAdjusted = pointAdjusted;
 	}
 
 	public void setPointBefore(Vector3d pointBefore) {
@@ -303,6 +312,7 @@ public class Matter implements Serializable {
 			msg += mf.getName() + " ";
 		}
 		HelperDebug.info(msg);
+		pointAdjusted = new Vector3d(point);
 		double Cr = parameters.getTypeOfImpact();
 		for (Matter m : fusionWith) {
 			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
@@ -318,12 +328,18 @@ public class Matter implements Serializable {
 			tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
 			tmpSpeed.sub(speed);
 			accel.add(tmpSpeed);
-			
-			double delta = (rayon+m.getRayon())/HelperNewton.distance(this, m);
-			Vector3d vectorDelta = new Vector3d(pointBefore);
-			vectorDelta.sub(m.getPointBefore());
-			vectorDelta.scale(delta);
-			point.add(vectorDelta);
+
+			/*
+			double attraction = HelperNewton.attraction(this, m, parameters);
+			accel.sub(HelperVector.acceleration(point, m.getPoint(), attraction));
+			*/
+
+			Vector3d vectorDelta1=HelperNewton.mediaPoint(this,m);
+			vectorDelta1.sub(point);
+			Vector3d vectorDelta2 = new Vector3d(vectorDelta1); 
+			vectorDelta2.scale(rayon/vectorDelta1.length());
+			vectorDelta2.sub(vectorDelta1);
+			pointAdjusted.sub(vectorDelta2);
 
 		}
 
@@ -332,6 +348,7 @@ public class Matter implements Serializable {
 	public void glue() {
 		Vector3d newSpeed = new Vector3d(speed);
 		double newMass = mass;
+		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
 					* m.getMass())
@@ -341,13 +358,17 @@ public class Matter implements Serializable {
 					(newSpeed.z * newMass + m.getSpeed().z * m.getMass())
 							/ (newMass + m.getMass()));
 			newMass = newMass + m.getMass();
-			
-			double delta = (rayon+m.getRayon())/HelperNewton.distance(this, m);
-			Vector3d vectorDelta = new Vector3d(pointBefore);
-			vectorDelta.sub(m.getPointBefore());
-			vectorDelta.scale(delta);
-			point.add(vectorDelta);
-			
+/*
+			double attraction = HelperNewton.attraction(this, m, parameters);
+			accel.sub(HelperVector.acceleration(point, m.getPoint(), attraction));
+*/
+			Vector3d vectorDelta1=HelperNewton.mediaPoint(this,m);
+			vectorDelta1.sub(point);
+			Vector3d vectorDelta2 = new Vector3d(vectorDelta1); 
+			vectorDelta2.scale(rayon/vectorDelta1.length());
+			vectorDelta2.sub(vectorDelta1);
+			pointAdjusted.sub(vectorDelta2);
+
 		}
 		newSpeed.sub(speed);
 		accel.add(newSpeed);

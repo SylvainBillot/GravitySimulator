@@ -161,10 +161,11 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 						for (Matter m : u.getListMatter()) {
 							if ((!parameters.isStaticDarkMatter() || !m
 									.isDark())) {
-
+								/*
 								List<Matter> listMatterBis = new ArrayList<Matter>(
 										uvoisin.getListMatter());
-								if (!listMatterBis.removeAll(m.getFusionWith())) {
+								if (true || !listMatterBis.removeAll(m.getFusionWith())) {
+								*/
 									parameters.setNumOfAccelCompute(parameters
 											.getNumOfAccelCompute() + 1);
 									double attraction = HelperNewton
@@ -174,6 +175,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 													m.getPoint(),
 													uvoisin.getGPoint(),
 													attraction));
+								/*	
 								} else {
 									for(Matter m1:listMatterBis){
 										parameters.setNumOfAccelCompute(parameters
@@ -188,6 +190,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 										
 									}
 								}
+								*/
 							}
 						}
 					}

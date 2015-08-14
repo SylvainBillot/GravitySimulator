@@ -288,8 +288,6 @@ public class Univers {
 		}
 	}
 
-
-	
 	@SuppressWarnings("unused")
 	private void recusiveImpact() {
 		// recursive impact
@@ -298,11 +296,11 @@ public class Univers {
 					new ArrayList<Matter>()));
 		}
 	}
-	
+
 	private void moveImpact() {
-		
-		//recusiveImpact();
-		
+
+		// recusiveImpact();
+
 		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 		HelperDebug.info("---Debug impact---");
 		for (Matter m : listMatterBis) {
@@ -315,9 +313,27 @@ public class Univers {
 				}
 			}
 		}
+		for (Matter m : listMatterBis) {
+			if (m.getFusionWith().size() != 0) {
+				m.setPoint(m.getPointAdjusted());
+			}
+		}
 	}
 
 	private void moveEnd(BufferedWriter bufferedWriter) {
+		// speed adjust
+		/*
+		for (Matter m : listMatter) {
+			double tmpx = (m.getPoint().x - m.getPointBefore().x)
+					/ parameters.getTimeFactor();
+			double tmpy = (m.getPoint().y - m.getPointBefore().y)
+					/ parameters.getTimeFactor();
+			double tmpz = (m.getPoint().z - m.getPointBefore().z)
+					/ parameters.getTimeFactor();
+			m.setSpeed(new Vector3d(tmpx,tmpy,tmpz));
+		}
+		*/
+
 		if (parameters.isExportData()) {
 			try {
 				bufferedWriter.write(HelperTools

@@ -40,6 +40,17 @@ public class HelperNewton {
 				m.getMass(), parameters);
 	}
 
+	public static Vector3d mediaPoint(Matter m, Matter m1) {
+		double mpx = (m.getPoint().x * m1.getRayon() + m1.getPoint().x * m.getRayon())
+				/ (m.getRayon() + m1.getRayon());
+		double mpy = (m.getPoint().y * m1.getRayon() + m1.getPoint().y * m.getRayon())
+				/ (m.getRayon() + m1.getRayon());
+		double mpz = (m.getPoint().z * m1.getRayon() + m1.getPoint().z * m.getRayon())
+				/ (m.getRayon() + m1.getRayon());
+
+		return new Vector3d(mpx,mpy,mpz);
+	}
+
 	private static double distance(Point3d p1, Point3d p2) {
 		return p1.distance(p2);
 	}
