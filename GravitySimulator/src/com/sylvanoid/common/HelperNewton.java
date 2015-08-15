@@ -34,12 +34,17 @@ public class HelperNewton {
 		return attraction(new Point3d(m1.getPoint()),
 				new Point3d(m2.getPoint()), m2.getMass(), parameters);
 	}
-
+	
 	public static double attraction(Vector3d p, Matter m, Parameters parameters) {
 		return attraction(new Point3d(p), new Point3d(m.getPoint()),
 				m.getMass(), parameters);
 	}
 
+	public static double attractionBefore(Matter m1, Matter m2, Parameters parameters) {
+		return attraction(new Point3d(m1.getPointBefore()),
+				new Point3d(m2.getPointBefore()), m2.getMass(), parameters);
+	}	
+	
 	public static Vector3d medianPoint(Matter m, Matter m1) {
 		double mpx = (m.getPoint().x * m1.getRayon() + m1.getPoint().x * m.getRayon())
 				/ (m.getRayon() + m1.getRayon());

@@ -371,10 +371,10 @@ public class Matter implements Serializable {
 	public void disableAttraction(){
 		for (Matter m : fusionWith) {
 			double attraction = HelperNewton.attraction(this, m, parameters);
-			speed.sub(HelperVector.acceleration(pointBefore, m.getPointBefore(), attraction));
+			speed.sub(HelperVector.acceleration(point, m.getPoint(), attraction));
 		}
 	}
-	
+
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}

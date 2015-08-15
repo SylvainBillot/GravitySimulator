@@ -193,6 +193,9 @@ public class Univers {
 						.getRuntime().availableProcessors());
 				poolGravity.invoke(barnesHutGravity);
 				move();
+				long startTimeMove = System.currentTimeMillis();
+				parameters.setMoveComputeTime(System.currentTimeMillis()
+						- startTimeMove);
 				if (parameters.isManageImpact()) {
 					ForkJoinPool poolCollision = new ForkJoinPool(Runtime
 							.getRuntime().availableProcessors());
@@ -203,7 +206,10 @@ public class Univers {
 			} else {
 				// barnesHutNeighbors.compute();
 				barnesHutGravity.compute();
+				long startTimeMove = System.currentTimeMillis();
 				move();
+				parameters.setMoveComputeTime(System.currentTimeMillis()
+						- startTimeMove);
 				if (parameters.isManageImpact()) {
 					barnesHutCollision.compute();
 					moveImpact();
@@ -212,10 +218,9 @@ public class Univers {
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
-			long startTimeMove = System.currentTimeMillis();
+			
 			moveEnd(bufferedWriter);
-			parameters.setMoveComputeTime(System.currentTimeMillis()
-					- startTimeMove);
+			
 			parameters.setCycleComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
 		} else {
@@ -326,7 +331,7 @@ public class Univers {
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					// m.impact();
+					//m.impact();
 					// m.glue();
 				}
 			}
