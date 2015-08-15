@@ -368,10 +368,17 @@ public class Matter implements Serializable {
 		speed = new Vector3d(tmpx, tmpy, tmpz);
 	}
 
+	public void disableAttraction(){
+		for (Matter m : fusionWith) {
+			double attraction = HelperNewton.attraction(this, m, parameters);
+			speed.sub(HelperVector.acceleration(pointBefore, m.getPointBefore(), attraction));
+		}
+	}
+	
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
-
+	
 	public void orbitalCircularSpeed(Univers u, double distance,
 			double innerMass, Vector3d axis) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {

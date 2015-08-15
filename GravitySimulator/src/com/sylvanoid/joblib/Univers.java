@@ -299,7 +299,6 @@ public class Univers {
 
 	private void moveImpact() {
 
-		// recusiveImpact();
 		if (parameters.isFusion()) {
 			List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 			for (Matter m : listMatterBis) {
@@ -309,6 +308,12 @@ public class Univers {
 			}
 		} else {
 			HelperDebug.info("---Debug impact---");
+			// recusiveImpact();
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.disableAttraction();
+				}
+			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					m.adjustPosition();
@@ -321,13 +326,17 @@ public class Univers {
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.adjustSpeed();
+					// m.impact();
+					// m.glue();
 				}
 			}
+
 			for (Matter m : listMatter) {
-				// m.impact();
-				// m.glue();
+				if (m.getFusionWith().size() != 0) {
+					//m.adjustSpeed();
+				}
 			}
+
 		}
 	}
 
