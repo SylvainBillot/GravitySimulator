@@ -40,7 +40,7 @@ public class HelperNewton {
 				m.getMass(), parameters);
 	}
 
-	public static Vector3d mediaPoint(Matter m, Matter m1) {
+	public static Vector3d medianPoint(Matter m, Matter m1) {
 		double mpx = (m.getPoint().x * m1.getRayon() + m1.getPoint().x * m.getRayon())
 				/ (m.getRayon() + m1.getRayon());
 		double mpy = (m.getPoint().y * m1.getRayon() + m1.getPoint().y * m.getRayon())

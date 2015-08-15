@@ -352,7 +352,7 @@ public class Matter implements Serializable {
 	public void adjustPosition() {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
-			Vector3d vectorDelta1 = HelperNewton.mediaPoint(this, m);
+			Vector3d vectorDelta1 = HelperNewton.medianPoint(this, m);
 			vectorDelta1.sub(point);
 			Vector3d vectorDelta2 = new Vector3d(vectorDelta1);
 			vectorDelta2.scale(rayon / vectorDelta1.length());

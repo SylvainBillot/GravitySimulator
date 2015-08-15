@@ -300,28 +300,33 @@ public class Univers {
 	private void moveImpact() {
 
 		// recusiveImpact();
-
-		for (Matter m : listMatter) {
-			if (m.getFusionWith().size() != 0) {
-				m.adjustPosition();
-				m.adjustSpeed();
-			}
-		}
-		for (Matter m : listMatter) {
-			if (m.getFusionWith().size() != 0) {
-				m.setPoint(m.getPointAdjusted());
-			}
-		}
-		List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
-		HelperDebug.info("---Debug impact---");
-		for (Matter m : listMatterBis) {
-			if (m.getFusionWith().size() != 0) {
-				if (parameters.isFusion()) {
+		if (parameters.isFusion()) {
+			List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
+			for (Matter m : listMatterBis) {
+				if (m.getFusionWith().size() != 0) {
 					m.fusion(listMatter);
-				} else {
-					m.impact();
-					//m.glue();
 				}
+			}
+		} else {
+			HelperDebug.info("---Debug impact---");
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.adjustPosition();
+				}
+			}
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.setPoint(m.getPointAdjusted());
+				}
+			}
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.adjustSpeed();
+				}
+			}
+			for (Matter m : listMatter) {
+				// m.impact();
+				// m.glue();
 			}
 		}
 	}

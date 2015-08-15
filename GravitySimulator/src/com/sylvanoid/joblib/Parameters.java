@@ -64,10 +64,10 @@ public class Parameters implements Serializable {
 	private boolean staticDarkMatter = false;
 
 	private double matterDistribution = 5;
-	private double gasDistribution = 1;
+	private double gasDistribution = 2;
 	
 	private double darkMatterDistribution = 5;
-	private double darkMatterNubulaFactor = 2;
+	private double darkMatterNubulaFactor = 1;
 
 	public Parameters() {
 
