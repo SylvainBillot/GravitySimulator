@@ -218,9 +218,9 @@ public class Univers {
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
-			
+
 			moveEnd(bufferedWriter);
-			
+
 			parameters.setCycleComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
 		} else {
@@ -331,14 +331,14 @@ public class Univers {
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					//m.impact();
-					// m.glue();
+					// m.impact();
+					m.glue();
 				}
 			}
 
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					//m.adjustSpeed();
+					m.adjustSpeed();
 				}
 			}
 

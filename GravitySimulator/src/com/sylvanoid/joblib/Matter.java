@@ -259,9 +259,8 @@ public class Matter implements Serializable {
 	public void move() {
 		pointBefore = new Vector3d(point);
 		speedBefore = new Vector3d(speed);
-		speed.add(accel);
+		adjustSpeed();
 		point = getPlusV();
-		accel = new Vector3d(0, 0, 0);
 	}
 
 	public void fusion(List<Matter> listMatter) {
@@ -362,10 +361,8 @@ public class Matter implements Serializable {
 	}
 
 	public void adjustSpeed() {
-		double tmpx = (point.x - pointBefore.x) / parameters.getTimeFactor();
-		double tmpy = (point.y - pointBefore.y) / parameters.getTimeFactor();
-		double tmpz = (point.z - pointBefore.z) / parameters.getTimeFactor();
-		speed = new Vector3d(tmpx, tmpy, tmpz);
+		speed.add(accel);
+		accel = new Vector3d(0,0,0);
 	}
 
 	public void disableAttraction(){
