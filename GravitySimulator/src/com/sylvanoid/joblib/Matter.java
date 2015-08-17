@@ -336,8 +336,6 @@ public class Matter implements Serializable {
 			vectorDelta2.sub(vectorDelta1);
 			pointAdjusted.sub(vectorDelta2);
 		}
-		double ratio = HelperNewton.distance(pointBefore, pointAdjusted) / HelperNewton.distance(pointBefore, point);
-		
 	}
 
 	public void adjustSpeed() {
