@@ -316,32 +316,34 @@ public class Univers {
 			// recusiveImpact();
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.disableAttraction();
+					//m.disableAttraction();
 				}
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.adjustPosition();
+					//m.adjustPosition();
 				}
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.setPoint(m.getPointAdjusted());
+					//m.setPoint(m.getPointAdjusted());
 				}
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					// m.impact();
-					m.glue();
+					//m.adjustSpeed();
 				}
 			}
-
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.adjustSpeed();
+					m.impact();
 				}
 			}
-
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.move();
+				}
+			}
 		}
 	}
 

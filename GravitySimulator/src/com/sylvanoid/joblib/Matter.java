@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.sylvanoid.common.HelperDebug;
 import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
@@ -259,7 +258,8 @@ public class Matter implements Serializable {
 	public void move() {
 		pointBefore = new Vector3d(point);
 		speedBefore = new Vector3d(speed);
-		adjustSpeed();
+		speed.add(accel);
+		accel = new Vector3d(0, 0, 0);
 		point = getPlusV();
 	}
 
@@ -306,43 +306,21 @@ public class Matter implements Serializable {
 	}
 
 	public void impact() {
-		String msg = fusionWith.size() + " " + name + " - ";
-		for (Matter mf : fusionWith) {
-			msg += mf.getName() + " ";
-		}
-		HelperDebug.info(msg);
 		double Cr = parameters.getTypeOfImpact();
-		for (Matter m : fusionWith) {
-
-			double v1x = (Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
-					* speed.x + m.getMass() * m.getSpeed().x)
-					/ (mass + m.getMass());
-			double v1y = (Cr * m.getMass() * (m.getSpeed().y - speed.y) + mass
-					* speed.y + m.getMass() * m.getSpeed().y)
-					/ (mass + m.getMass());
-			double v1z = (Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass
-					* speed.z + m.getMass() * m.getSpeed().z)
-					/ (mass + m.getMass());
-			Vector3d tmpSpeed = new Vector3d(0, 0, 0);
-			tmpSpeed.add(new Vector3d(v1x, v1y, v1z));
-			tmpSpeed.sub(speed);
-			accel.add(tmpSpeed);
-		}
-
-	}
-
-	public void glue() {
 		Vector3d newSpeed = new Vector3d(speed);
 		double newMass = mass;
 		for (Matter m : fusionWith) {
-			newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
-					* m.getMass())
-					/ (newMass + m.getMass()),
-					(newSpeed.y * newMass + m.getSpeed().y * m.getMass())
-							/ (newMass + m.getMass()),
-					(newSpeed.z * newMass + m.getSpeed().z * m.getMass())
+			newSpeed = new Vector3d(
+					(Cr * m.getMass() * (m.getSpeed().x - newSpeed.x) + newMass
+							* newSpeed.x + m.getMass() * m.getSpeed().x)
+							/ (newMass + m.getMass()), (Cr * m.getMass()
+							* (m.getSpeed().y - newSpeed.y) + newMass
+							* newSpeed.y + m.getMass() * m.getSpeed().y)
+							/ (newMass + m.getMass()), (Cr * m.getMass()
+							* (m.getSpeed().z - newSpeed.z) + newMass
+							* newSpeed.z + m.getMass() * m.getSpeed().z)
 							/ (newMass + m.getMass()));
-			newMass = newMass + m.getMass();
+			newMass += m.getMass();
 		}
 		newSpeed.sub(speed);
 		accel.add(newSpeed);
@@ -358,24 +336,30 @@ public class Matter implements Serializable {
 			vectorDelta2.sub(vectorDelta1);
 			pointAdjusted.sub(vectorDelta2);
 		}
+		double ratio = HelperNewton.distance(pointBefore, pointAdjusted) / HelperNewton.distance(pointBefore, point);
+		
 	}
 
 	public void adjustSpeed() {
-		speed.add(accel);
-		accel = new Vector3d(0,0,0);
+		speed = new Vector3d((point.x - pointBefore.x)
+				/ parameters.getTimeFactor(), (point.y - pointBefore.y)
+				/ parameters.getTimeFactor(), (point.z - pointBefore.z)
+				/ parameters.getTimeFactor());
 	}
 
-	public void disableAttraction(){
+	public void disableAttraction() {
 		for (Matter m : fusionWith) {
-			double attraction = HelperNewton.attraction(this, m, parameters);
-			speed.sub(HelperVector.acceleration(point, m.getPoint(), attraction));
+			double attraction = HelperNewton.attractionBefore(this, m,
+					parameters);
+			speed.sub(HelperVector.acceleration(pointBefore,
+					m.getPointBefore(), attraction));
 		}
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
-	
+
 	public void orbitalCircularSpeed(Univers u, double distance,
 			double innerMass, Vector3d axis) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
