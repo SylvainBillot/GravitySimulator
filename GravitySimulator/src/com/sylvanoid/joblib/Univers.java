@@ -311,20 +311,10 @@ public class Univers {
 				}
 			}
 		} else {
-			// recusiveImpact();
+			//recusiveImpact();
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					//m.disableAttraction();
-				}
-			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.adjustPosition();
-				}
-			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.adjustSpeed();
+					m.adjustPositionAndSpeed();
 				}
 			}
 			for (Matter m : listMatter) {

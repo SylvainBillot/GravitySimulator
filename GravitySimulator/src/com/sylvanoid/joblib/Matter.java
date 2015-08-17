@@ -326,7 +326,7 @@ public class Matter implements Serializable {
 		accel.add(newSpeed);
 	}
 
-	public void adjustPosition() {
+	public void adjustPositionAndSpeed() {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			Vector3d vectorDelta1 = HelperNewton.medianPoint(this, m);
@@ -336,24 +336,12 @@ public class Matter implements Serializable {
 			vectorDelta2.sub(vectorDelta1);
 			pointAdjusted.sub(vectorDelta2);
 		}
-	}
-
-	public void adjustSpeed() {
 		double ratio = HelperNewton.distance(pointAdjusted,pointBefore)/HelperNewton.distance(point, pointBefore);
 		Vector3d newAccel = new Vector3d(speed);
 		newAccel.sub(speedBefore);
 		newAccel.scale(ratio);
 		speed = new Vector3d(speedBefore);
 		speed.add(newAccel);
-	}
-
-	public void disableAttraction() {
-		for (Matter m : fusionWith) {
-			double attraction = HelperNewton.attractionBefore(this, m,
-					parameters);
-			speed.sub(HelperVector.acceleration(pointBefore,
-					m.getPointBefore(), attraction));
-		}
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
