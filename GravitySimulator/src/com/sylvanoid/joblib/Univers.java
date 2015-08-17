@@ -319,17 +319,17 @@ public class Univers {
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					//m.adjustPosition();
+					m.adjustPosition();
 				}
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					//m.setPoint(m.getPointAdjusted());
+					m.adjustSpeed();
 				}
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					//m.adjustSpeed();
+					m.setPoint(m.getPointAdjusted());
 				}
 			}
 			for (Matter m : listMatter) {

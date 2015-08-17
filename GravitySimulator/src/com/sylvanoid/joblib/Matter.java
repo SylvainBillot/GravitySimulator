@@ -339,10 +339,12 @@ public class Matter implements Serializable {
 	}
 
 	public void adjustSpeed() {
-		speed = new Vector3d((point.x - pointBefore.x)
-				/ parameters.getTimeFactor(), (point.y - pointBefore.y)
-				/ parameters.getTimeFactor(), (point.z - pointBefore.z)
-				/ parameters.getTimeFactor());
+		double ratio = HelperNewton.distance(pointAdjusted,pointBefore)/HelperNewton.distance(point, pointBefore);
+		Vector3d newAccel = new Vector3d(speed);
+		newAccel.sub(speedBefore);
+		newAccel.scale(ratio);
+		speed = new Vector3d(speedBefore);
+		speed.add(newAccel);
 	}
 
 	public void disableAttraction() {
