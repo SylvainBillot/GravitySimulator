@@ -16,7 +16,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import com.sylvanoid.common.HelperDebug;
 import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperTools;
 import com.sylvanoid.common.HelperVariable;
@@ -312,7 +311,6 @@ public class Univers {
 				}
 			}
 		} else {
-			HelperDebug.info("---Debug impact---");
 			// recusiveImpact();
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {

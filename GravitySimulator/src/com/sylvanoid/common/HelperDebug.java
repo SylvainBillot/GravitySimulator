@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class HelperDebug {
 
-	private static int debug = 0;
+	private static int debug = 1;
 	
 	public static void info(String msg) {
 		if(debug>0) {
