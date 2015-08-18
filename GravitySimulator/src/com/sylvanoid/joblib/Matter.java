@@ -36,6 +36,7 @@ public class Matter implements Serializable {
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private double rayon;
+	private double timeRatio;
 	private List<Matter> fusionWith = new ArrayList<Matter>();
 	private List<Matter> neighbors = new ArrayList<Matter>();
 
@@ -194,6 +195,10 @@ public class Matter implements Serializable {
 	public double getRayon() {
 		return rayon;
 	}
+	
+	public double getTimeRatio(){
+		return timeRatio;
+	}
 
 	public List<Matter> getFusionWith() {
 		return fusionWith;
@@ -262,7 +267,7 @@ public class Matter implements Serializable {
 		accel = new Vector3d(0, 0, 0);
 		point = getPlusV();
 	}
-
+	
 	public void fusion(List<Matter> listMatter) {
 		if (listMatter.contains(this)) {
 			Vector3d newPoint = new Vector3d(point);
@@ -304,7 +309,25 @@ public class Matter implements Serializable {
 					newColor, newDensity, typeOfObject));
 		}
 	}
-
+	
+	public void adjustPositionAndSpeed() {
+		pointAdjusted = new Vector3d(point);
+		for (Matter m : fusionWith) {
+			Vector3d vectorDelta1 = HelperNewton.medianPoint(this, m);
+			vectorDelta1.sub(point);
+			Vector3d vectorDelta2 = new Vector3d(vectorDelta1);
+			vectorDelta2.scale(rayon / vectorDelta1.length());
+			vectorDelta2.sub(vectorDelta1);
+			pointAdjusted.sub(vectorDelta2);
+		}
+		timeRatio = net.jafama.FastMath.sqrt(HelperNewton.distance(pointAdjusted,pointBefore)/HelperNewton.distance(point, pointBefore));
+		Vector3d newAccel = new Vector3d(speed);
+		newAccel.sub(speedBefore);
+		newAccel.scale(timeRatio);
+		speed = new Vector3d(speedBefore);
+		speed.add(newAccel);
+	}
+	
 	public void impact() {
 		double Cr = parameters.getTypeOfImpact();
 		Vector3d newSpeed = new Vector3d(speed);
@@ -326,24 +349,12 @@ public class Matter implements Serializable {
 		accel.add(newSpeed);
 	}
 
-	public void adjustPositionAndSpeed() {
-		pointAdjusted = new Vector3d(point);
-		for (Matter m : fusionWith) {
-			Vector3d vectorDelta1 = HelperNewton.medianPoint(this, m);
-			vectorDelta1.sub(point);
-			Vector3d vectorDelta2 = new Vector3d(vectorDelta1);
-			vectorDelta2.scale(rayon / vectorDelta1.length());
-			vectorDelta2.sub(vectorDelta1);
-			pointAdjusted.sub(vectorDelta2);
-		}
-		double timeRatio = net.jafama.FastMath.sqrt(HelperNewton.distance(pointAdjusted,pointBefore)/HelperNewton.distance(point, pointBefore));
-		Vector3d newAccel = new Vector3d(speed);
-		newAccel.sub(speedBefore);
-		newAccel.scale(timeRatio);
-		speed = new Vector3d(speedBefore);
-		speed.add(newAccel);
+	public void moveAfterImpact() {
+		speed.add(accel);
+		accel = new Vector3d(0, 0, 0);
+		point = getPlusV();
 	}
-
+	
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
