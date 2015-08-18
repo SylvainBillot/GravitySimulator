@@ -195,8 +195,8 @@ public class Matter implements Serializable {
 	public double getRayon() {
 		return rayon;
 	}
-	
-	public double getTimeRatio(){
+
+	public double getTimeRatio() {
 		return timeRatio;
 	}
 
@@ -220,6 +220,13 @@ public class Matter implements Serializable {
 		return new Vector3d(point.x + speed.x * parameters.getTimeFactor(),
 				point.y + speed.y * parameters.getTimeFactor(), point.z
 						+ speed.z * parameters.getTimeFactor());
+	}
+
+	public Vector3d getPlusV(double timeRatio) {
+		return new Vector3d(point.x + speed.x * parameters.getTimeFactor()
+				* timeRatio, point.y + speed.y * parameters.getTimeFactor()
+				* timeRatio, point.z + speed.z * parameters.getTimeFactor()
+				* timeRatio);
 	}
 
 	public Vector3d getMinusV() {
@@ -267,7 +274,7 @@ public class Matter implements Serializable {
 		accel = new Vector3d(0, 0, 0);
 		point = getPlusV();
 	}
-	
+
 	public void fusion(List<Matter> listMatter) {
 		if (listMatter.contains(this)) {
 			Vector3d newPoint = new Vector3d(point);
@@ -309,7 +316,7 @@ public class Matter implements Serializable {
 					newColor, newDensity, typeOfObject));
 		}
 	}
-	
+
 	public void adjustPositionAndSpeed() {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
@@ -320,14 +327,11 @@ public class Matter implements Serializable {
 			vectorDelta2.sub(vectorDelta1);
 			pointAdjusted.sub(vectorDelta2);
 		}
-		timeRatio = net.jafama.FastMath.sqrt(HelperNewton.distance(pointAdjusted,pointBefore)/HelperNewton.distance(point, pointBefore));
-		Vector3d newAccel = new Vector3d(speed);
-		newAccel.sub(speedBefore);
-		newAccel.scale(timeRatio);
-		speed = new Vector3d(speedBefore);
-		speed.add(newAccel);
+		double t = HelperNewton.distance(
+				pointAdjusted, pointBefore)/speed.length();
+		timeRatio = t/parameters.getTimeFactor();
 	}
-	
+
 	public void impact() {
 		double Cr = parameters.getTypeOfImpact();
 		Vector3d newSpeed = new Vector3d(speed);
@@ -352,9 +356,9 @@ public class Matter implements Serializable {
 	public void moveAfterImpact() {
 		speed.add(accel);
 		accel = new Vector3d(0, 0, 0);
-		point = getPlusV();
+		point = getPlusV(timeRatio);
 	}
-	
+
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
