@@ -336,10 +336,10 @@ public class Matter implements Serializable {
 			vectorDelta2.sub(vectorDelta1);
 			pointAdjusted.sub(vectorDelta2);
 		}
-		double ratio = HelperNewton.distance(pointAdjusted,pointBefore)/HelperNewton.distance(point, pointBefore);
+		double timeRatio = net.jafama.FastMath.sqrt(HelperNewton.distance(pointAdjusted,pointBefore)/HelperNewton.distance(point, pointBefore));
 		Vector3d newAccel = new Vector3d(speed);
 		newAccel.sub(speedBefore);
-		newAccel.scale(ratio);
+		newAccel.scale(timeRatio);
 		speed = new Vector3d(speedBefore);
 		speed.add(newAccel);
 	}
