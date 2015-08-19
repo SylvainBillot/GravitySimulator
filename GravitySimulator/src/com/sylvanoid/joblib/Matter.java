@@ -319,43 +319,46 @@ public class Matter implements Serializable {
 
 	public void impact() {
 		double Cr = parameters.getTypeOfImpact();
-		Vector3d newSpeed = new Vector3d(speed);
-		double newMass = mass;
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
-			newSpeed = new Vector3d(
-					(Cr * m.getMass() * (m.getSpeed().x - newSpeed.x) + newMass
-							* newSpeed.x + m.getMass() * m.getSpeed().x)
-							/ (newMass + m.getMass()), (Cr * m.getMass()
-							* (m.getSpeed().y - newSpeed.y) + newMass
-							* newSpeed.y + m.getMass() * m.getSpeed().y)
-							/ (newMass + m.getMass()), (Cr * m.getMass()
-							* (m.getSpeed().z - newSpeed.z) + newMass
-							* newSpeed.z + m.getMass() * m.getSpeed().z)
-							/ (newMass + m.getMass()));
-			newMass += m.getMass();
+			Vector3d newSpeed = new Vector3d(
+					(Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
+							* speed.x + m.getMass() * m.getSpeed().x)
+							/ (mass + m.getMass()), (Cr * m.getMass()
+							* (m.getSpeed().y - speed.y) + mass
+							* speed.y + m.getMass() * m.getSpeed().y)
+							/ (mass + m.getMass()), (Cr * m.getMass()
+							* (m.getSpeed().z - speed.z) + mass
+							* speed.z + m.getMass() * m.getSpeed().z)
+							/ (mass + m.getMass()));
+			Vector3d tmpAccel = new Vector3d(newSpeed);
+			tmpAccel.sub(speed);
+			accel.add(tmpAccel);
 			
 			Vector3d vectorDelta1 = HelperNewton.collisionPoint(this, m);
 			vectorDelta1.sub(point);
 			Vector3d vectorDelta2 = new Vector3d(vectorDelta1);
 			vectorDelta2.scale(rayon / vectorDelta1.length());
 			vectorDelta2.sub(vectorDelta1);
-			pointAdjusted.sub(vectorDelta2);
+						
+			Vector3d tmpPointAdjusted = new Vector3d(point);
+			tmpPointAdjusted.sub(vectorDelta2);
+			double t = HelperNewton.distance(
+					tmpPointAdjusted, pointBefore)/speed.length();
+			timeRatio = t/parameters.getTimeFactor();
+			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x * parameters.getTimeFactor()
+					* timeRatio, tmpPointAdjusted.y + newSpeed.y * parameters.getTimeFactor()
+					* timeRatio, tmpPointAdjusted.z + newSpeed.z * parameters.getTimeFactor()
+					* timeRatio);
+			tmpPointAdjusted.sub(point);
+			pointAdjusted.add(tmpPointAdjusted);
 		}
-		newSpeed.sub(speed);
-		accel.add(newSpeed);
 	}
 
 	public void moveAfterImpact() {
-		double t = HelperNewton.distance(
-				pointAdjusted, pointBefore)/speed.length();
-		timeRatio = t/parameters.getTimeFactor();
 		point = new Vector3d(pointAdjusted);
-		
 		speed.add(accel);
 		accel = new Vector3d(0, 0, 0);
-		point = getPlusV(timeRatio);
-		//com.sylvanoid.common.HelperDebug.info(""+speed);
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
