@@ -168,7 +168,7 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 					}
 					for (Matter mgu : gu.getListMatter()) {
 						if (m != mgu) {
-							if ((HelperNewton.distance(m, mgu) <= (m.getRayon() + mgu
+							if ((HelperNewton.distance(m, mgu) < (m.getRayon() + mgu
 									.getRayon()))
 									&& (m.getTypeOfObject().equals(mgu
 											.getTypeOfObject()))) {

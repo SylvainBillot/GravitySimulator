@@ -358,6 +358,7 @@ public class Matter implements Serializable {
 		accel = new Vector3d(0, 0, 0);
 		point = new Vector3d(pointAdjusted);
 		point = getPlusV(timeRatio);
+		com.sylvanoid.common.HelperDebug.info(""+speed);
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
