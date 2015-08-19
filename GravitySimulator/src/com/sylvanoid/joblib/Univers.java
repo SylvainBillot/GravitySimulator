@@ -314,11 +314,6 @@ public class Univers {
 			//recusiveImpact();
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.adjustPositionAndSpeed();
-				}
-			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
 					m.impact();
 				}
 			}
