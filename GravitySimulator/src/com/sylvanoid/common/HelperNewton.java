@@ -34,26 +34,29 @@ public class HelperNewton {
 		return attraction(new Point3d(m1.getPoint()),
 				new Point3d(m2.getPoint()), m2.getMass(), parameters);
 	}
-	
+
 	public static double attraction(Vector3d p, Matter m, Parameters parameters) {
 		return attraction(new Point3d(p), new Point3d(m.getPoint()),
 				m.getMass(), parameters);
 	}
 
-	public static double attractionBefore(Matter m1, Matter m2, Parameters parameters) {
+	public static double attractionBefore(Matter m1, Matter m2,
+			Parameters parameters) {
 		return attraction(new Point3d(m1.getPointBefore()),
 				new Point3d(m2.getPointBefore()), m2.getMass(), parameters);
-	}	
-	
-	public static Vector3d medianPoint(Matter m, Matter m1) {
-		double mpx = (m.getPoint().x * m1.getRayon() + m1.getPoint().x * m.getRayon())
-				/ (m.getRayon() + m1.getRayon());
-		double mpy = (m.getPoint().y * m1.getRayon() + m1.getPoint().y * m.getRayon())
-				/ (m.getRayon() + m1.getRayon());
-		double mpz = (m.getPoint().z * m1.getRayon() + m1.getPoint().z * m.getRayon())
-				/ (m.getRayon() + m1.getRayon());
+	}
 
-		return new Vector3d(mpx,mpy,mpz);
+	public static Vector3d medianPoint(Matter m, Matter m1) {
+		double d = HelperNewton.distance(m, m1);
+		double tmp = ((net.jafama.FastMath.pow2(d)
+				- net.jafama.FastMath.pow2(m1.getRayon()) + net.jafama.FastMath
+				.pow2(m.getRayon())) / (2 * d));
+		double ratio = tmp/d;
+		Vector3d tmpVector = new Vector3d(m1.getPoint());
+		tmpVector.sub(m.getPoint());
+		tmpVector.scale(ratio);
+		tmpVector.add(m.getPoint());
+		return tmpVector;
 	}
 
 	private static double distance(Point3d p1, Point3d p2) {
