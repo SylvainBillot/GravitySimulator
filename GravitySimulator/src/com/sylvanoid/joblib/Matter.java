@@ -320,7 +320,7 @@ public class Matter implements Serializable {
 	public void adjustPositionAndSpeed() {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
-			Vector3d vectorDelta1 = HelperNewton.medianPoint(this, m);
+			Vector3d vectorDelta1 = HelperNewton.collisionPoint(this, m);
 			vectorDelta1.sub(point);
 			Vector3d vectorDelta2 = new Vector3d(vectorDelta1);
 			vectorDelta2.scale(rayon / vectorDelta1.length());
@@ -356,6 +356,7 @@ public class Matter implements Serializable {
 	public void moveAfterImpact() {
 		speed.add(accel);
 		accel = new Vector3d(0, 0, 0);
+		point = new Vector3d(pointAdjusted);
 		point = getPlusV(timeRatio);
 	}
 

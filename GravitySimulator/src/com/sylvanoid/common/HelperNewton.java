@@ -46,7 +46,7 @@ public class HelperNewton {
 				new Point3d(m2.getPointBefore()), m2.getMass(), parameters);
 	}
 
-	public static Vector3d medianPoint(Matter m, Matter m1) {
+	public static Vector3d collisionPoint(Matter m, Matter m1) {
 		double d = HelperNewton.distance(m, m1);
 		double tmp = ((net.jafama.FastMath.pow2(d)
 				- net.jafama.FastMath.pow2(m1.getRayon()) + net.jafama.FastMath

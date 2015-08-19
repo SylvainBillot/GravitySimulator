@@ -324,7 +324,6 @@ public class Univers {
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.setPoint(m.getPointAdjusted());
 					m.moveAfterImpact();
 				}
 			}
