@@ -103,6 +103,14 @@ public class Univers {
 		this.min = new Vector3d(min);
 		this.max = new Vector3d(max);
 	}
+	
+	public Univers(Univers father, List<Matter> minus){
+		this.father = father;
+		this.parameters = father.parameters;
+		listMatter = new ArrayList<Matter>(father.getListMatter());
+		listMatter.removeAll(minus);
+		computeMassLimitsCentroidSpeed(false);
+	}
 
 	public Vector3d gravityAtThisPoint(Vector3d p) {
 		Vector3d accel = new Vector3d();

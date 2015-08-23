@@ -163,12 +163,28 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 									.isDark())) {
 								parameters.setNumOfAccelCompute(parameters
 										.getNumOfAccelCompute() + 1);
-								double attraction = HelperNewton.attraction(m,
-										uvoisin, parameters);
-								m.getAccel()
-										.add(HelperVector.acceleration(
-												m.getPoint(),
-												uvoisin.getGPoint(), attraction));
+								//if (m.getFusionWith().size() == 0) {
+									double attraction = HelperNewton
+											.attraction(m, uvoisin, parameters);
+									m.getAccel().add(
+											HelperVector.acceleration(
+													m.getPoint(),
+													uvoisin.getGPoint(),
+													attraction));
+							/*	
+							} else {
+									Univers uvoisinbis = new Univers(uvoisin,m.getFusionWith());
+									if(uvoisinbis.getListMatter().size()>0){
+										double attraction = HelperNewton
+												.attraction(m, uvoisinbis, parameters);
+										m.getAccel().add(
+												HelperVector.acceleration(
+														m.getPoint(),
+														uvoisinbis.getGPoint(),
+														attraction));
+									}
+								}
+								*/
 							}
 						}
 					}
