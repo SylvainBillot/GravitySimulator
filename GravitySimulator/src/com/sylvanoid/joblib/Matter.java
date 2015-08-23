@@ -357,8 +357,6 @@ public class Matter implements Serializable {
 
 	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
-		speed.add(accel);
-		accel = new Vector3d(0, 0, 0);
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
