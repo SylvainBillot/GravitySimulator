@@ -190,6 +190,7 @@ public class Univers {
 			// BarnesHutNeighbors barnesHutNeighbors = new
 			// BarnesHutNeighbors(this);
 			BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
+
 			if (parameters.isParallelization()) {
 				/*
 				 * ForkJoinPool poolNeighbors = new
@@ -209,7 +210,6 @@ public class Univers {
 					poolCollision.invoke(barnesHutCollision);
 					moveImpact();
 				}
-
 			} else {
 				// barnesHutNeighbors.compute();
 				barnesHutGravity.compute();
