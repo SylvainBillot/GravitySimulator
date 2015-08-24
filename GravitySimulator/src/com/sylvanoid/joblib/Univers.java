@@ -103,8 +103,8 @@ public class Univers {
 		this.min = new Vector3d(min);
 		this.max = new Vector3d(max);
 	}
-	
-	public Univers(Univers father, List<Matter> minus){
+
+	public Univers(Univers father, List<Matter> minus) {
 		this.father = father;
 		this.parameters = father.parameters;
 		listMatter = new ArrayList<Matter>(father.getListMatter());
@@ -310,7 +310,6 @@ public class Univers {
 	}
 
 	private void moveImpact() {
-
 		if (parameters.isFusion()) {
 			List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 			for (Matter m : listMatterBis) {
@@ -319,7 +318,7 @@ public class Univers {
 				}
 			}
 		} else {
-			//recusiveImpact();
+			// recusiveImpact();
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					m.impact();

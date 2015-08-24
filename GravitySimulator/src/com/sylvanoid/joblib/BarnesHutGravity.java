@@ -171,20 +171,16 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 													m.getPoint(),
 													uvoisin.getGPoint(),
 													attraction));
-							/*	
-							} else {
-									Univers uvoisinbis = new Univers(uvoisin,m.getFusionWith());
-									if(uvoisinbis.getListMatter().size()>0){
-										double attraction = HelperNewton
-												.attraction(m, uvoisinbis, parameters);
-										m.getAccel().add(
-												HelperVector.acceleration(
-														m.getPoint(),
-														uvoisinbis.getGPoint(),
-														attraction));
-									}
-								}
-								*/
+								/*
+								 * } else { Univers uvoisinbis = new
+								 * Univers(uvoisin,m.getFusionWith());
+								 * if(uvoisinbis.getListMatter().size()>0){
+								 * double attraction = HelperNewton
+								 * .attraction(m, uvoisinbis, parameters);
+								 * m.getAccel().add( HelperVector.acceleration(
+								 * m.getPoint(), uvoisinbis.getGPoint(),
+								 * attraction)); } }
+								 */
 							}
 						}
 					}
