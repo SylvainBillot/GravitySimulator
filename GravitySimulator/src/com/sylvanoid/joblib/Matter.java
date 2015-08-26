@@ -321,6 +321,7 @@ public class Matter implements Serializable {
 		double Cr = parameters.getTypeOfImpact();
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
+			//New speed
 			Vector3d newSpeed = new Vector3d(
 					(Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass
 							* speed.x + m.getMass() * m.getSpeed().x)
@@ -335,14 +336,16 @@ public class Matter implements Serializable {
 			tmpAccel.sub(speed);
 			accel.add(tmpAccel);
 			
+			//Impact point adjustment
 			Vector3d vectorDelta1 = HelperNewton.collisionPoint(this, m);
 			vectorDelta1.sub(point);
 			Vector3d vectorDelta2 = new Vector3d(vectorDelta1);
 			vectorDelta2.scale(rayon / vectorDelta1.length());
 			vectorDelta2.sub(vectorDelta1);
-						
 			Vector3d tmpPointAdjusted = new Vector3d(point);
 			tmpPointAdjusted.sub(vectorDelta2);
+
+			//Move to disable futur acceleration 
 			double t = HelperNewton.distance(
 					tmpPointAdjusted, pointBefore)/speed.length();
 			timeRatio = t/parameters.getTimeFactor();
@@ -350,6 +353,8 @@ public class Matter implements Serializable {
 					* timeRatio, tmpPointAdjusted.y + newSpeed.y * parameters.getTimeFactor()
 					* timeRatio, tmpPointAdjusted.z + newSpeed.z * parameters.getTimeFactor()
 					* timeRatio);
+			
+			//new point
 			tmpPointAdjusted.sub(point);
 			pointAdjusted.add(tmpPointAdjusted);
 		}
