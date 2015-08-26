@@ -360,6 +360,35 @@ public class Matter implements Serializable {
 		}
 	}
 
+	public void friction() {
+		pointAdjusted = new Vector3d(point);
+		for (Matter m : fusionWith) {
+			//Impact point adjustment
+			Vector3d vectorDelta1 = HelperNewton.collisionPoint(this, m);
+			vectorDelta1.sub(point);
+			Vector3d vectorDelta2 = new Vector3d(vectorDelta1);
+			vectorDelta2.scale(rayon / vectorDelta1.length());
+			vectorDelta2.sub(vectorDelta1);
+			Vector3d tmpPointAdjusted = new Vector3d(point);
+			tmpPointAdjusted.sub(vectorDelta2);
+
+			//New speed
+			Vector3d newSpeed = new Vector3d(
+					(tmpPointAdjusted.x-pointBefore.x)/parameters.getTimeFactor(),
+					(tmpPointAdjusted.y-pointBefore.y)/parameters.getTimeFactor(),
+					(tmpPointAdjusted.z-pointBefore.z)/parameters.getTimeFactor()
+					);
+			Vector3d tmpAccel = new Vector3d(newSpeed);
+			tmpAccel.sub(speed);
+			accel.add(tmpAccel);
+			
+			//new point
+			tmpPointAdjusted.sub(point);
+			pointAdjusted.add(tmpPointAdjusted);
+		}
+	}
+	
+	
 	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
 	}
