@@ -220,10 +220,10 @@ public class GUIParam extends JDialog {
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.RandomRotateUniverCircular);
-					manageImpact.setSelected(false);
+					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
-					fusion.setSelected(true);
+					fusion.setSelected(false);
 					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(0);
 					densiteMin.setValue(1E-19);
@@ -236,8 +236,8 @@ public class GUIParam extends JDialog {
 					numOfLowMassParticule.setValue(10000);
 					lowMassParticuleMass
 							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
-					lowMassDensity.setValue(1E-24);
-					darkMatterMass.setValue(5E39);
+					lowMassDensity.setValue(1E-23);
+					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-23);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
