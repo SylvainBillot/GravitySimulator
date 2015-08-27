@@ -359,12 +359,12 @@ public class GUIParam extends JDialog {
 		manageImpact.setSelected(me.mother.getParameters().isManageImpact());
 		add(manageImpact);
 
-		add(new Label("Fusion (or impact) :"));
+		add(new Label("Fusion (or friction) :"));
 		fusion = new JCheckBox();
 		fusion.setSelected(me.mother.getParameters().isFusion());
 		add(fusion);
 
-		add(new Label("Type of impact (1-elastic 0-inelastic):"));
+		add(new Label("Friction coeff :"));
 		typeOfImpact = new JSlider(0, 100, (int) (me.mother.getParameters()
 				.getTypeOfImpact() * 100));
 		add(typeOfImpact);
