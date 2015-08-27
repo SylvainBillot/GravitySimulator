@@ -533,14 +533,12 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			break;
 		case 1:
 			// TypeOfUnivers.PlanetaryRandom;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			fusion.setEnabled(true);
 			densiteMin.setEnabled(true);
@@ -560,7 +558,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -579,7 +576,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -601,7 +597,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -624,7 +619,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -645,7 +639,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -661,7 +654,6 @@ public class GUIParam extends JDialog {
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
 			break;
-
 		}
 	}
 
