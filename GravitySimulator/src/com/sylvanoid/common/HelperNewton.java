@@ -46,19 +46,6 @@ public class HelperNewton {
 				new Point3d(m2.getPointBefore()), m2.getMass(), parameters);
 	}
 
-	public static Vector3d collisionPoint(Matter m, Matter m1) {
-		double d = HelperNewton.distance(m, m1);
-		double tmp = ((net.jafama.FastMath.pow2(d)
-				- net.jafama.FastMath.pow2(m1.getRayon()) + net.jafama.FastMath
-				.pow2(m.getRayon())) / (2 * d));
-		double ratio = tmp/d;
-		Vector3d tmpVector = new Vector3d(m1.getPoint());
-		tmpVector.sub(m.getPoint());
-		tmpVector.scale(ratio);
-		tmpVector.add(m.getPoint());
-		return tmpVector;
-	}
-
 	private static double distance(Point3d p1, Point3d p2) {
 		return p1.distance(p2);
 	}
