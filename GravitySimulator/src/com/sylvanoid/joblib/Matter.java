@@ -354,16 +354,21 @@ public class Matter implements Serializable {
 			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m);
 
 			// New speed
-			Vector3d newSpeed = new Vector3d(
-					(tmpPointAdjusted.x - pointBefore.x)
-							/ parameters.getTimeFactor(),
-					(tmpPointAdjusted.y - pointBefore.y)
-							/ parameters.getTimeFactor(),
-					(tmpPointAdjusted.z - pointBefore.z)
-							/ parameters.getTimeFactor());
+			Vector3d newSpeed = speedAfterImpactWith(m, 0);
 			Vector3d tmpAccel = new Vector3d(newSpeed);
 			tmpAccel.sub(speed);
 			accel.add(tmpAccel);
+
+			// Move the rest of time
+			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
+					/ speed.length();
+			timeRatio = 1 - (t / parameters.getTimeFactor());
+			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
+					* parameters.getTimeFactor() * timeRatio,
+					tmpPointAdjusted.y + newSpeed.y
+							* parameters.getTimeFactor() * timeRatio,
+					tmpPointAdjusted.z + newSpeed.z
+							* parameters.getTimeFactor() * timeRatio);
 
 			// new point
 			tmpPointAdjusted.sub(point);

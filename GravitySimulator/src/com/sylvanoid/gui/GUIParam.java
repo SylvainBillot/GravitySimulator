@@ -122,7 +122,7 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(HelperVariable.ONEDAY / 3);
 					scala.setValue(5E-10);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(0);
+					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(0.1);
 					nebulaRadius.setValue(HelperVariable.UA * 5);
