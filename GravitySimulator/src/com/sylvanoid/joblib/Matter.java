@@ -352,9 +352,9 @@ public class Matter implements Serializable {
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
 			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m);
-
 			// New speed
 			Vector3d newSpeed = tangentialSpeed(m);
+			newSpeed.add(speedAfterImpactWith(m,0));
 			Vector3d tmpAccel = new Vector3d(newSpeed);
 			tmpAccel.sub(speed);
 			accel.add(tmpAccel);
@@ -373,7 +373,6 @@ public class Matter implements Serializable {
 			// new point
 			tmpPointAdjusted.sub(point);
 			pointAdjusted.add(tmpPointAdjusted);
-
 		}
 	}
 
@@ -428,16 +427,20 @@ public class Matter implements Serializable {
 	}
 
 	public Vector3d radialSpeed(Matter m){
-		Vector3d newSpeed = new Vector3d(m.getPoint());
-		newSpeed.sub(point);
-		double angle = speed.angle(newSpeed);
+		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
+		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, 0));
+		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this));
+		newSpeed.sub(positionBeforeImpactWith(m));
+		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
-		newSpeed.scale(net.jafama.FastMath.cos(angle)*speed.length());
+		newSpeed.scale(net.jafama.FastMath.cos(angle)*speedMinusSpeedAfterImpact.length());
 		return newSpeed;
 	}
 
 	public Vector3d tangentialSpeed(Matter m){
-		Vector3d newSpeed = new Vector3d(speed);
+		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
+		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, 0));
+		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
 		newSpeed.sub(radialSpeed(m));
 		return newSpeed;
 	}
