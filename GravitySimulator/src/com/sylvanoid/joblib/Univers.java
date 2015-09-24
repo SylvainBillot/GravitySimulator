@@ -318,7 +318,7 @@ public class Univers {
 				}
 			}
 		} else {
-			// recusiveImpact();
+			//recusiveImpact();
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					//m.impact();

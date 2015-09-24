@@ -350,15 +350,15 @@ public class Matter implements Serializable {
 	public void friction() {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
-			// Impact point adjustment
-			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m);
 			// New speed
 			Vector3d newSpeed = tangentialSpeed(m);
-			newSpeed.add(speedAfterImpactWith(m,0));
+			newSpeed.add(speedAfterImpactWith(m, 0));
 			Vector3d tmpAccel = new Vector3d(newSpeed);
 			tmpAccel.sub(speed);
 			accel.add(tmpAccel);
 
+			// Impact point adjustment
+			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m);
 			// Move the rest of time
 			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
 					/ speed.length();
@@ -402,10 +402,12 @@ public class Matter implements Serializable {
 		Vector3d newSpeed1 = new Vector3d(m.getSpeed());
 		newSpeed.scale(parameters.getTimeFactor() / precisionFactor);
 		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
+		int cpt = 0;
 		while ((HelperNewton.distance(newPoint, newPoint1) < (rayon + m
-				.getRayon()))) {
+				.getRayon())) && cpt < precisionFactor) {
 			newPoint.sub(newSpeed);
 			newPoint1.sub(newSpeed1);
+			cpt++;
 		}
 		return newPoint;
 	}
@@ -426,25 +428,26 @@ public class Matter implements Serializable {
 		return newSpeed;
 	}
 
-	public Vector3d radialSpeed(Matter m){
+	public Vector3d radialSpeed(Matter m) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, 0));
 		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this));
 		newSpeed.sub(positionBeforeImpactWith(m));
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
-		newSpeed.scale(net.jafama.FastMath.cos(angle)*speedMinusSpeedAfterImpact.length());
+		newSpeed.scale(net.jafama.FastMath.cos(angle)
+				* speedMinusSpeedAfterImpact.length());
 		return newSpeed;
 	}
 
-	public Vector3d tangentialSpeed(Matter m){
+	public Vector3d tangentialSpeed(Matter m) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, 0));
 		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
 		newSpeed.sub(radialSpeed(m));
 		return newSpeed;
 	}
-	
+
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
