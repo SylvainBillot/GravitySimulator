@@ -186,41 +186,16 @@ public class Univers {
 			parameters.setLimitComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
-			BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
-			// BarnesHutNeighbors barnesHutNeighbors = new
-			// BarnesHutNeighbors(this);
-			BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
 
-			if (parameters.isParallelization()) {
-				/*
-				 * ForkJoinPool poolNeighbors = new
-				 * ForkJoinPool(Runtime.getRuntime() .availableProcessors());
-				 * poolNeighbors.invoke(barnesHutGravity);
-				 */
-				ForkJoinPool poolGravity = new ForkJoinPool(Runtime
-						.getRuntime().availableProcessors());
-				poolGravity.invoke(barnesHutGravity);
-				move();
-				long startTimeMove = System.currentTimeMillis();
-				parameters.setMoveComputeTime(System.currentTimeMillis()
-						- startTimeMove);
-				if (parameters.isManageImpact()) {
-					ForkJoinPool poolCollision = new ForkJoinPool(Runtime
-							.getRuntime().availableProcessors());
-					poolCollision.invoke(barnesHutCollision);
-					moveImpact();
-				}
-			} else {
-				// barnesHutNeighbors.compute();
-				barnesHutGravity.compute();
-				long startTimeMove = System.currentTimeMillis();
-				move();
-				parameters.setMoveComputeTime(System.currentTimeMillis()
-						- startTimeMove);
-				if (parameters.isManageImpact()) {
-					barnesHutCollision.compute();
-					moveImpact();
-				}
+			//computeBarnesHutNeighbors();
+			computeBarnesHutGravity();
+			long startTimeMove = System.currentTimeMillis();
+			move();
+			parameters.setMoveComputeTime(System.currentTimeMillis()
+					- startTimeMove);
+			if (parameters.isManageImpact()) {
+				computeBarnesHutCollision();
+				moveImpact();
 			}
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
@@ -301,6 +276,41 @@ public class Univers {
 	}
 
 	@SuppressWarnings("unused")
+	private void computeBarnesHutNeighbors() {
+		BarnesHutNeighbors barnesHutNeighbors = new BarnesHutNeighbors(this);
+		if (parameters.isParallelization()) {
+			  ForkJoinPool pool = new
+			  ForkJoinPool(Runtime.getRuntime() .availableProcessors());
+			  pool.invoke(barnesHutNeighbors);
+		} else {
+			  barnesHutNeighbors.compute();
+		}
+	}
+	
+	private void computeBarnesHutCollision() {
+		BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
+		if (parameters.isParallelization()) {
+			  ForkJoinPool pool = new
+			  ForkJoinPool(Runtime.getRuntime() .availableProcessors());
+			  pool.invoke(barnesHutCollision);
+		} else {
+			barnesHutCollision.compute();
+		}
+	}
+	
+	private void computeBarnesHutGravity() {
+		BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
+		if (parameters.isParallelization()) {
+			  ForkJoinPool pool = new
+			  ForkJoinPool(Runtime.getRuntime() .availableProcessors());
+			  pool.invoke(barnesHutGravity);
+		} else {
+			barnesHutGravity.compute();
+		}
+	}
+	
+	
+	@SuppressWarnings("unused")
 	private void recusiveImpact() {
 		// recursive impact
 		for (Matter m : listMatter) {
@@ -318,10 +328,10 @@ public class Univers {
 				}
 			}
 		} else {
-			//recusiveImpact();
+			// recusiveImpact();
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					//m.impact();
+					// m.impact();
 					m.friction();
 				}
 			}

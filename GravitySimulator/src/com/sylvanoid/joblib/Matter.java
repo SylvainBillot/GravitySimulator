@@ -404,7 +404,7 @@ public class Matter implements Serializable {
 		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
 		int cpt = 0;
 		while ((HelperNewton.distance(newPoint, newPoint1) < (rayon + m
-				.getRayon())) && cpt < precisionFactor) {
+				.getRayon())) && (cpt < precisionFactor || true)) {
 			newPoint.sub(newSpeed);
 			newPoint1.sub(newSpeed1);
 			cpt++;
