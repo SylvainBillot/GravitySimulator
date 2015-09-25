@@ -403,7 +403,7 @@ public class Matter implements Serializable {
 		newSpeed.scale(parameters.getTimeFactor() / precisionFactor);
 		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
 		int cpt = 0;
-		while ((HelperNewton.distance(newPoint, newPoint1) < (rayon + m
+		while ((HelperNewton.distance(newPoint, newPoint1) <= (rayon + m
 				.getRayon())) && (cpt < precisionFactor || true)) {
 			newPoint.sub(newSpeed);
 			newPoint1.sub(newSpeed1);
@@ -446,6 +446,13 @@ public class Matter implements Serializable {
 		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
 		newSpeed.sub(radialSpeed(m));
 		return newSpeed;
+	}
+
+	public void disableAccelerationWith() {
+		for (Matter m : fusionWith) {
+			double attraction = HelperNewton.attraction(this, m, parameters);
+			speed.sub(HelperVector.acceleration(point, m.getPoint(), attraction));
+		}
 	}
 
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {

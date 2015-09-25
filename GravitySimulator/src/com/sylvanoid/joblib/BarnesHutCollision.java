@@ -23,6 +23,7 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 
 	@Override
 	protected Integer compute() {
+		Integer valReturn = 0;
 		// TODO Auto-generated method stub
 		if (univers.getMass() > parameters.getNegligeableMass()
 				&& !univers.sameCoordonate()) {
@@ -133,23 +134,23 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 				bhg.fork();
 				bhh.fork();
 
-				bha.join();
-				bhb.join();
-				bhc.join();
-				bhd.join();
-				bhe.join();
-				bhf.join();
-				bhg.join();
-				bhh.join();
+				valReturn += bha.join();
+				valReturn += bhb.join();
+				valReturn += bhc.join();
+				valReturn += bhd.join();
+				valReturn += bhe.join();
+				valReturn += bhf.join();
+				valReturn += bhg.join();
+				valReturn += bhh.join();
 			} else {
-				bha.compute();
-				bhb.compute();
-				bhc.compute();
-				bhd.compute();
-				bhe.compute();
-				bhf.compute();
-				bhg.compute();
-				bhh.compute();
+				valReturn += bha.compute();
+				valReturn += bhb.compute();
+				valReturn += bhc.compute();
+				valReturn += bhd.compute();
+				valReturn += bhe.compute();
+				valReturn += bhf.compute();
+				valReturn += bhg.compute();
+				valReturn += bhh.compute();
 			}
 		}
 		if (univers.getListMatter().size() == 1) {
@@ -172,6 +173,7 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 									.getRayon()))
 									&& (m.getTypeOfObject().equals(mgu
 											.getTypeOfObject()))) {
+								valReturn++;
 								if (!m.getFusionWith().contains(mgu)) {
 									m.getFusionWith().add(mgu);
 								}
@@ -184,6 +186,6 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 				}
 			}
 		}
-		return univers.getListMatter().size();
+		return valReturn;
 	}
 }

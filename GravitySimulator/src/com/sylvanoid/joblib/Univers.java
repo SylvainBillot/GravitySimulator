@@ -187,22 +187,21 @@ public class Univers {
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
 
-			//computeBarnesHutNeighbors();
+			// computeBarnesHutNeighbors();
 			computeBarnesHutGravity();
 			long startTimeMove = System.currentTimeMillis();
 			move();
 			parameters.setMoveComputeTime(System.currentTimeMillis()
 					- startTimeMove);
 			if (parameters.isManageImpact()) {
-				computeBarnesHutCollision();
-				moveImpact();
+				do {
+					computeBarnesHutCollision();
+					moveImpact();
+				} while (haveImpact() && false);
 			}
-
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
-
 			moveEnd(bufferedWriter);
-
 			parameters.setCycleComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
 		} else {
@@ -279,37 +278,36 @@ public class Univers {
 	private void computeBarnesHutNeighbors() {
 		BarnesHutNeighbors barnesHutNeighbors = new BarnesHutNeighbors(this);
 		if (parameters.isParallelization()) {
-			  ForkJoinPool pool = new
-			  ForkJoinPool(Runtime.getRuntime() .availableProcessors());
-			  pool.invoke(barnesHutNeighbors);
+			ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
+					.availableProcessors());
+			pool.invoke(barnesHutNeighbors);
 		} else {
-			  barnesHutNeighbors.compute();
+			barnesHutNeighbors.compute();
 		}
 	}
-	
-	private void computeBarnesHutCollision() {
+
+	private int computeBarnesHutCollision() {
 		BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
 		if (parameters.isParallelization()) {
-			  ForkJoinPool pool = new
-			  ForkJoinPool(Runtime.getRuntime() .availableProcessors());
-			  pool.invoke(barnesHutCollision);
+			ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
+					.availableProcessors());
+			return (int)pool.invoke(barnesHutCollision);
 		} else {
-			barnesHutCollision.compute();
+			return (int)barnesHutCollision.compute();
 		}
 	}
-	
+
 	private void computeBarnesHutGravity() {
 		BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
 		if (parameters.isParallelization()) {
-			  ForkJoinPool pool = new
-			  ForkJoinPool(Runtime.getRuntime() .availableProcessors());
-			  pool.invoke(barnesHutGravity);
+			ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
+					.availableProcessors());
+			pool.invoke(barnesHutGravity);
 		} else {
 			barnesHutGravity.compute();
 		}
 	}
-	
-	
+
 	@SuppressWarnings("unused")
 	private void recusiveImpact() {
 		// recursive impact
@@ -320,6 +318,11 @@ public class Univers {
 	}
 
 	private void moveImpact() {
+		for (Matter m : listMatter) {
+			if (m.getFusionWith().size() != 0) {
+				//m.disableAccelerationWith();
+			}
+		}
 		if (parameters.isFusion()) {
 			List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 			for (Matter m : listMatterBis) {
@@ -354,6 +357,13 @@ public class Univers {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private boolean haveImpact(){
+		if(computeBarnesHutCollision()>0){
+			return true;
+		}
+		return false;
 	}
 
 	private List<Matter> createUvivers(Vector3d origine, Vector3d initialSpeed,
