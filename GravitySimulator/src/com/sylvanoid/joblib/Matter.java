@@ -375,7 +375,7 @@ public class Matter implements Serializable {
 			pointAdjusted.add(tmpPointAdjusted);
 		}
 	}
-
+	
 	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
 	}
@@ -450,11 +450,15 @@ public class Matter implements Serializable {
 
 	public void disableAccelerationWith() {
 		for (Matter m : fusionWith) {
-			double attraction = HelperNewton.attraction(this, m, parameters);
-			speed.sub(HelperVector.acceleration(point, m.getPoint(), attraction));
+			speed.sub(accelerationWith(m));
 		}
 	}
 
+	public Vector3d accelerationWith(Matter m) {
+		double attraction = HelperNewton.attraction(this, m, parameters);
+		return HelperVector.acceleration(point, m.getPoint(), attraction);
+	}
+	
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}

@@ -194,10 +194,8 @@ public class Univers {
 			parameters.setMoveComputeTime(System.currentTimeMillis()
 					- startTimeMove);
 			if (parameters.isManageImpact()) {
-				do {
-					computeBarnesHutCollision();
-					moveImpact();
-				} while (haveImpact() && false);
+				computeBarnesHutCollision();
+				moveImpact();
 			}
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -291,9 +289,9 @@ public class Univers {
 		if (parameters.isParallelization()) {
 			ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
 					.availableProcessors());
-			return (int)pool.invoke(barnesHutCollision);
+			return (int) pool.invoke(barnesHutCollision);
 		} else {
-			return (int)barnesHutCollision.compute();
+			return (int) barnesHutCollision.compute();
 		}
 	}
 
@@ -318,11 +316,6 @@ public class Univers {
 	}
 
 	private void moveImpact() {
-		for (Matter m : listMatter) {
-			if (m.getFusionWith().size() != 0) {
-				//m.disableAccelerationWith();
-			}
-		}
 		if (parameters.isFusion()) {
 			List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 			for (Matter m : listMatterBis) {
@@ -358,9 +351,10 @@ public class Univers {
 			}
 		}
 	}
-	
-	private boolean haveImpact(){
-		if(computeBarnesHutCollision()>0){
+
+	@SuppressWarnings("unused")
+	private boolean haveImpact() {
+		if (computeBarnesHutCollision() > 0) {
 			return true;
 		}
 		return false;
