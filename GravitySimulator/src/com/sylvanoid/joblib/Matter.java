@@ -369,7 +369,6 @@ public class Matter implements Serializable {
 							* parameters.getTimeFactor() * timeRatio,
 					tmpPointAdjusted.z + newSpeed.z
 							* parameters.getTimeFactor() * timeRatio);
-
 			// new point
 			tmpPointAdjusted.sub(point);
 			pointAdjusted.add(tmpPointAdjusted);
@@ -395,6 +394,7 @@ public class Matter implements Serializable {
 	}
 
 	public Vector3d positionBeforeImpactWith(Matter m) {
+		boolean dontLimitAtOriginalPosition = false;
 		double precisionFactor = 100;
 		Vector3d newPoint = new Vector3d(point);
 		Vector3d newPoint1 = new Vector3d(m.getPoint());
@@ -404,7 +404,7 @@ public class Matter implements Serializable {
 		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
 		int cpt = 0;
 		while ((HelperNewton.distance(newPoint, newPoint1) <= (rayon + m
-				.getRayon())) && (cpt < precisionFactor || true)) {
+				.getRayon())) && (cpt < precisionFactor || dontLimitAtOriginalPosition)) {
 			newPoint.sub(newSpeed);
 			newPoint1.sub(newSpeed1);
 			cpt++;
