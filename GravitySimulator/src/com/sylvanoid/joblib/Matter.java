@@ -348,6 +348,7 @@ public class Matter implements Serializable {
 	}
 
 	public void friction() {
+		disableAccelerationWith();
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
@@ -392,18 +393,18 @@ public class Matter implements Serializable {
 	public Vector3d positionBeforeImpactWith(Matter m) {
 		boolean dontLimitAtOriginalPosition = false;
 		double precisionFactor = 100;
-		Vector3d newPoint = new Vector3d(point);
-		Vector3d newPoint1 = new Vector3d(m.getPoint());
+		Vector3d newPoint = new Vector3d(pointBefore);
+		Vector3d newPoint1 = new Vector3d(m.getPointBefore());
 		Vector3d newSpeed = new Vector3d(speed);
 		Vector3d newSpeed1 = new Vector3d(m.getSpeed());
 		newSpeed.scale(parameters.getTimeFactor() / precisionFactor);
 		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
-		int cpt = 0;
-		while ((HelperNewton.distance(newPoint, newPoint1) <= (rayon + m
-				.getRayon())) && (cpt < precisionFactor || dontLimitAtOriginalPosition)) {
-			newPoint.sub(newSpeed);
-			newPoint1.sub(newSpeed1);
-			cpt++;
+		int cpt = (int)precisionFactor;
+		while ((HelperNewton.distance(newPoint, newPoint1) > (rayon + m
+				.getRayon())) && (cpt > 0 || dontLimitAtOriginalPosition)) {
+			newPoint.add(newSpeed);
+			newPoint1.add(newSpeed1);
+			cpt--;
 		}
 		return newPoint;
 		//return pointBefore;
