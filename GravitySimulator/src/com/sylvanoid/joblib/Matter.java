@@ -406,7 +406,6 @@ public class Matter implements Serializable {
 			cpt--;
 		}
 		return newPoint;
-		//return pointBefore;
 	}
 
 	public Vector3d globalSpeed() {
