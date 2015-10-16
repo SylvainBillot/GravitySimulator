@@ -574,6 +574,7 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -592,6 +593,7 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -613,6 +615,7 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -635,6 +638,7 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -655,6 +659,7 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -677,6 +682,7 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
+			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);

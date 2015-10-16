@@ -36,7 +36,6 @@ public class Matter implements Serializable {
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private double rayon;
-	private double timeRatio;
 	private List<Matter> fusionWith = new ArrayList<Matter>();
 	private List<Matter> neighbors = new ArrayList<Matter>();
 
@@ -196,10 +195,6 @@ public class Matter implements Serializable {
 		return rayon;
 	}
 
-	public double getTimeRatio() {
-		return timeRatio;
-	}
-
 	public List<Matter> getFusionWith() {
 		return fusionWith;
 	}
@@ -333,7 +328,7 @@ public class Matter implements Serializable {
 			// Move to disable futur acceleration
 			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
 					/ speed.length();
-			timeRatio = t / parameters.getTimeFactor();
+			double timeRatio = t / parameters.getTimeFactor();
 			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
 					* parameters.getTimeFactor() * timeRatio,
 					tmpPointAdjusted.y + newSpeed.y
@@ -348,6 +343,7 @@ public class Matter implements Serializable {
 	}
 
 	public void friction() {
+		double mu = 1;
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
@@ -355,8 +351,9 @@ public class Matter implements Serializable {
 			// Move the rest of time
 			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
 					/ speed.length();
-			timeRatio = 1 - (t / parameters.getTimeFactor());
+			double timeRatio = 1 - (t / parameters.getTimeFactor());
 			Vector3d newSpeed = tangentialSpeed(m);
+			newSpeed.scale(1/mu);
 			newSpeed.add(speedAfterImpactWith(m, 0));
 			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
 					* parameters.getTimeFactor() * timeRatio,
@@ -369,7 +366,7 @@ public class Matter implements Serializable {
 			pointAdjusted.add(tmpPointAdjusted);
 		}
 	}
-	
+
 	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
 		adjustSpeed();
@@ -398,7 +395,7 @@ public class Matter implements Serializable {
 		Vector3d newSpeed1 = new Vector3d(m.getSpeed());
 		newSpeed.scale(parameters.getTimeFactor() / precisionFactor);
 		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
-		int cpt = (int)precisionFactor;
+		int cpt = (int) precisionFactor;
 		while ((HelperNewton.distance(newPoint, newPoint1) > (rayon + m
 				.getRayon())) && (cpt > 0 || dontLimitAtOriginalPosition)) {
 			newPoint.add(newSpeed);
@@ -450,21 +447,21 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void adjustSpeed(){
+	public void adjustSpeed() {
 		double distance = HelperNewton.distance(pointBefore, point);
-		double speedLength = distance/parameters.getTimeFactor();
+		double speedLength = distance / parameters.getTimeFactor();
 		Vector3d newSpeed = new Vector3d(point);
 		newSpeed.sub(pointBefore);
 		newSpeed.normalize();
 		newSpeed.scale(speedLength);
 		speed = new Vector3d(newSpeed);
 	}
-	
+
 	public Vector3d accelerationWith(Matter m) {
 		double attraction = HelperNewton.attraction(this, m, parameters);
 		return HelperVector.acceleration(point, m.getPoint(), attraction);
 	}
-	
+
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}

@@ -201,6 +201,10 @@ public class Univers {
 
 			// computeBarnesHutNeighbors();
 			computeBarnesHutGravity();
+			if (parameters.isManageImpact()) {
+				computeBarnesHutCollision();
+				disableAccelerations();
+			}
 			long startTimeMove = System.currentTimeMillis();
 			move();
 			parameters.setMoveComputeTime(System.currentTimeMillis()
@@ -208,8 +212,6 @@ public class Univers {
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				moveImpact();
-				computeBarnesHutCollision();
-				disableFuturAccelerations();
 			}
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -355,7 +357,7 @@ public class Univers {
 		}
 	}
 
-	private void disableFuturAccelerations() {
+	private void disableAccelerations() {
 		for (Matter m : listMatter) {
 			if (m.getFusionWith().size() != 0) {
 				m.disableAccelerationWith();
