@@ -218,7 +218,7 @@ public class Univers {
 			moveEnd(bufferedWriter);
 			parameters.setCycleComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
-			
+
 			parameters.setKlength(k.length());
 		} else {
 			parameters.setNumOfCompute(-9999);
@@ -626,7 +626,6 @@ public class Univers {
 
 	}
 
-	
 	private void createRandomStaticSphericalUnivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
@@ -654,7 +653,7 @@ public class Univers {
 						0.01), parameters.getDarkMatterDistribution(),
 				TypeOfObject.Dark);
 	}
-	
+
 	private void createGalaxiesCollision() {
 		Vector3d dbg1 = new Vector3d(
 				parameters.getDemiDistanceBetweenGalaxies());

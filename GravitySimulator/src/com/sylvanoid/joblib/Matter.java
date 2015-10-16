@@ -343,7 +343,7 @@ public class Matter implements Serializable {
 	}
 
 	public void friction() {
-		double mu = 1;
+		double fluidity = 1;
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
@@ -353,7 +353,7 @@ public class Matter implements Serializable {
 					/ speed.length();
 			double timeRatio = 1 - (t / parameters.getTimeFactor());
 			Vector3d newSpeed = tangentialSpeed(m);
-			newSpeed.scale(1/mu);
+			newSpeed.scale(fluidity);
 			newSpeed.add(speedAfterImpactWith(m, 0));
 			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
 					* parameters.getTimeFactor() * timeRatio,
