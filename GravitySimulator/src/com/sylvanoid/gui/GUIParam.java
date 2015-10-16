@@ -26,6 +26,7 @@ public class GUIParam extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private GUIParam me;
 	private GUIProgram mother;
+	private JCheckBox parallelization;
 	private JComboBox<String> typeOfUnivers;
 	private JFormattedTextField timeFactor;
 	private JFormattedTextField scala;
@@ -49,6 +50,7 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField demiDistanceBetweenGalaxiesX;
 	private JFormattedTextField demiDistanceBetweenGalaxiesY;
 	private JFormattedTextField demiDistanceBetweenGalaxiesZ;
+	private JCheckBox staticDarkMatter;
 
 	private DecimalFormat dfsc = new DecimalFormat("0.####E0");
 	private DecimalFormat fdpc = new DecimalFormat("0.####%");
@@ -63,8 +65,7 @@ public class GUIParam extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(12, 4));
-
+		setLayout(new GridLayout(13, 4));
 		add(new Label("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
@@ -91,6 +92,7 @@ public class GUIParam extends JDialog {
 					ellipseRatio.setValue(0.5);
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
+					staticDarkMatter.setSelected(true);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -114,6 +116,7 @@ public class GUIParam extends JDialog {
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
+					staticDarkMatter.setSelected(true);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -137,6 +140,7 @@ public class GUIParam extends JDialog {
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
+					staticDarkMatter.setSelected(true);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -163,6 +167,7 @@ public class GUIParam extends JDialog {
 					ellipseRatio.setValue(0.25);
 					ellipseShiftRatio.setValue(-1.25);
 					nbArms.setValue(2);
+					staticDarkMatter.setSelected(true);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -193,6 +198,7 @@ public class GUIParam extends JDialog {
 					demiDistanceBetweenGalaxiesY.setValue(0);
 					demiDistanceBetweenGalaxiesZ.setValue(0);
 					nbArms.setValue(3);
+					staticDarkMatter.setSelected(true);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -216,6 +222,7 @@ public class GUIParam extends JDialog {
 					ellipseRatio.setValue(0.95);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
+					staticDarkMatter.setSelected(true);
 					break;
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -242,6 +249,7 @@ public class GUIParam extends JDialog {
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
+					staticDarkMatter.setSelected(true);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -268,13 +276,19 @@ public class GUIParam extends JDialog {
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
+					staticDarkMatter.setSelected(true);
 					break;
 				}
 				enableDisableParam();
 			}
 		});
 		add(typeOfUnivers);
-
+		
+		add(new Label("Parallelization:"));
+		parallelization = new JCheckBox();
+		parallelization.setSelected(me.mother.getParameters().isParallelization());
+		add(parallelization);
+		
 		add(new Label("Scala 1/x:"));
 		scala = new JFormattedTextField(dfsc);
 		scala.setValue(me.mother.getParameters().getScala());
@@ -394,6 +408,11 @@ public class GUIParam extends JDialog {
 				.getTypeOfImpact() * 100));
 		add(typeOfImpact);
 
+		add(new Label("Static Dark Matter :"));
+		staticDarkMatter = new JCheckBox();
+		staticDarkMatter.setSelected(me.mother.getParameters().isStaticDarkMatter());
+		add(staticDarkMatter);
+		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -411,6 +430,7 @@ public class GUIParam extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				try {
+					me.mother.getParameters().setParallelization(me.parallelization.isSelected());
 					me.mother.getParameters().setTimeFactor(
 							Double.parseDouble(me.timeFactor.getValue()
 									.toString()));
@@ -472,41 +492,7 @@ public class GUIParam extends JDialog {
 													.getValue().toString()),
 											Double.parseDouble(me.demiDistanceBetweenGalaxiesZ
 													.getValue().toString())));
-
-					switch (typeOfUnivers.getSelectedIndex()) {
-					case 0:
-						// TypeOfUnivers.Planetary;
-						me.mother.getParameters().setStaticDarkMatter(false);
-						break;
-					case 1:
-						// TypeOfUnivers.PlanetaryRandom;
-						me.mother.getParameters().setStaticDarkMatter(false);
-						break;
-					case 2:
-						// TypeOfUnivers.Random;
-						me.mother.getParameters().setStaticDarkMatter(true);
-						break;
-					case 3:
-						// TypeOfUnivers.RandomRotateUnivers;
-						me.mother.getParameters().setStaticDarkMatter(true);
-						break;
-					case 4:
-						// TypeOfUnivers.GalaxiesCollision;
-						me.mother.getParameters().setStaticDarkMatter(false);
-						break;
-					case 5:
-						// TypeOfUnivers.PlanetariesGenesis;
-						me.mother.getParameters().setStaticDarkMatter(false);
-						break;
-					case 6:
-						// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
-						me.mother.getParameters().setStaticDarkMatter(true);
-						break;
-					case 7:
-						// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
-						me.mother.getParameters().setStaticDarkMatter(true);
-						break;	
-					}
+					me.mother.getParameters().setStaticDarkMatter(me.staticDarkMatter.isSelected());
 
 					me.mother.getParameters().setEyes(new Vector3d(0, 0, 900));
 					me.mother.getParameters().setLookAt(
@@ -555,6 +541,7 @@ public class GUIParam extends JDialog {
 		demiDistanceBetweenGalaxiesY.setEnabled(false);
 		demiDistanceBetweenGalaxiesZ.setEnabled(false);
 		nbArms.setEnabled(false);
+		staticDarkMatter.setEnabled(false);
 		switch (typeOfUnivers.getSelectedIndex()) {
 		case 0:
 			// TypeOfUnivers.Planetary;
@@ -682,6 +669,7 @@ public class GUIParam extends JDialog {
 			ellipseRatio.setEnabled(false);
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
+			staticDarkMatter.setEnabled(true);
 			break;
 		case 7:
 			// TypeOfUnivers.RandomStaticSphericalUnivers
@@ -703,6 +691,7 @@ public class GUIParam extends JDialog {
 			ellipseRatio.setEnabled(false);
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
+			staticDarkMatter.setEnabled(true);
 			break;	
 		}
 	}
