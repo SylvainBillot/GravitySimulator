@@ -96,6 +96,9 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUniverCircular) {
 			createRandomRotateUniversCircular();
 		}
+		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomStaticSphericalUnivers) {
+			createRandomStaticSphericalUnivers();
+		}
 		computeMassLimitsCentroidSpeed(true);
 	}
 
@@ -621,6 +624,35 @@ public class Univers {
 
 	}
 
+	
+	private void createRandomStaticSphericalUnivers() {
+		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 1),
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
+
+		createUniversMain(
+				new Vector3d(0, 0, 0),
+				new Vector3d(0, 0, 0),
+				new Vector3d(0, 0, 1),
+				parameters.getNebulaRadius() * 0.01,
+				parameters.getNebulaRadius()
+						* parameters.getDarkMatterNubulaFactor(),
+				new Vector3d(1, 1, 1),
+				parameters.getNumberOfObjects()
+						+ parameters.getNumOfLowMassParticule(),
+				parameters.getDarkMatterMass()
+						/ (parameters.getNumberOfObjects() + parameters
+								.getNumOfLowMassParticule()),
+				parameters.getDarkMatterMass()
+						/ (parameters.getNumberOfObjects() + parameters
+								.getNumOfLowMassParticule()),
+				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01,
+						0.01), parameters.getDarkMatterDistribution(),
+				TypeOfObject.Dark);
+	}
+	
 	private void createGalaxiesCollision() {
 		Vector3d dbg1 = new Vector3d(
 				parameters.getDemiDistanceBetweenGalaxies());

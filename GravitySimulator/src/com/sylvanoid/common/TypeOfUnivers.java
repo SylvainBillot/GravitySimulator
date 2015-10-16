@@ -8,6 +8,7 @@ public enum TypeOfUnivers {
 	GalaxiesCollision			("Galaxies Interactions"),
 	PlanetariesGenesis			("Planetaries Genenesis ?"),
 	RandomRotateUniverCircular  ("Random Rotate Univers Circular"),
+	RandomStaticSphericalUnivers("Random Static Spherical Univers"),
 	;
 
 	private final String label;

@@ -243,7 +243,32 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					break;
-
+				case 7:
+					me.mother.getParameters().setTypeOfUnivers(
+							TypeOfUnivers.RandomStaticSphericalUnivers);
+					manageImpact.setSelected(true);
+					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
+					scala.setValue(3E-19);
+					fusion.setSelected(false);
+					typeOfImpact.setValue(100);
+					numberOfObjects.setValue(10000);
+					densiteMin.setValue(1E-19);
+					nebulaRadius.setValue(HelperVariable.PC * 4E4);
+					massObjectMin
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E4);
+					massObjectMax
+							.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
+					negligeableMass.setValue(0);
+					numOfLowMassParticule.setValue(10000);
+					lowMassParticuleMass
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
+					lowMassDensity.setValue(1E-23);
+					darkMatterMass.setValue(1E40);
+					darkMatterDensity.setValue(1E-23);
+					ellipseRatio.setValue(0.15);
+					ellipseShiftRatio.setValue(1);
+					nbArms.setValue(3);
+					break;
 				}
 				enableDisableParam();
 			}
@@ -477,6 +502,10 @@ public class GUIParam extends JDialog {
 						// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
 						me.mother.getParameters().setStaticDarkMatter(true);
 						break;
+					case 7:
+						// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
+						me.mother.getParameters().setStaticDarkMatter(true);
+						break;	
 					}
 
 					me.mother.getParameters().setEyes(new Vector3d(0, 0, 900));
@@ -654,6 +683,27 @@ public class GUIParam extends JDialog {
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
 			break;
+		case 7:
+			// TypeOfUnivers.RandomStaticSphericalUnivers
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			fusion.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			ellipseRatio.setEnabled(false);
+			ellipseShiftRatio.setEnabled(false);
+			nbArms.setEnabled(false);
+			break;	
 		}
 	}
 
