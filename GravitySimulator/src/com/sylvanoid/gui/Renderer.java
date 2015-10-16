@@ -801,7 +801,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		mousePoint = new Point(e.getX(), e.getY());
+		mousePoint = new Point(e.getPoint());
 	}
 
 	@Override
