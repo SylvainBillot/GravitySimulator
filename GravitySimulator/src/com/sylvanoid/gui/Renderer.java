@@ -488,6 +488,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		textRenderer.draw(
 				"Move compute time (ms): " + parameters.getMoveComputeTime(),
 				10, drawable.getSurfaceHeight() - textSize * 15);
+		
+		textRenderer.draw(
+				"K (j): " + dfsc.format(parameters.getKlength()),
+				10, drawable.getSurfaceHeight() - textSize * 17);
 
 		textRenderer.draw(
 				"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()), 10,
