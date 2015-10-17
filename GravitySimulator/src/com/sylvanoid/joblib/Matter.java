@@ -404,6 +404,15 @@ public class Matter implements Serializable {
 		return newPoint;
 	}
 
+	public void positionAfterRepulsion() {
+		pointAdjusted = new Vector3d(point);
+		for (Matter m : fusionWith) {
+			Vector3d tmpPointAdjusted = positionAfterRepulsion(m);
+			tmpPointAdjusted.sub(point);
+			pointAdjusted.add(tmpPointAdjusted);
+		}
+	}
+	
 	public Vector3d positionAfterRepulsion(Matter m) {
 		double ratio = rayon/(rayon + m
 				.getRayon());
