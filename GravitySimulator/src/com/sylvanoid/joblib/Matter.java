@@ -377,16 +377,17 @@ public class Matter implements Serializable {
 			pointAdjusted.add(tmpPointAdjusted);
 		}
 	}
-	
+
 	/*
-	 * Test with sub radial speed 
+	 * Test with sub radial speed
 	 */
 	public void friction2() {
-		speedAdjusted= new Vector3d(speed);
+		speedAdjusted = new Vector3d(speed);
 		for (Matter m : fusionWith) {
-			double fludity = HelperNewton.distance(point, m.getPoint())/(rayon+m.getRayon());
+			double fludity = HelperNewton.distance(point, m.getPoint())
+					/ (rayon + m.getRayon());
 			Vector3d tmpSpeed = radialSpeed(m);
-			tmpSpeed.scale(1-fludity);
+			tmpSpeed.scale(1 - fludity);
 			speedAdjusted.sub(tmpSpeed);
 		}
 	}
@@ -395,7 +396,7 @@ public class Matter implements Serializable {
 		point = new Vector3d(pointAdjusted);
 		adjustSpeed();
 	}
-	
+
 	public void moveAfterImpact2() {
 		speed = new Vector3d(speedAdjusted);
 	}
@@ -422,10 +423,14 @@ public class Matter implements Serializable {
 		Vector3d newSpeed1 = new Vector3d(m.getSpeed());
 		newSpeed.scale(parameters.getTimeFactor() / precisionFactor);
 		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
-		while (HelperNewton.distance(newPoint, newPoint1) > (rayon + m
-				.getRayon())) {
-			newPoint.add(newSpeed);
-			newPoint1.add(newSpeed1);
+		if (HelperNewton.distance(newPoint, newPoint1) > (rayon + m.getRayon())) {
+			while (HelperNewton.distance(newPoint, newPoint1) > (rayon + m
+					.getRayon())) {
+				newPoint.add(newSpeed);
+				newPoint1.add(newSpeed1);
+			}
+		} else {
+			//newPoint = positionAfterRepulsion(m);
 		}
 		return newPoint;
 	}
@@ -438,22 +443,22 @@ public class Matter implements Serializable {
 			pointAdjusted.add(tmpPointAdjusted);
 		}
 	}
-	
+
 	public Vector3d positionAfterRepulsion(Matter m) {
-		double ratio = rayon/(rayon + m
-				.getRayon());
-		double lengthToMove=rayon-ratio*HelperNewton.distance(point, m.getPoint());
-		Vector3d toMove=new Vector3d(point);
+		double ratio = rayon / (rayon + m.getRayon());
+		double lengthToMove = rayon - ratio
+				* HelperNewton.distance(point, m.getPoint());
+		Vector3d toMove = new Vector3d(point);
 		toMove.sub(m.getPoint());
 		toMove.normalize();
 		toMove.scale(lengthToMove);
-		
+
 		Vector3d newPoint = new Vector3d(point);
 		newPoint.add(toMove);
 
 		return newPoint;
 	}
-	
+
 	public Vector3d globalSpeed() {
 		Vector3d newSpeed = new Vector3d(speed);
 		double newMass = mass;
