@@ -204,7 +204,7 @@ public class Univers {
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				disableAccelerations();
-				//positionAfterRepulsion();
+				// positionAfterRepulsion();
 			}
 			long startTimeMove = System.currentTimeMillis();
 			move();
@@ -516,7 +516,8 @@ public class Univers {
 	private void createRandomStaticUvivers() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
-				new Vector3d(1, 1, 1), 1, 1);
+				new Vector3d(1, 1, 1), parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
 	}
 
 	private void createRandomRotateUnivers() {
@@ -694,11 +695,15 @@ public class Univers {
 
 		List<Matter> subu01 = createUvivers(m1.getPoint(), m1.getSpeed(),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25), 2, 2);
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
 
 		List<Matter> subu02 = createUvivers(m2.getPoint(), m2.getSpeed(),
 				new Vector3d(1, 0, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1), 2, 2);
+				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1),
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
 
 		for (Matter m : subu01) {
 			if (m != m1) {
@@ -805,7 +810,9 @@ public class Univers {
 	private void createPlanetaryRandom() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 1, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1), 1, 1);
+				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1),
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
 		Matter m1 = new Matter(parameters, new Vector3d(
 				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
@@ -824,11 +831,14 @@ public class Univers {
 	private void createPlanetariesGenesis() {
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() / 2 * 0.9,
-				parameters.getNebulaRadius() / 2, new Vector3d(1, 1, 0.05), 1,
-				1);
+				parameters.getNebulaRadius() / 2, new Vector3d(1, 1, 0.05),
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
 		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.9,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05), 1, 1);
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05),
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution());
 		Matter m1 = new Matter(parameters, new Vector3d(
 				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
