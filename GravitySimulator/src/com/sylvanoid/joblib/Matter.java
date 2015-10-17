@@ -32,6 +32,7 @@ public class Matter implements Serializable {
 	private Vector3d angles = new Vector3d(0, 0, 0);
 	private Vector3d speedBefore = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
+	private Vector3d speedAdjusted = new Vector3d(0, 0, 0);
 	private Vector3d accel = new Vector3d(0, 0, 0);
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
@@ -159,6 +160,14 @@ public class Matter implements Serializable {
 
 	public void setSpeed(Vector3d speed) {
 		this.speed = speed;
+	}
+
+	public Vector3d getSpeedAdjusted() {
+		return speedAdjusted;
+	}
+
+	public void setSpeedAdjusted(Vector3d speedAdjusted) {
+		this.speedAdjusted = speedAdjusted;
 	}
 
 	public Vector3d getAccel() {
@@ -368,10 +377,27 @@ public class Matter implements Serializable {
 			pointAdjusted.add(tmpPointAdjusted);
 		}
 	}
+	
+	/*
+	 * Test with sub radial speed 
+	 */
+	public void friction2() {
+		speedAdjusted= new Vector3d(speed);
+		for (Matter m : fusionWith) {
+			double fludity = HelperNewton.distance(point, m.getPoint())/(rayon+m.getRayon());
+			Vector3d tmpSpeed = radialSpeed(m);
+			tmpSpeed.scale(1-fludity);
+			speedAdjusted.sub(tmpSpeed);
+		}
+	}
 
 	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
 		adjustSpeed();
+	}
+	
+	public void moveAfterImpact2() {
+		speed = new Vector3d(speedAdjusted);
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {
