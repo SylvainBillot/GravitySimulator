@@ -201,15 +201,6 @@ public class Univers {
 
 			// computeBarnesHutNeighbors();
 			computeBarnesHutGravity();
-			if (parameters.isManageImpact()) {
-				computeBarnesHutCollision();
-				/* one time */
-				disableAccelerations();
-				/* second time for repulsion */
-				//disableAccelerations();
-				
-				//positionAfterRepulsion();
-			}
 			long startTimeMove = System.currentTimeMillis();
 			move();
 			parameters.setMoveComputeTime(System.currentTimeMillis()
@@ -217,6 +208,9 @@ public class Univers {
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				moveImpact();
+				/* disable futur acceleration */ 
+				computeBarnesHutCollision();
+				disableAccelerations();
 			}
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
