@@ -349,7 +349,6 @@ public class Univers {
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					m.moveAfterImpact();
-					//m.moveAfterImpact2();
 				}
 			}
 		}
@@ -359,20 +358,6 @@ public class Univers {
 		for (Matter m : listMatter) {
 			if (m.getFusionWith().size() != 0) {
 				m.disableAccelerationWith();
-			}
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private void positionAfterRepulsion() {
-		for (Matter m : listMatter) {
-			if (m.getFusionWith().size() != 0) {
-				m.positionAfterRepulsion();
-			}
-		}
-		for (Matter m : listMatter) {
-			if (m.getFusionWith().size() != 0) {
-				m.moveAfterImpact();
 			}
 		}
 	}

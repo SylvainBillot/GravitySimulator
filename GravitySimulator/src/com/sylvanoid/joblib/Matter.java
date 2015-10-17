@@ -288,7 +288,6 @@ public class Matter implements Serializable {
 			Vector3d newColor = new Vector3d(color);
 			double newDensity = density;
 			double newMass = mass;
-
 			for (Matter m : fusionWith) {
 				if (listMatter.contains(m)) {
 					if (m.mass > newMass) {
@@ -378,27 +377,20 @@ public class Matter implements Serializable {
 		}
 	}
 
-	/*
-	 * Test with sub radial speed
-	 */
 	public void friction2() {
-		speedAdjusted = new Vector3d(speed);
+		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
-			double fludity = HelperNewton.distance(point, m.getPoint())
-					/ (rayon + m.getRayon());
-			Vector3d tmpSpeed = radialSpeed(m);
-			tmpSpeed.scale(1 - fludity);
-			speedAdjusted.sub(tmpSpeed);
+			// Impact point adjustment
+			Vector3d tmpPointAdjusted = positionAfterRepulsion(m);
+			// new point
+			tmpPointAdjusted.sub(point);
+			pointAdjusted.add(tmpPointAdjusted);
 		}
 	}
 
 	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
 		adjustSpeed();
-	}
-
-	public void moveAfterImpact2() {
-		speed = new Vector3d(speedAdjusted);
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {
@@ -430,18 +422,9 @@ public class Matter implements Serializable {
 				newPoint1.add(newSpeed1);
 			}
 		} else {
-			//newPoint = positionAfterRepulsion(m);
+			// newPoint = positionAfterRepulsion(m);
 		}
 		return newPoint;
-	}
-
-	public void positionAfterRepulsion() {
-		pointAdjusted = new Vector3d(point);
-		for (Matter m : fusionWith) {
-			Vector3d tmpPointAdjusted = positionAfterRepulsion(m);
-			tmpPointAdjusted.sub(point);
-			pointAdjusted.add(tmpPointAdjusted);
-		}
 	}
 
 	public Vector3d positionAfterRepulsion(Matter m) {
@@ -452,7 +435,6 @@ public class Matter implements Serializable {
 		toMove.sub(m.getPoint());
 		toMove.normalize();
 		toMove.scale(lengthToMove);
-
 		Vector3d newPoint = new Vector3d(point);
 		newPoint.add(toMove);
 
