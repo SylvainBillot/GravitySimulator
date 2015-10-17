@@ -218,7 +218,6 @@ public class Univers {
 			moveEnd(bufferedWriter);
 			parameters.setCycleComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
-
 			parameters.setKlength(k.length());
 		} else {
 			parameters.setNumOfCompute(-9999);
@@ -285,8 +284,6 @@ public class Univers {
 				maxMassElement = m;
 			}
 			m.move();
-			m.getFusionWith().clear();
-			m.getNeighbors().clear();
 		}
 	}
 

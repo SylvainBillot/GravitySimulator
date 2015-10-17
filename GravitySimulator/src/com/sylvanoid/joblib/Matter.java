@@ -268,6 +268,8 @@ public class Matter implements Serializable {
 		speed.add(accel);
 		accel = new Vector3d(0, 0, 0);
 		point = getPlusV();
+		fusionWith.clear();
+		neighbors.clear();
 	}
 
 	public void fusion(List<Matter> listMatter) {
@@ -387,7 +389,6 @@ public class Matter implements Serializable {
 	}
 
 	public Vector3d positionBeforeImpactWith(Matter m) {
-		boolean dontLimitAtOriginalPosition = false;
 		double precisionFactor = 100;
 		Vector3d newPoint = new Vector3d(pointBefore);
 		Vector3d newPoint1 = new Vector3d(m.getPointBefore());
@@ -395,16 +396,29 @@ public class Matter implements Serializable {
 		Vector3d newSpeed1 = new Vector3d(m.getSpeed());
 		newSpeed.scale(parameters.getTimeFactor() / precisionFactor);
 		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
-		int cpt = (int) precisionFactor;
-		while ((HelperNewton.distance(newPoint, newPoint1) > (rayon + m
-				.getRayon())) && (cpt > 0 || dontLimitAtOriginalPosition)) {
+		while (HelperNewton.distance(newPoint, newPoint1) > (rayon + m
+				.getRayon())) {
 			newPoint.add(newSpeed);
 			newPoint1.add(newSpeed1);
-			cpt--;
 		}
 		return newPoint;
 	}
 
+	public Vector3d positionAfterRepulsion(Matter m) {
+		double ratio = rayon/(rayon + m
+				.getRayon());
+		double lengthToMove=rayon-ratio*HelperNewton.distance(point, m.getPoint());
+		Vector3d toMove=new Vector3d(point);
+		toMove.sub(m.getPoint());
+		toMove.normalize();
+		toMove.scale(lengthToMove);
+		
+		Vector3d newPoint = new Vector3d(point);
+		newPoint.add(toMove);
+
+		return newPoint;
+	}
+	
 	public Vector3d globalSpeed() {
 		Vector3d newSpeed = new Vector3d(speed);
 		double newMass = mass;
