@@ -203,7 +203,11 @@ public class Univers {
 			computeBarnesHutGravity();
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
+				/* one time */
 				disableAccelerations();
+				/* second time for repulsion */
+				//disableAccelerations();
+				
 				//positionAfterRepulsion();
 			}
 			long startTimeMove = System.currentTimeMillis();
