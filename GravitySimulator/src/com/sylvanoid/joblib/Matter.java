@@ -381,7 +381,8 @@ public class Matter implements Serializable {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
-			Vector3d tmpPointAdjusted = positionAfterRepulsion(m);
+			Vector3d tmpPointAdjusted = positionAfterRepulsionWith(m);
+						
 			// new point
 			tmpPointAdjusted.sub(point);
 			pointAdjusted.add(tmpPointAdjusted);
@@ -422,12 +423,12 @@ public class Matter implements Serializable {
 				newPoint1.add(newSpeed1);
 			}
 		} else {
-			// newPoint = positionAfterRepulsion(m);
+			//
 		}
 		return newPoint;
 	}
 
-	public Vector3d positionAfterRepulsion(Matter m) {
+	public Vector3d positionAfterRepulsionWith(Matter m) {
 		double ratio = rayon / (rayon + m.getRayon());
 		double lengthToMove = rayon - ratio
 				* HelperNewton.distance(point, m.getPoint());
@@ -439,6 +440,20 @@ public class Matter implements Serializable {
 		newPoint.add(toMove);
 
 		return newPoint;
+	}
+
+	public Vector3d centroidWith(Matter m) {
+		return new Vector3d((point.x * mass + m.getPoint().x)
+				/ (mass + m.getMass()), (point.y * mass + m.getPoint().y)
+				/ (mass + m.getMass()), (point.z * mass + m.getPoint().z)
+				/ (mass + m.getMass()));
+	}
+	
+	public Vector3d centroidWith(Matter m,Vector3d p1, Vector3d p2) {
+		return new Vector3d((p1.x * mass + p2.x)
+				/ (mass + m.getMass()), (p1.y * mass + p2.y)
+				/ (mass + m.getMass()), (p1.z * mass + p2.z)
+				/ (mass + m.getMass()));
 	}
 
 	public Vector3d globalSpeed() {
@@ -492,7 +507,7 @@ public class Matter implements Serializable {
 		newSpeed.scale(speedLength);
 		speed = new Vector3d(newSpeed);
 	}
-
+	
 	public Vector3d accelerationWith(Matter m) {
 		double attraction = HelperNewton.attraction(this, m, parameters);
 		return HelperVector.acceleration(point, m.getPoint(), attraction);
