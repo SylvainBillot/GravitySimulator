@@ -354,6 +354,7 @@ public class Matter implements Serializable {
 
 	public void friction() {
 		double fluidity = 1;
+		double cr = 0;
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
@@ -362,9 +363,9 @@ public class Matter implements Serializable {
 			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
 					/ speed.length();
 			double timeRatio = 1 - (t / parameters.getTimeFactor());
-			Vector3d newSpeed = tangentialSpeed(m);
+			Vector3d newSpeed = tangentialSpeed(m, cr);
 			newSpeed.scale(fluidity);
-			newSpeed.add(speedAfterImpactWith(m, 0));
+			newSpeed.add(speedAfterImpactWith(m, cr));
 			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
 					* parameters.getTimeFactor() * timeRatio,
 					tmpPointAdjusted.y + newSpeed.y
@@ -382,7 +383,7 @@ public class Matter implements Serializable {
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
 			Vector3d tmpPointAdjusted = positionAfterRepulsionWith(m);
-						
+
 			// new point
 			tmpPointAdjusted.sub(point);
 			pointAdjusted.add(tmpPointAdjusted);
@@ -423,7 +424,7 @@ public class Matter implements Serializable {
 				newPoint1.add(newSpeed1);
 			}
 		} else {
-			//
+
 		}
 		return newPoint;
 	}
@@ -448,10 +449,10 @@ public class Matter implements Serializable {
 				/ (mass + m.getMass()), (point.z * mass + m.getPoint().z)
 				/ (mass + m.getMass()));
 	}
-	
-	public Vector3d centroidWith(Matter m,Vector3d p1, Vector3d p2) {
-		return new Vector3d((p1.x * mass + p2.x)
-				/ (mass + m.getMass()), (p1.y * mass + p2.y)
+
+	public Vector3d centroidWith(Matter m, Vector3d p1, Vector3d p2) {
+		return new Vector3d((p1.x * mass + p2.x) / (mass + m.getMass()), (p1.y
+				* mass + p2.y)
 				/ (mass + m.getMass()), (p1.z * mass + p2.z)
 				/ (mass + m.getMass()));
 	}
@@ -472,9 +473,9 @@ public class Matter implements Serializable {
 		return newSpeed;
 	}
 
-	public Vector3d radialSpeed(Matter m) {
+	public Vector3d radialSpeed(Matter m, double cr) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
-		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, 0));
+		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this));
 		newSpeed.sub(positionBeforeImpactWith(m));
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
@@ -484,11 +485,11 @@ public class Matter implements Serializable {
 		return newSpeed;
 	}
 
-	public Vector3d tangentialSpeed(Matter m) {
+	public Vector3d tangentialSpeed(Matter m, double cr) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
-		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, 0));
+		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
-		newSpeed.sub(radialSpeed(m));
+		newSpeed.sub(radialSpeed(m, cr));
 		return newSpeed;
 	}
 
@@ -507,7 +508,7 @@ public class Matter implements Serializable {
 		newSpeed.scale(speedLength);
 		speed = new Vector3d(newSpeed);
 	}
-	
+
 	public Vector3d accelerationWith(Matter m) {
 		double attraction = HelperNewton.attraction(this, m, parameters);
 		return HelperVector.acceleration(point, m.getPoint(), attraction);
