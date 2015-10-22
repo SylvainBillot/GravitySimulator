@@ -271,6 +271,22 @@ public class Matter implements Serializable {
 				: (point.z));
 	}
 
+	/**
+	 * 
+	 * @return move quantity
+	 */
+	public Vector3d getP() {
+		return new Vector3d(mass * speed.x, mass * speed.y, mass * speed.z);
+	}
+
+	/**
+	 * 
+	 * @return Kinetic energy
+	 */
+	public double getK() {
+		return 0.5 * mass * net.jafama.FastMath.pow2(speed.length());
+	}
+
 	public void move() {
 		pointBefore = new Vector3d(point);
 		speedBefore = new Vector3d(speed);

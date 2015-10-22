@@ -52,9 +52,10 @@ public class Univers {
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	private Vector3d max = new Vector3d(0, 0, 0);
+	private double k = 0;
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
-	private Vector3d k = new Vector3d(0, 0, 0);
+	private Vector3d p = new Vector3d(0, 0, 0);
 
 	private Matter maxMassElement = null;
 
@@ -132,7 +133,8 @@ public class Univers {
 		volumicMass = 0;
 		density = 0;
 		speed = new Vector3d(0, 0, 0);
-		k = new Vector3d();
+		k = 0;
+		p = new Vector3d(0, 0, 0);
 		mass = 0;
 		visibleMass = 0;
 		darkMass = 0;
@@ -174,11 +176,8 @@ public class Univers {
 			tmpGy += (m.getPoint().getY() * m.getMass());
 			tmpGz += (m.getPoint().getZ() * m.getMass());
 			speed.add(m.getSpeed());
-			k.add(new Vector3d(0.5 * net.jafama.FastMath.pow2(m.getSpeed().x)
-					* m.getMass(), 0.5
-					* net.jafama.FastMath.pow2(m.getSpeed().y) * m.getMass(),
-					0.5 * net.jafama.FastMath.pow2(m.getSpeed().z)
-							* m.getMass()));
+			k += m.getK();
+			p.add(m.getP());
 		}
 		volumicMass = visibleMass
 				/ ((max.x - min.x) * (max.y - min.y) * (max.z - min.z));
@@ -208,7 +207,7 @@ public class Univers {
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				moveImpact();
-				/* disable futur acceleration */ 
+				/* disable futur acceleration */
 				computeBarnesHutCollision();
 				disableAccelerations();
 			}
@@ -217,7 +216,8 @@ public class Univers {
 			moveEnd(bufferedWriter);
 			parameters.setCycleComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
-			parameters.setKlength(k.length());
+			parameters.setKlength(k);
+			parameters.setPlength(p.length());
 		} else {
 			parameters.setNumOfCompute(-9999);
 			parameters.setNumOfAccelCompute(-9999);
@@ -343,7 +343,7 @@ public class Univers {
 				if (m.getFusionWith().size() != 0) {
 					// m.impact();
 					m.friction();
-					//m.friction2();
+					// m.friction2();
 				}
 			}
 			for (Matter m : listMatter) {
@@ -889,7 +889,12 @@ public class Univers {
 		return father;
 	}
 
-	public Vector3d getK() {
+	public double getK() {
 		return k;
 	}
+
+	public Vector3d getP() {
+		return p;
+	}
+
 }

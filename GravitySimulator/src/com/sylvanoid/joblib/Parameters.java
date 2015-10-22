@@ -50,6 +50,7 @@ public class Parameters implements Serializable {
 	private double moveComputeTime = 0;
 	private double barnesHuttComputeTime = 0;
 	private double klength = 0;
+	private double plength = 0;
 	private double ellipseRatio = 0.75;
 	private double ellipseShiftRatio = 3;
 	private double negligeableMass = 0;
@@ -348,6 +349,14 @@ public class Parameters implements Serializable {
 
 	public void setKlength(double klength) {
 		this.klength = klength;
+	}
+
+	public double getPlength() {
+		return plength;
+	}
+
+	public void setPlength(double plength) {
+		this.plength = plength;
 	}
 
 	public int getNumOfLowMassParticule() {
