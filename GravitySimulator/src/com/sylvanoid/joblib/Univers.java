@@ -341,7 +341,7 @@ public class Univers {
 			// recusiveImpact();
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					// m.impact();
+					 // m.impact();
 					m.friction();
 					// m.friction2();
 				}
