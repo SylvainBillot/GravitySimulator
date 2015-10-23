@@ -426,22 +426,33 @@ public class Matter implements Serializable {
 	}
 
 	public Vector3d positionBeforeImpactWith(Matter m) {
-		double precisionFactor = 100;
+		boolean reverse = false;
 		Vector3d newPoint = new Vector3d(pointBefore);
-		Vector3d newPoint1 = new Vector3d(m.getPointBefore());
-		Vector3d newSpeed = new Vector3d(speed);
-		Vector3d newSpeed1 = new Vector3d(m.getSpeed());
-		newSpeed.scale(parameters.getTimeFactor() / precisionFactor);
-		newSpeed1.scale(parameters.getTimeFactor() / precisionFactor);
-		if (HelperNewton.distance(newPoint, newPoint1) > (rayon + m.getRayon())) {
-			while (HelperNewton.distance(newPoint, newPoint1) > (rayon + m
-					.getRayon())) {
-				newPoint.add(newSpeed);
-				newPoint1.add(newSpeed1);
+		Vector3d deltaSpeed = new Vector3d(speed);
+		deltaSpeed.sub(m.getSpeed());
+		Vector3d deltaPoint = new Vector3d(pointBefore);
+		deltaPoint.sub(m.getPointBefore());
+		double a = net.jafama.FastMath.pow2(deltaSpeed.x)
+				+ net.jafama.FastMath.pow2(deltaSpeed.y)
+				+ net.jafama.FastMath.pow2(deltaSpeed.z);
+		double b = deltaPoint.x * deltaSpeed.x + deltaPoint.y * deltaSpeed.y
+				+ deltaPoint.z * deltaSpeed.z;
+		double c = (net.jafama.FastMath.pow2(deltaPoint.x)
+				+ net.jafama.FastMath.pow2(deltaPoint.y) + net.jafama.FastMath
+					.pow2(deltaPoint.z))
+				- net.jafama.FastMath.pow2(rayon + m.getRayon());
+		double delta = net.jafama.FastMath.pow2(b) - a * c;
+		if (delta > 0 && a != 0) {
+			double rd = net.jafama.FastMath.sqrt(delta);
+			double t = net.jafama.FastMath.min((-b + rd) / a, (-b - rd) / a);
+			if (t >= 0 || reverse) {
+				Vector3d deltaT = new Vector3d(speed);
+				deltaT.normalize();
+				deltaT.scale(t);
+				newPoint.add(deltaT);
 			}
-		} else {
-
 		}
+
 		return newPoint;
 	}
 
