@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
+import com.sylvanoid.common.TypeOfImpact;
 import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.common.Vector3dAdapter;
 
@@ -347,24 +348,6 @@ public class Matter implements Serializable {
 			Vector3d tmpAccel = new Vector3d(newSpeed);
 			tmpAccel.sub(speed);
 			accel.add(tmpAccel);
-
-			// Impact point adjustment
-			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m);
-
-			// Move to disable futur acceleration
-			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
-					/ speed.length();
-			double timeRatio = t / parameters.getTimeFactor();
-			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
-					* parameters.getTimeFactor() * timeRatio,
-					tmpPointAdjusted.y + newSpeed.y
-							* parameters.getTimeFactor() * timeRatio,
-					tmpPointAdjusted.z + newSpeed.z
-							* parameters.getTimeFactor() * timeRatio);
-
-			// new point
-			tmpPointAdjusted.sub(point);
-			pointAdjusted.add(tmpPointAdjusted);
 		}
 	}
 
@@ -374,7 +357,7 @@ public class Matter implements Serializable {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
-			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m);
+			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m,false);
 			// Move the rest of time
 			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
 					/ speed.length();
@@ -406,9 +389,12 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void moveAfterImpact() {
+	public void moveAfterImpact(TypeOfImpact typeOfImpact) {
 		point = new Vector3d(pointAdjusted);
-		adjustSpeed();
+		if(typeOfImpact.equals(TypeOfImpact.Friction)) {
+			adjustSpeed();
+		}
+		
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {
@@ -425,8 +411,7 @@ public class Matter implements Serializable {
 		return newSpeed;
 	}
 
-	public Vector3d positionBeforeImpactWith(Matter m) {
-		boolean reverse = false;
+	public Vector3d positionBeforeImpactWith(Matter m, boolean withReverce) {
 		Vector3d newPoint = new Vector3d(pointBefore);
 		Vector3d deltaSpeed = new Vector3d(speed);
 		deltaSpeed.sub(m.getSpeed());
@@ -445,7 +430,7 @@ public class Matter implements Serializable {
 		if (delta > 0 && a != 0) {
 			double rd = net.jafama.FastMath.sqrt(delta);
 			double t = net.jafama.FastMath.min((-b + rd) / a, (-b - rd) / a);
-			if (t >= 0 || reverse) {
+			if (t >= 0 || withReverce) {
 				Vector3d deltaT = new Vector3d(speed);
 				deltaT.normalize();
 				deltaT.scale(t);
@@ -503,8 +488,8 @@ public class Matter implements Serializable {
 	public Vector3d radialSpeed(Matter m, double cr) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
-		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this));
-		newSpeed.sub(positionBeforeImpactWith(m));
+		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this,false));
+		newSpeed.sub(positionBeforeImpactWith(m,false));
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
 		newSpeed.scale(net.jafama.FastMath.cos(angle)

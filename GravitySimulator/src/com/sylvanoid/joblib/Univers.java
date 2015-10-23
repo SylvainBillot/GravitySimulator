@@ -20,6 +20,7 @@ import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperTools;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
+import com.sylvanoid.common.TypeOfImpact;
 import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.common.Vector3dAdapter;
@@ -206,10 +207,15 @@ public class Univers {
 					- startTimeMove);
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
-				moveImpact();
-				/* disable futur acceleration */
-				computeBarnesHutCollision();
-				disableAccelerations();
+				if(parameters.isFusion()){
+					moveImpact(TypeOfImpact.Fusion);
+				} else {
+					moveImpact(TypeOfImpact.Friction);
+					/* disable futur acceleration */
+					computeBarnesHutCollision();
+					disableAccelerations();
+				}
+				
 			}
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -329,28 +335,42 @@ public class Univers {
 		}
 	}
 
-	private void moveImpact() {
-		if (parameters.isFusion()) {
+	private void moveImpact(TypeOfImpact typeOfImpact) {
+		switch (typeOfImpact) {
+		case Fusion:
 			List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 			for (Matter m : listMatterBis) {
 				if (m.getFusionWith().size() != 0) {
 					m.fusion(listMatter);
 				}
 			}
-		} else {
-			// recusiveImpact();
+			break;
+		case Friction:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					 // m.impact();
 					m.friction();
-					// m.friction2();
 				}
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.moveAfterImpact();
+					m.moveAfterImpact(typeOfImpact);
 				}
 			}
+			break;
+		case Impact:
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.impact();
+				}
+			}
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.moveAfterImpact(typeOfImpact);
+				}
+			}
+			break;
+		default:	
+			
 		}
 	}
 
