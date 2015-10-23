@@ -339,11 +339,11 @@ public class Matter implements Serializable {
 	}
 
 	public void impact() {
+		double cr = parameters.getTypeOfImpact();
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// New speed
-			Vector3d newSpeed = speedAfterImpactWith(m,
-					parameters.getTypeOfImpact());
+			Vector3d newSpeed = speedAfterImpactWith(m, cr);
 			Vector3d tmpAccel = new Vector3d(newSpeed);
 			tmpAccel.sub(speed);
 			accel.add(tmpAccel);
