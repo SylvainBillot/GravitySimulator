@@ -360,7 +360,7 @@ public class Univers {
 		case Impact:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.impact();
+					m.softImpact();
 				}
 			}
 			for (Matter m : listMatter) {

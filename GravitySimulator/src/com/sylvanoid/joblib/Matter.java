@@ -52,7 +52,7 @@ public class Matter implements Serializable {
 
 	}
 
-	/* For comaraison only */
+	/* For comparaison only */
 	public Matter(Vector3d point) {
 		this.setPoint(point);
 		mass = net.jafama.FastMath.random();
@@ -339,16 +339,13 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void impact() {
-		double cr = parameters.getTypeOfImpact();
+	public void softImpact() {
 		pointAdjusted = new Vector3d(point);
-		for (Matter m : fusionWith) {
-			// New speed
-			Vector3d newSpeed = speedAfterImpactWith(m, cr);
-			Vector3d tmpAccel = new Vector3d(newSpeed);
-			tmpAccel.sub(speed);
-			accel.add(tmpAccel);
-		}
+		Vector3d newSpeed = globalSpeed();
+		Vector3d tmpAccel = new Vector3d(newSpeed);
+		tmpAccel.sub(speed);
+		accel.add(tmpAccel);
+		
 	}
 
 	public void friction() {
