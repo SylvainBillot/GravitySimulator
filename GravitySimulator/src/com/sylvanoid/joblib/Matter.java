@@ -300,35 +300,16 @@ public class Matter implements Serializable {
 
 	public void fusion(List<Matter> listMatter) {
 		if (listMatter.contains(this)) {
-			Vector3d newPoint = new Vector3d(point);
-			Vector3d newSpeed = new Vector3d(speed);
+			Vector3d newPoint = globalCentroid();
+			Vector3d newSpeed = globalSpeed();
 			Vector3d newColor = new Vector3d(color);
-			double newDensity = density;
+			double newDensity = globalDensity();
 			double newMass = mass;
 			for (Matter m : fusionWith) {
 				if (listMatter.contains(m)) {
 					if (m.mass > newMass) {
 						newColor = new Vector3d(m.getColor());
 					}
-					newPoint = new Vector3d(
-							(newPoint.x * newMass + m.getPoint().x
-									* m.getMass())
-									/ (newMass + m.getMass()), (newPoint.y
-									* newMass + m.getPoint().y * m.getMass())
-									/ (newMass + m.getMass()), (newPoint.z
-									* newMass + m.getPoint().z * m.getMass())
-									/ (newMass + m.getMass()));
-					newSpeed = new Vector3d(
-							(newSpeed.x * newMass + m.getSpeed().x
-									* m.getMass())
-									/ (newMass + m.getMass()), (newSpeed.y
-									* newMass + m.getSpeed().y * m.getMass())
-									/ (newMass + m.getMass()), (newSpeed.z
-									* newMass + m.getSpeed().z * m.getMass())
-									/ (newMass + m.getMass()));
-					newDensity = (newDensity * newMass + m.getDensity()
-							* m.getMass())
-							/ (newMass + m.getMass());
 					newMass = newMass + m.getMass();
 					listMatter.remove(m);
 				}
@@ -345,7 +326,7 @@ public class Matter implements Serializable {
 		Vector3d tmpAccel = new Vector3d(newSpeed);
 		tmpAccel.sub(speed);
 		accel.add(tmpAccel);
-		
+
 	}
 
 	public void friction() {
@@ -354,7 +335,7 @@ public class Matter implements Serializable {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
-			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m,false);
+			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m, false);
 			// Move the rest of time
 			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
 					/ speed.length();
@@ -388,10 +369,10 @@ public class Matter implements Serializable {
 
 	public void moveAfterImpact(TypeOfImpact typeOfImpact) {
 		point = new Vector3d(pointAdjusted);
-		if(typeOfImpact.equals(TypeOfImpact.Friction)) {
+		if (typeOfImpact.equals(TypeOfImpact.Friction)) {
 			adjustSpeed();
 		}
-		
+
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {
@@ -466,27 +447,50 @@ public class Matter implements Serializable {
 				/ (mass + m.getMass()));
 	}
 
-	public Vector3d globalSpeed() {
-		Vector3d newSpeed = new Vector3d(speed);
+	public Vector3d globalCentroid() {
+		Vector3d newPoint = new Vector3d(point);
+		newPoint.scale(mass);
 		double newMass = mass;
 		for (Matter m : fusionWith) {
-			newSpeed = new Vector3d((newSpeed.x * newMass + m.getSpeed().x
-					* m.getMass())
-					/ (newMass + m.getMass()),
-					(newSpeed.y * newMass + m.getSpeed().y * m.getMass())
-							/ (newMass + m.getMass()),
-					(newSpeed.z * newMass + m.getSpeed().z * m.getMass())
-							/ (newMass + m.getMass()));
-			newMass += mass;
+			newPoint.x += m.getPoint().x * m.getMass();
+			newPoint.y += m.getPoint().y * m.getMass();
+			newPoint.z += m.getPoint().z * m.getMass();
+			newMass += m.getMass();
 		}
+		newPoint.scale(1 / newMass);
+		return newPoint;
+	}
+
+	public Vector3d globalSpeed() {
+		Vector3d newSpeed = new Vector3d(speed);
+		newSpeed.scale(mass);
+		double newMass = mass;
+		for (Matter m : fusionWith) {
+			newSpeed.x += m.getSpeed().x * m.getMass();
+			newSpeed.y += m.getSpeed().y * m.getMass();
+			newSpeed.z += m.getSpeed().z * m.getMass();
+			newMass += m.getMass();
+		}
+		newSpeed.scale(1 / newMass);
 		return newSpeed;
+	}
+
+	public double globalDensity() {
+		double newDensity = density * mass;
+		double newMass = mass;
+		for (Matter m : fusionWith) {
+			newDensity += m.getDensity() * m.getMass();
+			newMass += m.getMass();
+		}
+		return newDensity / newMass;
 	}
 
 	public Vector3d radialSpeed(Matter m, double cr) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
-		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this,false));
-		newSpeed.sub(positionBeforeImpactWith(m,false));
+		Vector3d newSpeed = new Vector3d(
+				m.positionBeforeImpactWith(this, false));
+		newSpeed.sub(positionBeforeImpactWith(m, false));
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
 		newSpeed.scale(net.jafama.FastMath.cos(angle)

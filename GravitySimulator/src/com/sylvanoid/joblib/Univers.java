@@ -326,7 +326,6 @@ public class Univers {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private void recusiveImpact() {
 		// recursive impact
 		for (Matter m : listMatter) {
@@ -338,6 +337,7 @@ public class Univers {
 	private void moveImpact(TypeOfImpact typeOfImpact) {
 		switch (typeOfImpact) {
 		case Fusion:
+			recusiveImpact();
 			List<Matter> listMatterBis = new ArrayList<Matter>(listMatter);
 			for (Matter m : listMatterBis) {
 				if (m.getFusionWith().size() != 0) {
