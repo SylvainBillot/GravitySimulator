@@ -305,6 +305,9 @@ public class Univers {
 	}
 
 	private int computeBarnesHutCollision() {
+		for(Matter m:listMatter){
+			m.getFusionWith().clear();
+		}
 		BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
 		if (parameters.isParallelization()) {
 			ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
