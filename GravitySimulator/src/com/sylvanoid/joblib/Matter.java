@@ -369,10 +369,15 @@ public class Matter implements Serializable {
 
 	public void moveAfterImpact(TypeOfImpact typeOfImpact) {
 		point = new Vector3d(pointAdjusted);
-		if (typeOfImpact.equals(TypeOfImpact.Friction)) {
+		switch (typeOfImpact){
+		case Friction:
 			adjustSpeed();
+			break;
+		case Friction2:
+			adjustSpeed();
+			break;
+		default:
 		}
-
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {

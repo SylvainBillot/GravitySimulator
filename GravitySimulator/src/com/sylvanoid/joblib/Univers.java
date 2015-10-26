@@ -360,6 +360,18 @@ public class Univers {
 				}
 			}
 			break;
+		case Friction2:
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.friction2();
+				}
+			}
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.moveAfterImpact(typeOfImpact);
+				}
+			}
+			break;			
 		case Impact:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
