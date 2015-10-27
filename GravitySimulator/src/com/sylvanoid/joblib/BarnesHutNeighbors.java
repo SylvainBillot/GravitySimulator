@@ -155,7 +155,7 @@ public class BarnesHutNeighbors extends RecursiveTask<Integer> {
 		}
 		if (univers.getListMatter().size() == 1) {
 			Matter m = univers.getListMatter().get(0);
-			if (m.getTypeOfObject()==TypeOfObject.Gas) {
+			if (m.getTypeOfObject()!=TypeOfObject.Dark) {
 				Univers gu = new Univers();
 				if (univers.getFather() != null) {
 					if (univers.getFather().getFather() != null) {
@@ -168,10 +168,8 @@ public class BarnesHutNeighbors extends RecursiveTask<Integer> {
 						gu = univers.getFather();
 					}
 					for (Matter mgu : gu.getListMatter()) {
-						if (m != mgu) {
-							if ((HelperNewton.distance(m, mgu) < (m.getRayon() + mgu
-									.getRayon()))
-									&& (m.getTypeOfObject().equals(mgu
+						if (m != mgu && HelperNewton.distance(m, mgu)<parameters.getNebulaRadius()/50) {
+							if ((m.getTypeOfObject().equals(mgu
 											.getTypeOfObject()))) {
 								if (!m.getNeighbors().contains(mgu)) {
 									m.getNeighbors().add(mgu);

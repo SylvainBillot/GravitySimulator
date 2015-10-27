@@ -198,9 +198,13 @@ public class Univers {
 			parameters.setLimitComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
-
-			// computeBarnesHutNeighbors();
+			
 			computeBarnesHutGravity();
+			changeSpeed();
+			
+			//computeBarnesHutNeighbors();
+			//applyVicosity();
+			
 			long startTimeMove = System.currentTimeMillis();
 			move();
 			parameters.setMoveComputeTime(System.currentTimeMillis()
@@ -282,6 +286,12 @@ public class Univers {
 		return valReturn;
 	}
 
+	private void changeSpeed() {
+		for (Matter m : listMatter) {
+			m.changeSpeed();
+		}
+	}
+	
 	private void move() {
 		for (Matter m : listMatter) {
 			if (maxMassElement == null
@@ -294,6 +304,9 @@ public class Univers {
 
 	@SuppressWarnings("unused")
 	private void computeBarnesHutNeighbors() {
+		for(Matter m:listMatter){
+			m.getNeighbors().clear();
+		}
 		BarnesHutNeighbors barnesHutNeighbors = new BarnesHutNeighbors(this);
 		if (parameters.isParallelization()) {
 			ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
@@ -336,7 +349,16 @@ public class Univers {
 					new ArrayList<Matter>()));
 		}
 	}
-
+	
+	@SuppressWarnings("unused")
+	private void applyVicosity(){
+		for (Matter m : listMatter) {
+			if (m.getNeighbors().size() != 0) {
+				m.applyVicosity();
+			}
+		}
+	}
+	
 	private void moveImpact(TypeOfImpact typeOfImpact) {
 		switch (typeOfImpact) {
 		case Fusion:

@@ -288,14 +288,21 @@ public class Matter implements Serializable {
 		return 0.5 * mass * net.jafama.FastMath.pow2(speed.length());
 	}
 
-	public void move() {
-		pointBefore = new Vector3d(point);
+	public void changeSpeed() {
 		speedBefore = new Vector3d(speed);
 		speed.add(accel);
 		accel = new Vector3d(0, 0, 0);
+	}
+
+	public void move() {
+		pointBefore = new Vector3d(point);
 		point = getPlusV();
-		fusionWith.clear();
-		neighbors.clear();
+	}
+
+	public void applyVicosity() {
+		for (Matter m : neighbors) {
+			System.out.println("Apply Viscosity " + name + " " + m.getName());
+		}
 	}
 
 	public void fusion(List<Matter> listMatter) {
@@ -369,7 +376,7 @@ public class Matter implements Serializable {
 
 	public void moveAfterImpact(TypeOfImpact typeOfImpact) {
 		point = new Vector3d(pointAdjusted);
-		switch (typeOfImpact){
+		switch (typeOfImpact) {
 		case Friction:
 			adjustSpeed();
 			break;
