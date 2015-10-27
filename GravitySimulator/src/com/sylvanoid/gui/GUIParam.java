@@ -44,6 +44,7 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField lowMassParticuleMass;
 	private JFormattedTextField lowMassDensity;
 	private JFormattedTextField gasDistribution;
+	private JFormattedTextField darkMatterDistribution;
 	private JCheckBox fusion;
 	private JFormattedTextField darkMatterMass;
 	private JFormattedTextField darkMatterDensity;
@@ -115,6 +116,7 @@ public class GUIParam extends JDialog {
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
+					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
@@ -140,6 +142,7 @@ public class GUIParam extends JDialog {
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(0);
 					darkMatterDensity.setValue(1E-12);
+					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
@@ -168,6 +171,7 @@ public class GUIParam extends JDialog {
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-23);
+					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.25);
 					ellipseShiftRatio.setValue(-1.25);
 					nbArms.setValue(2);
@@ -196,6 +200,7 @@ public class GUIParam extends JDialog {
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E42);
 					darkMatterDensity.setValue(1E-20);
+					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					demiDistanceBetweenGalaxiesX
@@ -225,6 +230,7 @@ public class GUIParam extends JDialog {
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(HelperVariable.M);
 					darkMatterDensity.setValue(1);
+					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.95);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
@@ -253,6 +259,7 @@ public class GUIParam extends JDialog {
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-23);
+					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
@@ -281,6 +288,7 @@ public class GUIParam extends JDialog {
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-23);
+					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
@@ -392,6 +400,11 @@ public class GUIParam extends JDialog {
 		darkMatterDensity.setValue(me.mother.getParameters()
 				.getDarkMatterDensity());
 		add(darkMatterDensity);
+		
+		add(new Label("Dark Matterdistribution:"));
+		darkMatterDistribution = new JFormattedTextField(dfsc);
+		darkMatterDistribution.setValue(me.mother.getParameters().getDarkMatterDistribution());
+		add(darkMatterDistribution);
 
 		add(new Label("Demi Distance between Galaxies X :"));
 		demiDistanceBetweenGalaxiesX = new JFormattedTextField(dfsc);
@@ -499,6 +512,9 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setDarkMatterDensity(
 							Double.parseDouble(me.darkMatterDensity.getValue()
 									.toString()));
+					me.mother.getParameters().setDarkMatterDistribution(
+							Double.parseDouble(me.darkMatterDistribution.getValue()
+									.toString()));
 					me.mother
 							.getParameters()
 							.setDemiDistanceBetweenGalaxies(
@@ -553,6 +569,7 @@ public class GUIParam extends JDialog {
 		fusion.setEnabled(false);
 		darkMatterMass.setEnabled(false);
 		darkMatterDensity.setEnabled(false);
+		darkMatterDistribution.setEnabled(false);
 		ellipseRatio.setEnabled(false);
 		ellipseShiftRatio.setEnabled(false);
 		demiDistanceBetweenGalaxiesX.setEnabled(false);
@@ -627,6 +644,7 @@ public class GUIParam extends JDialog {
 			lowMassDensity.setEnabled(true);
 			gasDistribution.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
+			darkMatterDistribution.setEnabled(true);
 			ellipseRatio.setEnabled(true);
 			ellipseShiftRatio.setEnabled(true);
 			nbArms.setEnabled(true);
@@ -695,6 +713,7 @@ public class GUIParam extends JDialog {
 			lowMassDensity.setEnabled(true);
 			gasDistribution.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
+			darkMatterDistribution.setEnabled(true);
 			ellipseRatio.setEnabled(false);
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
@@ -719,6 +738,7 @@ public class GUIParam extends JDialog {
 			lowMassDensity.setEnabled(true);
 			gasDistribution.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
+			darkMatterDistribution.setEnabled(true);
 			ellipseRatio.setEnabled(false);
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);

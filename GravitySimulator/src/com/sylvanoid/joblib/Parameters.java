@@ -39,6 +39,8 @@ public class Parameters implements Serializable {
 	private boolean showAxis = true;
 	private boolean showgrid = false;
 	private boolean showInfo = true;
+	private boolean showMatter = true;
+	private boolean showGas = true;
 	private boolean showDarkMatter = false;
 	private Matter objectToFollow = null;
 	private boolean showTrace = false;
@@ -63,10 +65,8 @@ public class Parameters implements Serializable {
 	private boolean playData = false;
 	private boolean parallelization = false;
 	private boolean staticDarkMatter = false;
-
 	private double matterDistribution = 5;
 	private double gasDistribution = 1;
-	
 	private double darkMatterDistribution = 5;
 	private double darkMatterNubulaFactor = 5;
 
@@ -252,6 +252,22 @@ public class Parameters implements Serializable {
 
 	public void setShowInfo(boolean showInfo) {
 		this.showInfo = showInfo;
+	}
+
+	public boolean isShowMatter() {
+		return showMatter;
+	}
+
+	public void setShowMatter(boolean showMatter) {
+		this.showMatter = showMatter;
+	}
+
+	public boolean isShowGas() {
+		return showGas;
+	}
+
+	public void setShowGas(boolean showGas) {
+		this.showGas = showGas;
 	}
 
 	public boolean isShowDarkMatter() {

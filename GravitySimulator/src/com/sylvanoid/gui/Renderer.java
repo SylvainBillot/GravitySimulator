@@ -30,6 +30,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
 import com.sylvanoid.common.TextureReader;
+import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
@@ -488,13 +489,11 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		textRenderer.draw(
 				"Move compute time (ms): " + parameters.getMoveComputeTime(),
 				10, drawable.getSurfaceHeight() - textSize * 15);
-		
-		textRenderer.draw(
-				"K (j): " + dfsc.format(parameters.getKlength()),
-				10, drawable.getSurfaceHeight() - textSize * 17);
-		textRenderer.draw(
-				"P: " + dfsc.format(parameters.getPlength()),
-				10, drawable.getSurfaceHeight() - textSize * 18);
+
+		textRenderer.draw("K (j): " + dfsc.format(parameters.getKlength()), 10,
+				drawable.getSurfaceHeight() - textSize * 17);
+		textRenderer.draw("P: " + dfsc.format(parameters.getPlength()), 10,
+				drawable.getSurfaceHeight() - textSize * 18);
 
 		textRenderer.draw(
 				"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()), 10,
@@ -541,9 +540,14 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
 		for (Matter m : univers.getListMatter()) {
-			if (!m.isDark()) {
+			if (m.getTypeOfObject().equals(TypeOfObject.Matter)
+					&& parameters.isShowMatter()
+					|| m.getTypeOfObject().equals(TypeOfObject.Gas)
+					&& parameters.isShowGas()
+					|| m.getTypeOfObject().equals(TypeOfObject.Dark)
+					&& parameters.isShowDarkMatter()) {
 				gl.glLoadIdentity();
-
+				double r = 0;
 				switch (m.getTypeOfObject()) {
 				case Matter:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
@@ -553,10 +557,33 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 					if (m.getMass() > HelperVariable.MINIMALGALAXYMASS) {
 						gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
 					}
+					if (m.getMass() > HelperVariable.MINIMALSTARMASS
+							&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
+						r = (net.jafama.FastMath.random() * 0.5 + 2.5)
+								* (m.getRayon() * parameters.getScala() < 1 ? 1
+										: m.getRayon() * parameters.getScala());
+					} else {
+						r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1
+								: m.getRayon() * parameters.getScala());
+					}
 					break;
 
 				case Gas:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
+					if (m.getMass() > HelperVariable.MINIMALSTARMASS
+							&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
+						r = (net.jafama.FastMath.random() * 0.5 + 2.5)
+								* (m.getRayon() * parameters.getScala() < 1 ? 1
+										: m.getRayon() * parameters.getScala());
+					} else {
+						r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1
+								: m.getRayon() * parameters.getScala());
+					}
+					break;
+
+				case Dark:
+					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
+					r = 5 * m.getRayon() * parameters.getScala();
 					break;
 
 				default:
@@ -585,16 +612,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 							.getAngles()));
 				}
 
-				double r;
-				if (m.getMass() > HelperVariable.MINIMALSTARMASS
-						&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
-					r = (net.jafama.FastMath.random() * 0.5 + 2.5)
-							* (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-									.getRayon() * parameters.getScala());
-				} else {
-					r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-							.getRayon() * parameters.getScala());
-				}
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
@@ -611,45 +628,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				gl.glTexCoord2d(0, 1);
 				gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
 				gl.glEnd();
-			} else {
-				if (parameters.isShowDarkMatter()) {
-					// If you want show dark mass, code here
-					gl.glLoadIdentity();
-					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-					gl.glTranslated(parameters.getScala() * m.getPoint().x,
-							parameters.getScala() * m.getPoint().y,
-							parameters.getScala() * m.getPoint().z);
-
-					double phi01 = new Vector3d(0, 0, 1).angle(parameters
-							.getLookAt())
-							* -net.jafama.FastMath.signum(parameters
-									.getLookAt().y);
-					Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0,
-							0, 1), new Vector3d(1, 0, 0), phi01);
-					double phi02 = afterRotateX.angle(parameters.getLookAt())
-							* net.jafama.FastMath
-									.signum(parameters.getLookAt().x);
-					gl.glMultMatrixd(HelperVector
-							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
-									0)));
-					double r = 5 * m.getRayon() * parameters.getScala();
-					Vector3d[] pts = new Vector3d[4];
-					pts[0] = new Vector3d(-r, -r, 0); // BL
-					pts[1] = new Vector3d(r, -r, 0); // BR
-					pts[2] = new Vector3d(r, r, 0); // TR
-					pts[3] = new Vector3d(-r, r, 0); // TL
-					gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-					gl.glBegin(GL2.GL_TRIANGLE_FAN);
-					gl.glTexCoord2d(0, 0);
-					gl.glVertex3d(pts[0].x, pts[0].y, pts[0].z);
-					gl.glTexCoord2d(1, 0);
-					gl.glVertex3d(pts[1].x, pts[1].y, pts[1].z);
-					gl.glTexCoord2d(1, 1);
-					gl.glVertex3d(pts[2].x, pts[2].y, pts[2].z);
-					gl.glTexCoord2d(0, 1);
-					gl.glVertex3d(pts[3].x, pts[3].y, pts[3].z);
-					gl.glEnd();
-				}
 			}
 		}
 		gl.glDisable(GL2.GL_BLEND);

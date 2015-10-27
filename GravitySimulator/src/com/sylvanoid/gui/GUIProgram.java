@@ -348,6 +348,28 @@ public class GUIProgram extends JFrame {
 			}
 		});
 
+		JCheckBoxMenuItem menuItemShowMatter = new JCheckBoxMenuItem(
+				"Show matter", parameters.isShowMatter());
+		menuItemShowMatter.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setShowMatter(!parameters.isShowMatter());
+			}
+		});
+		
+		JCheckBoxMenuItem menuItemShowGas = new JCheckBoxMenuItem(
+				"Show gas", parameters.isShowGas());
+		menuItemShowGas.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				parameters.setShowGas(!parameters.isShowGas());
+			}
+		});
+		
 		JCheckBoxMenuItem menuItemShowDM = new JCheckBoxMenuItem(
 				"Show dark matter", parameters.isShowDarkMatter());
 		menuItemShowDM.addActionListener(new ActionListener() {
@@ -370,6 +392,8 @@ public class GUIProgram extends JFrame {
 		menuVisu.add(menuItemShowInfo);
 		menuVisu.add(menuItemShowAxis);
 		menuVisu.add(menuItemShowGrid);
+		menuVisu.add(menuItemShowMatter);
+		menuVisu.add(menuItemShowGas);
 		menuVisu.add(menuItemShowDM);
 
 		@SuppressWarnings("unused")
