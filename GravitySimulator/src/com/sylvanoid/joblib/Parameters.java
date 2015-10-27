@@ -25,7 +25,6 @@ public class Parameters implements Serializable {
 	private boolean manageImpact = false;
 	private boolean exportToVideo = false;
 	private boolean fusion = true;
-	private double typeOfImpact = 1;
 	private double density = 100;
 	private int numberOfObjects = 1000;
 	private double nebulaRadius = HelperVariable.UA * 10;
@@ -137,14 +136,6 @@ public class Parameters implements Serializable {
 
 	public void setExportToVideo(boolean exportToVideo) {
 		this.exportToVideo = exportToVideo;
-	}
-
-	public double getTypeOfImpact() {
-		return typeOfImpact;
-	}
-
-	public void setTypeOfImpact(double typeOfImpact) {
-		this.typeOfImpact = typeOfImpact;
 	}
 
 	public double getDensity() {

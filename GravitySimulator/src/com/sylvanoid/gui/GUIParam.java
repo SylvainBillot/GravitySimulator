@@ -13,7 +13,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
-import javax.swing.JSlider;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
@@ -46,7 +45,6 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField lowMassDensity;
 	private JFormattedTextField gasDistribution;
 	private JCheckBox fusion;
-	private JSlider typeOfImpact;
 	private JFormattedTextField darkMatterMass;
 	private JFormattedTextField darkMatterDensity;
 	private JFormattedTextField demiDistanceBetweenGalaxiesX;
@@ -92,7 +90,6 @@ public class GUIParam extends JDialog {
 					lowMassParticuleMass.setValue(0);
 					lowMassDensity.setValue(0);
 					gasDistribution.setValue(1);
-					typeOfImpact.setValue(100);
 					ellipseRatio.setValue(0.5);
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
@@ -104,7 +101,6 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEDAY);
 					scala.setValue(1E-9);
-					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(20);
 					fusion.setSelected(true);
 					densiteMin.setValue(1);
@@ -131,7 +127,6 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(HelperVariable.ONEDAY / 3);
 					scala.setValue(5E-10);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(0.1);
 					nebulaRadius.setValue(HelperVariable.UA * 5);
@@ -157,7 +152,6 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-20);
 					nebulaRadius.setValue(HelperVariable.PC * 3E4);
@@ -186,7 +180,6 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(HelperVariable.ONEYEAR * 5E6);
 					scala.setValue(4E-20);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(500);
 					densiteMin.setValue(1E-23);
 					nebulaRadius.setValue(HelperVariable.PC * 2E5);
@@ -219,7 +212,6 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(HelperVariable.ONEDAY);
 					scala.setValue(5E-10);
 					fusion.setSelected(true);
-					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(1000);
 					densiteMin.setValue(1);
 					nebulaRadius.setValue(HelperVariable.UA * 3);
@@ -245,7 +237,6 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
 					fusion.setSelected(false);
-					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 4E4);
@@ -274,7 +265,6 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
 					fusion.setSelected(false);
-					typeOfImpact.setValue(100);
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 4E4);
@@ -431,11 +421,6 @@ public class GUIParam extends JDialog {
 		fusion.setSelected(me.mother.getParameters().isFusion());
 		add(fusion);
 
-		add(new Label("Friction coeff :"));
-		typeOfImpact = new JSlider(0, 100, (int) (me.mother.getParameters()
-				.getTypeOfImpact() * 100));
-		add(typeOfImpact);
-
 		add(new Label("Static Dark Matter :"));
 		staticDarkMatter = new JCheckBox();
 		staticDarkMatter.setSelected(me.mother.getParameters().isStaticDarkMatter());
@@ -508,8 +493,6 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setManageImpact(
 							me.manageImpact.isSelected());
 					me.mother.getParameters().setFusion(me.fusion.isSelected());
-					me.mother.getParameters().setTypeOfImpact(
-							(double) me.typeOfImpact.getValue() / 100);
 					me.mother.getParameters().setDarkMatterMass(
 							Double.parseDouble(me.darkMatterMass.getValue()
 									.toString()));
@@ -568,7 +551,6 @@ public class GUIParam extends JDialog {
 		lowMassDensity.setEnabled(false);
 		gasDistribution.setEnabled(false);
 		fusion.setEnabled(false);
-		typeOfImpact.setEnabled(false);
 		darkMatterMass.setEnabled(false);
 		darkMatterDensity.setEnabled(false);
 		ellipseRatio.setEnabled(false);
@@ -612,7 +594,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -633,7 +614,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -657,7 +637,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -681,7 +660,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -704,7 +682,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -729,7 +706,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			fusion.setEnabled(true);
-			typeOfImpact.setEnabled(false);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -750,5 +726,4 @@ public class GUIParam extends JDialog {
 			break;	
 		}
 	}
-
 }
