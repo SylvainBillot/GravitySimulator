@@ -428,7 +428,6 @@ public class Matter implements Serializable {
 				newPoint.add(deltaT);
 			}
 		}
-
 		return newPoint;
 	}
 
