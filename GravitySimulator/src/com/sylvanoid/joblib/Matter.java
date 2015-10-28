@@ -337,17 +337,18 @@ public class Matter implements Serializable {
 	}
 
 	public void friction() {
+		boolean withReverce = false;
 		double fluidity = 1;
 		double cr = 0;
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
-			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m, false);
+			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m, withReverce);
 			// Move the rest of time
 			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
 					/ speed.length();
 			double timeRatio = 1 - (t / parameters.getTimeFactor());
-			Vector3d newSpeed = tangentialSpeed(m, cr);
+			Vector3d newSpeed = tangentialSpeed(m, cr, withReverce);
 			newSpeed.scale(fluidity);
 			newSpeed.add(speedAfterImpactWith(m, cr));
 			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
@@ -497,12 +498,12 @@ public class Matter implements Serializable {
 		return newDensity / newMass;
 	}
 
-	public Vector3d radialSpeed(Matter m, double cr) {
+	public Vector3d radialSpeed(Matter m, double cr, boolean withReverce) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(
-				m.positionBeforeImpactWith(this, false));
-		newSpeed.sub(positionBeforeImpactWith(m, false));
+				m.positionBeforeImpactWith(this, withReverce));
+		newSpeed.sub(positionBeforeImpactWith(m, withReverce));
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
 		newSpeed.scale(net.jafama.FastMath.cos(angle)
@@ -510,11 +511,11 @@ public class Matter implements Serializable {
 		return newSpeed;
 	}
 
-	public Vector3d tangentialSpeed(Matter m, double cr) {
+	public Vector3d tangentialSpeed(Matter m, double cr, boolean withReverce) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
-		newSpeed.sub(radialSpeed(m, cr));
+		newSpeed.sub(radialSpeed(m, cr, withReverce));
 		return newSpeed;
 	}
 
