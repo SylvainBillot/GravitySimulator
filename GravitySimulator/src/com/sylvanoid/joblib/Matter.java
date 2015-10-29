@@ -352,7 +352,7 @@ public class Matter implements Serializable {
 			accel.add(newAccel);
 		}
 	}
-
+	
 	public void friction() {
 		boolean withReverce = false;
 		double fluidity = 1;
