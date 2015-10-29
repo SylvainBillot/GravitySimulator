@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperVariable;
+import com.sylvanoid.common.TypeOfImpact;
 import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.common.Vector3dAdapter;
 
@@ -24,7 +25,7 @@ public class Parameters implements Serializable {
 	private double darkMatterDensity = 1E10;
 	private boolean manageImpact = false;
 	private boolean exportToVideo = false;
-	private boolean fusion = true;
+	private TypeOfImpact typeOfImpact = TypeOfImpact.Fusion;
 	private double density = 100;
 	private int numberOfObjects = 1000;
 	private double nebulaRadius = HelperVariable.UA * 10;
@@ -122,12 +123,12 @@ public class Parameters implements Serializable {
 		this.typeOfUnivers = typeOfUnivers;
 	}
 
-	public boolean isFusion() {
-		return fusion;
+	public TypeOfImpact getTypeOfImpact() {
+		return typeOfImpact;
 	}
 
-	public void setFusion(boolean fusion) {
-		this.fusion = fusion;
+	public void setTypeOfImpact(TypeOfImpact typeOfImpact) {
+		this.typeOfImpact = typeOfImpact;
 	}
 
 	public boolean isExportToVideo() {

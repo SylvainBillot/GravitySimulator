@@ -211,13 +211,27 @@ public class Univers {
 					- startTimeMove);
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
-				if(parameters.isFusion()){
-					moveImpact(TypeOfImpact.Fusion);
-				} else {
-					moveImpact(TypeOfImpact.Friction);
+				moveImpact(parameters.getTypeOfImpact());
+				switch(parameters.getTypeOfImpact()){
+				case Fusion:
+					break;
+				case SoftImpact:
+					break;
+				case Friction:
 					/* disable futur acceleration */
 					computeBarnesHutCollision();
 					disableAccelerations();
+					break;
+				case Friction2:
+					/* disable futur acceleration */
+					computeBarnesHutCollision();
+					disableAccelerations();
+					break;
+				default:	
+				}
+				if(parameters.getTypeOfImpact()==TypeOfImpact.Fusion){
+					
+				} else {
 				}
 				
 			}
@@ -394,7 +408,7 @@ public class Univers {
 				}
 			}
 			break;			
-		case Impact:
+		case SoftImpact:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					m.softImpact();
