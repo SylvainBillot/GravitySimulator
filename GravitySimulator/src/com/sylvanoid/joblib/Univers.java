@@ -107,17 +107,17 @@ public class Univers {
 	public Univers(Univers father, Vector3d min, Vector3d max) {
 		this.father = father;
 		this.parameters = father.parameters;
-		listMatter = new ArrayList<Matter>();
+		this.listMatter = new ArrayList<Matter>();
 		this.min = new Vector3d(min);
 		this.max = new Vector3d(max);
 	}
 
-	public Univers(Univers father, List<Matter> minus) {
+	public Univers(Univers father) {
 		this.father = father;
 		this.parameters = father.parameters;
-		listMatter = new ArrayList<Matter>(father.getListMatter());
-		listMatter.removeAll(minus);
-		computeMassLimitsCentroidSpeed(false);
+		this.listMatter = new ArrayList<Matter>(father.getListMatter());
+		this.mass = father.mass;
+		this.gPoint = new Vector3d(father.gPoint);
 	}
 
 	public Vector3d gravityAtThisPoint(Vector3d p) {
@@ -129,21 +129,22 @@ public class Univers {
 		return accel;
 	}
 
-	public void adjustMassAndCentroid(List<Matter> minus) {
-		double tmpGx = gPoint.x;
-		double tmpGy = gPoint.y;
-		double tmpGz = gPoint.z;
-		double tmpMass = mass;
+	public int adjustMassAndCentroid(List<Matter> minus) {
+		double tmpGx = gPoint.x * mass;
+		double tmpGy = gPoint.y * mass;
+		double tmpGz = gPoint.z * mass;
+		int cpt = 0;
 		for (Matter m : minus) {
 			if (listMatter.contains(m)) {
-				tmpMass -= m.getMass();
+				cpt++;
+				mass -= m.getMass();
 				tmpGx -= (m.getPoint().getX() * m.getMass());
 				tmpGy -= (m.getPoint().getY() * m.getMass());
 				tmpGz -= (m.getPoint().getZ() * m.getMass());
 			}
 		}
-		mass = tmpMass;
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
+		return listMatter.size() - cpt;
 	}
 
 	public void computeMassLimitsCentroidSpeed(boolean withLimit) {
@@ -229,36 +230,7 @@ public class Univers {
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				moveImpact(parameters.getTypeOfImpact());
-				switch (parameters.getTypeOfImpact()) {
-				case Fusion:
-					break;
-				case SoftImpact:
-					/* disable futur acceleration */
-					computeBarnesHutCollision();
-					disableAccelerations();
-					break;
-				case HardImpact:
-					/* disable futur acceleration */
-					computeBarnesHutCollision();
-					disableAccelerations();
-					break;
-				case Friction:
-					/* disable futur acceleration */
-					computeBarnesHutCollision();
-					disableAccelerations();
-					break;
-				case Friction2:
-					/* disable futur acceleration */
-					computeBarnesHutCollision();
-					disableAccelerations();
-					break;
-				default:
-				}
-				if (parameters.getTypeOfImpact() == TypeOfImpact.Fusion) {
-
-				} else {
-				}
-
+				computeBarnesHutCollision();
 			}
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -448,14 +420,6 @@ public class Univers {
 			}
 			break;
 		default:
-		}
-	}
-
-	private void disableAccelerations() {
-		for (Matter m : listMatter) {
-			if (m.getFusionWith().size() != 0) {
-				m.disableAccelerationWith();
-			}
 		}
 	}
 
