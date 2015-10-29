@@ -243,7 +243,7 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
-					typeOfImpact.setSelectedIndex(2);
+					typeOfImpact.setSelectedIndex(3);
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 4E4);
@@ -272,7 +272,7 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
-					typeOfImpact.setSelectedIndex(2);
+					typeOfImpact.setSelectedIndex(3);
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 4E4);

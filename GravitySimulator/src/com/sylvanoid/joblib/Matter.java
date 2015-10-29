@@ -328,12 +328,29 @@ public class Matter implements Serializable {
 	}
 
 	public void softImpact() {
-		pointAdjusted = new Vector3d(point);
-		Vector3d newSpeed = globalSpeed();
-		Vector3d tmpAccel = new Vector3d(newSpeed);
-		tmpAccel.sub(speed);
-		accel.add(tmpAccel);
+		impact(0);
+	}
 
+	public void hardImpact() {
+		impact(1);
+	}
+
+	public void impact(double cr) {
+		for (Matter m : fusionWith) {
+			Vector3d relativeSpeed = new Vector3d(m.getSpeed());
+			relativeSpeed.sub(speed);
+			Vector3d newAccel = new Vector3d((cr * m.getMass()
+					* relativeSpeed.x + speed.x * mass + m.getSpeed().x
+					* m.getMass())
+					/ (mass + m.getMass()), (cr * m.getMass() * relativeSpeed.y
+					+ speed.y * mass + m.getSpeed().y * m.getMass())
+					/ (mass + m.getMass()), (cr * m.getMass() * relativeSpeed.z
+					+ speed.z * mass + m.getSpeed().z * m.getMass())
+					/ (mass + m.getMass())
+			);
+			newAccel.sub(speed);
+			accel.add(newAccel);
+		}
 	}
 
 	public void friction() {
@@ -500,8 +517,8 @@ public class Matter implements Serializable {
 	public Vector3d radialSpeed(Matter m, double cr, boolean withReverce) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
-		Vector3d newSpeed = new Vector3d(
-				m.positionBeforeImpactWith(this, withReverce));
+		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this,
+				withReverce));
 		newSpeed.sub(positionBeforeImpactWith(m, withReverce));
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();

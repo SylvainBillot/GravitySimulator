@@ -129,6 +129,23 @@ public class Univers {
 		return accel;
 	}
 
+	public void adjustMassAndCentroid(List<Matter> minus) {
+		double tmpGx = gPoint.x;
+		double tmpGy = gPoint.y;
+		double tmpGz = gPoint.z;
+		double tmpMass = mass;
+		for (Matter m : minus) {
+			if (listMatter.contains(m)) {
+				tmpMass -= m.getMass();
+				tmpGx -= (m.getPoint().getX() * m.getMass());
+				tmpGy -= (m.getPoint().getY() * m.getMass());
+				tmpGz -= (m.getPoint().getZ() * m.getMass());
+			}
+		}
+		mass = tmpMass;
+		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
+	}
+
 	public void computeMassLimitsCentroidSpeed(boolean withLimit) {
 		boolean firstTime = true;
 		volumicMass = 0;
@@ -198,13 +215,13 @@ public class Univers {
 			parameters.setLimitComputeTime(System.currentTimeMillis()
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
-			
+
 			computeBarnesHutGravity();
 			changeSpeed();
-			
-			//computeBarnesHutNeighbors();
-			//applyVicosity();
-			
+
+			// computeBarnesHutNeighbors();
+			// applyVicosity();
+
 			long startTimeMove = System.currentTimeMillis();
 			move();
 			parameters.setMoveComputeTime(System.currentTimeMillis()
@@ -212,10 +229,18 @@ public class Univers {
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				moveImpact(parameters.getTypeOfImpact());
-				switch(parameters.getTypeOfImpact()){
+				switch (parameters.getTypeOfImpact()) {
 				case Fusion:
 					break;
 				case SoftImpact:
+					/* disable futur acceleration */
+					computeBarnesHutCollision();
+					disableAccelerations();
+					break;
+				case HardImpact:
+					/* disable futur acceleration */
+					computeBarnesHutCollision();
+					disableAccelerations();
 					break;
 				case Friction:
 					/* disable futur acceleration */
@@ -227,13 +252,13 @@ public class Univers {
 					computeBarnesHutCollision();
 					disableAccelerations();
 					break;
-				default:	
+				default:
 				}
-				if(parameters.getTypeOfImpact()==TypeOfImpact.Fusion){
-					
+				if (parameters.getTypeOfImpact() == TypeOfImpact.Fusion) {
+
 				} else {
 				}
-				
+
 			}
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -305,7 +330,7 @@ public class Univers {
 			m.changeSpeed();
 		}
 	}
-	
+
 	private void move() {
 		for (Matter m : listMatter) {
 			if (maxMassElement == null
@@ -318,7 +343,7 @@ public class Univers {
 
 	@SuppressWarnings("unused")
 	private void computeBarnesHutNeighbors() {
-		for(Matter m:listMatter){
+		for (Matter m : listMatter) {
 			m.getNeighbors().clear();
 		}
 		BarnesHutNeighbors barnesHutNeighbors = new BarnesHutNeighbors(this);
@@ -332,7 +357,7 @@ public class Univers {
 	}
 
 	private int computeBarnesHutCollision() {
-		for(Matter m:listMatter){
+		for (Matter m : listMatter) {
 			m.getFusionWith().clear();
 		}
 		BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
@@ -363,16 +388,16 @@ public class Univers {
 					new ArrayList<Matter>()));
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
-	private void applyVicosity(){
+	private void applyVicosity() {
 		for (Matter m : listMatter) {
 			if (m.getNeighbors().size() != 0) {
 				m.applyVicosity();
 			}
 		}
 	}
-	
+
 	private void moveImpact(TypeOfImpact typeOfImpact) {
 		switch (typeOfImpact) {
 		case Fusion:
@@ -381,6 +406,20 @@ public class Univers {
 			for (Matter m : listMatterBis) {
 				if (m.getFusionWith().size() != 0) {
 					m.fusion(listMatter);
+				}
+			}
+			break;
+		case SoftImpact:
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.softImpact();
+				}
+			}
+			break;
+		case HardImpact:
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.hardImpact();
 				}
 			}
 			break;
@@ -407,21 +446,8 @@ public class Univers {
 					m.moveAfterImpact(typeOfImpact);
 				}
 			}
-			break;			
-		case SoftImpact:
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.softImpact();
-				}
-			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.moveAfterImpact(typeOfImpact);
-				}
-			}
 			break;
-		default:	
-			
+		default:
 		}
 	}
 
