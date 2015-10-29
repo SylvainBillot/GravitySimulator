@@ -6,6 +6,7 @@ public enum TypeOfImpact {
 	HardImpact		("Hard Impact"),
 	Friction		("Friction 1"),
 	Friction2		("Friction 2"),
+	NoAcell			("No Attraction if contact"),
 	;
 	
 	private final String label;

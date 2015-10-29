@@ -419,6 +419,8 @@ public class Univers {
 				}
 			}
 			break;
+		case NoAcell:
+			break;
 		default:
 		}
 	}
