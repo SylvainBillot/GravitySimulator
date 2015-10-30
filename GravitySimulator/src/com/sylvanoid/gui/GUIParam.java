@@ -288,7 +288,7 @@ public class GUIParam extends JDialog {
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
 					nebulaRadiusRatioForVolumicMass.setValue(100);
-					viscosityCoeff.setValue(1);
+					viscosityCoeff.setValue(1E20);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -320,7 +320,7 @@ public class GUIParam extends JDialog {
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
 					nebulaRadiusRatioForVolumicMass.setValue(100);
-					viscosityCoeff.setValue(1);
+					viscosityCoeff.setValue(1E20);
 					break;
 				}
 				enableDisableParam();
@@ -459,6 +459,11 @@ public class GUIParam extends JDialog {
 		add(new Label("Manage Impact:"));
 		manageImpact = new JCheckBox();
 		manageImpact.setSelected(me.mother.getParameters().isManageImpact());
+		manageImpact.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				typeOfImpact.setEnabled(manageImpact.isSelected());
+			}
+		});
 		add(manageImpact);
 
 		add(new Label("Type Of Impact:"));
@@ -480,8 +485,14 @@ public class GUIParam extends JDialog {
 		appliViscosity = new JCheckBox();
 		appliViscosity
 				.setSelected(me.mother.getParameters().isAppliViscosity());
+		appliViscosity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				nebulaRadiusRatioForVolumicMass.setEnabled(appliViscosity.isSelected());
+				viscosityCoeff.setEnabled(appliViscosity.isSelected());
+			}
+		});
 		add(appliViscosity);
-
+		
 		add(new Label("Nebula radius ratio for search neighbors:"));
 		nebulaRadiusRatioForVolumicMass = new JFormattedTextField(dfsc);
 		nebulaRadiusRatioForVolumicMass.setValue(me.mother.getParameters()
@@ -634,7 +645,7 @@ public class GUIParam extends JDialog {
 		lowMassParticuleMass.setEnabled(false);
 		lowMassDensity.setEnabled(false);
 		gasDistribution.setEnabled(false);
-		typeOfImpact.setEnabled(false);
+		typeOfImpact.setEnabled(manageImpact.isSelected());
 		darkMatterMass.setEnabled(false);
 		darkMatterDensity.setEnabled(false);
 		darkMatterDistribution.setEnabled(false);
@@ -646,15 +657,14 @@ public class GUIParam extends JDialog {
 		nbArms.setEnabled(false);
 		staticDarkMatter.setEnabled(false);
 		appliViscosity.setEnabled(false);
-		nebulaRadiusRatioForVolumicMass.setEnabled(false);
-		viscosityCoeff.setEnabled(false);
+		nebulaRadiusRatioForVolumicMass.setEnabled(appliViscosity.isSelected());
+		viscosityCoeff.setEnabled(appliViscosity.isSelected());
 		switch (typeOfUnivers.getSelectedIndex()) {
 		case 0:
 			// TypeOfUnivers.Planetary;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			break;
 		case 1:
 			// TypeOfUnivers.PlanetaryRandom;
@@ -662,7 +672,6 @@ public class GUIParam extends JDialog {
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
 			numberOfObjects.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
 			massObjectMin.setEnabled(true);
@@ -681,7 +690,6 @@ public class GUIParam extends JDialog {
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -696,15 +704,12 @@ public class GUIParam extends JDialog {
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			appliViscosity.setEnabled(true);
-			nebulaRadiusRatioForVolumicMass.setEnabled(true);
-			viscosityCoeff.setEnabled(true);
 			break;
 		case 3:
 			// TypeOfUnivers.RandomRotateUnivers;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -723,15 +728,12 @@ public class GUIParam extends JDialog {
 			ellipseShiftRatio.setEnabled(true);
 			nbArms.setEnabled(true);
 			appliViscosity.setEnabled(true);
-			nebulaRadiusRatioForVolumicMass.setEnabled(true);
-			viscosityCoeff.setEnabled(true);
 			break;
 		case 4:
 			// TypeOfUnivers.GalaxiesCollision;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -749,15 +751,12 @@ public class GUIParam extends JDialog {
 			demiDistanceBetweenGalaxiesY.setEnabled(true);
 			demiDistanceBetweenGalaxiesZ.setEnabled(true);
 			appliViscosity.setEnabled(true);
-			nebulaRadiusRatioForVolumicMass.setEnabled(true);
-			viscosityCoeff.setEnabled(true);
 			break;
 		case 5:
 			// TypeOfUnivers.PlanetariesGenesis;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -774,15 +773,12 @@ public class GUIParam extends JDialog {
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			appliViscosity.setEnabled(true);
-			nebulaRadiusRatioForVolumicMass.setEnabled(true);
-			viscosityCoeff.setEnabled(true);
 			break;
 		case 6:
 			// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -802,15 +798,12 @@ public class GUIParam extends JDialog {
 			nbArms.setEnabled(false);
 			staticDarkMatter.setEnabled(true);
 			appliViscosity.setEnabled(true);
-			nebulaRadiusRatioForVolumicMass.setEnabled(true);
-			viscosityCoeff.setEnabled(true);
 			break;
 		case 7:
 			// TypeOfUnivers.RandomStaticSphericalUnivers
 			manageImpact.setEnabled(true);
 			timeFactor.setEnabled(true);
 			scala.setEnabled(true);
-			typeOfImpact.setEnabled(true);
 			numberOfObjects.setEnabled(true);
 			densiteMin.setEnabled(true);
 			nebulaRadius.setEnabled(true);
@@ -830,8 +823,6 @@ public class GUIParam extends JDialog {
 			nbArms.setEnabled(false);
 			staticDarkMatter.setEnabled(true);
 			appliViscosity.setEnabled(true);
-			nebulaRadiusRatioForVolumicMass.setEnabled(true);
-			viscosityCoeff.setEnabled(true);
 			break;
 		}
 	}
