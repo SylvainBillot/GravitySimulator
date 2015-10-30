@@ -379,7 +379,7 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void friction2() {
+	public void experiment() {
 		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
 			// Impact point adjustment
