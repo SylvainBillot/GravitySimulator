@@ -299,17 +299,37 @@ public class Matter implements Serializable {
 	}
 
 	public void applyVicosity() {
+		boolean withReverce = false;
+		double cr = 0;
+		for (Matter m : neighbors) {
+			if (HelperNewton.distance(this, m) >= (rayon + m.getRayon())) {
+				double ratio = parameters.getViscosityCoeff()*(rayon + m.getRayon())
+						/ HelperNewton.distance(this, m);
+				Vector3d newSpeed = tangentialSpeedNeighbors(m, cr,
+						withReverce, ratio);
+				newSpeed.add(speedAfterImpactWith(m, cr));
+				accel.add(newSpeed);
+				accel.sub(speed);
+			}
+		}
+	}
+
+	/**
+	 * Speed reduction dependent of neighbors volumic mass
+	 */
+	public void applyVicositySpeedReduction() {
 		double coeffVicosity = parameters.getViscosityCoeff();
 		double tmpMass = mass;
 		double tmpRadius = parameters.getNebulaRadius()
 				/ parameters.getNebulaRadiusRatioForVolumicMass();
-		double volume = (4.0/3.0)*net.jafama.FastMath.PI*net.jafama.FastMath.pow3(tmpRadius); 
+		double volume = (4.0 / 3.0) * net.jafama.FastMath.PI
+				* net.jafama.FastMath.pow3(tmpRadius);
 		for (Matter m : neighbors) {
-			tmpMass+=m.getMass();
+			tmpMass += m.getMass();
 		}
-		double volumicMass = tmpMass/volume;
+		double volumicMass = tmpMass / volume;
 		double viscosity = volumicMass * coeffVicosity;
-		speed.scale(1-viscosity);
+		speed.scale(1 - viscosity);
 	}
 
 	public void fusion(List<Matter> listMatter) {
@@ -546,10 +566,28 @@ public class Matter implements Serializable {
 		return newSpeed;
 	}
 
-	public void disableAccelerationWith() {
-		for (Matter m : fusionWith) {
-			speed.sub(accelerationWith(m));
-		}
+	public Vector3d radialSpeedNeighbors(Matter m, double cr,
+			boolean withReverce) {
+		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
+		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
+		Vector3d newSpeed = new Vector3d(m.getPoint());
+		newSpeed.sub(point);
+		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
+		newSpeed.normalize();
+		newSpeed.scale(net.jafama.FastMath.cos(angle)
+				* speedMinusSpeedAfterImpact.length());
+		return newSpeed;
+	}
+
+	public Vector3d tangentialSpeedNeighbors(Matter m, double cr,
+			boolean withReverce, double ratio) {
+		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
+		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
+		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
+		Vector3d radialSpeed = radialSpeedNeighbors(m, cr, withReverce);
+		radialSpeed.scale(ratio);
+		newSpeed.sub(radialSpeed);
+		return newSpeed;
 	}
 
 	public void adjustSpeed() {

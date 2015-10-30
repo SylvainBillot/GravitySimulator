@@ -164,9 +164,9 @@ public class BarnesHutNeighbors extends RecursiveTask<Integer> {
 						detectNeighbors = false;
 						for (Matter mgu : gu.getListMatter()) {
 							if (m != mgu
-									&& HelperNewton.distance(m, mgu) < parameters
-											.getNebulaRadius()
-											/ parameters
+									&& HelperNewton.distance(m, mgu) < (m
+											.getRayon() + mgu.getRayon())
+											* parameters
 													.getNebulaRadiusRatioForVolumicMass()) {
 								if (!m.getNeighbors().contains(mgu)) {
 									m.getNeighbors().add(mgu);

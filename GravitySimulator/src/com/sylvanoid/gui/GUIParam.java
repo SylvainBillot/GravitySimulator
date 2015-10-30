@@ -100,7 +100,7 @@ public class GUIParam extends JDialog {
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(100);
+					nebulaRadiusRatioForVolumicMass.setValue(1.5);
 					viscosityCoeff.setValue(1);
 					break;
 				case 1:
@@ -129,7 +129,7 @@ public class GUIParam extends JDialog {
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(100);
+					nebulaRadiusRatioForVolumicMass.setValue(1.5);
 					viscosityCoeff.setValue(1);
 					break;
 				case 2:
@@ -158,7 +158,7 @@ public class GUIParam extends JDialog {
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(100);
+					nebulaRadiusRatioForVolumicMass.setValue(1.5);
 					viscosityCoeff.setValue(1);
 					break;
 				case 3:
@@ -190,7 +190,7 @@ public class GUIParam extends JDialog {
 					nbArms.setValue(2);
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(100);
+					nebulaRadiusRatioForVolumicMass.setValue(1.5);
 					viscosityCoeff.setValue(1);
 					break;
 				case 4:
@@ -226,7 +226,7 @@ public class GUIParam extends JDialog {
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(false);
 					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(100);
+					nebulaRadiusRatioForVolumicMass.setValue(1.5);
 					viscosityCoeff.setValue(1);
 					break;
 				case 5:
@@ -255,7 +255,7 @@ public class GUIParam extends JDialog {
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(100);
+					nebulaRadiusRatioForVolumicMass.setValue(1.5);
 					viscosityCoeff.setValue(1);
 					break;
 				case 6:
@@ -287,8 +287,8 @@ public class GUIParam extends JDialog {
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(100);
-					viscosityCoeff.setValue(1E20);
+					nebulaRadiusRatioForVolumicMass.setValue(1.5);
+					viscosityCoeff.setValue(1);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -319,8 +319,8 @@ public class GUIParam extends JDialog {
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
 					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(100);
-					viscosityCoeff.setValue(1E20);
+					nebulaRadiusRatioForVolumicMass.setValue(1.5);
+					viscosityCoeff.setValue(1);
 					break;
 				}
 				enableDisableParam();
@@ -493,7 +493,7 @@ public class GUIParam extends JDialog {
 		});
 		add(appliViscosity);
 		
-		add(new Label("Nebula radius ratio for search neighbors:"));
+		add(new Label("Radius factor for search neighbors:"));
 		nebulaRadiusRatioForVolumicMass = new JFormattedTextField(dfsc);
 		nebulaRadiusRatioForVolumicMass.setValue(me.mother.getParameters()
 				.getNebulaRadiusRatioForVolumicMass());
