@@ -70,6 +70,11 @@ public class Parameters implements Serializable {
 	private double gasDistribution = 1;
 	private double darkMatterDistribution = 5;
 	private double darkMatterNubulaFactor = 5;
+	
+	private boolean appliViscosity = false;
+	private double nebulaRadiusRatioForVolumicMass = 100;
+	private double viscosityCoeff = 1;
+	
 
 	public Parameters() {
 
@@ -488,5 +493,30 @@ public class Parameters implements Serializable {
 
 	public void setDarkMatterNubulaFactor(double darkMatterNubulaFactor) {
 		this.darkMatterNubulaFactor = darkMatterNubulaFactor;
+	}
+
+	public boolean isAppliViscosity() {
+		return appliViscosity;
+	}
+
+	public void setAppliViscosity(boolean appliViscosity) {
+		this.appliViscosity = appliViscosity;
+	}
+
+	public double getNebulaRadiusRatioForVolumicMass() {
+		return nebulaRadiusRatioForVolumicMass;
+	}
+
+	public void setNebulaRadiusRatioForVolumicMass(
+			double nebulaRadiusRatioForVolumicMass) {
+		this.nebulaRadiusRatioForVolumicMass = nebulaRadiusRatioForVolumicMass;
+	}
+
+	public double getViscosityCoeff() {
+		return viscosityCoeff;
+	}
+
+	public void setViscosityCoeff(double viscosityCoeff) {
+		this.viscosityCoeff = viscosityCoeff;
 	}
 }

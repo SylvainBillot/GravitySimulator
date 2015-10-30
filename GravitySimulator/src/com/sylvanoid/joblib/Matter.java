@@ -299,9 +299,17 @@ public class Matter implements Serializable {
 	}
 
 	public void applyVicosity() {
+		double coeffVicosity = parameters.getViscosityCoeff();
+		double tmpMass = mass;
+		double tmpRadius = parameters.getNebulaRadius()
+				/ parameters.getNebulaRadiusRatioForVolumicMass();
+		double volume = (4.0/3.0)*net.jafama.FastMath.PI*net.jafama.FastMath.pow3(tmpRadius); 
 		for (Matter m : neighbors) {
-			System.out.println("Apply Viscosity " + name + " " + m.getName());
+			tmpMass+=m.getMass();
 		}
+		double volumicMass = tmpMass/volume;
+		double viscosity = volumicMass * coeffVicosity;
+		speed.scale(1-viscosity);
 	}
 
 	public void fusion(List<Matter> listMatter) {

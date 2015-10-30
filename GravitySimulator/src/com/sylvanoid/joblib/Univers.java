@@ -220,8 +220,10 @@ public class Univers {
 			computeBarnesHutGravity();
 			changeSpeed();
 
-			// computeBarnesHutNeighbors();
-			// applyVicosity();
+			if (parameters.isAppliViscosity()) {
+				computeBarnesHutNeighbors();
+				applyVicosity();
+			}
 
 			long startTimeMove = System.currentTimeMillis();
 			move();
@@ -313,7 +315,6 @@ public class Univers {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private void computeBarnesHutNeighbors() {
 		for (Matter m : listMatter) {
 			m.getNeighbors().clear();
@@ -361,7 +362,6 @@ public class Univers {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private void applyVicosity() {
 		for (Matter m : listMatter) {
 			if (m.getNeighbors().size() != 0) {
@@ -400,7 +400,7 @@ public class Univers {
 					m.adjustSpeed();
 				}
 			}
-			break;			
+			break;
 		case HardImpact:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
