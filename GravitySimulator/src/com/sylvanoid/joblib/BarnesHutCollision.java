@@ -158,31 +158,31 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 			if (!parameters.isStaticDarkMatter() || !m.isDark()) {
 				Univers gu = new Univers();
 				if (univers.getFather() != null) {
-					if (univers.getFather().getFather() != null) {
-						if (univers.getFather().getFather().getFather() != null) {
-							gu = univers.getFather().getFather().getFather();
-						} else {
-							gu = univers.getFather().getFather();
-						}
-					} else {
-						gu = univers.getFather();
-					}
-					for (Matter mgu : gu.getListMatter()) {
-						if (m != mgu) {
-							if ((HelperNewton.distance(m, mgu) < (m.getRayon() + mgu
-									.getRayon()))
-									&& (m.getTypeOfObject().equals(mgu
-											.getTypeOfObject()))) {
-								valReturn++;
-								if (!m.getFusionWith().contains(mgu)) {
-									m.getFusionWith().add(mgu);
-								}
-								if (!mgu.getFusionWith().contains(m)) {
-									mgu.getFusionWith().add(m);
+					gu = univers.getFather();
+					boolean detectColision = false;
+					do {
+						detectColision = false;
+						for (Matter mgu : gu.getListMatter()) {
+							if (m != mgu) {
+								if ((HelperNewton.distance(m, mgu) < (m
+										.getRayon() + mgu.getRayon()))
+										&& (m.getTypeOfObject().equals(mgu
+												.getTypeOfObject()))) {
+									valReturn++;
+									if (!m.getFusionWith().contains(mgu)) {
+										m.getFusionWith().add(mgu);
+										detectColision = true;
+									}
+									if (!mgu.getFusionWith().contains(m)) {
+										mgu.getFusionWith().add(m);
+										detectColision = true;
+									}
 								}
 							}
 						}
-					}
+						gu = gu.getFather();
+						detectColision = detectColision && (gu!=null);
+					} while (detectColision);
 				}
 			}
 		}
