@@ -403,7 +403,7 @@ public class Univers {
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.moveAfterImpact(typeOfImpact);
+					m.moveAfterImpact();
 				}
 			}
 			break;
@@ -415,7 +415,7 @@ public class Univers {
 			}
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.moveAfterImpact(typeOfImpact);
+					m.moveAfterImpact();
 				}
 			}
 			break;

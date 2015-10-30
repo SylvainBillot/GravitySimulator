@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.HelperVector;
-import com.sylvanoid.common.TypeOfImpact;
 import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.common.Vector3dAdapter;
 
@@ -392,17 +391,9 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void moveAfterImpact(TypeOfImpact typeOfImpact) {
+	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
-		switch (typeOfImpact) {
-		case Friction:
-			adjustSpeed();
-			break;
-		case Friction2:
-			adjustSpeed();
-			break;
-		default:
-		}
+		adjustSpeed();
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {
