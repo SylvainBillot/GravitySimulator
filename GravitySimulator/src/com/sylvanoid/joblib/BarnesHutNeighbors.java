@@ -168,16 +168,13 @@ public class BarnesHutNeighbors extends RecursiveTask<Integer> {
 											.getNebulaRadius()
 											/ parameters
 													.getNebulaRadiusRatioForVolumicMass()) {
-								if ((m.getTypeOfObject().equals(mgu
-										.getTypeOfObject()))) {
-									if (!m.getNeighbors().contains(mgu)) {
-										m.getNeighbors().add(mgu);
-										detectNeighbors = true;
-									}
-									if (!mgu.getNeighbors().contains(m)) {
-										mgu.getNeighbors().add(m);
-										detectNeighbors = true;
-									}
+								if (!m.getNeighbors().contains(mgu)) {
+									m.getNeighbors().add(mgu);
+									detectNeighbors = true;
+								}
+								if (!mgu.getNeighbors().contains(m)) {
+									mgu.getNeighbors().add(m);
+									detectNeighbors = true;
 								}
 							}
 						}
