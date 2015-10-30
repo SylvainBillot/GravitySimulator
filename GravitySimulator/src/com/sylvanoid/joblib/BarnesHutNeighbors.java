@@ -155,31 +155,33 @@ public class BarnesHutNeighbors extends RecursiveTask<Integer> {
 		}
 		if (univers.getListMatter().size() == 1) {
 			Matter m = univers.getListMatter().get(0);
-			if (m.getTypeOfObject()!=TypeOfObject.Dark) {
+			if (m.getTypeOfObject() != TypeOfObject.Dark) {
 				Univers gu = new Univers();
 				if (univers.getFather() != null) {
-					if (univers.getFather().getFather() != null) {
-						if (univers.getFather().getFather().getFather() != null) {
-							gu = univers.getFather().getFather().getFather();
-						} else {
-							gu = univers.getFather().getFather();
-						}
-					} else {
-						gu = univers.getFather();
-					}
-					for (Matter mgu : gu.getListMatter()) {
-						if (m != mgu && HelperNewton.distance(m, mgu)<parameters.getNebulaRadius()/50) {
-							if ((m.getTypeOfObject().equals(mgu
-											.getTypeOfObject()))) {
-								if (!m.getNeighbors().contains(mgu)) {
-									m.getNeighbors().add(mgu);
-								}
-								if (!mgu.getNeighbors().contains(m)) {
-									mgu.getNeighbors().add(m);
+					gu = univers.getFather();
+					boolean detectNeighbors = false;
+					do {
+						detectNeighbors = false;
+						for (Matter mgu : gu.getListMatter()) {
+							if (m != mgu
+									&& HelperNewton.distance(m, mgu) < parameters
+											.getNebulaRadius() / 100) {
+								if ((m.getTypeOfObject().equals(mgu
+										.getTypeOfObject()))) {
+									if (!m.getNeighbors().contains(mgu)) {
+										m.getNeighbors().add(mgu);
+										detectNeighbors = true;
+									}
+									if (!mgu.getNeighbors().contains(m)) {
+										mgu.getNeighbors().add(m);
+										detectNeighbors = true;
+									}
 								}
 							}
 						}
-					}
+						gu = gu.getFather();
+						detectNeighbors = detectNeighbors && (gu != null);
+					} while (detectNeighbors);
 				}
 			}
 		}
