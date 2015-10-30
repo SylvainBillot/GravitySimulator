@@ -407,7 +407,7 @@ public class Univers {
 				}
 			}
 			break;
-		case Friction2:
+		case Experiment:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					m.friction2();
