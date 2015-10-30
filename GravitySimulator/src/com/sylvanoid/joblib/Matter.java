@@ -376,9 +376,9 @@ public class Matter implements Serializable {
 			// Impact point adjustment
 			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m, withReverce);
 			// Move the rest of time
-			double t = HelperNewton.distance(tmpPointAdjusted, pointBefore)
-					/ speed.length();
-			double timeRatio = 1 - (t / parameters.getTimeFactor());
+			double timeRatio = 1 - (HelperNewton.distance(pointBefore,
+					tmpPointAdjusted) / HelperNewton.distance(pointBefore,
+					point));
 			Vector3d newSpeed = tangentialSpeed(m, cr, withReverce);
 			newSpeed.scale(fluidity);
 			newSpeed.add(speedAfterImpactWith(m, cr));
