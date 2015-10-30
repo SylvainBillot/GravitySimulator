@@ -388,6 +388,19 @@ public class Univers {
 				}
 			}
 			break;
+		case SoftImpact2:
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.softImpact2();
+				}
+			}
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.moveAfterImpact();
+					m.adjustSpeed();
+				}
+			}
+			break;			
 		case HardImpact:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
@@ -404,6 +417,7 @@ public class Univers {
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					m.moveAfterImpact();
+					m.adjustSpeed();
 				}
 			}
 			break;
@@ -416,6 +430,7 @@ public class Univers {
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					m.moveAfterImpact();
+					m.adjustSpeed();
 				}
 			}
 			break;

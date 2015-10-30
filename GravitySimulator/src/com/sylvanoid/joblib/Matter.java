@@ -330,6 +330,29 @@ public class Matter implements Serializable {
 		impact(0);
 	}
 
+	public void softImpact2() {
+		boolean withReverce = false;
+		pointAdjusted = new Vector3d(point);
+		for (Matter m : fusionWith) {
+			// Impact point adjustment
+			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m, withReverce);
+			// Move the rest of time
+			double timeRatio = 1 - (HelperNewton.distance(pointBefore,
+					tmpPointAdjusted) / HelperNewton.distance(pointBefore,
+					point));
+			Vector3d newSpeed = speedAfterImpactWith(m, 0);
+			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
+					* parameters.getTimeFactor() * timeRatio,
+					tmpPointAdjusted.y + newSpeed.y
+							* parameters.getTimeFactor() * timeRatio,
+					tmpPointAdjusted.z + newSpeed.z
+							* parameters.getTimeFactor() * timeRatio);
+			// new point
+			tmpPointAdjusted.sub(point);
+			pointAdjusted.add(tmpPointAdjusted);
+		}
+	}
+
 	public void hardImpact() {
 		impact(1);
 	}
@@ -338,20 +361,12 @@ public class Matter implements Serializable {
 		for (Matter m : fusionWith) {
 			Vector3d relativeSpeed = new Vector3d(m.getSpeed());
 			relativeSpeed.sub(speed);
-			Vector3d newAccel = new Vector3d((cr * m.getMass()
-					* relativeSpeed.x + speed.x * mass + m.getSpeed().x
-					* m.getMass())
-					/ (mass + m.getMass()), (cr * m.getMass() * relativeSpeed.y
-					+ speed.y * mass + m.getSpeed().y * m.getMass())
-					/ (mass + m.getMass()), (cr * m.getMass() * relativeSpeed.z
-					+ speed.z * mass + m.getSpeed().z * m.getMass())
-					/ (mass + m.getMass())
-			);
+			Vector3d newAccel = speedAfterImpactWith(m, cr);
 			newAccel.sub(speed);
 			accel.add(newAccel);
 		}
 	}
-	
+
 	public void friction() {
 		boolean withReverce = false;
 		double fluidity = 1;
@@ -393,7 +408,6 @@ public class Matter implements Serializable {
 
 	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
-		adjustSpeed();
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {
