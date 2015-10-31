@@ -298,7 +298,7 @@ public class Matter implements Serializable {
 		point = getPlusV();
 	}
 
-	public void applyVicosity() {
+	public void applyVicosityNeighbors() {
 		boolean withReverce = false;
 		double cr = 0;
 		for (Matter m : neighbors) {
@@ -393,7 +393,7 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void friction() {
+	public void applyViscosity() {
 		boolean withReverce = false;
 		double fluidity = 1;
 		double cr = 0;

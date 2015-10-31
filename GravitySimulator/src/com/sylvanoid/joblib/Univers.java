@@ -415,10 +415,10 @@ public class Univers {
 				}
 			}
 			break;
-		case Friction:
+		case Viscosity:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
-					m.friction();
+					m.applyViscosity();
 				}
 			}
 			for (Matter m : listMatter) {
