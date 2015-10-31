@@ -375,7 +375,10 @@ public class Matter implements Serializable {
 		boolean withReverce = false;
 		double cr = 0;
 		for (Matter m : fusionWith) {
-			Vector3d newSpeed = tangentialSpeedInputOnly(m, cr, withReverce);
+			double ratio = 1 - HelperNewton.distance(this, m)
+					/ (rayon + m.getRayon());
+			Vector3d newSpeed = tangentialSpeedInputOnly(m, cr, withReverce,
+					ratio);
 			newSpeed.add(speedAfterImpactWith(m, cr));
 			accel.add(newSpeed);
 			accel.sub(speed);
@@ -525,11 +528,13 @@ public class Matter implements Serializable {
 	}
 
 	public Vector3d tangentialSpeedInputOnly(Matter m, double cr,
-			boolean withReverce) {
+			boolean withReverce, double ratio) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
-		newSpeed.sub(radialSpeedInputOnly(m, cr, withReverce));
+		Vector3d radialSpeed = radialSpeedNeighbors(m, cr, withReverce);
+		radialSpeed.scale(ratio);
+		newSpeed.sub(radialSpeed);
 		return newSpeed;
 	}
 
