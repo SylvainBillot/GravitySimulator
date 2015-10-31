@@ -233,7 +233,7 @@ public class Univers {
 				computeBarnesHutNeighbors();
 				applyNeighborsFriction();
 			}
-
+			
 			move();
 			
 			if (parameters.isManageImpact()) {
@@ -403,6 +403,11 @@ public class Univers {
 					m.softImpact();
 				}
 			}
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.setSpeed(m.getSpeedAdjusted());
+				}
+			}
 			break;
 		case HardImpact:
 			for (Matter m : listMatter) {
@@ -410,11 +415,19 @@ public class Univers {
 					m.hardImpact();
 				}
 			}
+			for (Matter m : listMatter) {
+				if (m.getFusionWith().size() != 0) {
+					m.setSpeed(m.getSpeedAdjusted());
+				}
+			}
 			break;
 		case Viscosity:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
 					m.applyViscosity();
+				}
+				if (m.getFusionWith().size() != 0) {
+					m.setSpeed(m.getSpeedAdjusted());
 				}
 			}
 			break;
