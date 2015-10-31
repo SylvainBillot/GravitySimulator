@@ -298,7 +298,7 @@ public class Matter implements Serializable {
 		point = getPlusV();
 	}
 
-	public void applyVicosityDisableNeighborsRadialSpeed() {
+	public void applyVicosity() {
 		boolean withReverce = false;
 		double cr = 0;
 		for (Matter m : neighbors) {
@@ -317,7 +317,7 @@ public class Matter implements Serializable {
 	/**
 	 * Speed reduction dependent of neighbors volumic mass
 	 */
-	public void applyVicositySpeedReduction() {
+	public void neighborsFriction() {
 		double coeffVicosity = parameters.getViscosityCoeff();
 		double tmpMass = mass;
 		double tmpRadius = parameters.getNebulaRadius()

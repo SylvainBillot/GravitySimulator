@@ -217,12 +217,14 @@ public class Univers {
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
 
+			//Compute accelerations
 			computeBarnesHutGravity();
+			//Change Speed
 			changeSpeed();
-
+			
 			if (parameters.isAppliViscosity()) {
 				computeBarnesHutNeighbors();
-				applyVicosity();
+				applyNeighborsFriction();
 			}
 
 			long startTimeMove = System.currentTimeMillis();
@@ -362,11 +364,10 @@ public class Univers {
 		}
 	}
 
-	private void applyVicosity() {
+	private void applyNeighborsFriction() {
 		for (Matter m : listMatter) {
 			if (m.getNeighbors().size() != 0) {
-				m.applyVicositySpeedReduction();
-				//m.applyVicosityDisableNeighborsRadialSpeed();
+				m.neighborsFriction();
 			}
 		}
 		for (Matter m : listMatter) {
