@@ -5,9 +5,7 @@ public enum TypeOfImpact {
 	Viscosity		("Apply Viscosity"),
 	SoftImpact		("Soft Impact"),
 	HardImpact		("Hard Impact"),
-	SoftImpact2		("Soft Impact2"),
 	NoAcell			("No Attraction if contact"),
-	Experiment		("Experiment"),
 	;
 	
 	private final String label;

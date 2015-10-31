@@ -303,7 +303,8 @@ public class Matter implements Serializable {
 		double cr = 0;
 		for (Matter m : neighbors) {
 			if (HelperNewton.distance(this, m) >= (rayon + m.getRayon())) {
-				double ratio = parameters.getViscosityCoeff()*(rayon + m.getRayon())
+				double ratio = parameters.getViscosityCoeff()
+						* (rayon + m.getRayon())
 						/ HelperNewton.distance(this, m);
 				Vector3d newSpeed = tangentialSpeedNeighbors(m, cr,
 						withReverce, ratio);
@@ -358,29 +359,6 @@ public class Matter implements Serializable {
 		impact(0);
 	}
 
-	public void softImpact2() {
-		boolean withReverce = false;
-		pointAdjusted = new Vector3d(point);
-		for (Matter m : fusionWith) {
-			// Impact point adjustment
-			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m, withReverce);
-			// Move the rest of time
-			double timeRatio = 1 - (HelperNewton.distance(pointBefore,
-					tmpPointAdjusted) / HelperNewton.distance(pointBefore,
-					point));
-			Vector3d newSpeed = speedAfterImpactWith(m, 0);
-			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
-					* parameters.getTimeFactor() * timeRatio,
-					tmpPointAdjusted.y + newSpeed.y
-							* parameters.getTimeFactor() * timeRatio,
-					tmpPointAdjusted.z + newSpeed.z
-							* parameters.getTimeFactor() * timeRatio);
-			// new point
-			tmpPointAdjusted.sub(point);
-			pointAdjusted.add(tmpPointAdjusted);
-		}
-	}
-
 	public void hardImpact() {
 		impact(1);
 	}
@@ -395,28 +373,12 @@ public class Matter implements Serializable {
 
 	public void applyViscosity() {
 		boolean withReverce = false;
-		double fluidity = 1;
 		double cr = 0;
-		pointAdjusted = new Vector3d(point);
 		for (Matter m : fusionWith) {
-			// Impact point adjustment
-			Vector3d tmpPointAdjusted = positionBeforeImpactWith(m, withReverce);
-			// Move the rest of time
-			double timeRatio = 1 - (HelperNewton.distance(pointBefore,
-					tmpPointAdjusted) / HelperNewton.distance(pointBefore,
-					point));
 			Vector3d newSpeed = tangentialSpeedInputOnly(m, cr, withReverce);
-			newSpeed.scale(fluidity);
 			newSpeed.add(speedAfterImpactWith(m, cr));
-			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
-					* parameters.getTimeFactor() * timeRatio,
-					tmpPointAdjusted.y + newSpeed.y
-							* parameters.getTimeFactor() * timeRatio,
-					tmpPointAdjusted.z + newSpeed.z
-							* parameters.getTimeFactor() * timeRatio);
-			// new point
-			tmpPointAdjusted.sub(point);
-			pointAdjusted.add(tmpPointAdjusted);
+			accel.add(newSpeed);
+			accel.sub(speed);
 		}
 	}
 
@@ -545,7 +507,8 @@ public class Matter implements Serializable {
 		return newDensity / newMass;
 	}
 
-	public Vector3d radialSpeedInputOnly(Matter m, double cr, boolean withReverce) {
+	public Vector3d radialSpeedInputOnly(Matter m, double cr,
+			boolean withReverce) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this,
@@ -553,7 +516,7 @@ public class Matter implements Serializable {
 		newSpeed.sub(positionBeforeImpactWith(m, withReverce));
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
-		if(speedMinusSpeedAfterImpact.dot(newSpeed)>0){
+		if (speedMinusSpeedAfterImpact.dot(newSpeed) > 0) {
 			newSpeed.scale(net.jafama.FastMath.cos(angle)
 					* speedMinusSpeedAfterImpact.length());
 			return newSpeed;
@@ -561,7 +524,8 @@ public class Matter implements Serializable {
 		return speedMinusSpeedAfterImpact;
 	}
 
-	public Vector3d tangentialSpeedInputOnly(Matter m, double cr, boolean withReverce) {
+	public Vector3d tangentialSpeedInputOnly(Matter m, double cr,
+			boolean withReverce) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
@@ -577,7 +541,7 @@ public class Matter implements Serializable {
 		newSpeed.sub(point);
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
-		if(speedMinusSpeedAfterImpact.dot(newSpeed)>0){
+		if (speedMinusSpeedAfterImpact.dot(newSpeed) > 0) {
 			newSpeed.scale(net.jafama.FastMath.cos(angle)
 					* speedMinusSpeedAfterImpact.length());
 			return newSpeed;
@@ -596,7 +560,7 @@ public class Matter implements Serializable {
 		return newSpeed;
 	}
 
-	public void adjustSpeed() {
+	public void adjustSpeedFromPositions() {
 		double distance = HelperNewton.distance(pointBefore, point);
 		double speedLength = distance / parameters.getTimeFactor();
 		Vector3d newSpeed = new Vector3d(point);

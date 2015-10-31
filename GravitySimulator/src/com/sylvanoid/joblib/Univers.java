@@ -217,11 +217,11 @@ public class Univers {
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
 
-			//Compute accelerations
+			// Compute accelerations
 			computeBarnesHutGravity();
-			//Change Speed
+			// Change Speed
 			changeSpeed();
-			
+
 			if (parameters.isAppliViscosity()) {
 				computeBarnesHutNeighbors();
 				applyNeighborsFriction();
@@ -235,6 +235,10 @@ public class Univers {
 				computeBarnesHutCollision();
 				moveImpact(parameters.getTypeOfImpact());
 				computeBarnesHutCollision();
+				if (parameters.getTypeOfImpact() != TypeOfImpact.Fusion) {
+					
+					adjustSpeedFromPositions();
+				}
 			}
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -368,6 +372,7 @@ public class Univers {
 		for (Matter m : listMatter) {
 			if (m.getNeighbors().size() != 0) {
 				m.neighborsFriction();
+				// m.applyVicosityNeighbors();
 			}
 		}
 		for (Matter m : listMatter) {
@@ -395,19 +400,6 @@ public class Univers {
 				}
 			}
 			break;
-		case SoftImpact2:
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.softImpact2();
-				}
-			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.moveAfterImpact();
-					m.adjustSpeed();
-				}
-			}
-			break;
 		case HardImpact:
 			for (Matter m : listMatter) {
 				if (m.getFusionWith().size() != 0) {
@@ -421,29 +413,16 @@ public class Univers {
 					m.applyViscosity();
 				}
 			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.moveAfterImpact();
-					m.adjustSpeed();
-				}
-			}
-			break;
-		case Experiment:
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.experiment();
-				}
-			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.moveAfterImpact();
-					m.adjustSpeed();
-				}
-			}
 			break;
 		case NoAcell:
 			break;
 		default:
+		}
+	}
+
+	private void adjustSpeedFromPositions() {
+		for (Matter m : listMatter) {
+			m.adjustSpeedFromPositions();
 		}
 	}
 
