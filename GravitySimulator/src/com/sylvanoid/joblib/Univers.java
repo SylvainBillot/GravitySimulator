@@ -233,12 +233,8 @@ public class Univers {
 					- startTimeMove);
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
-				moveImpact(parameters.getTypeOfImpact());
+				speedsAfterImpact(parameters.getTypeOfImpact());
 				computeBarnesHutCollision();
-				if (parameters.getTypeOfImpact() != TypeOfImpact.Fusion) {
-					
-					adjustSpeedFromPositions();
-				}
 			}
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -382,7 +378,7 @@ public class Univers {
 		}
 	}
 
-	private void moveImpact(TypeOfImpact typeOfImpact) {
+	private void speedsAfterImpact(TypeOfImpact typeOfImpact) {
 		switch (typeOfImpact) {
 		case Fusion:
 			recusiveImpact();
@@ -420,6 +416,7 @@ public class Univers {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void adjustSpeedFromPositions() {
 		for (Matter m : listMatter) {
 			m.adjustSpeedFromPositions();
