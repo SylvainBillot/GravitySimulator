@@ -298,7 +298,7 @@ public class Matter implements Serializable {
 		point = getPlusV();
 	}
 
-	public void applyVicosity() {
+	public void applyVicosityDisableNeighborsRadialSpeed() {
 		boolean withReverce = false;
 		double cr = 0;
 		for (Matter m : neighbors) {
@@ -405,7 +405,7 @@ public class Matter implements Serializable {
 			double timeRatio = 1 - (HelperNewton.distance(pointBefore,
 					tmpPointAdjusted) / HelperNewton.distance(pointBefore,
 					point));
-			Vector3d newSpeed = tangentialSpeed(m, cr, withReverce);
+			Vector3d newSpeed = tangentialSpeedInputOnly(m, cr, withReverce);
 			newSpeed.scale(fluidity);
 			newSpeed.add(speedAfterImpactWith(m, cr));
 			tmpPointAdjusted = new Vector3d(tmpPointAdjusted.x + newSpeed.x
@@ -545,7 +545,7 @@ public class Matter implements Serializable {
 		return newDensity / newMass;
 	}
 
-	public Vector3d radialSpeed(Matter m, double cr, boolean withReverce) {
+	public Vector3d radialSpeedInputOnly(Matter m, double cr, boolean withReverce) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(m.positionBeforeImpactWith(this,
@@ -553,16 +553,19 @@ public class Matter implements Serializable {
 		newSpeed.sub(positionBeforeImpactWith(m, withReverce));
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
-		newSpeed.scale(net.jafama.FastMath.cos(angle)
-				* speedMinusSpeedAfterImpact.length());
-		return newSpeed;
+		if(speedMinusSpeedAfterImpact.dot(newSpeed)>0){
+			newSpeed.scale(net.jafama.FastMath.cos(angle)
+					* speedMinusSpeedAfterImpact.length());
+			return newSpeed;
+		}
+		return speedMinusSpeedAfterImpact;
 	}
 
-	public Vector3d tangentialSpeed(Matter m, double cr, boolean withReverce) {
+	public Vector3d tangentialSpeedInputOnly(Matter m, double cr, boolean withReverce) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
-		newSpeed.sub(radialSpeed(m, cr, withReverce));
+		newSpeed.sub(radialSpeedInputOnly(m, cr, withReverce));
 		return newSpeed;
 	}
 
@@ -574,9 +577,12 @@ public class Matter implements Serializable {
 		newSpeed.sub(point);
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
-		newSpeed.scale(net.jafama.FastMath.cos(angle)
-				* speedMinusSpeedAfterImpact.length());
-		return newSpeed;
+		if(speedMinusSpeedAfterImpact.dot(newSpeed)>0){
+			newSpeed.scale(net.jafama.FastMath.cos(angle)
+					* speedMinusSpeedAfterImpact.length());
+			return newSpeed;
+		}
+		return speedMinusSpeedAfterImpact;
 	}
 
 	public Vector3d tangentialSpeedNeighbors(Matter m, double cr,

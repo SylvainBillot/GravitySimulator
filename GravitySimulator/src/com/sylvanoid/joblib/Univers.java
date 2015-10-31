@@ -365,8 +365,8 @@ public class Univers {
 	private void applyVicosity() {
 		for (Matter m : listMatter) {
 			if (m.getNeighbors().size() != 0) {
-				//m.applyVicositySpeedReduction();
-				m.applyVicosity();
+				m.applyVicositySpeedReduction();
+				//m.applyVicosityDisableNeighborsRadialSpeed();
 			}
 		}
 		for (Matter m : listMatter) {
