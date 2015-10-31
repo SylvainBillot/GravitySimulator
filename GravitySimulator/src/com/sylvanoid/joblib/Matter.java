@@ -30,7 +30,6 @@ public class Matter implements Serializable {
 	private Vector3d point = new Vector3d(0, 0, 0);
 	private Vector3d pointAdjusted = new Vector3d(0, 0, 0);
 	private Vector3d angles = new Vector3d(0, 0, 0);
-	private Vector3d speedBefore = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
 	private Vector3d speedAdjusted = new Vector3d(0, 0, 0);
 	private Vector3d accel = new Vector3d(0, 0, 0);
@@ -142,14 +141,6 @@ public class Matter implements Serializable {
 
 	public void setColor(Vector3d color) {
 		this.color = color;
-	}
-
-	public Vector3d getSpeedBefore() {
-		return speedBefore;
-	}
-
-	public void setSpeedBefore(Vector3d speedBefore) {
-		this.speedBefore = speedBefore;
 	}
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
@@ -288,7 +279,6 @@ public class Matter implements Serializable {
 	}
 
 	public void changeSpeed() {
-		speedBefore = new Vector3d(speed);
 		speed.add(accel);
 		accel = new Vector3d(0, 0, 0);
 	}

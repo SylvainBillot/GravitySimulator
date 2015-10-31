@@ -217,6 +217,13 @@ public class Univers {
 					- startTimeCycle);
 			long startTimeBH = System.currentTimeMillis();
 
+			/*
+			 * Needed to disable acceleration with collision particle
+			 */
+			if (parameters.isManageImpact()) {
+				computeBarnesHutCollision();
+			}
+			
 			// Compute accelerations
 			computeBarnesHutGravity();
 			// Change Speed
@@ -227,15 +234,13 @@ public class Univers {
 				applyNeighborsFriction();
 			}
 
-			long startTimeMove = System.currentTimeMillis();
 			move();
-			parameters.setMoveComputeTime(System.currentTimeMillis()
-					- startTimeMove);
+			
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				speedsAfterImpact(parameters.getTypeOfImpact());
-				computeBarnesHutCollision();
 			}
+			
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			moveEnd(bufferedWriter);
@@ -308,6 +313,7 @@ public class Univers {
 	}
 
 	private void move() {
+		long startTimeMove = System.currentTimeMillis();
 		for (Matter m : listMatter) {
 			if (maxMassElement == null
 					|| maxMassElement.getMass() < m.getMass()) {
@@ -315,6 +321,8 @@ public class Univers {
 			}
 			m.move();
 		}
+		parameters.setMoveComputeTime(System.currentTimeMillis()
+				- startTimeMove);
 	}
 
 	private void computeBarnesHutNeighbors() {
