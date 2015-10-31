@@ -481,7 +481,7 @@ public class GUIParam extends JDialog {
 				.isStaticDarkMatter());
 		add(staticDarkMatter);
 
-		add(new Label("Apply viscosity:"));
+		add(new Label("Apply density viscosity (very experimental):"));
 		appliViscosity = new JCheckBox();
 		appliViscosity
 				.setSelected(me.mother.getParameters().isAppliViscosity());
