@@ -378,8 +378,6 @@ public class Matter implements Serializable {
 		}
 	}
 
-
-
 	public void moveAfterImpact() {
 		point = new Vector3d(pointAdjusted);
 	}

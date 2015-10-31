@@ -223,7 +223,7 @@ public class Univers {
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 			}
-			
+
 			// Compute accelerations
 			computeBarnesHutGravity();
 			// Change Speed
@@ -233,14 +233,14 @@ public class Univers {
 				computeBarnesHutNeighbors();
 				applyNeighborsFriction();
 			}
-			
+
 			move();
-			
+
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				speedsAfterImpact(parameters.getTypeOfImpact());
 			}
-			
+
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			moveEnd(bufferedWriter);
