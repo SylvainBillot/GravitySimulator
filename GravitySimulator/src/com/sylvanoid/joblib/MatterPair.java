@@ -65,6 +65,8 @@ public class MatterPair implements Comparable<MatterPair> {
 		m2.setSpeed(newSpeed2);
 	}
 
+	
+	
 	public double distance() {
 		return HelperNewton.distance(m1, m2);
 	}
