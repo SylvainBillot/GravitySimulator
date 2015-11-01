@@ -397,11 +397,11 @@ public class Matter implements Serializable {
 	}
 
 	public Vector3d positionBeforeImpactWith(Matter m, boolean withReverce) {
-		Vector3d newPoint = new Vector3d(pointBefore);
+		Vector3d newPoint = new Vector3d(point);
 		Vector3d deltaSpeed = new Vector3d(speed);
 		deltaSpeed.sub(m.getSpeed());
-		Vector3d deltaPoint = new Vector3d(pointBefore);
-		deltaPoint.sub(m.getPointBefore());
+		Vector3d deltaPoint = new Vector3d(point);
+		deltaPoint.sub(m.getPoint());
 		double a = net.jafama.FastMath.pow2(deltaSpeed.x)
 				+ net.jafama.FastMath.pow2(deltaSpeed.y)
 				+ net.jafama.FastMath.pow2(deltaSpeed.z);

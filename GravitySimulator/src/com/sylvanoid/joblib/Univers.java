@@ -234,13 +234,13 @@ public class Univers {
 				applyNeighborsFriction();
 			}
 
-			move();
-
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				speedsAfterImpact(parameters.getTypeOfImpact());
 			}
 
+			move();
+			
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			moveEnd(bufferedWriter);
