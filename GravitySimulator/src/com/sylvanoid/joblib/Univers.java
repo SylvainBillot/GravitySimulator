@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -371,6 +372,23 @@ public class Univers {
 					new ArrayList<Matter>()));
 		}
 	}
+	
+	private List<MatterPair> collisionPairs(){
+		List<MatterPair> pairs = new ArrayList<MatterPair>();
+		for(Matter m1:listMatter){
+			if(m1.getFusionWith().size()>0){
+				for(Matter m2:m1.getFusionWith()){
+					MatterPair toAdd = new MatterPair(m1, m2); 
+					MatterPair toAddReverse = new MatterPair(m2, m1);
+					if(!pairs.contains(toAdd) && !pairs.contains(toAddReverse)){
+						pairs.add(toAdd);
+					}
+				}
+			}
+		}
+		Collections.sort(pairs);
+		return pairs;
+	}
 
 	private void applyNeighborsFriction() {
 		for (Matter m : listMatter) {
@@ -398,27 +416,13 @@ public class Univers {
 			}
 			break;
 		case SoftImpact:
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.softImpact();
-				}
-			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.setSpeed(m.getSpeedAdjusted());
-				}
+			for(MatterPair mp:collisionPairs()){
+				mp.impact(0);
 			}
 			break;
 		case HardImpact:
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.hardImpact();
-				}
-			}
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.setSpeed(m.getSpeedAdjusted());
-				}
+			for(MatterPair mp:collisionPairs()){
+				mp.impact(1);
 			}
 			break;
 		case Viscosity:

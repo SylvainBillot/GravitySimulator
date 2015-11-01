@@ -172,7 +172,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 									m.getAccel().add(
 											HelperVector.acceleration(
 													m.getPoint(),
-													uvoisin.getGPoint(),
+													uAdjusted.getGPoint(),
 													attraction));
 								}
 							}
