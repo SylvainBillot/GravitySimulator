@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -241,7 +240,7 @@ public class Univers {
 			}
 
 			move();
-			
+
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			moveEnd(bufferedWriter);
@@ -372,21 +371,21 @@ public class Univers {
 					new ArrayList<Matter>()));
 		}
 	}
-	
-	private List<MatterPair> collisionPairs(){
-		List<MatterPair> pairs = new ArrayList<MatterPair>();
-		for(Matter m1:listMatter){
-			if(m1.getFusionWith().size()>0){
-				for(Matter m2:m1.getFusionWith()){
-					MatterPair toAdd = new MatterPair(m1, m2); 
-					MatterPair toAddReverse = new MatterPair(m2, m1);
-					if(!pairs.contains(toAdd) && !pairs.contains(toAddReverse)){
-						pairs.add(toAdd);
+
+	private TreeMap<String, MatterPair> collisionPairs() {
+		TreeMap<String, MatterPair> pairs = new TreeMap<String, MatterPair>();
+		for (Matter m1 : listMatter) {
+			if (m1.getFusionWith().size() > 0) {
+				for (Matter m2 : m1.getFusionWith()) {
+					MatterPair toAdd = new MatterPair(m1, m2);
+					if (pairs.get(m1.getName() + m2.getName()) == null
+							&& pairs.get(m2.getName() + m1.getName()) == null) {
+						pairs.put(m1.getName() + m2.getName(), toAdd);
 					}
 				}
 			}
 		}
-		Collections.sort(pairs);
+		// Collections.sort(pairs);
 		return pairs;
 	}
 
@@ -416,23 +415,21 @@ public class Univers {
 			}
 			break;
 		case SoftImpact:
-			for(MatterPair mp:collisionPairs()){
-				mp.impact(0);
+			for (Map.Entry<String, MatterPair> entry : collisionPairs()
+					.entrySet()) {
+				entry.getValue().impact(0);
 			}
 			break;
 		case HardImpact:
-			for(MatterPair mp:collisionPairs()){
-				mp.impact(1);
+			for (Map.Entry<String, MatterPair> entry : collisionPairs()
+					.entrySet()) {
+				entry.getValue().impact(1);
 			}
 			break;
 		case Viscosity:
-			for (Matter m : listMatter) {
-				if (m.getFusionWith().size() != 0) {
-					m.applyViscosity();
-				}
-				if (m.getFusionWith().size() != 0) {
-					m.setSpeed(m.getSpeedAdjusted());
-				}
+			for (Map.Entry<String, MatterPair> entry : collisionPairs()
+					.entrySet()) {
+				entry.getValue().applyViscosity();
 			}
 			break;
 		case NoAcell:

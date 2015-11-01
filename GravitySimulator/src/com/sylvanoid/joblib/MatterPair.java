@@ -65,13 +65,29 @@ public class MatterPair implements Comparable<MatterPair> {
 		m2.setSpeed(newSpeed2);
 	}
 
-	
-	
-	public double distance() {
-		return HelperNewton.distance(m1, m2);
+	public void applyViscosity() {
+		double ratio = 1 - distanceByradius();
+		Vector3d relativeSpeed = new Vector3d(m1.getSpeed());
+		relativeSpeed.sub(m2.getSpeed());
+
+		Vector3d radialSpeed = new Vector3d(m2.getPoint());
+		radialSpeed.sub(m1.getPoint());
+		radialSpeed.normalize();
+		double u = relativeSpeed.dot(radialSpeed);
+		if (u > 0) {
+			Vector3d radialSpeedM1 = new Vector3d(radialSpeed);
+			radialSpeedM1.scale(u*ratio*m2.getMass()/(m1.getMass()+m2.getMass()));
+			
+			Vector3d radialSpeedM2 = new Vector3d(radialSpeed);
+			radialSpeedM2.scale(u*ratio*m1.getMass()/(m1.getMass()+m2.getMass()));
+			
+			m1.getSpeed().sub(radialSpeedM1);
+			m2.getSpeed().add(radialSpeedM2);
+		}
+
 	}
 
-	public double distanceByradius() {
+	private double distanceByradius() {
 		return HelperNewton.distance(m1, m2) / (m1.getRayon() + m2.getRayon());
 	}
 
