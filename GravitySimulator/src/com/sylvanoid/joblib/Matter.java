@@ -346,23 +346,6 @@ public class Matter implements Serializable {
 		}
 	}
 
-	public void softImpact() {
-		impact(0);
-	}
-
-	public void hardImpact() {
-		impact(1);
-	}
-
-	public void impact(double cr) {
-		speedAdjusted = new Vector3d(speed);
-		for (Matter m : fusionWith) {
-			Vector3d newSpeed = speedAfterImpactWith(m, cr);
-			newSpeed.sub(speed);
-			speedAdjusted.add(newSpeed);
-		}
-	}
-
 	public void applyViscosity() {
 		boolean withReverce = false;
 		double cr = 0;
