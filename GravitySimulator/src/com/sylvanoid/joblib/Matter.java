@@ -28,14 +28,13 @@ public class Matter implements Serializable {
 	private double mass;
 	private Vector3d pointBefore = new Vector3d(0, 0, 0);
 	private Vector3d point = new Vector3d(0, 0, 0);
-	private Vector3d pointAdjusted = new Vector3d(0, 0, 0);
 	private Vector3d angles = new Vector3d(0, 0, 0);
 	private Vector3d speed = new Vector3d(0, 0, 0);
-	private Vector3d speedAdjusted = new Vector3d(0, 0, 0);
 	private Vector3d accel = new Vector3d(0, 0, 0);
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private double rayon;
+	private double vicosity = 1;
 	private List<Matter> fusionWith = new ArrayList<Matter>();
 	private List<Matter> neighbors = new ArrayList<Matter>();
 
@@ -111,14 +110,6 @@ public class Matter implements Serializable {
 		return pointBefore;
 	}
 
-	public Vector3d getPointAdjusted() {
-		return pointAdjusted;
-	}
-
-	public void setPointAdjusted(Vector3d pointAdjusted) {
-		this.pointAdjusted = pointAdjusted;
-	}
-
 	public void setPointBefore(Vector3d pointBefore) {
 		this.pointBefore = pointBefore;
 	}
@@ -153,14 +144,6 @@ public class Matter implements Serializable {
 		this.speed = speed;
 	}
 
-	public Vector3d getSpeedAdjusted() {
-		return speedAdjusted;
-	}
-
-	public void setSpeedAdjusted(Vector3d speedAdjusted) {
-		this.speedAdjusted = speedAdjusted;
-	}
-
 	public Vector3d getAccel() {
 		return accel;
 	}
@@ -185,6 +168,14 @@ public class Matter implements Serializable {
 
 	public void setDensity(double density) {
 		this.density = density;
+	}
+
+	public double getVicosity() {
+		return vicosity;
+	}
+
+	public void setVicosity(double vicosity) {
+		this.vicosity = vicosity;
 	}
 
 	public boolean isDark() {
@@ -344,10 +335,6 @@ public class Matter implements Serializable {
 			listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed,
 					newColor, newDensity, typeOfObject));
 		}
-	}
-
-	public void moveAfterImpact() {
-		point = new Vector3d(pointAdjusted);
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {

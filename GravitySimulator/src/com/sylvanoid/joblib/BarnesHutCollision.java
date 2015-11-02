@@ -2,6 +2,7 @@ package com.sylvanoid.joblib;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RecursiveTask;
 
 import javax.vecmath.Vector3d;
@@ -15,9 +16,11 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 	private static final long serialVersionUID = 1L;
 	private Univers univers;
 	private Parameters parameters;
+	private ConcurrentHashMap<String, MatterPair> collisionPairs;
 
 	public BarnesHutCollision(Univers univers) {
 		this.univers = univers;
+		this.collisionPairs = univers.getCollisionPairs();
 		this.parameters = univers.getParameters();
 	}
 
@@ -177,6 +180,13 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 										mgu.getFusionWith().add(m);
 										detectColision = true;
 									}
+									
+									MatterPair toAdd = new MatterPair(m, mgu);
+									if (collisionPairs.get(m.getName() + mgu.getName()) == null
+											&& collisionPairs.get(mgu.getName() + m.getName()) == null) {
+										collisionPairs.put(m.getName() + mgu.getName(), toAdd);
+									}
+									
 								}
 							}
 						}

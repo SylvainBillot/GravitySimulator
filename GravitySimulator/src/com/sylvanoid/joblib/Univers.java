@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 
 import javax.vecmath.Point3d;
@@ -62,6 +63,8 @@ public class Univers {
 
 	private Univers father;
 
+	private ConcurrentHashMap<String, MatterPair> collisionPairs = new ConcurrentHashMap<String, MatterPair>();
+
 	@Override
 	public String toString() {
 		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y + " gz:" + gPoint.z);
@@ -108,6 +111,7 @@ public class Univers {
 		this.father = father;
 		this.parameters = father.parameters;
 		this.listMatter = new ArrayList<Matter>();
+		this.collisionPairs = father.getCollisionPairs();
 		this.min = new Vector3d(min);
 		this.max = new Vector3d(max);
 	}
@@ -343,6 +347,7 @@ public class Univers {
 		for (Matter m : listMatter) {
 			m.getFusionWith().clear();
 		}
+		collisionPairs.clear();
 		BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
 		if (parameters.isParallelization()) {
 			ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
@@ -372,22 +377,6 @@ public class Univers {
 		}
 	}
 
-	private Map<String, MatterPair> collisionPairs() {
-		Map<String, MatterPair> pairs = new TreeMap<String, MatterPair>();
-		for (Matter m1 : listMatter) {
-			if (m1.getFusionWith().size() > 0) {
-				for (Matter m2 : m1.getFusionWith()) {
-					MatterPair toAdd = new MatterPair(m1, m2);
-					if (pairs.get(m1.getName() + m2.getName()) == null
-							&& pairs.get(m2.getName() + m1.getName()) == null) {
-						pairs.put(m1.getName() + m2.getName(), toAdd);
-					}
-				}
-			}
-		}
-		return pairs;
-	}
-
 	private void applyNeighborsFriction() {
 		for (Matter m : listMatter) {
 			if (m.getNeighbors().size() != 0) {
@@ -414,19 +403,19 @@ public class Univers {
 			}
 			break;
 		case SoftImpact:
-			for (Map.Entry<String, MatterPair> entry : collisionPairs()
+			for (Map.Entry<String, MatterPair> entry : collisionPairs
 					.entrySet()) {
 				entry.getValue().impact(0);
 			}
 			break;
 		case HardImpact:
-			for (Map.Entry<String, MatterPair> entry : collisionPairs()
+			for (Map.Entry<String, MatterPair> entry : collisionPairs
 					.entrySet()) {
 				entry.getValue().impact(1);
 			}
 			break;
 		case Viscosity:
-			for (Map.Entry<String, MatterPair> entry : collisionPairs()
+			for (Map.Entry<String, MatterPair> entry : collisionPairs
 					.entrySet()) {
 				entry.getValue().applyViscosity();
 			}
@@ -977,6 +966,15 @@ public class Univers {
 
 	public Vector3d getP() {
 		return p;
+	}
+
+	public ConcurrentHashMap<String, MatterPair> getCollisionPairs() {
+		return collisionPairs;
+	}
+
+	public void setCollisionPairs(
+			ConcurrentHashMap<String, MatterPair> collisionPairs) {
+		this.collisionPairs = collisionPairs;
 	}
 
 }
