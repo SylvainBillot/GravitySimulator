@@ -372,8 +372,8 @@ public class Univers {
 		}
 	}
 
-	private TreeMap<String, MatterPair> collisionPairs() {
-		TreeMap<String, MatterPair> pairs = new TreeMap<String, MatterPair>();
+	private Map<String, MatterPair> collisionPairs() {
+		Map<String, MatterPair> pairs = new TreeMap<String, MatterPair>();
 		for (Matter m1 : listMatter) {
 			if (m1.getFusionWith().size() > 0) {
 				for (Matter m2 : m1.getFusionWith()) {
@@ -385,7 +385,6 @@ public class Univers {
 				}
 			}
 		}
-		// Collections.sort(pairs);
 		return pairs;
 	}
 

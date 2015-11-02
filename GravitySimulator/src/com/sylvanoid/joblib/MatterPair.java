@@ -66,6 +66,7 @@ public class MatterPair implements Comparable<MatterPair> {
 	}
 
 	public void applyViscosity() {
+		double viscosity = 1;
 		double ratio = 1 - distanceByradius();
 		Vector3d relativeSpeed = new Vector3d(m1.getSpeed());
 		relativeSpeed.sub(m2.getSpeed());
@@ -76,10 +77,10 @@ public class MatterPair implements Comparable<MatterPair> {
 		double u = relativeSpeed.dot(radialSpeed);
 		if (u > 0) {
 			Vector3d radialSpeedM1 = new Vector3d(radialSpeed);
-			radialSpeedM1.scale(u*ratio*m2.getMass()/(m1.getMass()+m2.getMass()));
+			radialSpeedM1.scale(u*ratio*viscosity*m2.getMass()/(m1.getMass()+m2.getMass()));
 			
 			Vector3d radialSpeedM2 = new Vector3d(radialSpeed);
-			radialSpeedM2.scale(u*ratio*m1.getMass()/(m1.getMass()+m2.getMass()));
+			radialSpeedM2.scale(u*ratio*viscosity*m1.getMass()/(m1.getMass()+m2.getMass()));
 			
 			m1.getSpeed().sub(radialSpeedM1);
 			m2.getSpeed().add(radialSpeedM2);
