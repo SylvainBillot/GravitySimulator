@@ -277,10 +277,10 @@ public class GUIParam extends JDialog {
 					numOfLowMassParticule.setValue(10000);
 					lowMassParticuleMass
 							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
-					lowMassDensity.setValue(1E-23);
+					lowMassDensity.setValue(1E-24);
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E40);
-					darkMatterDensity.setValue(1E-23);
+					darkMatterDensity.setValue(1E-24);
 					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
@@ -309,10 +309,10 @@ public class GUIParam extends JDialog {
 					numOfLowMassParticule.setValue(10000);
 					lowMassParticuleMass
 							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
-					lowMassDensity.setValue(1E-23);
+					lowMassDensity.setValue(1E-24);
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E40);
-					darkMatterDensity.setValue(1E-23);
+					darkMatterDensity.setValue(1E-24);
 					darkMatterDistribution.setValue(5);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
