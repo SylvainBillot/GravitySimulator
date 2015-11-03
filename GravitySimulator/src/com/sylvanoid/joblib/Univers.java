@@ -454,6 +454,41 @@ public class Univers {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
+	private void doubleDensityRelaxation() {
+		double k = 1;
+		double kn = 1;
+		double p = 0;
+		double pn = 0;
+		double p0 = 0;
+		for (Matter m : listMatter) {
+			if (m.getFusionWith().size() > 0) {
+				for (Matter m1 : m.getFusionWith()) {
+					double q = HelperNewton.distance(m, m1)
+							/ (m.getRayon() + m1.getRayon());
+					p += net.jafama.FastMath.pow2(1 - q);
+					pn += net.jafama.FastMath.pow3(1 - q);
+				}
+				double P = k * (p - p0);
+				double Pn = kn - pn;
+				for (Matter m1 : listMatter) {
+					double q = HelperNewton.distance(m, m1)
+							/ (m.getRayon() + m1.getRayon());
+					Vector3d rij = new Vector3d(m1.getPoint());
+					rij.sub(m.getPoint());
+					rij.normalize();
+
+					rij.scale(net.jafama.FastMath.pow2(parameters.getTimeFactor())*(P * (1 - q) + Pn
+							* net.jafama.FastMath.pow2(1 - q)) / 2);
+
+					m1.getPoint().add(rij);
+					m.getPoint().sub(rij);
+				}
+			}
+		}
+
+	}
+
 	private List<Matter> createUvivers(Vector3d origine, Vector3d initialSpeed,
 			Vector3d axisOfRing, double radiusMin, double radiusMax,
 			Vector3d ratio, double homogeneousDistributionPow,
