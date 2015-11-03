@@ -75,6 +75,9 @@ public class Parameters implements Serializable {
 	private double nebulaRadiusRatioForVolumicMass = 100;
 	private double viscosityCoeff = 1;
 	
+	private double matterViscosity = 1;
+	private double gasViscosity = 1;
+	private double darkMatterViscosity = 0;
 
 	public Parameters() {
 
@@ -518,5 +521,29 @@ public class Parameters implements Serializable {
 
 	public void setViscosityCoeff(double viscosityCoeff) {
 		this.viscosityCoeff = viscosityCoeff;
+	}
+
+	public double getMatterViscosity() {
+		return matterViscosity;
+	}
+
+	public void setMatterViscosity(double matterViscosity) {
+		this.matterViscosity = matterViscosity;
+	}
+
+	public double getGasViscosity() {
+		return gasViscosity;
+	}
+
+	public void setGasViscosity(double gasViscosity) {
+		this.gasViscosity = gasViscosity;
+	}
+
+	public double getDarkMatterViscosity() {
+		return darkMatterViscosity;
+	}
+
+	public void setDarkMatterViscosity(double darkMatterViscosity) {
+		this.darkMatterViscosity = darkMatterViscosity;
 	}
 }

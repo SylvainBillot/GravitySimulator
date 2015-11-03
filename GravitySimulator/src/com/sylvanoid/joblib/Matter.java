@@ -34,7 +34,7 @@ public class Matter implements Serializable {
 	private Vector3d color = new Vector3d(1, 1, 1);
 	private double density;
 	private double rayon;
-	private double vicosity = 1;
+	private double viscosity;
 	private List<Matter> fusionWith = new ArrayList<Matter>();
 	private List<Matter> neighbors = new ArrayList<Matter>();
 
@@ -57,7 +57,7 @@ public class Matter implements Serializable {
 
 	public Matter(Parameters parameters, Vector3d point, double mass,
 			Vector3d speed, Vector3d color, double density,
-			TypeOfObject typeOfObject) {
+			TypeOfObject typeOfObject, double initialeViscosity) {
 		this.parameters = parameters;
 		this.setPoint(point);
 		this.mass = mass;
@@ -65,6 +65,7 @@ public class Matter implements Serializable {
 		this.color = color;
 		this.density = density;
 		this.typeOfObject = typeOfObject;
+		this.viscosity = initialeViscosity;
 		this.name = "id: " + this.hashCode();
 		this.rayon = net.jafama.FastMath.pow(3 * (mass / density)
 				/ (4 * net.jafama.FastMath.PI), (double) 1 / (double) 3);
@@ -170,12 +171,12 @@ public class Matter implements Serializable {
 		this.density = density;
 	}
 
-	public double getVicosity() {
-		return vicosity;
+	public double getViscosity() {
+		return viscosity;
 	}
 
-	public void setVicosity(double vicosity) {
-		this.vicosity = vicosity;
+	public void setViscosity(double vicosity) {
+		this.viscosity = vicosity;
 	}
 
 	public boolean isDark() {
@@ -321,6 +322,7 @@ public class Matter implements Serializable {
 			Vector3d newSpeed = globalSpeed();
 			Vector3d newColor = new Vector3d(color);
 			double newDensity = globalDensity();
+			double newVicosity = globalViscosity();
 			double newMass = mass;
 			for (Matter m : fusionWith) {
 				if (listMatter.contains(m)) {
@@ -333,7 +335,7 @@ public class Matter implements Serializable {
 			}
 			listMatter.remove(this);
 			listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed,
-					newColor, newDensity, typeOfObject));
+					newColor, newDensity, typeOfObject, newVicosity) );
 		}
 	}
 
@@ -444,6 +446,16 @@ public class Matter implements Serializable {
 			newMass += m.getMass();
 		}
 		return newDensity / newMass;
+	}
+	
+	public double globalViscosity() {
+		double newViscosity = viscosity * mass;
+		double newMass = mass;
+		for (Matter m : fusionWith) {
+			newViscosity += m.getViscosity() * m.getMass();
+			newMass += m.getMass();
+		}
+		return newViscosity / newMass;
 	}
 
 	public Vector3d radialSpeedNeighbors(Matter m, double cr,
