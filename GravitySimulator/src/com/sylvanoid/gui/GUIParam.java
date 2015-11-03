@@ -13,6 +13,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JPanel;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperVariable;
@@ -437,24 +438,30 @@ public class GUIParam extends JDialog {
 		darkMatterDistribution.setValue(me.mother.getParameters()
 				.getDarkMatterDistribution());
 		add(darkMatterDistribution);
-
-		add(new Label("Demi Distance between Galaxies X :"));
+		
+		
+		
+		add(new Label("Demi Distance between Galaxies X:"));
+		JPanel demiDistance = new JPanel();
+		add(demiDistance);
 		demiDistanceBetweenGalaxiesX = new JFormattedTextField(dfsc);
 		demiDistanceBetweenGalaxiesX.setValue(me.mother.getParameters()
 				.getDemiDistanceBetweenGalaxies().x);
-		add(demiDistanceBetweenGalaxiesX);
+		demiDistance.add(new Label("X:"));
+		demiDistance.add(demiDistanceBetweenGalaxiesX);
 
-		add(new Label("Demi Distance between Galaxies Y :"));
 		demiDistanceBetweenGalaxiesY = new JFormattedTextField(dfsc);
 		demiDistanceBetweenGalaxiesY.setValue(me.mother.getParameters()
 				.getDemiDistanceBetweenGalaxies().y);
-		add(demiDistanceBetweenGalaxiesY);
+		demiDistance.add(new Label("Y:"));
+		demiDistance.add(demiDistanceBetweenGalaxiesY);
 
-		add(new Label("Demi Distance between Galaxies Z :"));
+		
 		demiDistanceBetweenGalaxiesZ = new JFormattedTextField(dfsc);
 		demiDistanceBetweenGalaxiesZ.setValue(me.mother.getParameters()
 				.getDemiDistanceBetweenGalaxies().z);
-		add(demiDistanceBetweenGalaxiesZ);
+		demiDistance.add(new Label("Z:"));
+		demiDistance.add(demiDistanceBetweenGalaxiesZ);
 
 		add(new Label("Manage Impact:"));
 		manageImpact = new JCheckBox();
