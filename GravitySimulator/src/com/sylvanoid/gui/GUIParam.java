@@ -361,15 +361,17 @@ public class GUIParam extends JDialog {
 		densiteMin.setValue(me.mother.getParameters().getDensity());
 		add(densiteMin);
 
-		add(new Label("Mass object min:"));
+		add(new Label("Mass object:"));
+		JPanel massObject = new JPanel();
+		add(massObject);
 		massObjectMin = new JFormattedTextField(dfsc);
 		massObjectMin.setValue(me.mother.getParameters().getMassObjectMin());
-		add(massObjectMin);
-
-		add(new Label("Mass object max:"));
+		massObject.add(new Label("Min:"));
+		massObject.add(massObjectMin);
 		massObjectMax = new JFormattedTextField(dfsc);
 		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
-		add(massObjectMax);
+		massObject.add(new Label("Max:"));
+		massObject.add(massObjectMax);
 
 		add(new Label("Matter distribution:"));
 		matterDistribution = new JFormattedTextField(dfsc);
