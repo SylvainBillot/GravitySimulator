@@ -164,15 +164,16 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 								parameters.setNumOfAccelCompute(parameters
 										.getNumOfAccelCompute() + 1);
 								Univers uAdjusted = new Univers(uvoisin);
+
 								if (uAdjusted.adjustMassAndCentroid(m
 										.getFusionWith()) != 0) {
 									double attraction = HelperNewton
-											.attraction(m, uvoisin,
+											.attraction(m, uAdjusted,
 													parameters);
 									m.getAccel().add(
 											HelperVector.acceleration(
 													m.getPoint(),
-													uvoisin.getGPoint(),
+													uAdjusted.getGPoint(),
 													attraction));
 								}
 							}
