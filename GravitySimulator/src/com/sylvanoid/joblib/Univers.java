@@ -499,7 +499,7 @@ public class Univers {
 				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
 				parameters.getMassObjectMax(), parameters.getDensity(),
 				new Vector3d(0, 0, 0), homogeneousDistributionPow,
-				TypeOfObject.Matter, parameters.getMatterViscosity()));
+				TypeOfObject.Matter, parameters.getMatterViscosityRatio()));
 
 		miniListMatter.addAll(createUniversMain(origine, initialSpeed,
 				axisOfRing, radiusMin, radiusMax, ratio,
@@ -507,7 +507,7 @@ public class Univers {
 				parameters.getLowMassParticuleMass(),
 				parameters.getLowMassDensity(), new Vector3d(0.06, 0.05, 0.05),
 				gasHomogeneousDistributionPow, TypeOfObject.Gas,
-				parameters.getGasViscosity()));
+				parameters.getGasViscosityRatio()));
 
 		return miniListMatter;
 	}
@@ -637,7 +637,7 @@ public class Univers {
 								.getNumOfLowMassParticule()),
 				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01,
 						0.01), parameters.getDarkMatterDistribution(),
-				TypeOfObject.Dark, parameters.getDarkMatterViscosity());
+				TypeOfObject.Dark, parameters.getDarkMatterViscosityRatio());
 
 		TreeMap<Double, Double> innerMassTreeMap = new TreeMap<Double, Double>();
 		for (Matter m : listMatter) {
@@ -699,7 +699,7 @@ public class Univers {
 								.getNumOfLowMassParticule()),
 				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01,
 						0.01), parameters.getDarkMatterDistribution(),
-				TypeOfObject.Dark, parameters.getDarkMatterViscosity());
+				TypeOfObject.Dark, parameters.getDarkMatterViscosityRatio());
 
 		TreeMap<Double, Double> innerMassTreeMap = new TreeMap<Double, Double>();
 		for (Matter m : listMatter) {
@@ -756,7 +756,7 @@ public class Univers {
 								.getNumOfLowMassParticule()),
 				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01,
 						0.01), parameters.getDarkMatterDistribution(),
-				TypeOfObject.Dark, parameters.getDarkMatterViscosity());
+				TypeOfObject.Dark, parameters.getDarkMatterViscosityRatio());
 	}
 
 	private void createGalaxiesCollision() {
@@ -770,7 +770,7 @@ public class Univers {
 				/ 1.1 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
 				new Vector3d(0.25, 0.25, 0.25),
 				parameters.getDarkMatterDensity(), TypeOfObject.Dark,
-				parameters.getDarkMatterViscosity());
+				parameters.getDarkMatterViscosityRatio());
 		listMatter.add(m1);
 		mass += m1.getMass();
 		darkMass += m1.getMass();
@@ -779,7 +779,7 @@ public class Univers {
 				/ 2 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
 				new Vector3d(0.25, 0.25, 0.25),
 				parameters.getDarkMatterDensity(), TypeOfObject.Dark,
-				parameters.getDarkMatterViscosity());
+				parameters.getDarkMatterViscosityRatio());
 		listMatter.add(m2);
 		mass += m2.getMass();
 		darkMass += m2.getMass();
@@ -818,7 +818,7 @@ public class Univers {
 				net.jafama.FastMath.random()), HelperVariable.M
 				+ net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
 				new Vector3d(1, 1, 0.5), 1408, TypeOfObject.Matter,
-				parameters.getMatterViscosity());
+				parameters.getMatterViscosityRatio());
 		sun.setName("Sun");
 		listMatter.add(sun);
 
@@ -827,7 +827,7 @@ public class Univers {
 				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 				330.2E21 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
 				new Vector3d(1, 0.8, 0.8), 5427, TypeOfObject.Matter,
-				parameters.getMatterViscosity());
+				parameters.getMatterViscosityRatio());
 		mercure.setName("Mercure");
 		listMatter.add(mercure);
 
@@ -836,7 +836,7 @@ public class Univers {
 				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 				5.972E24 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
 				new Vector3d(1, 1, 0.8), 5.204E3, TypeOfObject.Matter,
-				parameters.getMatterViscosity());
+				parameters.getMatterViscosityRatio());
 		venus.setName("Venus");
 		listMatter.add(venus);
 
@@ -845,7 +845,7 @@ public class Univers {
 				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 				4.8685E24 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(0.7, 0.7, 1), 5.52E3,
-				TypeOfObject.Matter, parameters.getMatterViscosity());
+				TypeOfObject.Matter, parameters.getMatterViscosityRatio());
 		earth.setName("Earth");
 		listMatter.add(earth);
 
@@ -854,7 +854,7 @@ public class Univers {
 				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 				641.85E21 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 0.7, 0.7), 3933.5,
-				TypeOfObject.Matter, parameters.getMatterViscosity());
+				TypeOfObject.Matter, parameters.getMatterViscosityRatio());
 		mars.setName("Mars");
 		listMatter.add(mars);
 
@@ -863,7 +863,7 @@ public class Univers {
 				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 				1.8986E27 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 0.8, 0.8), 1326,
-				TypeOfObject.Matter, parameters.getMatterViscosity());
+				TypeOfObject.Matter, parameters.getMatterViscosityRatio());
 		jupiter.setName("Jupiter");
 		listMatter.add(jupiter);
 
@@ -872,7 +872,7 @@ public class Univers {
 				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 				568.46E24 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(0.9, 0.9, 0.9), 687.3,
-				TypeOfObject.Matter, parameters.getMatterViscosity());
+				TypeOfObject.Matter, parameters.getMatterViscosityRatio());
 		saturn.setName("Saturn");
 		listMatter.add(saturn);
 
@@ -881,7 +881,7 @@ public class Univers {
 				net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 				7.3477E22 + net.jafama.FastMath.random(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 1, 1), 3.3464E3,
-				TypeOfObject.Matter, parameters.getMatterViscosity());
+				TypeOfObject.Matter, parameters.getMatterViscosityRatio());
 		moon.setName("Moon");
 		listMatter.add(moon);
 
@@ -915,7 +915,7 @@ public class Univers {
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
 				parameters.getDarkMatterDensity(), TypeOfObject.Matter,
-				parameters.getMatterViscosity());
+				parameters.getMatterViscosityRatio());
 		listMatter.add(m1);
 		mass += m1.getMass();
 		visibleMass += m1.getMass();
@@ -942,7 +942,7 @@ public class Univers {
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
 				parameters.getDarkMatterDensity(), TypeOfObject.Matter,
-				parameters.getMatterViscosity());
+				parameters.getMatterViscosityRatio());
 		listMatter.add(m1);
 		for (Matter m : listMatter) {
 			if (m != m1) {
