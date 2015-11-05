@@ -75,7 +75,7 @@ public class Parameters implements Serializable {
 	private double nebulaRadiusRatioForVolumicMass = 100;
 	private double viscosityCoeff = 1;
 	
-	private double matterViscosityRatio = 0.1;
+	private double matterViscosityRatio = 1;
 	private double gasViscosityRatio = 1;
 	private double darkMatterViscosityRatio = 0;
 
