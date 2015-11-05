@@ -164,7 +164,6 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 								parameters.setNumOfAccelCompute(parameters
 										.getNumOfAccelCompute() + 1);
 								Univers uAdjusted = new Univers(uvoisin);
-
 								if (uAdjusted.adjustMassAndCentroid(m
 										.getFusionWith()) != 0) {
 									double attraction = HelperNewton

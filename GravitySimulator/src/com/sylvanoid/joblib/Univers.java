@@ -152,6 +152,7 @@ public class Univers {
 	}
 
 	public void computeMassLimitsCentroidSpeed(boolean withLimit) {
+		long startTimeCycle = System.currentTimeMillis();
 		boolean firstTime = true;
 		volumicMass = 0;
 		density = 0;
@@ -207,12 +208,16 @@ public class Univers {
 		density = listMatter.size()
 				/ ((max.x - min.x) * (max.y - min.y) * (max.z - min.z));
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
+
+		parameters.setLimitComputeTime(parameters.getLimitComputeTime()
+					+ (System.currentTimeMillis() - startTimeCycle));
 	}
 
 	@SuppressWarnings("unchecked")
 	public void process(BufferedWriter bufferedWriter,
 			BufferedReader bufferedReader) {
 		if (!parameters.isPlayData()) {
+			parameters.setLimitComputeTime(0);
 			parameters.setNumOfCompute(0);
 			parameters.setNumOfAccelCompute(0);
 			long startTimeCycle = System.currentTimeMillis();
@@ -478,8 +483,10 @@ public class Univers {
 					rij.sub(m.getPoint());
 					rij.normalize();
 
-					rij.scale(net.jafama.FastMath.pow2(parameters.getTimeFactor())*(P * (1 - q) + Pn
-							* net.jafama.FastMath.pow2(1 - q)) / 2);
+					rij.scale(net.jafama.FastMath.pow2(parameters
+							.getTimeFactor())
+							* (P * (1 - q) + Pn
+									* net.jafama.FastMath.pow2(1 - q)) / 2);
 
 					m1.getPoint().add(rij);
 					m.getPoint().sub(rij);

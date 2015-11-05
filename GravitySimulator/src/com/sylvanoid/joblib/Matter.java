@@ -312,7 +312,6 @@ public class Matter implements Serializable {
 		}
 		double volumicMass = tmpMass / volume;
 		double viscosity = volumicMass * coeffVicosity;
-		System.out.println(viscosity);
 		speed.scale(1 - viscosity);
 	}
 
