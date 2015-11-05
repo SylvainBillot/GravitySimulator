@@ -2,7 +2,6 @@ package com.sylvanoid.gui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +12,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.vecmath.Vector3d;
 
@@ -72,7 +72,7 @@ public class GUIParam extends JDialog {
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
 		setLayout(new GridLayout(16, 4));
-		add(new Label("Type of Univers:"));
+		add(new JLabel("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
 			typeOfUnivers.addItem(tou.getLabel());
@@ -329,113 +329,114 @@ public class GUIParam extends JDialog {
 		});
 		add(typeOfUnivers);
 
-		add(new Label("Parallelization:"));
+		add(new JLabel("Parallelization:"));
 		parallelization = new JCheckBox();
 		parallelization.setSelected(me.mother.getParameters()
 				.isParallelization());
 		add(parallelization);
 
-		add(new Label("Scala 1/x:"));
+		add(new JLabel("Scala 1/x:"));
 		scala = new JFormattedTextField(dfsc);
 		scala.setValue(me.mother.getParameters().getScala());
 		add(scala);
 
-		add(new Label("Time factor:"));
+		add(new JLabel("Time factor:"));
 		timeFactor = new JFormattedTextField(dfsc);
 		timeFactor.setValue(me.mother.getParameters().getTimeFactor());
 		add(timeFactor);
 
-		add(new Label("Number of object:"));
+		add(new JLabel("Number of object:"));
 		numberOfObjects = new JFormattedTextField(dfsc);
 		numberOfObjects
 				.setValue(me.mother.getParameters().getNumberOfObjects());
 		add(numberOfObjects);
 
-		add(new Label("Nebula radius:"));
+		add(new JLabel("Nebula radius:"));
 		nebulaRadius = new JFormattedTextField(dfsc);
 		nebulaRadius.setValue(me.mother.getParameters().getNebulaRadius());
 		add(nebulaRadius);
 
-		add(new Label("Density of objects:"));
+		add(new JLabel("Density of objects:"));
 		densiteMin = new JFormattedTextField(dfsc);
 		densiteMin.setValue(me.mother.getParameters().getDensity());
 		add(densiteMin);
 
-		add(new Label("Mass object:"));
+		add(new JLabel("Mass object:"));
 		JPanel massObject = new JPanel();
+		massObject.setLayout(new GridLayout(1,4));
 		add(massObject);
 		massObjectMin = new JFormattedTextField(dfsc);
 		massObjectMin.setValue(me.mother.getParameters().getMassObjectMin());
-		massObject.add(new Label("Min:"));
+		massObject.add(new JLabel ("Min:"));
 		massObject.add(massObjectMin);
 		massObjectMax = new JFormattedTextField(dfsc);
 		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
-		massObject.add(new Label("Max:"));
+		massObject.add(new JLabel("Max:"));
 		massObject.add(massObjectMax);
 
-		add(new Label("Matter distribution:"));
+		add(new JLabel("Matter distribution:"));
 		matterDistribution = new JFormattedTextField(dfsc);
 		matterDistribution.setValue(me.mother.getParameters()
 				.getMatterDistribution());
 		add(matterDistribution);
 
-		add(new Label("Nb galactic Arms:"));
+		add(new JLabel("Nb galactic Arms:"));
 		nbArms = new JFormattedTextField(dfsc);
 		nbArms.setValue(me.mother.getParameters().getNbARms());
 		add(nbArms);
 
-		add(new Label("Ellipses eccentricity (]0-1[):"));
+		add(new JLabel("Ellipses eccentricity (]0-1[):"));
 		ellipseRatio = new JFormattedTextField(fdpc);
 		ellipseRatio.setValue(me.mother.getParameters().getEllipseRatio());
 		add(ellipseRatio);
 
-		add(new Label("Ellipses shift (ratio of nebula radius):"));
+		add(new JLabel("Ellipses shift (ratio of nebula radius):"));
 		ellipseShiftRatio = new JFormattedTextField(dfsc);
 		ellipseShiftRatio.setValue(me.mother.getParameters()
 				.getEllipseShiftRatio());
 		add(ellipseShiftRatio);
 
-		add(new Label("Negligeable mass:"));
+		add(new JLabel("Negligeable mass:"));
 		negligeableMass = new JFormattedTextField(dfsc);
 		negligeableMass
 				.setValue(me.mother.getParameters().getNegligeableMass());
 		add(negligeableMass);
 
-		add(new Label("Num of gas particle:"));
+		add(new JLabel("Num of gas particle:"));
 		numOfLowMassParticule = new JFormattedTextField(dfsc);
 		numOfLowMassParticule.setValue(me.mother.getParameters()
 				.getNumOfLowMassParticule());
 		add(numOfLowMassParticule);
 
-		add(new Label("Gas particles max mass:"));
+		add(new JLabel("Gas particles max mass:"));
 		lowMassParticuleMass = new JFormattedTextField(dfsc);
 		lowMassParticuleMass.setValue(me.mother.getParameters()
 				.getLowMassParticuleMass());
 		add(lowMassParticuleMass);
 
-		add(new Label("Gas particle density:"));
+		add(new JLabel("Gas particle density:"));
 		lowMassDensity = new JFormattedTextField(dfsc);
 		lowMassDensity.setValue(me.mother.getParameters().getLowMassDensity());
 		add(lowMassDensity);
 
-		add(new Label("Gas distribution:"));
+		add(new JLabel("Gas distribution:"));
 		gasDistribution = new JFormattedTextField(dfsc);
 		gasDistribution
 				.setValue(me.mother.getParameters().getGasDistribution());
 		add(gasDistribution);
 
-		add(new Label("Dark Matter or central star Mass:"));
+		add(new JLabel("Dark Matter or central star Mass:"));
 		darkMatterMass = new JFormattedTextField(dfsc);
 		darkMatterMass.setValue(me.mother.getParameters().getDarkMatterMass());
 		add(darkMatterMass);
 
-		add(new Label("Dark Matter or central star Density:"));
+		add(new JLabel("Dark Matter or central star Density:"));
 		darkMatterDensity = new JFormattedTextField(dfsc);
 		darkMatterDensity.setValue(me.mother.getParameters()
 				.getDarkMatterDensity());
 		add(darkMatterDensity);
 
-		add(new Label("Dark Matterdistribution:"));
+		add(new JLabel("Dark Matterdistribution:"));
 		darkMatterDistribution = new JFormattedTextField(dfsc);
 		darkMatterDistribution.setValue(me.mother.getParameters()
 				.getDarkMatterDistribution());
@@ -443,29 +444,30 @@ public class GUIParam extends JDialog {
 		
 		
 		
-		add(new Label("Demi Distance between Galaxies X:"));
+		add(new JLabel("Demi Distance between Galaxies X:"));
 		JPanel demiDistance = new JPanel();
+		demiDistance.setLayout(new GridLayout(1,6));
 		add(demiDistance);
 		demiDistanceBetweenGalaxiesX = new JFormattedTextField(dfsc);
 		demiDistanceBetweenGalaxiesX.setValue(me.mother.getParameters()
 				.getDemiDistanceBetweenGalaxies().x);
-		demiDistance.add(new Label("X:"));
+		demiDistance.add(new JLabel("X:"));
 		demiDistance.add(demiDistanceBetweenGalaxiesX);
 
 		demiDistanceBetweenGalaxiesY = new JFormattedTextField(dfsc);
 		demiDistanceBetweenGalaxiesY.setValue(me.mother.getParameters()
 				.getDemiDistanceBetweenGalaxies().y);
-		demiDistance.add(new Label("Y:"));
+		demiDistance.add(new JLabel("Y:"));
 		demiDistance.add(demiDistanceBetweenGalaxiesY);
 
 		
 		demiDistanceBetweenGalaxiesZ = new JFormattedTextField(dfsc);
 		demiDistanceBetweenGalaxiesZ.setValue(me.mother.getParameters()
 				.getDemiDistanceBetweenGalaxies().z);
-		demiDistance.add(new Label("Z:"));
+		demiDistance.add(new JLabel("Z:"));
 		demiDistance.add(demiDistanceBetweenGalaxiesZ);
 
-		add(new Label("Manage Impact:"));
+		add(new JLabel("Manage Impact:"));
 		manageImpact = new JCheckBox();
 		manageImpact.setSelected(me.mother.getParameters().isManageImpact());
 		manageImpact.addActionListener(new ActionListener() {
@@ -475,7 +477,7 @@ public class GUIParam extends JDialog {
 		});
 		add(manageImpact);
 
-		add(new Label("Type Of Impact:"));
+		add(new JLabel("Type Of Impact:"));
 		typeOfImpact = new JComboBox<String>();
 		for (TypeOfImpact toi : TypeOfImpact.values()) {
 			typeOfImpact.addItem(toi.getLabel());
@@ -484,13 +486,13 @@ public class GUIParam extends JDialog {
 				.getLabel());
 		add(typeOfImpact);
 
-		add(new Label("Static Dark Matter:"));
+		add(new JLabel("Static Dark Matter:"));
 		staticDarkMatter = new JCheckBox();
 		staticDarkMatter.setSelected(me.mother.getParameters()
 				.isStaticDarkMatter());
 		add(staticDarkMatter);
 
-		add(new Label("Apply density viscosity (very experimental):"));
+		add(new JLabel("Apply density viscosity (very experimental):"));
 		appliViscosity = new JCheckBox();
 		appliViscosity
 				.setSelected(me.mother.getParameters().isAppliViscosity());
@@ -502,13 +504,13 @@ public class GUIParam extends JDialog {
 		});
 		add(appliViscosity);
 		
-		add(new Label("Radius factor for search neighbors:"));
+		add(new JLabel("Radius factor for search neighbors:"));
 		nebulaRadiusRatioForVolumicMass = new JFormattedTextField(dfsc);
 		nebulaRadiusRatioForVolumicMass.setValue(me.mother.getParameters()
 				.getNebulaRadiusRatioForVolumicMass());
 		add(nebulaRadiusRatioForVolumicMass);
 
-		add(new Label("Viscosity Coeff:"));
+		add(new JLabel("Viscosity Coeff:"));
 		viscosityCoeff = new JFormattedTextField(dfsc);
 		viscosityCoeff.setValue(me.mother.getParameters().getViscosityCoeff());
 		add(viscosityCoeff);
@@ -624,7 +626,7 @@ public class GUIParam extends JDialog {
 
 				} catch (Exception em) {
 					JDialog d = new JDialog();
-					d.add(new Label("Error: " + em.getMessage()));
+					d.add(new JLabel("Error: " + em.getMessage()));
 					d.setVisible(true);
 					d.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 				}
