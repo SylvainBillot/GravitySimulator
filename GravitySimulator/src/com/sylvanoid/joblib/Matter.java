@@ -280,41 +280,6 @@ public class Matter implements Serializable {
 		point = getPlusV();
 	}
 
-	public void applyVicosityNeighbors() {
-		boolean withReverce = false;
-		double cr = 0;
-		for (Matter m : neighbors) {
-			if (HelperNewton.distance(this, m) >= (rayon + m.getRayon())) {
-				double ratio = parameters.getViscosityCoeff()
-						* (rayon + m.getRayon())
-						/ HelperNewton.distance(this, m);
-				Vector3d newSpeed = tangentialSpeedNeighbors(m, cr,
-						withReverce, ratio);
-				newSpeed.add(speedAfterImpactWith(m, cr));
-				accel.add(newSpeed);
-				accel.sub(speed);
-			}
-		}
-	}
-
-	/**
-	 * Speed reduction dependent of neighbors volumic mass
-	 */
-	public void neighborsFriction() {
-		double coeffVicosity = parameters.getViscosityCoeff();
-		double tmpMass = mass;
-		double tmpRadius = parameters.getNebulaRadius()
-				/ parameters.getNebulaRadiusRatioForVolumicMass();
-		double volume = (4.0 / 3.0) * net.jafama.FastMath.PI
-				* net.jafama.FastMath.pow3(tmpRadius);
-		for (Matter m : neighbors) {
-			tmpMass += m.getMass();
-		}
-		double volumicMass = tmpMass / volume;
-		double viscosity = volumicMass * coeffVicosity;
-		speed.scale(1 - viscosity);
-	}
-
 	public void fusion(List<Matter> listMatter) {
 		if (listMatter.contains(this)) {
 			Vector3d newPoint = globalCentroid();

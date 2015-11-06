@@ -54,9 +54,6 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField demiDistanceBetweenGalaxiesY;
 	private JFormattedTextField demiDistanceBetweenGalaxiesZ;
 	private JCheckBox staticDarkMatter;
-	private JCheckBox appliViscosity;
-	private JFormattedTextField nebulaRadiusRatioForVolumicMass;
-	private JFormattedTextField viscosityCoeff;
 
 	private DecimalFormat dfsc = new DecimalFormat("0.####E0");
 	private DecimalFormat fdpc = new DecimalFormat("0.####%");
@@ -100,9 +97,6 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
-					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(1.5);
-					viscosityCoeff.setValue(1);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -129,9 +123,6 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
-					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(1.5);
-					viscosityCoeff.setValue(1);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -158,9 +149,6 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
-					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(1.5);
-					viscosityCoeff.setValue(1);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -190,9 +178,6 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(-1.25);
 					nbArms.setValue(2);
 					staticDarkMatter.setSelected(true);
-					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(1.5);
-					viscosityCoeff.setValue(1);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -226,9 +211,6 @@ public class GUIParam extends JDialog {
 					demiDistanceBetweenGalaxiesZ.setValue(0);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(false);
-					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(1.5);
-					viscosityCoeff.setValue(1);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -255,9 +237,6 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
-					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(1.5);
-					viscosityCoeff.setValue(1);
 					break;
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -287,9 +266,6 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
-					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(1.5);
-					viscosityCoeff.setValue(1);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -319,9 +295,6 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
-					appliViscosity.setSelected(false);
-					nebulaRadiusRatioForVolumicMass.setValue(1.5);
-					viscosityCoeff.setValue(1);
 					break;
 				}
 				enableDisableParam();
@@ -492,29 +465,6 @@ public class GUIParam extends JDialog {
 				.isStaticDarkMatter());
 		add(staticDarkMatter);
 
-		add(new JLabel("Apply density viscosity (very experimental):"));
-		appliViscosity = new JCheckBox();
-		appliViscosity
-				.setSelected(me.mother.getParameters().isAppliViscosity());
-		appliViscosity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				nebulaRadiusRatioForVolumicMass.setEnabled(appliViscosity.isSelected());
-				viscosityCoeff.setEnabled(appliViscosity.isSelected());
-			}
-		});
-		add(appliViscosity);
-		
-		add(new JLabel("Radius factor for search neighbors:"));
-		nebulaRadiusRatioForVolumicMass = new JFormattedTextField(dfsc);
-		nebulaRadiusRatioForVolumicMass.setValue(me.mother.getParameters()
-				.getNebulaRadiusRatioForVolumicMass());
-		add(nebulaRadiusRatioForVolumicMass);
-
-		add(new JLabel("Viscosity Coeff:"));
-		viscosityCoeff = new JFormattedTextField(dfsc);
-		viscosityCoeff.setValue(me.mother.getParameters().getViscosityCoeff());
-		add(viscosityCoeff);
-
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -606,17 +556,6 @@ public class GUIParam extends JDialog {
 													.getValue().toString())));
 					me.mother.getParameters().setStaticDarkMatter(
 							me.staticDarkMatter.isSelected());
-					me.mother.getParameters().setAppliViscosity(
-							me.appliViscosity.isSelected());
-					me.mother
-							.getParameters()
-							.setNebulaRadiusRatioForVolumicMass(
-									Double.parseDouble(me.nebulaRadiusRatioForVolumicMass
-											.getValue().toString()));
-					me.mother.getParameters().setViscosityCoeff(
-							Double.parseDouble(me.viscosityCoeff.getValue()
-									.toString()));
-
 					me.mother.getParameters().setEyes(new Vector3d(0, 0, 900));
 					me.mother.getParameters().setLookAt(
 							new Vector3d(0, 0, -900));
@@ -667,9 +606,6 @@ public class GUIParam extends JDialog {
 		demiDistanceBetweenGalaxiesZ.setEnabled(false);
 		nbArms.setEnabled(false);
 		staticDarkMatter.setEnabled(false);
-		appliViscosity.setEnabled(false);
-		nebulaRadiusRatioForVolumicMass.setEnabled(appliViscosity.isSelected());
-		viscosityCoeff.setEnabled(appliViscosity.isSelected());
 		switch (typeOfUnivers.getSelectedIndex()) {
 		case 0:
 			// TypeOfUnivers.Planetary;
@@ -714,7 +650,6 @@ public class GUIParam extends JDialog {
 			gasDistribution.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
-			appliViscosity.setEnabled(true);
 			break;
 		case 3:
 			// TypeOfUnivers.RandomRotateUnivers;
@@ -738,7 +673,6 @@ public class GUIParam extends JDialog {
 			ellipseRatio.setEnabled(true);
 			ellipseShiftRatio.setEnabled(true);
 			nbArms.setEnabled(true);
-			appliViscosity.setEnabled(true);
 			break;
 		case 4:
 			// TypeOfUnivers.GalaxiesCollision;
@@ -761,7 +695,6 @@ public class GUIParam extends JDialog {
 			demiDistanceBetweenGalaxiesX.setEnabled(true);
 			demiDistanceBetweenGalaxiesY.setEnabled(true);
 			demiDistanceBetweenGalaxiesZ.setEnabled(true);
-			appliViscosity.setEnabled(true);
 			break;
 		case 5:
 			// TypeOfUnivers.PlanetariesGenesis;
@@ -783,7 +716,6 @@ public class GUIParam extends JDialog {
 			darkMatterDensity.setEnabled(true);
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
-			appliViscosity.setEnabled(true);
 			break;
 		case 6:
 			// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
@@ -808,7 +740,6 @@ public class GUIParam extends JDialog {
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
 			staticDarkMatter.setEnabled(true);
-			appliViscosity.setEnabled(true);
 			break;
 		case 7:
 			// TypeOfUnivers.RandomStaticSphericalUnivers
@@ -833,7 +764,6 @@ public class GUIParam extends JDialog {
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
 			staticDarkMatter.setEnabled(true);
-			appliViscosity.setEnabled(true);
 			break;
 		}
 	}

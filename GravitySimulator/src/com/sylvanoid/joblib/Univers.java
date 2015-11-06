@@ -238,11 +238,6 @@ public class Univers {
 			// Change Speed
 			changeSpeed();
 
-			if (parameters.isAppliViscosity()) {
-				computeBarnesHutNeighbors();
-				applyNeighborsFriction();
-			}
-
 			if (parameters.isManageImpact()) {
 				computeBarnesHutCollision();
 				speedsAfterImpact(parameters.getTypeOfImpact());
@@ -334,20 +329,6 @@ public class Univers {
 				- startTimeMove);
 	}
 
-	private void computeBarnesHutNeighbors() {
-		for (Matter m : listMatter) {
-			m.getNeighbors().clear();
-		}
-		BarnesHutNeighbors barnesHutNeighbors = new BarnesHutNeighbors(this);
-		if (parameters.isParallelization()) {
-			ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime()
-					.availableProcessors());
-			pool.invoke(barnesHutNeighbors);
-		} else {
-			barnesHutNeighbors.compute();
-		}
-	}
-
 	private int computeBarnesHutCollision() {
 		for (Matter m : listMatter) {
 			m.getFusionWith().clear();
@@ -379,20 +360,6 @@ public class Univers {
 		for (Matter m : listMatter) {
 			m.setFusionWith(Matter.fusionWithRecursiveAdd(m, m,
 					new ArrayList<Matter>()));
-		}
-	}
-
-	private void applyNeighborsFriction() {
-		for (Matter m : listMatter) {
-			if (m.getNeighbors().size() != 0) {
-				m.neighborsFriction();
-				// m.applyVicosityNeighbors();
-			}
-		}
-		for (Matter m : listMatter) {
-			if (m.getNeighbors().size() != 0) {
-				m.changeSpeed();
-			}
 		}
 	}
 
@@ -496,7 +463,7 @@ public class Univers {
 
 	}
 
-	private List<Matter> createUvivers(Vector3d origine, Vector3d initialSpeed,
+	private List<Matter> createUnivers(Vector3d origine, Vector3d initialSpeed,
 			Vector3d axisOfRing, double radiusMin, double radiusMax,
 			Vector3d ratio, double homogeneousDistributionPow,
 			double gasHomogeneousDistributionPow) {
@@ -613,14 +580,14 @@ public class Univers {
 	}
 
 	private void createRandomStaticUvivers() {
-		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
 				new Vector3d(1, 1, 1), parameters.getMatterDistribution(),
 				parameters.getGasDistribution());
 	}
 
 	private void createRandomRotateUnivers() {
-		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
 				parameters.getMatterDistribution(),
@@ -682,7 +649,7 @@ public class Univers {
 	}
 
 	private void createRandomRotateUniversCircular() {
-		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
 				parameters.getMatterDistribution(),
@@ -739,7 +706,7 @@ public class Univers {
 	}
 
 	private void createRandomStaticSphericalUnivers() {
-		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 1),
 				parameters.getMatterDistribution(),
@@ -794,13 +761,13 @@ public class Univers {
 		m1.orbitalCircularSpeed(m2, new Vector3d(0, 1, 0));
 		m2.orbitalCircularSpeed(m1, new Vector3d(0, 1, 0));
 
-		List<Matter> subu01 = createUvivers(m1.getPoint(), m1.getSpeed(),
+		List<Matter> subu01 = createUnivers(m1.getPoint(), m1.getSpeed(),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
 				parameters.getMatterDistribution(),
 				parameters.getGasDistribution());
 
-		List<Matter> subu02 = createUvivers(m2.getPoint(), m2.getSpeed(),
+		List<Matter> subu02 = createUnivers(m2.getPoint(), m2.getSpeed(),
 				new Vector3d(1, 0, 0), parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1),
 				parameters.getMatterDistribution(),
@@ -912,7 +879,7 @@ public class Univers {
 	}
 
 	private void createPlanetaryRandom() {
-		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 1, 0), parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1),
 				parameters.getMatterDistribution(),
@@ -934,12 +901,12 @@ public class Univers {
 	}
 
 	private void createPlanetariesGenesis() {
-		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() / 2 * 0.9,
 				parameters.getNebulaRadius() / 2, new Vector3d(1, 1, 0.05),
 				parameters.getMatterDistribution(),
 				parameters.getGasDistribution());
-		createUvivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.9,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05),
 				parameters.getMatterDistribution(),
