@@ -641,11 +641,6 @@ public class Univers {
 						parameters.getNbARms());
 			}
 		}
-		/*
-		 * for (Matter m : listMatter) { if (m != m1) {
-		 * m.orbitalEllipticSpeed(m1, new Vector3d(0, 0, 1),
-		 * parameters.getNbARms()); } }
-		 */
 	}
 
 	private void createRandomRotateUniversCircular() {
