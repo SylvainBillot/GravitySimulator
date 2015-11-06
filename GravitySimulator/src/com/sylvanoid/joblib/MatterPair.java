@@ -74,7 +74,7 @@ public class MatterPair implements Comparable<MatterPair> {
 		radialSpeed.sub(m1.getPoint());
 		radialSpeed.normalize();
 		double u = relativeSpeed.dot(radialSpeed);
-		//if (u > 0) {
+		if (u > 0) {
 			Vector3d radialSpeedM1 = new Vector3d(radialSpeed);
 			radialSpeedM1.scale(u*ratio*m2.getViscosity()*m2.getMass()/(m1.getMass()+m2.getMass()));
 			
@@ -83,7 +83,7 @@ public class MatterPair implements Comparable<MatterPair> {
 			
 			m1.getSpeed().sub(radialSpeedM1);
 			m2.getSpeed().add(radialSpeedM2);
-		//}
+		}
 	}
 	
 	private double distanceByradius() {
