@@ -74,6 +74,9 @@ public class Parameters implements Serializable {
 	private double matterViscosityRatio = 1;
 	private double gasViscosityRatio = 1;
 	private double darkMatterViscosityRatio = 0;
+	
+	private double collisionDistanceRatio = 1;
+	
 
 	public Parameters() {
 
@@ -516,5 +519,13 @@ public class Parameters implements Serializable {
 
 	public void setDarkMatterViscosityRatio(double darkMatterViscosity) {
 		this.darkMatterViscosityRatio = darkMatterViscosity;
+	}
+
+	public double getCollisionDistanceRatio() {
+		return collisionDistanceRatio;
+	}
+
+	public void setCollisionDistanceRatio(double collisionDistanceRatio) {
+		this.collisionDistanceRatio = collisionDistanceRatio;
 	}
 }

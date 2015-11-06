@@ -167,8 +167,8 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 						detectColision = false;
 						for (Matter mgu : gu.getListMatter()) {
 							if (m != mgu) {
-								if ((HelperNewton.distance(m, mgu) / (m
-										.getRayon() + mgu.getRayon()) < 1)
+								if ((HelperNewton.distance(m, mgu)
+										/ (parameters.getCollisionDistanceRatio() * (m.getRayon() + mgu.getRayon())) < 1)
 										&& (m.getTypeOfObject().equals(mgu
 												.getTypeOfObject()))) {
 									valReturn++;
@@ -180,18 +180,22 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 										mgu.getFusionWith().add(m);
 										detectColision = true;
 									}
-									
+
 									MatterPair toAdd = new MatterPair(m, mgu);
-									if (collisionPairs.get(m.getName() + mgu.getName()) == null
-											&& collisionPairs.get(mgu.getName() + m.getName()) == null) {
-										collisionPairs.put(m.getName() + mgu.getName(), toAdd);
+									if (collisionPairs.get(m.getName()
+											+ mgu.getName()) == null
+											&& collisionPairs.get(mgu.getName()
+													+ m.getName()) == null) {
+										collisionPairs.put(
+												m.getName() + mgu.getName(),
+												toAdd);
 									}
-									
+
 								}
 							}
 						}
 						gu = gu.getFather();
-						detectColision = detectColision && (gu!=null);
+						detectColision = detectColision && (gu != null);
 					} while (detectColision);
 				}
 			}
