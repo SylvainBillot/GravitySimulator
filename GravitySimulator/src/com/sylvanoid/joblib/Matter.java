@@ -299,7 +299,7 @@ public class Matter implements Serializable {
 			}
 			listMatter.remove(this);
 			listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed,
-					newColor, newDensity, typeOfObject, newVicosity) );
+					newColor, newDensity, typeOfObject, newVicosity));
 		}
 	}
 
@@ -411,7 +411,7 @@ public class Matter implements Serializable {
 		}
 		return newDensity / newMass;
 	}
-	
+
 	public double globalViscosity() {
 		double newViscosity = viscosity * mass;
 		double newMass = mass;

@@ -210,7 +210,7 @@ public class Univers {
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 
 		parameters.setLimitComputeTime(parameters.getLimitComputeTime()
-					+ (System.currentTimeMillis() - startTimeCycle));
+				+ (System.currentTimeMillis() - startTimeCycle));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -244,6 +244,13 @@ public class Univers {
 			}
 
 			move();
+
+			if (parameters.isManageImpact()
+					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
+				computeBarnesHutCollision();
+				doubleDensityRelaxation();
+				adjustSpeedFromPositions();
+			}
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -375,21 +382,18 @@ public class Univers {
 			}
 			break;
 		case SoftImpact:
-			for (Map.Entry<String, MatterPair> entry : collisionPairs
-					.entrySet()) {
-				entry.getValue().impact(0);
+			for (MatterPair mp : collisionPairs.values()) {
+				mp.impact(0);
 			}
 			break;
 		case HardImpact:
-			for (Map.Entry<String, MatterPair> entry : collisionPairs
-					.entrySet()) {
-				entry.getValue().impact(1);
+			for (MatterPair mp : collisionPairs.values()) {
+				mp.impact(1);
 			}
 			break;
 		case Viscosity:
-			for (Map.Entry<String, MatterPair> entry : collisionPairs
-					.entrySet()) {
-				entry.getValue().applyViscosity();
+			for (MatterPair mp : collisionPairs.values()) {
+				mp.applyViscosity();
 			}
 			break;
 		case NoAcell:
@@ -430,37 +434,56 @@ public class Univers {
 	private void doubleDensityRelaxation() {
 		double k = 1;
 		double kn = 1;
-		double p = 0;
-		double pn = 0;
 		double p0 = 0;
 		for (Matter m : listMatter) {
-			if (m.getFusionWith().size() > 0) {
-				for (Matter m1 : m.getFusionWith()) {
-					double q = HelperNewton.distance(m, m1)
-							/ (m.getRayon() + m1.getRayon());
-					p += net.jafama.FastMath.pow2(1 - q);
-					pn += net.jafama.FastMath.pow3(1 - q);
-				}
-				double P = k * (p - p0);
-				double Pn = kn - pn;
-				for (Matter m1 : listMatter) {
-					double q = HelperNewton.distance(m, m1)
-							/ (m.getRayon() + m1.getRayon());
+			double p = 0;
+			double pn = 0;
+			// compute density and near-density
+			for (Matter m1 : m.getFusionWith()) {
+				double q = HelperNewton.distance(m, m1)
+						/ (parameters.getCollisionDistanceRatio() * (m
+								.getRayon() + m1.getRayon()));
+				p += net.jafama.FastMath.pow2(1 - q);
+				pn += net.jafama.FastMath.pow3(1 - q);
+			}
+			// compute pressure and near-pressure
+			double P = k * (p - p0);
+			double Pn = kn - pn;
+
+			Vector3d dm = new Vector3d(0, 0, 0);
+			for (Matter m1 : m.getFusionWith()) {
+				double q = HelperNewton.distance(m, m1)
+						/ (parameters.getCollisionDistanceRatio() * (m
+								.getRayon() + m1.getRayon()));
+				if (q < 1) {
 					Vector3d rij = new Vector3d(m1.getPoint());
 					rij.sub(m.getPoint());
 					rij.normalize();
 
-					rij.scale(net.jafama.FastMath.pow2(parameters
+					Vector3d rijm1 = new Vector3d(rij);
+					Vector3d rijm2 = new Vector3d(rij);
+					double delta = net.jafama.FastMath.pow2(parameters
 							.getTimeFactor())
 							* (P * (1 - q) + Pn
-									* net.jafama.FastMath.pow2(1 - q)) / 2);
+									* net.jafama.FastMath.pow2(1 - q));
 
-					m1.getPoint().add(rij);
-					m.getPoint().sub(rij);
+					if (delta > (parameters.getCollisionDistanceRatio() * (m
+							.getRayon() + m1.getRayon()))) {
+						delta = (parameters.getCollisionDistanceRatio() * (m
+								.getRayon() + m1.getRayon()));
+					}
+
+					rijm1.scale(m1.getMass() * delta
+							/ (m.getMass() + m1.getMass()));
+					rijm2.scale(m.getMass() * delta
+							/ (m.getMass() + m1.getMass()));
+
+					m1.getPoint().add(rijm2);
+					dm.sub(rijm1);
 				}
 			}
+			m.getPoint().add(dm);
 		}
-
 	}
 
 	private List<Matter> createUnivers(Vector3d origine, Vector3d initialSpeed,
