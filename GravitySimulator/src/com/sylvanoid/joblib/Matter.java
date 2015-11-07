@@ -450,13 +450,16 @@ public class Matter implements Serializable {
 	}
 
 	public void adjustSpeedFromPositions() {
-		double distance = HelperNewton.distance(pointBefore, point);
-		double speedLength = distance / parameters.getTimeFactor();
-		Vector3d newSpeed = new Vector3d(point);
-		newSpeed.sub(pointBefore);
-		newSpeed.normalize();
-		newSpeed.scale(speedLength);
-		speed = new Vector3d(newSpeed);
+		if (!parameters.isStaticDarkMatter()
+				|| typeOfObject != TypeOfObject.Dark) {
+			double distance = HelperNewton.distance(pointBefore, point);
+			double speedLength = distance / parameters.getTimeFactor();
+			Vector3d newSpeed = new Vector3d(point);
+			newSpeed.sub(pointBefore);
+			newSpeed.normalize();
+			newSpeed.scale(speedLength);
+			speed = new Vector3d(newSpeed);
+		}
 	}
 
 	public Vector3d accelerationWith(Matter m) {

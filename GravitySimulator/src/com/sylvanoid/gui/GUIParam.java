@@ -244,21 +244,21 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
-					typeOfImpact.setSelectedIndex(1);
+					typeOfImpact.setSelectedIndex(2);
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 4E4);
 					massObjectMin
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E4);
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
 					massObjectMax
-							.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
+							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
 					matterDistribution.setValue(5);
 					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(10000);
 					lowMassParticuleMass
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
-					lowMassDensity.setValue(1E-24);
-					gasDistribution.setValue(1);
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E7);
+					lowMassDensity.setValue(5E-23);
+					gasDistribution.setValue(1.5);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-24);
 					darkMatterDistribution.setValue(5);
@@ -273,20 +273,20 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
-					typeOfImpact.setSelectedIndex(1);
+					typeOfImpact.setSelectedIndex(2);
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 4E4);
 					massObjectMin
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E4);
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
 					massObjectMax
-							.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
+							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
 					matterDistribution.setValue(1);
 					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(10000);
 					lowMassParticuleMass
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
-					lowMassDensity.setValue(1E-24);
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E7);
+					lowMassDensity.setValue(1E-22);
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E40);
 					darkMatterDensity.setValue(1E-24);

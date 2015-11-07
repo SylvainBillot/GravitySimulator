@@ -1,11 +1,12 @@
 package com.sylvanoid.common;
 
 public enum TypeOfImpact {
-	Fusion			("Fusion"),
-	Viscosity		("Apply Viscosity"),
-	SoftImpact		("Soft Impact"),
-	HardImpact		("Hard Impact"),
-	NoAcell			("No Attraction if contact"),
+	Fusion										("Fusion"),
+	Viscosity									("Viscosity"),
+	ViscosityWithoutDoubleRelaxation			("Viscosity Without double Relaxation"),
+	SoftImpact									("Soft Impact"),
+	HardImpact									("Hard Impact"),
+	NoAcell										("No Attraction if contact"),
 	;
 	
 	private final String label;

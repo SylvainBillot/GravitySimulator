@@ -8,6 +8,7 @@ import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVector;
+import com.sylvanoid.common.TypeOfImpact;
 
 public class BarnesHutGravity extends RecursiveTask<Integer> {
 	/**
@@ -163,29 +164,29 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 									.isDark())) {
 								parameters.setNumOfAccelCompute(parameters
 										.getNumOfAccelCompute() + 1);
-								
-								Univers uAdjusted = new Univers(uvoisin);
-								if (uAdjusted.adjustMassAndCentroid(m
-										.getFusionWith()) != 0) {
+								if (parameters.isManageImpact()
+										&& parameters.getTypeOfImpact() != TypeOfImpact.Viscosity) {
+									Univers uAdjusted = new Univers(uvoisin);
+									if (uAdjusted.adjustMassAndCentroid(m
+											.getFusionWith()) != 0) {
+										double attraction = HelperNewton
+												.attraction(m, uAdjusted,
+														parameters);
+										m.getAccel().add(
+												HelperVector.acceleration(
+														m.getPoint(),
+														uAdjusted.getGPoint(),
+														attraction));
+									}
+								} else {
 									double attraction = HelperNewton
-											.attraction(m, uAdjusted,
-													parameters);
+											.attraction(m, uvoisin, parameters);
 									m.getAccel().add(
 											HelperVector.acceleration(
 													m.getPoint(),
-													uAdjusted.getGPoint(),
+													uvoisin.getGPoint(),
 													attraction));
 								}
-								/*
-								double attraction = HelperNewton
-										.attraction(m, uvoisin,
-												parameters);
-								m.getAccel().add(
-										HelperVector.acceleration(
-												m.getPoint(),
-												uvoisin.getGPoint(),
-												attraction));
-								*/
 							}
 						}
 					}
