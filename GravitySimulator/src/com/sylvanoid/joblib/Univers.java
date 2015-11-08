@@ -436,7 +436,7 @@ public class Univers {
 	}
 
 	private void doubleDensityRelaxation() {
-		double k = 1;
+		double k = 10;
 		double kn = 1;
 		double p0 = 0;
 		for (Matter m : listMatter) {
@@ -461,33 +461,31 @@ public class Univers {
 					double q = HelperNewton.distance(m, m1)
 							/ (parameters.getCollisionDistanceRatio() * (m
 									.getRayon() + m1.getRayon()));
-					if (q < 1) {
-						Vector3d rij = new Vector3d(m1.getPoint());
-						rij.sub(m.getPoint());
-						rij.normalize();
+					Vector3d rij = new Vector3d(m1.getPoint());
+					rij.sub(m.getPoint());
+					rij.normalize();
 
-						Vector3d rijm1 = new Vector3d(rij);
-						Vector3d rijm2 = new Vector3d(rij);
-						double delta = net.jafama.FastMath.pow2(parameters
-								.getTimeFactor())
-								* (P * (1 - q) + Pn
-										* net.jafama.FastMath.pow2(1 - q));
+					Vector3d rijm1 = new Vector3d(rij);
+					Vector3d rijm2 = new Vector3d(rij);
+					double delta = net.jafama.FastMath.pow2(parameters
+							.getTimeFactor())
+							* (P * (1 - q) + Pn
+									* net.jafama.FastMath.pow2(1 - q));
 
-						// avoid abnormale ejection
-						if (delta > (parameters.getCollisionDistanceRatio() * (m
-								.getRayon() + m1.getRayon()))) {
-							delta = (parameters.getCollisionDistanceRatio() * (m
-									.getRayon() + m1.getRayon()));
-						}
-
-						rijm1.scale(m1.getMass() * delta
-								/ (m.getMass() + m1.getMass()));
-						rijm2.scale(m.getMass() * delta
-								/ (m.getMass() + m1.getMass()));
-
-						m1.getPoint().add(rijm2);
-						dm.sub(rijm1);
+					// avoid abnormale ejection
+					if (delta > (parameters.getCollisionDistanceRatio() * (m
+							.getRayon() + m1.getRayon()))) {
+						delta = (parameters.getCollisionDistanceRatio() * (m
+								.getRayon() + m1.getRayon()));
 					}
+
+					rijm1.scale(m1.getMass() * delta
+							/ (m.getMass() + m1.getMass()));
+					rijm2.scale(m.getMass() * delta
+							/ (m.getMass() + m1.getMass()));
+
+					m1.getPoint().add(rijm2);
+					dm.sub(rijm1);
 				}
 				m.getPoint().add(dm);
 			}
