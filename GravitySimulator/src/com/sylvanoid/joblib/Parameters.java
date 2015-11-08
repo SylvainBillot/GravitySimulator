@@ -71,11 +71,15 @@ public class Parameters implements Serializable {
 	private double darkMatterDistribution = 5;
 	private double darkMatterNubulaFactor = 5;
 	
-	private double matterViscosityRatio = 1;
-	private double gasViscosityRatio = 1;
-	private double darkMatterViscosityRatio = 0;
+	private double matterViscosity = 1;
+	private double gasViscosity = 1;
+	private double darkMatterViscosity = 0;
 	
 	private double collisionDistanceRatio = 1;
+	
+	private double viscoElasticity = 1;
+	private double viscoElasticityNear = 1;
+	private double pressureZero = 0;
 	
 
 	public Parameters() {
@@ -497,28 +501,28 @@ public class Parameters implements Serializable {
 		this.darkMatterNubulaFactor = darkMatterNubulaFactor;
 	}
 
-	public double getMatterViscosityRatio() {
-		return matterViscosityRatio;
+	public double getMatterViscosity() {
+		return matterViscosity;
 	}
 
-	public void setMatterViscosityRatio(double matterViscosity) {
-		this.matterViscosityRatio = matterViscosity;
+	public void setMatterViscosity(double matterViscosity) {
+		this.matterViscosity = matterViscosity;
 	}
 
-	public double getGasViscosityRatio() {
-		return gasViscosityRatio;
+	public double getGasViscosity() {
+		return gasViscosity;
 	}
 
-	public void setGasViscosityRatio(double gasViscosity) {
-		this.gasViscosityRatio = gasViscosity;
+	public void setGasViscosity(double gasViscosity) {
+		this.gasViscosity = gasViscosity;
 	}
 
-	public double getDarkMatterViscosityRatio() {
-		return darkMatterViscosityRatio;
+	public double getDarkMatterViscosity() {
+		return darkMatterViscosity;
 	}
 
-	public void setDarkMatterViscosityRatio(double darkMatterViscosity) {
-		this.darkMatterViscosityRatio = darkMatterViscosity;
+	public void setDarkMatterViscosity(double darkMatterViscosity) {
+		this.darkMatterViscosity = darkMatterViscosity;
 	}
 
 	public double getCollisionDistanceRatio() {
@@ -527,5 +531,29 @@ public class Parameters implements Serializable {
 
 	public void setCollisionDistanceRatio(double collisionDistanceRatio) {
 		this.collisionDistanceRatio = collisionDistanceRatio;
+	}
+
+	public double getViscoElasticity() {
+		return viscoElasticity;
+	}
+
+	public void setViscoElasticity(double viscoElasticity) {
+		this.viscoElasticity = viscoElasticity;
+	}
+
+	public double getViscoElasticityNear() {
+		return viscoElasticityNear;
+	}
+
+	public void setViscoElasticityNear(double viscoElasticityNear) {
+		this.viscoElasticityNear = viscoElasticityNear;
+	}
+
+	public double getPressureZero() {
+		return pressureZero;
+	}
+
+	public void setPressureZero(double pressureZero) {
+		this.pressureZero = pressureZero;
 	}
 }

@@ -53,6 +53,9 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField demiDistanceBetweenGalaxiesX;
 	private JFormattedTextField demiDistanceBetweenGalaxiesY;
 	private JFormattedTextField demiDistanceBetweenGalaxiesZ;
+	private JFormattedTextField collisionDistanceRatio;
+	private JFormattedTextField matterViscosity;
+	private JFormattedTextField gasViscosity;
 	private JCheckBox staticDarkMatter;
 
 	private DecimalFormat dfsc = new DecimalFormat("0.####E0");
@@ -97,6 +100,9 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
+					collisionDistanceRatio.setValue(1);
+					matterViscosity.setValue(1);
+					gasViscosity.setValue(1);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -123,6 +129,9 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
+					collisionDistanceRatio.setValue(1);
+					matterViscosity.setValue(1);
+					gasViscosity.setValue(1);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -149,6 +158,9 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(-0.25);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
+					collisionDistanceRatio.setValue(1);
+					matterViscosity.setValue(1);
+					gasViscosity.setValue(1);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -178,6 +190,9 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(-1.25);
 					nbArms.setValue(2);
 					staticDarkMatter.setSelected(true);
+					collisionDistanceRatio.setValue(1);
+					matterViscosity.setValue(1);
+					gasViscosity.setValue(1);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -211,6 +226,9 @@ public class GUIParam extends JDialog {
 					demiDistanceBetweenGalaxiesZ.setValue(0);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(false);
+					collisionDistanceRatio.setValue(1);
+					matterViscosity.setValue(1);
+					gasViscosity.setValue(1);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -237,6 +255,9 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
+					collisionDistanceRatio.setValue(1);
+					matterViscosity.setValue(1);
+					gasViscosity.setValue(1);
 					break;
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -266,6 +287,9 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
+					collisionDistanceRatio.setValue(1);
+					matterViscosity.setValue(1);
+					gasViscosity.setValue(1);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -295,6 +319,9 @@ public class GUIParam extends JDialog {
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(true);
+					collisionDistanceRatio.setValue(1);
+					matterViscosity.setValue(1);
+					gasViscosity.setValue(1);
 					break;
 				}
 				enableDisableParam();
@@ -336,11 +363,11 @@ public class GUIParam extends JDialog {
 
 		add(new JLabel("Mass object:"));
 		JPanel massObject = new JPanel();
-		massObject.setLayout(new GridLayout(1,4));
+		massObject.setLayout(new GridLayout(1, 4));
 		add(massObject);
 		massObjectMin = new JFormattedTextField(dfsc);
 		massObjectMin.setValue(me.mother.getParameters().getMassObjectMin());
-		massObject.add(new JLabel ("Min:"));
+		massObject.add(new JLabel("Min:"));
 		massObject.add(massObjectMin);
 		massObjectMax = new JFormattedTextField(dfsc);
 		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
@@ -414,12 +441,10 @@ public class GUIParam extends JDialog {
 		darkMatterDistribution.setValue(me.mother.getParameters()
 				.getDarkMatterDistribution());
 		add(darkMatterDistribution);
-		
-		
-		
+
 		add(new JLabel("Demi Distance between Galaxies X:"));
 		JPanel demiDistance = new JPanel();
-		demiDistance.setLayout(new GridLayout(1,6));
+		demiDistance.setLayout(new GridLayout(1, 6));
 		add(demiDistance);
 		demiDistanceBetweenGalaxiesX = new JFormattedTextField(dfsc);
 		demiDistanceBetweenGalaxiesX.setValue(me.mother.getParameters()
@@ -433,7 +458,6 @@ public class GUIParam extends JDialog {
 		demiDistance.add(new JLabel("Y:"));
 		demiDistance.add(demiDistanceBetweenGalaxiesY);
 
-		
 		demiDistanceBetweenGalaxiesZ = new JFormattedTextField(dfsc);
 		demiDistanceBetweenGalaxiesZ.setValue(me.mother.getParameters()
 				.getDemiDistanceBetweenGalaxies().z);
@@ -446,6 +470,7 @@ public class GUIParam extends JDialog {
 		manageImpact.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				typeOfImpact.setEnabled(manageImpact.isSelected());
+				collisionDistanceRatio.setEnabled(manageImpact.isSelected());
 			}
 		});
 		add(manageImpact);
@@ -458,6 +483,24 @@ public class GUIParam extends JDialog {
 		typeOfImpact.setSelectedItem(mother.getParameters().getTypeOfImpact()
 				.getLabel());
 		add(typeOfImpact);
+
+		add(new JLabel("Collision distance ratio rij:"));
+		collisionDistanceRatio = new JFormattedTextField(dfsc);
+		collisionDistanceRatio.setValue(me.mother.getParameters()
+				.getCollisionDistanceRatio());
+		add(collisionDistanceRatio);
+		
+		add(new JLabel("Matter Viscosity ratio:"));
+		matterViscosity = new JFormattedTextField(dfsc);
+		matterViscosity.setValue(me.mother.getParameters()
+				.getMatterViscosity());
+		add(matterViscosity);
+		
+		add(new JLabel("Gas Viscosity Ratio:"));
+		gasViscosity = new JFormattedTextField(dfsc);
+		gasViscosity.setValue(me.mother.getParameters()
+				.getGasViscosity());
+		add(gasViscosity);
 
 		add(new JLabel("Static Dark Matter:"));
 		staticDarkMatter = new JCheckBox();
@@ -535,6 +578,15 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setTypeOfImpact(
 							TypeOfImpact.values()[me.typeOfImpact
 									.getSelectedIndex()]);
+					me.mother.getParameters().setCollisionDistanceRatio(
+							Double.parseDouble(me.collisionDistanceRatio
+									.getValue().toString()));
+					me.mother.getParameters().setMatterViscosity(
+							Double.parseDouble(me.matterViscosity
+									.getValue().toString()));
+					me.mother.getParameters().setGasViscosity(
+							Double.parseDouble(me.gasViscosity
+									.getValue().toString()));
 					me.mother.getParameters().setDarkMatterMass(
 							Double.parseDouble(me.darkMatterMass.getValue()
 									.toString()));
@@ -596,6 +648,9 @@ public class GUIParam extends JDialog {
 		lowMassDensity.setEnabled(false);
 		gasDistribution.setEnabled(false);
 		typeOfImpact.setEnabled(manageImpact.isSelected());
+		collisionDistanceRatio.setEnabled(manageImpact.isSelected());
+		matterViscosity.setEnabled(manageImpact.isSelected());
+		gasViscosity.setEnabled(manageImpact.isSelected());
 		darkMatterMass.setEnabled(false);
 		darkMatterDensity.setEnabled(false);
 		darkMatterDistribution.setEnabled(false);
