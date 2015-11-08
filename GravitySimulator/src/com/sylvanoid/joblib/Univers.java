@@ -436,7 +436,7 @@ public class Univers {
 	}
 
 	private void doubleDensityRelaxation() {
-		double k = 10;
+		double k = 1;
 		double kn = 1;
 		double p0 = 0;
 		for (Matter m : listMatter) {
