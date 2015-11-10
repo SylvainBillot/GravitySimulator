@@ -250,7 +250,7 @@ public class Univers {
 					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
 				computeBarnesHutCollision();
 				doubleDensityRelaxation();
-				adjustSpeedFromPositions();
+				// adjustSpeedFromPositions();
 			}
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
@@ -408,6 +408,7 @@ public class Univers {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void adjustSpeedFromPositions() {
 		for (Matter m : listMatter) {
 			m.adjustSpeedFromPositions();
@@ -440,8 +441,8 @@ public class Univers {
 		double kn = parameters.getViscoElasticityNear();
 		double p0 = parameters.getPressureZero();
 		for (Matter m : listMatter) {
-			if (!parameters.isStaticDarkMatter()
-					|| m.getTypeOfObject() != TypeOfObject.Dark) {
+			if ((!parameters.isStaticDarkMatter() || m.getTypeOfObject() != TypeOfObject.Dark)
+					&& m.getFusionWith().size() > 0) {
 				double p = 0;
 				double pn = 0;
 				// compute density and near-density
@@ -455,7 +456,6 @@ public class Univers {
 				// compute pressure and near-pressure
 				double P = k * (p - p0);
 				double Pn = kn - pn;
-
 				Vector3d dm = new Vector3d(0, 0, 0);
 				for (Matter m1 : m.getFusionWith()) {
 					double q = HelperNewton.distance(m, m1)
@@ -467,27 +467,27 @@ public class Univers {
 
 					Vector3d rijm1 = new Vector3d(rij);
 					Vector3d rijm2 = new Vector3d(rij);
-					double delta = net.jafama.FastMath.pow2(parameters
-							.getTimeFactor())
+					double delta = parameters.getTimeFactor()
 							* (P * (1 - q) + Pn
 									* net.jafama.FastMath.pow2(1 - q));
 
 					// avoid abnormale ejection
-					if (delta > (parameters.getCollisionDistanceRatio() * (m
-							.getRayon() + m1.getRayon()))) {
-						delta = (parameters.getCollisionDistanceRatio() * (m
-								.getRayon() + m1.getRayon()));
-					}
+					/*
+					 * if (delta > (parameters.getCollisionDistanceRatio() * (m
+					 * .getRayon() + m1.getRayon()))) { delta =
+					 * (parameters.getCollisionDistanceRatio() * (m .getRayon()
+					 * + m1.getRayon())); }
+					 */
 
 					rijm1.scale(m1.getMass() * delta
 							/ (m.getMass() + m1.getMass()));
 					rijm2.scale(m.getMass() * delta
 							/ (m.getMass() + m1.getMass()));
 
-					m1.getPoint().add(rijm2);
+					m1.getSpeed().add(rijm2);
 					dm.sub(rijm1);
 				}
-				m.getPoint().add(dm);
+				m.getSpeed().add(dm);
 			}
 		}
 	}

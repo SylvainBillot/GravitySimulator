@@ -95,7 +95,7 @@ public class MatterPair implements Comparable<MatterPair> {
 			m2.getSpeed().add(radialSpeedM2);
 		}
 	}
-
+	
 	private double distanceByradius() {
 		return HelperNewton.distance(m1, m2)
 				/ (m1.getParameters().getCollisionDistanceRatio() * (m1
