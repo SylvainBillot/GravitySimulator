@@ -530,7 +530,7 @@ public class GUIParam extends JDialog {
 				.setValue(me.mother.getParameters().getMatterViscosity());
 		add(matterViscosity);
 
-		add(new JLabel("Gas Viscosity Ratio:"));
+		add(new JLabel("Gas Viscosity ratio:"));
 		gasViscosity = new JFormattedTextField(dfsc);
 		gasViscosity.setValue(me.mother.getParameters().getGasViscosity());
 		add(gasViscosity);

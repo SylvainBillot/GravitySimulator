@@ -77,7 +77,7 @@ public class MatterPair implements Comparable<MatterPair> {
 		radialSpeed.sub(m1.getPoint());
 		radialSpeed.normalize();
 		double u = relativeSpeed.dot(radialSpeed);
-		if (u > 0) {
+		//if (u > 0) {
 			/*
 			 * double delta = m1.getParameters().getTimeFactor()*(1 -
 			 * distanceByradius()) (theta * u + beta *
@@ -94,7 +94,7 @@ public class MatterPair implements Comparable<MatterPair> {
 			
 			m1.getSpeed().sub(radialSpeedM1);
 			m2.getSpeed().add(radialSpeedM2);
-		}
+		//}
 	}
 	
 	private double distanceByradius() {
