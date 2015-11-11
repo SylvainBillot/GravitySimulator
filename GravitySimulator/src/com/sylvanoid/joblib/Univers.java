@@ -456,7 +456,7 @@ public class Univers {
 				}
 				// compute pressure and near-pressure
 				double P = k * (p - p0);
-				double Pn = kn - pn;
+				double Pn = kn * pn;
 				for (Matter m1 : m.getFusionWith()) {
 					double q = HelperNewton.distance(m, m1)
 							/ (parameters.getCollisionDistanceRatio() * (m
