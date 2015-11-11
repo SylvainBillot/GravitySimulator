@@ -91,6 +91,7 @@ public class MatterPair implements Comparable<MatterPair> {
 			Vector3d radialSpeedM2 = new Vector3d(radialSpeed);
 			radialSpeedM2.scale(delta * m1.getViscosity() * m1.getMass()
 					/ (m1.getMass() + m2.getMass()));
+			
 			m1.getSpeed().sub(radialSpeedM1);
 			m2.getSpeed().add(radialSpeedM2);
 		}

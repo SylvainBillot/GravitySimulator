@@ -395,6 +395,7 @@ public class Univers {
 		case Viscosity:
 			for (MatterPair mp : collisionPairs.values()) {
 				mp.applyViscosity();
+				changeSpeed();
 			}
 			break;
 		case ViscosityWithoutDoubleRelaxation:
@@ -456,7 +457,6 @@ public class Univers {
 				// compute pressure and near-pressure
 				double P = k * (p - p0);
 				double Pn = kn - pn;
-				Vector3d dm = new Vector3d(0, 0, 0);
 				for (Matter m1 : m.getFusionWith()) {
 					double q = HelperNewton.distance(m, m1)
 							/ (parameters.getCollisionDistanceRatio() * (m
@@ -470,24 +470,14 @@ public class Univers {
 					double delta = parameters.getTimeFactor()
 							* (P * (1 - q) + Pn
 									* net.jafama.FastMath.pow2(1 - q));
-
-					// avoid abnormale ejection
-					/*
-					 * if (delta > (parameters.getCollisionDistanceRatio() * (m
-					 * .getRayon() + m1.getRayon()))) { delta =
-					 * (parameters.getCollisionDistanceRatio() * (m .getRayon()
-					 * + m1.getRayon())); }
-					 */
-
 					rijm1.scale(m1.getMass() * delta
 							/ (m.getMass() + m1.getMass()));
 					rijm2.scale(m.getMass() * delta
 							/ (m.getMass() + m1.getMass()));
 
-					m1.getSpeed().add(rijm2);
-					dm.sub(rijm1);
+					m1.getAccel().add(rijm2);
+					m.getAccel().sub(rijm1);
 				}
-				m.getSpeed().add(dm);
 			}
 		}
 	}

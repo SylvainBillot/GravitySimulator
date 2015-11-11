@@ -56,11 +56,11 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField collisionDistanceRatio;
 	private JFormattedTextField matterViscosity;
 	private JFormattedTextField gasViscosity;
-	
+
 	private JFormattedTextField viscoElasticity;
 	private JFormattedTextField viscoElasticityNear;
 	private JFormattedTextField pressureZero;
-	
+
 	private JCheckBox staticDarkMatter;
 
 	private DecimalFormat dfsc = new DecimalFormat("0.####E0");
@@ -500,6 +500,11 @@ public class GUIParam extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				typeOfImpact.setEnabled(manageImpact.isSelected());
 				collisionDistanceRatio.setEnabled(manageImpact.isSelected());
+				matterViscosity.setEnabled(manageImpact.isSelected());
+				gasViscosity.setEnabled(manageImpact.isSelected());
+				viscoElasticity.setEnabled(manageImpact.isSelected());
+				viscoElasticityNear.setEnabled(manageImpact.isSelected());
+				pressureZero.setEnabled(manageImpact.isSelected());
 			}
 		});
 		add(manageImpact);
@@ -518,37 +523,35 @@ public class GUIParam extends JDialog {
 		collisionDistanceRatio.setValue(me.mother.getParameters()
 				.getCollisionDistanceRatio());
 		add(collisionDistanceRatio);
-		
+
 		add(new JLabel("Matter Viscosity ratio:"));
 		matterViscosity = new JFormattedTextField(dfsc);
-		matterViscosity.setValue(me.mother.getParameters()
-				.getMatterViscosity());
+		matterViscosity
+				.setValue(me.mother.getParameters().getMatterViscosity());
 		add(matterViscosity);
-		
+
 		add(new JLabel("Gas Viscosity Ratio:"));
 		gasViscosity = new JFormattedTextField(dfsc);
-		gasViscosity.setValue(me.mother.getParameters()
-				.getGasViscosity());
+		gasViscosity.setValue(me.mother.getParameters().getGasViscosity());
 		add(gasViscosity);
 
 		add(new JLabel("Visco elasticity:"));
 		viscoElasticity = new JFormattedTextField(dfsc);
-		viscoElasticity.setValue(me.mother.getParameters()
-				.getViscoElasticity());
+		viscoElasticity
+				.setValue(me.mother.getParameters().getViscoElasticity());
 		add(viscoElasticity);
-		
+
 		add(new JLabel("visco elasticity Near:"));
 		viscoElasticityNear = new JFormattedTextField(dfsc);
 		viscoElasticityNear.setValue(me.mother.getParameters()
 				.getViscoElasticityNear());
 		add(viscoElasticityNear);
-		
+
 		add(new JLabel("Presure zero:"));
 		pressureZero = new JFormattedTextField(dfsc);
-		pressureZero.setValue(me.mother.getParameters()
-				.getPressureZero());
+		pressureZero.setValue(me.mother.getParameters().getPressureZero());
 		add(pressureZero);
-		
+
 		add(new JLabel("Static Dark Matter:"));
 		staticDarkMatter = new JCheckBox();
 		staticDarkMatter.setSelected(me.mother.getParameters()
@@ -629,20 +632,20 @@ public class GUIParam extends JDialog {
 							Double.parseDouble(me.collisionDistanceRatio
 									.getValue().toString()));
 					me.mother.getParameters().setMatterViscosity(
-							Double.parseDouble(me.matterViscosity
-									.getValue().toString()));
+							Double.parseDouble(me.matterViscosity.getValue()
+									.toString()));
 					me.mother.getParameters().setGasViscosity(
-							Double.parseDouble(me.gasViscosity
-									.getValue().toString()));
+							Double.parseDouble(me.gasViscosity.getValue()
+									.toString()));
 					me.mother.getParameters().setViscoElasticity(
-							Double.parseDouble(me.viscoElasticity
-									.getValue().toString()));
+							Double.parseDouble(me.viscoElasticity.getValue()
+									.toString()));
 					me.mother.getParameters().setViscoElasticityNear(
 							Double.parseDouble(me.viscoElasticityNear
 									.getValue().toString()));
 					me.mother.getParameters().setPressureZero(
-							Double.parseDouble(me.pressureZero
-									.getValue().toString()));
+							Double.parseDouble(me.pressureZero.getValue()
+									.toString()));
 					me.mother.getParameters().setDarkMatterMass(
 							Double.parseDouble(me.darkMatterMass.getValue()
 									.toString()));
