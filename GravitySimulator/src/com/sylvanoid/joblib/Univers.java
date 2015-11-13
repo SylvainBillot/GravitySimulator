@@ -453,21 +453,25 @@ public class Univers {
 		double kn = parameters.getViscoElasticityNear();
 		double p0 = parameters.getPressureZero();
 		for (Matter m : listMatter) {
+			double p = 0;
+			double pn = 0;
+			double P = 0;
+			double Pn = 0;
 			if ((!parameters.isStaticDarkMatter() || m.getTypeOfObject() != TypeOfObject.Dark)
 					&& m.getFusionWith().size() > 0) {
-				double p = 0;
-				double pn = 0;
 				// compute density and near-density
 				for (Matter m1 : m.getFusionWith()) {
 					double q = HelperNewton.distance(m, m1)
 							/ (parameters.getCollisionDistanceRatio() * (m
 									.getRayon() + m1.getRayon()));
-					p += net.jafama.FastMath.pow2(1 - q);
-					pn += net.jafama.FastMath.pow3(1 - q);
+					if(q<1){
+						p += net.jafama.FastMath.pow2(1 - q);
+						pn += net.jafama.FastMath.pow3(1 - q);
+					}
 				}
 				// compute pressure and near-pressure
-				double P = k * (p - p0);
-				double Pn = kn * pn;
+				P = k * (p - p0);
+				Pn = kn * pn;
 				Vector3d dm = new Vector3d(0, 0, 0);
 				for (Matter m1 : m.getFusionWith()) {
 					double q = HelperNewton.distance(m, m1)
@@ -493,6 +497,8 @@ public class Univers {
 				}
 				m.getPoint().sub(dm);
 			}
+			m.setPresure(P);
+			m.setPresureNear(Pn);
 		}
 	}
 
