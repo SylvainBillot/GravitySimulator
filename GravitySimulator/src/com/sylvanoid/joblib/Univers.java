@@ -165,14 +165,20 @@ public class Univers {
 		double tmpGx = 0;
 		double tmpGy = 0;
 		double tmpGz = 0;
+		List<Matter> nanToRemove = new ArrayList<Matter>();
 		for (Matter m : listMatter) {
+			if (Double.isNaN(m.getPoint().getX())
+					|| Double.isNaN(m.getPoint().getY())
+					|| Double.isNaN(m.getPoint().getZ())) {
+				nanToRemove.add(m);
+			}
 			mass += m.getMass();
 			if (m.isDark()) {
 				darkMass += m.getMass();
 			} else {
 				visibleMass += m.getMass();
 			}
-			if (withLimit) {
+			if (withLimit && !nanToRemove.contains(m)) {
 				if (!firstTime) {
 					min.x = min.x > m.getPoint().getX() ? m.getPoint().getX()
 							: min.x;
@@ -196,13 +202,16 @@ public class Univers {
 					firstTime = false;
 				}
 			}
-			tmpGx += (m.getPoint().getX() * m.getMass());
-			tmpGy += (m.getPoint().getY() * m.getMass());
-			tmpGz += (m.getPoint().getZ() * m.getMass());
-			speed.add(m.getSpeed());
-			k += m.getK();
-			p.add(m.getP());
+			if (!nanToRemove.contains(m)) {
+				tmpGx += (m.getPoint().getX() * m.getMass());
+				tmpGy += (m.getPoint().getY() * m.getMass());
+				tmpGz += (m.getPoint().getZ() * m.getMass());
+				speed.add(m.getSpeed());
+				k += m.getK();
+				p.add(m.getP());
+			}
 		}
+		listMatter.removeAll(nanToRemove);
 		volumicMass = visibleMass
 				/ ((max.x - min.x) * (max.y - min.y) * (max.z - min.z));
 		density = listMatter.size()
@@ -456,7 +465,7 @@ public class Univers {
 				// compute pressure and near-pressure
 				double P = k * (p - p0);
 				double Pn = kn * pn;
-				Vector3d dm = new Vector3d(0,0,0);
+				Vector3d dm = new Vector3d(0, 0, 0);
 				for (Matter m1 : m.getFusionWith()) {
 					double q = HelperNewton.distance(m, m1)
 							/ (parameters.getCollisionDistanceRatio() * (m
@@ -467,7 +476,8 @@ public class Univers {
 
 					Vector3d rijm1 = new Vector3d(rij);
 					Vector3d rijm2 = new Vector3d(rij);
-					double delta = parameters.getTimeFactor()*parameters.getTimeFactor()
+					double delta = parameters.getTimeFactor()
+							* parameters.getTimeFactor()
 							* (P * (1 - q) + Pn
 									* net.jafama.FastMath.pow2(1 - q));
 					rijm1.scale(m1.getMass() * delta

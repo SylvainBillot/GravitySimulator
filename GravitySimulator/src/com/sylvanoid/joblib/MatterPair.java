@@ -83,20 +83,22 @@ public class MatterPair implements Comparable<MatterPair> {
 			 * distanceByradius()) (theta * u + beta *
 			 * net.jafama.FastMath.pow2(u));
 			 */
+
 			double delta = (1 - distanceByradius())
 					* (theta * u + beta * net.jafama.FastMath.pow2(u));
+
 			Vector3d radialSpeedM1 = new Vector3d(radialSpeed);
 			radialSpeedM1.scale(delta * m2.getMass()
 					/ (m1.getMass() + m2.getMass()));
 			Vector3d radialSpeedM2 = new Vector3d(radialSpeed);
 			radialSpeedM2.scale(delta * m1.getMass()
 					/ (m1.getMass() + m2.getMass()));
-			
+
 			m1.getSpeed().sub(radialSpeedM1);
 			m2.getSpeed().add(radialSpeedM2);
 		}
 	}
-	
+
 	private double distanceByradius() {
 		return HelperNewton.distance(m1, m2)
 				/ (m1.getParameters().getCollisionDistanceRatio() * (m1

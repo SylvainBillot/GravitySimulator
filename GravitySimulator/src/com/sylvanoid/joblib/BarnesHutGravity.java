@@ -153,6 +153,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 				bhg.compute();
 				bhh.compute();
 			}
+
 			for (Univers u : subUnivers) {
 				for (Univers uvoisin : subUnivers) {
 					if (u != uvoisin

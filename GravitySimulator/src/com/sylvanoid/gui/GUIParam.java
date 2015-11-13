@@ -313,8 +313,8 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
-					viscoElasticity.setValue(1E-10);
-					viscoElasticityNear.setValue(1E-10);
+					viscoElasticity.setValue(1E-11);
+					viscoElasticityNear.setValue(1E-11);
 					pressureZero.setValue(0);
 					break;
 				case 7:
@@ -348,8 +348,8 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
-					viscoElasticity.setValue(1E-10);
-					viscoElasticityNear.setValue(1E-10);
+					viscoElasticity.setValue(1E-11);
+					viscoElasticityNear.setValue(1E-11);
 					pressureZero.setValue(0);
 					break;
 				}

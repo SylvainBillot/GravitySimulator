@@ -156,6 +156,7 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 				valReturn += bhh.compute();
 			}
 		}
+
 		if (univers.getListMatter().size() == 1) {
 			Matter m = univers.getListMatter().get(0);
 			if (!parameters.isStaticDarkMatter() || !m.isDark()) {
@@ -168,7 +169,9 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 						for (Matter mgu : gu.getListMatter()) {
 							if (m != mgu) {
 								if ((HelperNewton.distance(m, mgu)
-										/ (parameters.getCollisionDistanceRatio() * (m.getRayon() + mgu.getRayon())) < 1)
+										/ (parameters
+												.getCollisionDistanceRatio() * (m
+												.getRayon() + mgu.getRayon())) < 1)
 										&& (m.getTypeOfObject().equals(mgu
 												.getTypeOfObject()))) {
 									valReturn++;
