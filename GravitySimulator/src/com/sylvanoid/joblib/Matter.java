@@ -35,8 +35,6 @@ public class Matter implements Serializable {
 	private double density;
 	private double rayon;
 	private double viscosity;
-	private double presure;
-	private double presureNear; 
 	private List<Matter> fusionWith = new ArrayList<Matter>();
 	private List<Matter> neighbors = new ArrayList<Matter>();
 
@@ -203,22 +201,6 @@ public class Matter implements Serializable {
 
 	public void setNeighbors(List<Matter> neighbors) {
 		this.neighbors = neighbors;
-	}
-
-	public double getPresure() {
-		return presure;
-	}
-
-	public void setPresure(double presure) {
-		this.presure = presure;
-	}
-
-	public double getPresureNear() {
-		return presureNear;
-	}
-
-	public void setPresureNear(double presureNear) {
-		this.presureNear = presureNear;
 	}
 
 	public Vector3d getPlusV() {

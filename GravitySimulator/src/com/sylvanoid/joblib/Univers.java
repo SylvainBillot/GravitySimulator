@@ -497,8 +497,6 @@ public class Univers {
 				}
 				m.getSpeed().sub(dm);
 			}
-			m.setPresure(P);
-			m.setPresureNear(Pn);
 		}
 	}
 
