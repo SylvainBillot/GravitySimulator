@@ -262,7 +262,7 @@ public class Univers {
 					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
 				computeBarnesHutCollision();
 				doubleDensityRelaxation();
-				adjustSpeedFromPositions();
+				//adjustSpeedFromPositions();
 			}
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
@@ -421,6 +421,7 @@ public class Univers {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void adjustSpeedFromPositions() {
 		for (Matter m : listMatter) {
 			m.adjustSpeedFromPositions();
@@ -483,8 +484,7 @@ public class Univers {
 
 					Vector3d rijm1 = new Vector3d(rij);
 					Vector3d rijm2 = new Vector3d(rij);
-					double delta = parameters.getTimeFactor()
-							* parameters.getTimeFactor()
+					double delta =  parameters.getTimeFactor()
 							* (P * (1 - q) + Pn
 									* net.jafama.FastMath.pow2(1 - q));
 					rijm1.scale(m1.getMass() * delta
@@ -492,10 +492,10 @@ public class Univers {
 					rijm2.scale(m.getMass() * delta
 							/ (m.getMass() + m1.getMass()));
 
-					m1.getPoint().add(rijm2);
+					m1.getSpeed().add(rijm2);
 					dm.add(rijm1);
 				}
-				m.getPoint().sub(dm);
+				m.getSpeed().sub(dm);
 			}
 			m.setPresure(P);
 			m.setPresureNear(Pn);
