@@ -124,34 +124,38 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 			BarnesHutGravity bhg = new BarnesHutGravity(subg);
 			BarnesHutGravity bhh = new BarnesHutGravity(subh);
 
-			// Parallelization
-			if (parameters.isParallelization()) {
-				bha.fork();
-				bhb.fork();
-				bhc.fork();
-				bhd.fork();
-				bhe.fork();
-				bhf.fork();
-				bhg.fork();
-				bhh.fork();
+			try {
+				// Parallelization
+				if (parameters.isParallelization()) {
+					bha.fork();
+					bhb.fork();
+					bhc.fork();
+					bhd.fork();
+					bhe.fork();
+					bhf.fork();
+					bhg.fork();
+					bhh.fork();
 
-				bha.join();
-				bhb.join();
-				bhc.join();
-				bhd.join();
-				bhe.join();
-				bhf.join();
-				bhg.join();
-				bhh.join();
-			} else {
-				bha.compute();
-				bhb.compute();
-				bhc.compute();
-				bhd.compute();
-				bhe.compute();
-				bhf.compute();
-				bhg.compute();
-				bhh.compute();
+					bha.join();
+					bhb.join();
+					bhc.join();
+					bhd.join();
+					bhe.join();
+					bhf.join();
+					bhg.join();
+					bhh.join();
+				} else {
+					bha.compute();
+					bhb.compute();
+					bhc.compute();
+					bhd.compute();
+					bhe.compute();
+					bhf.compute();
+					bhg.compute();
+					bhh.compute();
+				}
+			} catch (StackOverflowError e) {
+				e.printStackTrace();
 			}
 
 			for (Univers u : subUnivers) {

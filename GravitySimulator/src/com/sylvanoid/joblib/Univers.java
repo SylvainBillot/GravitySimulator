@@ -169,7 +169,10 @@ public class Univers {
 		for (Matter m : listMatter) {
 			if (Double.isNaN(m.getPoint().getX())
 					|| Double.isNaN(m.getPoint().getY())
-					|| Double.isNaN(m.getPoint().getZ())) {
+					|| Double.isNaN(m.getPoint().getZ())
+					|| Double.isNaN(m.getSpeed().getX())
+					|| Double.isNaN(m.getSpeed().getY())
+					|| Double.isNaN(m.getSpeed().getZ())) {
 				nanToRemove.add(m);
 			}
 			mass += m.getMass();

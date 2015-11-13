@@ -126,34 +126,38 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 			BarnesHutCollision bhg = new BarnesHutCollision(subg);
 			BarnesHutCollision bhh = new BarnesHutCollision(subh);
 
-			// Parallelization
-			if (parameters.isParallelization()) {
-				bha.fork();
-				bhb.fork();
-				bhc.fork();
-				bhd.fork();
-				bhe.fork();
-				bhf.fork();
-				bhg.fork();
-				bhh.fork();
+			try {
+				// Parallelization
+				if (parameters.isParallelization()) {
+					bha.fork();
+					bhb.fork();
+					bhc.fork();
+					bhd.fork();
+					bhe.fork();
+					bhf.fork();
+					bhg.fork();
+					bhh.fork();
 
-				valReturn += bha.join();
-				valReturn += bhb.join();
-				valReturn += bhc.join();
-				valReturn += bhd.join();
-				valReturn += bhe.join();
-				valReturn += bhf.join();
-				valReturn += bhg.join();
-				valReturn += bhh.join();
-			} else {
-				valReturn += bha.compute();
-				valReturn += bhb.compute();
-				valReturn += bhc.compute();
-				valReturn += bhd.compute();
-				valReturn += bhe.compute();
-				valReturn += bhf.compute();
-				valReturn += bhg.compute();
-				valReturn += bhh.compute();
+					valReturn += bha.join();
+					valReturn += bhb.join();
+					valReturn += bhc.join();
+					valReturn += bhd.join();
+					valReturn += bhe.join();
+					valReturn += bhf.join();
+					valReturn += bhg.join();
+					valReturn += bhh.join();
+				} else {
+					valReturn += bha.compute();
+					valReturn += bhb.compute();
+					valReturn += bhc.compute();
+					valReturn += bhd.compute();
+					valReturn += bhe.compute();
+					valReturn += bhf.compute();
+					valReturn += bhg.compute();
+					valReturn += bhh.compute();
+				}
+			} catch (StackOverflowError e) {
+				e.printStackTrace();
 			}
 		}
 
