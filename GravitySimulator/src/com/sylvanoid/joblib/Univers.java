@@ -407,8 +407,8 @@ public class Univers {
 		case Viscosity:
 			for (MatterPair mp : collisionPairs.values()) {
 				mp.applyViscosity();
-				changeSpeed();
 			}
+			changeSpeed();
 			break;
 		case ViscosityWithoutDoubleRelaxation:
 			for (MatterPair mp : collisionPairs.values()) {

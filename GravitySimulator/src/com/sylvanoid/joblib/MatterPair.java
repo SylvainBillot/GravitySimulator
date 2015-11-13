@@ -94,8 +94,8 @@ public class MatterPair implements Comparable<MatterPair> {
 			radialSpeedM2.scale(delta * m1.getMass()
 					/ (m1.getMass() + m2.getMass()));
 
-			m1.getSpeed().sub(radialSpeedM1);
-			m2.getSpeed().add(radialSpeedM2);
+			m1.getAccel().sub(radialSpeedM1);
+			m2.getAccel().add(radialSpeedM2);
 		}
 	}
 
