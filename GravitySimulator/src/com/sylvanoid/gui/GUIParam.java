@@ -246,7 +246,7 @@ public class GUIParam extends JDialog {
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					demiDistanceBetweenGalaxiesX
-							.setValue(200000 * HelperVariable.PC);
+							.setValue(300000 * HelperVariable.PC);
 					demiDistanceBetweenGalaxiesY.setValue(0);
 					demiDistanceBetweenGalaxiesZ.setValue(0);
 					nbArms.setValue(3);
