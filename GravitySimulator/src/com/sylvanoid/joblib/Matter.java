@@ -317,7 +317,7 @@ public class Matter implements Serializable {
 		return newSpeed;
 	}
 
-	public Vector3d positionBeforeImpactWith(Matter m, boolean withReverce) {
+	public Vector3d positionAtImpactWith(Matter m, boolean withReverce) {
 		Vector3d newPoint = new Vector3d(point);
 		Vector3d deltaSpeed = new Vector3d(speed);
 		deltaSpeed.sub(m.getSpeed());
