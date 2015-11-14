@@ -70,6 +70,7 @@ public class Parameters implements Serializable {
 	private double gasDistribution = 1;
 	private double darkMatterDistribution = 5;
 	private double darkMatterNubulaFactor = 5;
+	private Vector3d darkMatterXYZRatio = new Vector3d(1,1,1);
 	
 	private double matterViscosity = 1;
 	private double gasViscosity = 1;
@@ -555,5 +556,15 @@ public class Parameters implements Serializable {
 
 	public void setPressureZero(double pressureZero) {
 		this.pressureZero = pressureZero;
+	}
+
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
+	public Vector3d getDarkMatterXYZRatio() {
+		return darkMatterXYZRatio;
+	}
+
+	public void setDarkMatterXYZRatio(Vector3d darkMatterXYZRatio) {
+		this.darkMatterXYZRatio = darkMatterXYZRatio;
 	}
 }

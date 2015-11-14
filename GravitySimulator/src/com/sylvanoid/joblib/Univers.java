@@ -500,6 +500,18 @@ public class Univers {
 		}
 	}
 
+	/**
+	 * 
+	 * @param origine
+	 * @param initialSpeed
+	 * @param axisOfRing
+	 * @param radiusMin
+	 * @param radiusMax
+	 * @param ratio
+	 * @param homogeneousDistributionPow
+	 * @param gasHomogeneousDistributionPow
+	 * @return
+	 */
 	private List<Matter> createUnivers(Vector3d origine, Vector3d initialSpeed,
 			Vector3d axisOfRing, double radiusMin, double radiusMax,
 			Vector3d ratio, double homogeneousDistributionPow,
@@ -523,6 +535,24 @@ public class Univers {
 		return miniListMatter;
 	}
 
+	/**
+	 * 
+	 * @param origine
+	 * @param initialSpeed
+	 * @param axisOfRing
+	 * @param radiusMin
+	 * @param radiusMax
+	 * @param ratio
+	 * @param numberOfObjects
+	 * @param minMass
+	 * @param maxMass
+	 * @param density
+	 * @param defaultColor
+	 * @param homogeneousDistributionPow
+	 * @param typeOfObject
+	 * @param initialViscosity
+	 * @return
+	 */
 	private List<Matter> createUniversMain(Vector3d origine,
 			Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
 			double radiusMax, Vector3d ratio, int numberOfObjects,
@@ -637,7 +667,7 @@ public class Univers {
 				parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius()
 						* parameters.getDarkMatterNubulaFactor(),
-				new Vector3d(1, 1, 1),
+				parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects()
 						+ parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()
@@ -694,7 +724,7 @@ public class Univers {
 				parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius()
 						* parameters.getDarkMatterNubulaFactor(),
-				new Vector3d(1, 1, 1),
+						parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects()
 						+ parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()
@@ -751,7 +781,7 @@ public class Univers {
 				parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius()
 						* parameters.getDarkMatterNubulaFactor(),
-				new Vector3d(1, 1, 1),
+						parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects()
 						+ parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()

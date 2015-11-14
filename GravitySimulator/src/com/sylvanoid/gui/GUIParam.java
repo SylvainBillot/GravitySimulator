@@ -47,6 +47,9 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField lowMassDensity;
 	private JFormattedTextField gasDistribution;
 	private JFormattedTextField darkMatterDistribution;
+	private JFormattedTextField darkMatterXRatio;
+	private JFormattedTextField darkMatterYRatio;
+	private JFormattedTextField darkMatterZRatio;
 	private JComboBox<String> typeOfImpact;
 	private JFormattedTextField darkMatterMass;
 	private JFormattedTextField darkMatterDensity;
@@ -113,6 +116,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
+					darkMatterXRatio.setValue(1);
+					darkMatterYRatio.setValue(1);
+					darkMatterZRatio.setValue(1);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -147,6 +153,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
+					darkMatterXRatio.setValue(1);
+					darkMatterYRatio.setValue(1);
+					darkMatterZRatio.setValue(1);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -181,6 +190,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
+					darkMatterXRatio.setValue(1);
+					darkMatterYRatio.setValue(1);
+					darkMatterZRatio.setValue(1);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -218,6 +230,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
+					darkMatterXRatio.setValue(1);
+					darkMatterYRatio.setValue(1);
+					darkMatterZRatio.setValue(1);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -259,6 +274,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
+					darkMatterXRatio.setValue(1);
+					darkMatterYRatio.setValue(1);
+					darkMatterZRatio.setValue(1);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -293,6 +311,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
+					darkMatterXRatio.setValue(1);
+					darkMatterYRatio.setValue(1);
+					darkMatterZRatio.setValue(1);
 					break;
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -330,6 +351,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1E-11);
 					viscoElasticityNear.setValue(1E-11);
 					pressureZero.setValue(0);
+					darkMatterXRatio.setValue(1);
+					darkMatterYRatio.setValue(1);
+					darkMatterZRatio.setValue(1);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -367,6 +391,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1E-11);
 					viscoElasticityNear.setValue(1E-11);
 					pressureZero.setValue(0);
+					darkMatterXRatio.setValue(1);
+					darkMatterYRatio.setValue(1);
+					darkMatterZRatio.setValue(1);
 					break;
 				}
 				enableDisableParam();
@@ -486,6 +513,28 @@ public class GUIParam extends JDialog {
 		darkMatterDistribution.setValue(me.mother.getParameters()
 				.getDarkMatterDistribution());
 		add(darkMatterDistribution);
+
+		add(new JLabel("Dark matter xyz ratio"));
+		JPanel darkMatterRatio = new JPanel();
+		add(darkMatterRatio);
+		darkMatterRatio.setLayout(new GridLayout(1, 6));
+		darkMatterXRatio = new JFormattedTextField(dfsc);
+		darkMatterXRatio.setValue(me.mother.getParameters()
+				.getDarkMatterXYZRatio().x);
+		darkMatterRatio.add(new JLabel("X:"));
+		darkMatterRatio.add(darkMatterXRatio);
+
+		darkMatterYRatio = new JFormattedTextField(dfsc);
+		darkMatterYRatio.setValue(me.mother.getParameters()
+				.getDarkMatterXYZRatio().y);
+		darkMatterRatio.add(new JLabel("Y:"));
+		darkMatterRatio.add(darkMatterYRatio);
+
+		darkMatterZRatio = new JFormattedTextField(dfsc);
+		darkMatterZRatio.setValue(me.mother.getParameters()
+				.getDarkMatterXYZRatio().z);
+		darkMatterRatio.add(new JLabel("Z:"));
+		darkMatterRatio.add(darkMatterZRatio);
 
 		add(new JLabel("Demi Distance between Galaxies X:"));
 		JPanel demiDistance = new JPanel();
@@ -671,6 +720,14 @@ public class GUIParam extends JDialog {
 					me.mother.getParameters().setDarkMatterDistribution(
 							Double.parseDouble(me.darkMatterDistribution
 									.getValue().toString()));
+					me.mother.getParameters().setDarkMatterXYZRatio(
+							new Vector3d(Double
+									.parseDouble(me.darkMatterXRatio
+											.getValue().toString()), Double
+									.parseDouble(me.darkMatterYRatio
+											.getValue().toString()), Double
+									.parseDouble(me.darkMatterZRatio
+											.getValue().toString())));
 					me.mother
 							.getParameters()
 							.setDemiDistanceBetweenGalaxies(
@@ -739,6 +796,9 @@ public class GUIParam extends JDialog {
 		demiDistanceBetweenGalaxiesZ.setEnabled(false);
 		nbArms.setEnabled(false);
 		staticDarkMatter.setEnabled(false);
+		darkMatterXRatio.setEnabled(false);
+		darkMatterYRatio.setEnabled(false);
+		darkMatterZRatio.setEnabled(false);
 		switch (typeOfUnivers.getSelectedIndex()) {
 		case 0:
 			// TypeOfUnivers.Planetary;
@@ -806,6 +866,9 @@ public class GUIParam extends JDialog {
 			ellipseRatio.setEnabled(true);
 			ellipseShiftRatio.setEnabled(true);
 			nbArms.setEnabled(true);
+			darkMatterXRatio.setEnabled(true);
+			darkMatterYRatio.setEnabled(true);
+			darkMatterZRatio.setEnabled(true);
 			break;
 		case 4:
 			// TypeOfUnivers.GalaxiesCollision;
@@ -873,6 +936,9 @@ public class GUIParam extends JDialog {
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
 			staticDarkMatter.setEnabled(true);
+			darkMatterXRatio.setEnabled(true);
+			darkMatterYRatio.setEnabled(true);
+			darkMatterZRatio.setEnabled(true);
 			break;
 		case 7:
 			// TypeOfUnivers.RandomStaticSphericalUnivers
@@ -897,6 +963,9 @@ public class GUIParam extends JDialog {
 			ellipseShiftRatio.setEnabled(false);
 			nbArms.setEnabled(false);
 			staticDarkMatter.setEnabled(true);
+			darkMatterXRatio.setEnabled(true);
+			darkMatterYRatio.setEnabled(true);
+			darkMatterZRatio.setEnabled(true);
 			break;
 		}
 	}
