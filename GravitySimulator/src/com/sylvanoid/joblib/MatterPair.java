@@ -77,7 +77,7 @@ public class MatterPair implements Comparable<MatterPair> {
 		radialSpeed.sub(m1.getPoint());
 		radialSpeed.normalize();
 		double u = relativeSpeed.dot(radialSpeed);
-		if (u > 0) {
+		//if (u > 0) {
 			double delta = m1.getParameters().getTimeFactor()
 					* (1 - distanceByradius())
 					* (theta * u + beta * net.jafama.FastMath.pow2(u));
@@ -94,10 +94,20 @@ public class MatterPair implements Comparable<MatterPair> {
 
 			if (m1.getParameters().isRecoverFrictionEnegy()) {
 				// try to recover energy
-				
-			}
+				Vector3d spd1 = new Vector3d(m1.getSpeed());
+				Vector3d spd1bis = new Vector3d(m1.getSpeed());
+				spd1bis.sub(radialSpeedM1);
+				spd1.sub(spd1bis);
+				m1.getAccel().add(spd1);
 
-		}
+				Vector3d spd2 = new Vector3d(m2.getSpeed());
+				Vector3d spd2bis = new Vector3d(m2.getSpeed());
+				spd2bis.add(radialSpeedM2);
+				spd2.sub(spd2bis);
+				m2.getAccel().add(spd2);
+
+			}
+		//}
 	}
 
 	private double distanceByradius() {
