@@ -82,6 +82,8 @@ public class Parameters implements Serializable {
 	private double viscoElasticityNear = 1;
 	private double pressureZero = 0;
 	
+	private boolean recoverFrictionEnegy = false;
+	
 
 	public Parameters() {
 
@@ -566,5 +568,13 @@ public class Parameters implements Serializable {
 
 	public void setDarkMatterXYZRatio(Vector3d darkMatterXYZRatio) {
 		this.darkMatterXYZRatio = darkMatterXYZRatio;
+	}
+
+	public boolean isRecoverFrictionEnegy() {
+		return recoverFrictionEnegy;
+	}
+
+	public void setRecoverFrictionEnegy(boolean recoverFrictionEnegy) {
+		this.recoverFrictionEnegy = recoverFrictionEnegy;
 	}
 }

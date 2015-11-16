@@ -59,10 +59,10 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField collisionDistanceRatio;
 	private JFormattedTextField matterViscosity;
 	private JFormattedTextField gasViscosity;
-
 	private JFormattedTextField viscoElasticity;
 	private JFormattedTextField viscoElasticityNear;
 	private JFormattedTextField pressureZero;
+	private JCheckBox recoverFrictionEnergy;
 
 	private JCheckBox staticDarkMatter;
 
@@ -79,7 +79,7 @@ public class GUIParam extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(16, 4));
+		setLayout(new GridLayout(17, 4));
 		add(new JLabel("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
@@ -119,6 +119,7 @@ public class GUIParam extends JDialog {
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
+					recoverFrictionEnergy.setSelected(false);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -156,6 +157,7 @@ public class GUIParam extends JDialog {
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
+					recoverFrictionEnergy.setSelected(false);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -193,6 +195,7 @@ public class GUIParam extends JDialog {
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
+					recoverFrictionEnergy.setSelected(false);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -233,6 +236,7 @@ public class GUIParam extends JDialog {
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
+					recoverFrictionEnergy.setSelected(false);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -277,6 +281,7 @@ public class GUIParam extends JDialog {
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
+					recoverFrictionEnergy.setSelected(false);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -314,6 +319,7 @@ public class GUIParam extends JDialog {
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
+					recoverFrictionEnergy.setSelected(false);
 					break;
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -354,6 +360,7 @@ public class GUIParam extends JDialog {
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
+					recoverFrictionEnergy.setSelected(false);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -394,6 +401,7 @@ public class GUIParam extends JDialog {
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
+					recoverFrictionEnergy.setSelected(false);
 					break;
 				}
 				enableDisableParam();
@@ -570,6 +578,7 @@ public class GUIParam extends JDialog {
 				viscoElasticity.setEnabled(manageImpact.isSelected());
 				viscoElasticityNear.setEnabled(manageImpact.isSelected());
 				pressureZero.setEnabled(manageImpact.isSelected());
+				recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
 			}
 		});
 		add(manageImpact);
@@ -616,7 +625,12 @@ public class GUIParam extends JDialog {
 		pressureZero = new JFormattedTextField(dfsc);
 		pressureZero.setValue(me.mother.getParameters().getPressureZero());
 		add(pressureZero);
-
+		
+		add(new JLabel("RecoverFrictionEnergy:"));
+		recoverFrictionEnergy = new JCheckBox();
+		recoverFrictionEnergy.setSelected(me.mother.getParameters().isRecoverFrictionEnegy());
+		add(recoverFrictionEnergy);
+		
 		add(new JLabel("Static Dark Matter:"));
 		staticDarkMatter = new JCheckBox();
 		staticDarkMatter.setSelected(me.mother.getParameters()
@@ -721,13 +735,12 @@ public class GUIParam extends JDialog {
 							Double.parseDouble(me.darkMatterDistribution
 									.getValue().toString()));
 					me.mother.getParameters().setDarkMatterXYZRatio(
-							new Vector3d(Double
-									.parseDouble(me.darkMatterXRatio
-											.getValue().toString()), Double
-									.parseDouble(me.darkMatterYRatio
-											.getValue().toString()), Double
-									.parseDouble(me.darkMatterZRatio
-											.getValue().toString())));
+							new Vector3d(Double.parseDouble(me.darkMatterXRatio
+									.getValue().toString()), Double
+									.parseDouble(me.darkMatterYRatio.getValue()
+											.toString()), Double
+									.parseDouble(me.darkMatterZRatio.getValue()
+											.toString())));
 					me.mother
 							.getParameters()
 							.setDemiDistanceBetweenGalaxies(
@@ -740,6 +753,8 @@ public class GUIParam extends JDialog {
 													.getValue().toString())));
 					me.mother.getParameters().setStaticDarkMatter(
 							me.staticDarkMatter.isSelected());
+					me.mother.getParameters().setRecoverFrictionEnegy(
+							me.recoverFrictionEnergy.isSelected());
 					me.mother.getParameters().setEyes(new Vector3d(0, 0, 900));
 					me.mother.getParameters().setLookAt(
 							new Vector3d(0, 0, -900));
@@ -786,6 +801,7 @@ public class GUIParam extends JDialog {
 		viscoElasticity.setEnabled(manageImpact.isSelected());
 		viscoElasticityNear.setEnabled(manageImpact.isSelected());
 		pressureZero.setEnabled(manageImpact.isSelected());
+		recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
 		darkMatterMass.setEnabled(false);
 		darkMatterDensity.setEnabled(false);
 		darkMatterDistribution.setEnabled(false);
