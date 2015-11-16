@@ -626,7 +626,7 @@ public class GUIParam extends JDialog {
 		pressureZero.setValue(me.mother.getParameters().getPressureZero());
 		add(pressureZero);
 		
-		add(new JLabel("RecoverFrictionEnergy:"));
+		add(new JLabel("Recover Friction Energy (Experimental):"));
 		recoverFrictionEnergy = new JCheckBox();
 		recoverFrictionEnergy.setSelected(me.mother.getParameters().isRecoverFrictionEnegy());
 		add(recoverFrictionEnergy);
