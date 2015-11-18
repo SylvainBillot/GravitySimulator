@@ -63,6 +63,7 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField viscoElasticityNear;
 	private JFormattedTextField pressureZero;
 	private JCheckBox recoverFrictionEnergy;
+	private JFormattedTextField recoverFrictionEnergyRatio;
 
 	private JCheckBox staticDarkMatter;
 
@@ -120,6 +121,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
+					recoverFrictionEnergyRatio.setValue(0.5);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -158,6 +160,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
+					recoverFrictionEnergyRatio.setValue(0.5);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -196,6 +199,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
+					recoverFrictionEnergyRatio.setValue(0.5);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -237,6 +241,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
+					recoverFrictionEnergyRatio.setValue(0.5);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -282,6 +287,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
+					recoverFrictionEnergyRatio.setValue(0.5);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -320,6 +326,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
+					recoverFrictionEnergyRatio.setValue(0.5);
 					break;
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -361,6 +368,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
+					recoverFrictionEnergyRatio.setValue(0.5);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -402,6 +410,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
+					recoverFrictionEnergyRatio.setValue(0.5);
 					break;
 				}
 				enableDisableParam();
@@ -579,6 +588,8 @@ public class GUIParam extends JDialog {
 				viscoElasticityNear.setEnabled(manageImpact.isSelected());
 				pressureZero.setEnabled(manageImpact.isSelected());
 				recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
+				recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
+						&& recoverFrictionEnergy.isSelected());
 			}
 		});
 		add(manageImpact);
@@ -625,12 +636,26 @@ public class GUIParam extends JDialog {
 		pressureZero = new JFormattedTextField(dfsc);
 		pressureZero.setValue(me.mother.getParameters().getPressureZero());
 		add(pressureZero);
-		
+
 		add(new JLabel("Recover Friction Energy (Experimental):"));
 		recoverFrictionEnergy = new JCheckBox();
-		recoverFrictionEnergy.setSelected(me.mother.getParameters().isRecoverFrictionEnegy());
+		recoverFrictionEnergy.setSelected(me.mother.getParameters()
+				.isRecoverFrictionEnegy());
+		recoverFrictionEnergy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
+						&& recoverFrictionEnergy.isSelected());
+			}
+		});
+
 		add(recoverFrictionEnergy);
-		
+
+		add(new JLabel("Recover Friction Energy Ratio:"));
+		recoverFrictionEnergyRatio = new JFormattedTextField(dfsc);
+		recoverFrictionEnergyRatio.setValue(me.mother.getParameters()
+				.getRecoverFrictionEnergyRatio());
+		add(recoverFrictionEnergyRatio);
+
 		add(new JLabel("Static Dark Matter:"));
 		staticDarkMatter = new JCheckBox();
 		staticDarkMatter.setSelected(me.mother.getParameters()
@@ -755,6 +780,9 @@ public class GUIParam extends JDialog {
 							me.staticDarkMatter.isSelected());
 					me.mother.getParameters().setRecoverFrictionEnegy(
 							me.recoverFrictionEnergy.isSelected());
+					me.mother.getParameters().setRecoverFrictionEnergyRatio(
+							Double.parseDouble(me.recoverFrictionEnergyRatio
+									.getValue().toString()));
 					me.mother.getParameters().setEyes(new Vector3d(0, 0, 900));
 					me.mother.getParameters().setLookAt(
 							new Vector3d(0, 0, -900));
@@ -802,6 +830,8 @@ public class GUIParam extends JDialog {
 		viscoElasticityNear.setEnabled(manageImpact.isSelected());
 		pressureZero.setEnabled(manageImpact.isSelected());
 		recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
+		recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
+				&& recoverFrictionEnergy.isSelected());
 		darkMatterMass.setEnabled(false);
 		darkMatterDensity.setEnabled(false);
 		darkMatterDistribution.setEnabled(false);

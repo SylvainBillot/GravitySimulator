@@ -83,6 +83,7 @@ public class Parameters implements Serializable {
 	private double pressureZero = 0;
 	
 	private boolean recoverFrictionEnegy = false;
+	private double recoverFrictionEnergyRatio = 0.5;
 	
 
 	public Parameters() {
@@ -576,5 +577,13 @@ public class Parameters implements Serializable {
 
 	public void setRecoverFrictionEnegy(boolean recoverFrictionEnegy) {
 		this.recoverFrictionEnegy = recoverFrictionEnegy;
+	}
+
+	public double getRecoverFrictionEnergyRatio() {
+		return recoverFrictionEnergyRatio;
+	}
+
+	public void setRecoverFrictionEnergyRatio(double recoverFrictionEnergyRatio) {
+		this.recoverFrictionEnergyRatio = recoverFrictionEnergyRatio;
 	}
 }

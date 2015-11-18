@@ -98,12 +98,14 @@ public class MatterPair implements Comparable<MatterPair> {
 				Vector3d spd1bis = new Vector3d(m1.getSpeed());
 				spd1bis.sub(radialSpeedM1);
 				spd1.sub(spd1bis);
+				spd1.scale(m1.getParameters().getRecoverFrictionEnergyRatio());
 				m1.getAccel().add(spd1);
 
 				Vector3d spd2 = new Vector3d(m2.getSpeed());
 				Vector3d spd2bis = new Vector3d(m2.getSpeed());
 				spd2bis.add(radialSpeedM2);
 				spd2.sub(spd2bis);
+				spd2.scale(m1.getParameters().getRecoverFrictionEnergyRatio());
 				m2.getAccel().add(spd2);
 
 			}
