@@ -121,7 +121,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
-					recoverFrictionEnergyRatio.setValue(0.5);
+					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				case 1:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -160,7 +160,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
-					recoverFrictionEnergyRatio.setValue(0.5);
+					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				case 2:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -199,7 +199,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
-					recoverFrictionEnergyRatio.setValue(0.5);
+					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				case 3:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -241,7 +241,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
-					recoverFrictionEnergyRatio.setValue(0.5);
+					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -287,7 +287,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
-					recoverFrictionEnergyRatio.setValue(0.5);
+					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				case 5:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -326,7 +326,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
-					recoverFrictionEnergyRatio.setValue(0.5);
+					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				case 6:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -368,7 +368,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
-					recoverFrictionEnergyRatio.setValue(0.5);
+					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				case 7:
 					me.mother.getParameters().setTypeOfUnivers(
@@ -410,7 +410,7 @@ public class GUIParam extends JDialog {
 					darkMatterYRatio.setValue(1);
 					darkMatterZRatio.setValue(1);
 					recoverFrictionEnergy.setSelected(false);
-					recoverFrictionEnergyRatio.setValue(0.5);
+					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				}
 				enableDisableParam();
