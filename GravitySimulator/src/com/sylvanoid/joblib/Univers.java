@@ -262,7 +262,7 @@ public class Univers {
 					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
 				computeBarnesHutCollision();
 				doubleDensityRelaxation();
-				//adjustSpeedFromPositions();
+				// adjustSpeedFromPositions();
 			}
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
@@ -465,7 +465,7 @@ public class Univers {
 					double q = HelperNewton.distance(m, m1)
 							/ (parameters.getCollisionDistanceRatio() * (m
 									.getRayon() + m1.getRayon()));
-					if(q<1){
+					if (q < 1) {
 						p += net.jafama.FastMath.pow2(1 - q);
 						pn += net.jafama.FastMath.pow3(1 - q);
 					}
@@ -484,7 +484,7 @@ public class Univers {
 
 					Vector3d rijm1 = new Vector3d(rij);
 					Vector3d rijm2 = new Vector3d(rij);
-					double delta =  parameters.getTimeFactor()
+					double delta = parameters.getTimeFactor()
 							* (P * (1 - q) + Pn
 									* net.jafama.FastMath.pow2(1 - q));
 					rijm1.scale(m1.getMass() * delta
@@ -724,7 +724,7 @@ public class Univers {
 				parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius()
 						* parameters.getDarkMatterNubulaFactor(),
-						parameters.getDarkMatterXYZRatio(),
+				parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects()
 						+ parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()
@@ -781,7 +781,7 @@ public class Univers {
 				parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius()
 						* parameters.getDarkMatterNubulaFactor(),
-						parameters.getDarkMatterXYZRatio(),
+				parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects()
 						+ parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()

@@ -84,7 +84,6 @@ public class Parameters implements Serializable {
 	
 	private boolean recoverFrictionEnegy = false;
 	private double recoverFrictionEnergyRatio = 0.5;
-	
 
 	public Parameters() {
 
@@ -586,4 +585,5 @@ public class Parameters implements Serializable {
 	public void setRecoverFrictionEnergyRatio(double recoverFrictionEnergyRatio) {
 		this.recoverFrictionEnergyRatio = recoverFrictionEnergyRatio;
 	}
+
 }

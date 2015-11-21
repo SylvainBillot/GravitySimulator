@@ -334,7 +334,7 @@ public class GUIParam extends JDialog {
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
-					typeOfImpact.setSelectedIndex(2);
+					typeOfImpact.setSelectedIndex(1);
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 4E4);
@@ -375,25 +375,25 @@ public class GUIParam extends JDialog {
 							TypeOfUnivers.RandomStaticSphericalUnivers);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
-					scala.setValue(3E-19);
-					typeOfImpact.setSelectedIndex(2);
-					numberOfObjects.setValue(10000);
+					scala.setValue(3E-21);
+					typeOfImpact.setSelectedIndex(1);
+					numberOfObjects.setValue(0);
 					densiteMin.setValue(1E-19);
-					nebulaRadius.setValue(HelperVariable.PC * 4E4);
+					nebulaRadius.setValue(HelperVariable.PC * 4E6);
 					massObjectMin
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E5);
 					massObjectMax
-							.setValue(HelperVariable.MAXIMALSTARMASS * 1E2);
+							.setValue(HelperVariable.MAXIMALSTARMASS * 1E4);
 					matterDistribution.setValue(1);
 					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(10000);
 					lowMassParticuleMass
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E7);
-					lowMassDensity.setValue(1E-22);
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E9);
+					lowMassDensity.setValue(1E-26);
 					gasDistribution.setValue(1);
-					darkMatterMass.setValue(1E40);
-					darkMatterDensity.setValue(1E-24);
-					darkMatterDistribution.setValue(5);
+					darkMatterMass.setValue(1E42);
+					darkMatterDensity.setValue(1E-28);
+					darkMatterDistribution.setValue(1);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
@@ -406,9 +406,9 @@ public class GUIParam extends JDialog {
 					viscoElasticity.setValue(1E-11);
 					viscoElasticityNear.setValue(1E-11);
 					pressureZero.setValue(0);
-					darkMatterXRatio.setValue(1);
-					darkMatterYRatio.setValue(1);
-					darkMatterZRatio.setValue(1);
+					darkMatterXRatio.setValue(0.2);
+					darkMatterYRatio.setValue(0.2);
+					darkMatterZRatio.setValue(0.2);
 					recoverFrictionEnergy.setSelected(false);
 					recoverFrictionEnergyRatio.setValue(1);
 					break;
