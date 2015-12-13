@@ -84,6 +84,8 @@ public class Parameters implements Serializable {
 	
 	private boolean recoverFrictionEnegy = false;
 	private double recoverFrictionEnergyRatio = 0.5;
+	
+	private boolean expansionUnivers = true;
 
 	public Parameters() {
 
@@ -584,6 +586,20 @@ public class Parameters implements Serializable {
 
 	public void setRecoverFrictionEnergyRatio(double recoverFrictionEnergyRatio) {
 		this.recoverFrictionEnergyRatio = recoverFrictionEnergyRatio;
+	}
+
+	/**
+	 * @return the expansionUnivers
+	 */
+	public boolean isExpansionUnivers() {
+		return expansionUnivers;
+	}
+
+	/**
+	 * @param expansionUnivers the expansionUnivers to set
+	 */
+	public void setExpansionUnivers(boolean expansionUnivers) {
+		this.expansionUnivers = expansionUnivers;
 	}
 
 }

@@ -258,13 +258,21 @@ public class Univers {
 
 			move();
 
+			if(parameters.isExpansionUnivers()){
+				expansionUnivers();
+				double length = parameters.getEyes().length() + parameters.getEyes().length() * HelperVariable.H0
+						* parameters.getTimeFactor();
+				parameters.getEyes().normalize();
+				parameters.getEyes().scale(length);
+			}
+			
 			if (parameters.isManageImpact()
 					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
 				computeBarnesHutCollision();
 				doubleDensityRelaxation();
 				// adjustSpeedFromPositions();
 			}
-
+			
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			moveEnd(bufferedWriter);
@@ -497,6 +505,12 @@ public class Univers {
 				}
 				m.getSpeed().sub(dm);
 			}
+		}
+	}
+	
+	private void expansionUnivers(){
+		for(Matter m:listMatter){
+			m.expansionUnivers();
 		}
 	}
 
@@ -763,7 +777,7 @@ public class Univers {
 		}
 
 		for (Matter m : miniListMatter) {
-			if ( !m.isDark()) {
+			if (!m.isDark()) {
 				double distance = new Point3d(m.getPoint())
 						.distance(new Point3d(origin));
 				m.orbitalCircularSpeed(this, distance, innerMassTreeMapCumul

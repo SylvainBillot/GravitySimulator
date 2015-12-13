@@ -467,6 +467,13 @@ public class Matter implements Serializable {
 		return HelperVector.acceleration(point, m.getPoint(), attraction);
 	}
 
+	public void expansionUnivers() {
+		double length = point.length() + point.length() * HelperVariable.H0
+				* parameters.getTimeFactor();
+		point.normalize();
+		point.scale(length);
+	}
+
 	public void orbitalCircularSpeed(Matter m, Vector3d axis) {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
