@@ -246,33 +246,32 @@ public class GUIParam extends JDialog {
 				case 4:
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.GalaxiesCollision);
-					manageImpact.setSelected(false);
-					timeFactor.setValue(HelperVariable.ONEYEAR * 5E6);
-					scala.setValue(4E-20);
-					typeOfImpact.setSelectedIndex(0);
-					numberOfObjects.setValue(500);
-					densiteMin.setValue(1E-23);
-					nebulaRadius.setValue(HelperVariable.PC * 2E5);
+					manageImpact.setSelected(true);
+					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
+					scala.setValue(3E-20);
+					typeOfImpact.setSelectedIndex(1);
+					numberOfObjects.setValue(5000);
+					densiteMin.setValue(1E-19);
+					nebulaRadius.setValue(HelperVariable.PC * 4E4);
 					massObjectMin
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
+							.setValue(HelperVariable.MINIMALSTARMASS * 2E4);
 					massObjectMax
-							.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
+							.setValue(HelperVariable.MAXIMALSTARMASS * 2E3);
 					matterDistribution.setValue(5);
-					negligeableMass.setValue(1E39);
-					numOfLowMassParticule.setValue(10000);
+					negligeableMass.setValue(0);
+					numOfLowMassParticule.setValue(5000);
 					lowMassParticuleMass
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E2);
-					lowMassDensity.setValue(5E-30);
+							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
+					lowMassDensity.setValue(5E-24);
 					gasDistribution.setValue(1);
-					darkMatterMass.setValue(1E42);
-					darkMatterDensity.setValue(1E-20);
+					darkMatterMass.setValue(2E40);
+					darkMatterDensity.setValue(1E-24);
 					darkMatterDistribution.setValue(5);
+					demiDistanceBetweenGalaxiesX.setValue(HelperVariable.PC * 4E4);
+					demiDistanceBetweenGalaxiesY.setValue(HelperVariable.PC * 4E3);
+					demiDistanceBetweenGalaxiesZ.setValue(HelperVariable.PC * 4E3);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
-					demiDistanceBetweenGalaxiesX
-							.setValue(300000 * HelperVariable.PC);
-					demiDistanceBetweenGalaxiesY.setValue(0);
-					demiDistanceBetweenGalaxiesZ.setValue(0);
 					nbArms.setValue(3);
 					staticDarkMatter.setSelected(false);
 					collisionDistanceRatio.setValue(1);
@@ -280,8 +279,8 @@ public class GUIParam extends JDialog {
 							.parseDouble(timeFactor.getValue().toString()));
 					gasViscosity.setValue(1.0 / Double.parseDouble(timeFactor
 							.getValue().toString()));
-					viscoElasticity.setValue(1);
-					viscoElasticityNear.setValue(1);
+					viscoElasticity.setValue(1E-11);
+					viscoElasticityNear.setValue(1E-11);
 					pressureZero.setValue(0);
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
@@ -937,6 +936,7 @@ public class GUIParam extends JDialog {
 			demiDistanceBetweenGalaxiesX.setEnabled(true);
 			demiDistanceBetweenGalaxiesY.setEnabled(true);
 			demiDistanceBetweenGalaxiesZ.setEnabled(true);
+			staticDarkMatter.setEnabled(true);
 			break;
 		case 5:
 			// TypeOfUnivers.PlanetariesGenesis;

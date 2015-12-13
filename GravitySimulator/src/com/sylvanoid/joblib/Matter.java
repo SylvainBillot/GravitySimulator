@@ -478,13 +478,13 @@ public class Matter implements Serializable {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
 
-	public void orbitalCircularSpeed(Univers u, double distance,
+	public void orbitalCircularSpeed(Vector3d gPoint, double distance,
 			double innerMass, Vector3d axis) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
 			double orbitalSpeedValue = net.jafama.FastMath
 					.sqrt((HelperVariable.G * innerMass) / distance);
 
-			Vector3d accel = HelperVector.acceleration(point, u.getGPoint(),
+			Vector3d accel = HelperVector.acceleration(point, gPoint,
 					orbitalSpeedValue);
 			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
 					net.jafama.FastMath.signum(axis.x) * net.jafama.FastMath.PI

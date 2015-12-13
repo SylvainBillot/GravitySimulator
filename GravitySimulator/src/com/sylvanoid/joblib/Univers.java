@@ -258,21 +258,22 @@ public class Univers {
 
 			move();
 
-			if(parameters.isExpansionUnivers()){
+			if (parameters.isExpansionUnivers()) {
 				expansionUnivers();
-				double length = parameters.getEyes().length() + parameters.getEyes().length() * HelperVariable.H0
+				double length = parameters.getEyes().length()
+						+ parameters.getEyes().length() * HelperVariable.H0
 						* parameters.getTimeFactor();
 				parameters.getEyes().normalize();
 				parameters.getEyes().scale(length);
 			}
-			
+
 			if (parameters.isManageImpact()
 					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
 				computeBarnesHutCollision();
 				doubleDensityRelaxation();
 				// adjustSpeedFromPositions();
 			}
-			
+
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
 			moveEnd(bufferedWriter);
@@ -507,9 +508,9 @@ public class Univers {
 			}
 		}
 	}
-	
-	private void expansionUnivers(){
-		for(Matter m:listMatter){
+
+	private void expansionUnivers() {
+		for (Matter m : listMatter) {
 			m.expansionUnivers();
 		}
 	}
@@ -725,21 +726,23 @@ public class Univers {
 	}
 
 	private void createRandomRotateUniversCircular() {
-		createRandomRotateUniversCircular(new Vector3d(0, 0, 0));
+		createRandomRotateUniversCircular(new Vector3d(0, 0, 0), new Vector3d(
+				0, 0, 1), new Vector3d(1, 1, 0.25));
 	}
 
-	private void createRandomRotateUniversCircular(Vector3d origin) {
+	private void createRandomRotateUniversCircular(Vector3d origin,
+			Vector3d axisOfRing,Vector3d ratio) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
 		miniListMatter.addAll(createUnivers(origin, new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
+				axisOfRing, parameters.getNebulaRadius() * 0.01,
+				parameters.getNebulaRadius(), ratio,
 				parameters.getMatterDistribution(),
 				parameters.getGasDistribution()));
 
 		miniListMatter.addAll(createUniversMain(
 				origin,
 				new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1),
+				axisOfRing,
 				parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius()
 						* parameters.getDarkMatterNubulaFactor(),
@@ -780,8 +783,8 @@ public class Univers {
 			if (!m.isDark()) {
 				double distance = new Point3d(m.getPoint())
 						.distance(new Point3d(origin));
-				m.orbitalCircularSpeed(this, distance, innerMassTreeMapCumul
-						.get(distance), new Vector3d(0, 0, 1));
+				m.orbitalCircularSpeed(origin, distance, innerMassTreeMapCumul
+						.get(distance), axisOfRing);
 			}
 		}
 
@@ -822,50 +825,9 @@ public class Univers {
 				parameters.getDemiDistanceBetweenGalaxies());
 		dbg2.negate();
 
-		Matter m1 = new Matter(parameters, dbg2, parameters.getDarkMatterMass()
-				/ 1.1 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
-				new Vector3d(0.25, 0.25, 0.25),
-				parameters.getDarkMatterDensity(), TypeOfObject.Dark,
-				parameters.getDarkMatterViscosity());
-		listMatter.add(m1);
-		mass += m1.getMass();
-		darkMass += m1.getMass();
+		createRandomRotateUniversCircular(dbg1, new Vector3d(0, 0, 1),new Vector3d(1,1,0.25));
+		createRandomRotateUniversCircular(dbg2, new Vector3d(0, 1, 0),new Vector3d(1,0.25,1));
 
-		Matter m2 = new Matter(parameters, dbg1, parameters.getDarkMatterMass()
-				/ 2 + net.jafama.FastMath.random(), new Vector3d(0, 0, 0),
-				new Vector3d(0.25, 0.25, 0.25),
-				parameters.getDarkMatterDensity(), TypeOfObject.Dark,
-				parameters.getDarkMatterViscosity());
-		listMatter.add(m2);
-		mass += m2.getMass();
-		darkMass += m2.getMass();
-
-		m1.orbitalCircularSpeed(m2, new Vector3d(0, 1, 0));
-		m2.orbitalCircularSpeed(m1, new Vector3d(0, 1, 0));
-
-		List<Matter> subu01 = createUnivers(m1.getPoint(), m1.getSpeed(),
-				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
-				parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
-
-		List<Matter> subu02 = createUnivers(m2.getPoint(), m2.getSpeed(),
-				new Vector3d(1, 0, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 0.25, 1),
-				parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
-
-		for (Matter m : subu01) {
-			if (m != m1) {
-				m.orbitalCircularSpeed(m1, new Vector3d(0, 0, 1));
-			}
-		}
-
-		for (Matter m : subu02) {
-			if (m != m2) {
-				m.orbitalCircularSpeed(m2, new Vector3d(0, 1, 0));
-			}
-		}
 	}
 
 	private void createPlanetary() {
