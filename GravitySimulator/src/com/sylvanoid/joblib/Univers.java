@@ -711,14 +711,19 @@ public class Univers {
 	}
 
 	private void createRandomRotateUniversCircular() {
-		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+		createRandomRotateUniversCircular(new Vector3d(0, 0, 0));
+	}
+
+	private void createRandomRotateUniversCircular(Vector3d origin) {
+		List<Matter> miniListMatter = new ArrayList<Matter>();
+		miniListMatter.addAll(createUnivers(origin, new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
 				parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
+				parameters.getGasDistribution()));
 
-		createUniversMain(
-				new Vector3d(0, 0, 0),
+		miniListMatter.addAll(createUniversMain(
+				origin,
 				new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1),
 				parameters.getNebulaRadius() * 0.01,
@@ -732,15 +737,16 @@ public class Univers {
 								.getNumOfLowMassParticule()),
 				parameters.getDarkMatterMass()
 						/ (parameters.getNumberOfObjects() + parameters
-								.getNumOfLowMassParticule()),
-				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01,
-						0.01), parameters.getDarkMatterDistribution(),
-				TypeOfObject.Dark, parameters.getDarkMatterViscosity());
+								.getNumOfLowMassParticule()), parameters
+						.getDarkMatterDensity(),
+				new Vector3d(0.01, 0.01, 0.01), parameters
+						.getDarkMatterDistribution(), TypeOfObject.Dark,
+				parameters.getDarkMatterViscosity()));
 
 		TreeMap<Double, Double> innerMassTreeMap = new TreeMap<Double, Double>();
-		for (Matter m : listMatter) {
+		for (Matter m : miniListMatter) {
 			double distance = new Point3d(m.getPoint()).distance(new Point3d(
-					gPoint));
+					origin));
 			if (innerMassTreeMap.get(distance) == null) {
 				innerMassTreeMap.put(distance, m.getMass());
 			} else {
@@ -756,10 +762,10 @@ public class Univers {
 			innerMassTreeMapCumul.put(entry.getKey(), innerMass);
 		}
 
-		for (Matter m : listMatter) {
-			if (!parameters.isStaticDarkMatter() || !m.isDark()) {
+		for (Matter m : miniListMatter) {
+			if ( !m.isDark()) {
 				double distance = new Point3d(m.getPoint())
-						.distance(new Point3d(gPoint));
+						.distance(new Point3d(origin));
 				m.orbitalCircularSpeed(this, distance, innerMassTreeMapCumul
 						.get(distance), new Vector3d(0, 0, 1));
 			}
