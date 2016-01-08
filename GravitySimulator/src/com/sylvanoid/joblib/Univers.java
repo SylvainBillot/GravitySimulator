@@ -258,13 +258,9 @@ public class Univers {
 
 			move();
 
-			if (parameters.isExpansionUnivers()) {
+			if (!parameters.isStaticDarkMatter()
+					&& parameters.isExpansionUnivers()) {
 				expansionUnivers();
-				double length = parameters.getEyes().length()
-						+ parameters.getEyes().length() * HelperVariable.H0
-						* parameters.getTimeFactor();
-				parameters.getEyes().normalize();
-				parameters.getEyes().scale(length);
 			}
 
 			if (parameters.isManageImpact()
@@ -273,6 +269,11 @@ public class Univers {
 				doubleDensityRelaxation();
 				// adjustSpeedFromPositions();
 			}
+
+			parameters.setTimeFactor(parameters.getTimeFactor()
+					* parameters.getTimeMultiplicator());
+			parameters.setGasViscosity(parameters.getGasViscosity()/parameters.getTimeMultiplicator());
+			parameters.setMatterViscosity(parameters.getMatterViscosity()/parameters.getTimeMultiplicator());
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -731,7 +732,7 @@ public class Univers {
 	}
 
 	private void createRandomRotateUniversCircular(Vector3d origin,
-			Vector3d axisOfRing,Vector3d ratio) {
+			Vector3d axisOfRing, Vector3d ratio) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
 		miniListMatter.addAll(createUnivers(origin, new Vector3d(0, 0, 0),
 				axisOfRing, parameters.getNebulaRadius() * 0.01,
@@ -783,8 +784,8 @@ public class Univers {
 			if (!m.isDark()) {
 				double distance = new Point3d(m.getPoint())
 						.distance(new Point3d(origin));
-				m.orbitalCircularSpeed(origin, distance, innerMassTreeMapCumul
-						.get(distance), axisOfRing);
+				m.orbitalCircularSpeed(origin, distance,
+						innerMassTreeMapCumul.get(distance), axisOfRing);
 			}
 		}
 
@@ -825,8 +826,10 @@ public class Univers {
 				parameters.getDemiDistanceBetweenGalaxies());
 		dbg2.negate();
 
-		createRandomRotateUniversCircular(dbg1, new Vector3d(0, 0, 1),new Vector3d(1,1,0.25));
-		createRandomRotateUniversCircular(dbg2, new Vector3d(0, 1, 0),new Vector3d(1,0.25,1));
+		createRandomRotateUniversCircular(dbg1, new Vector3d(0, 0, 1),
+				new Vector3d(1, 1, 0.25));
+		createRandomRotateUniversCircular(dbg2, new Vector3d(0, 1, 0),
+				new Vector3d(1, 0.25, 1));
 
 	}
 

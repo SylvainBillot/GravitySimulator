@@ -65,7 +65,7 @@ public class Parameters implements Serializable {
 	private boolean exportData = false;
 	private boolean playData = false;
 	private boolean parallelization = false;
-	private boolean staticDarkMatter = false;
+	private boolean staticDarkMatter = true;
 	private double matterDistribution = 5;
 	private double gasDistribution = 1;
 	private double darkMatterDistribution = 5;
@@ -86,6 +86,7 @@ public class Parameters implements Serializable {
 	private double recoverFrictionEnergyRatio = 0.5;
 	
 	private boolean expansionUnivers = true;
+	private double timeMultiplicator = 1.000;
 
 	public Parameters() {
 
@@ -600,6 +601,20 @@ public class Parameters implements Serializable {
 	 */
 	public void setExpansionUnivers(boolean expansionUnivers) {
 		this.expansionUnivers = expansionUnivers;
+	}
+
+	/**
+	 * @return the timeMultiplicator
+	 */
+	public double getTimeMultiplicator() {
+		return timeMultiplicator;
+	}
+
+	/**
+	 * @param timeMultiplicator the timeMultiplicator to set
+	 */
+	public void setTimeMultiplicator(double timeMultiplicator) {
+		this.timeMultiplicator = timeMultiplicator;
 	}
 
 }
