@@ -272,8 +272,10 @@ public class Univers {
 
 			parameters.setTimeFactor(parameters.getTimeFactor()
 					* parameters.getTimeMultiplicator());
-			parameters.setGasViscosity(parameters.getGasViscosity()/parameters.getTimeMultiplicator());
-			parameters.setMatterViscosity(parameters.getMatterViscosity()/parameters.getTimeMultiplicator());
+			parameters.setGasViscosity(parameters.getGasViscosity()
+					/ parameters.getTimeMultiplicator());
+			parameters.setMatterViscosity(parameters.getMatterViscosity()
+					/ parameters.getTimeMultiplicator());
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);

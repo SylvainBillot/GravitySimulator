@@ -267,9 +267,9 @@ public class GUIParam extends JDialog {
 					darkMatterMass.setValue(2E40);
 					darkMatterDensity.setValue(1E-24);
 					darkMatterDistribution.setValue(5);
-					demiDistanceBetweenGalaxiesX.setValue(HelperVariable.PC * 4E4);
-					demiDistanceBetweenGalaxiesY.setValue(HelperVariable.PC * 4E3);
-					demiDistanceBetweenGalaxiesZ.setValue(HelperVariable.PC * 4E3);
+					demiDistanceBetweenGalaxiesX.setValue(HelperVariable.PC * 5E4);
+					demiDistanceBetweenGalaxiesY.setValue(HelperVariable.PC * 2E4);
+					demiDistanceBetweenGalaxiesZ.setValue(HelperVariable.PC * 2E4);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
