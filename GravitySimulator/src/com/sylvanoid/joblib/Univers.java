@@ -533,22 +533,22 @@ public class Univers {
 	private List<Matter> createUnivers(Vector3d origine, Vector3d initialSpeed,
 			Vector3d axisOfRing, double radiusMin, double radiusMax,
 			Vector3d ratio, double homogeneousDistributionPow,
-			double gasHomogeneousDistributionPow) {
+			double gasHomogeneousDistributionPow, double matterViscosity,
+			double gasViscosity) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
 		miniListMatter.addAll(createUniversMain(origine, initialSpeed,
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumberOfObjects(), parameters.getMassObjectMin(),
 				parameters.getMassObjectMax(), parameters.getDensity(),
 				new Vector3d(0, 0, 0), homogeneousDistributionPow,
-				TypeOfObject.Matter, parameters.getMatterViscosity()));
+				TypeOfObject.Matter, matterViscosity));
 
 		miniListMatter.addAll(createUniversMain(origine, initialSpeed,
 				axisOfRing, radiusMin, radiusMax, ratio,
 				parameters.getNumOfLowMassParticule(), 0,
 				parameters.getLowMassParticuleMass(),
 				parameters.getLowMassDensity(), new Vector3d(0.06, 0.05, 0.05),
-				gasHomogeneousDistributionPow, TypeOfObject.Gas,
-				parameters.getGasViscosity()));
+				gasHomogeneousDistributionPow, TypeOfObject.Gas, gasViscosity));
 
 		return miniListMatter;
 	}
@@ -668,7 +668,8 @@ public class Univers {
 		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
 				new Vector3d(1, 1, 1), parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
+				parameters.getGasDistribution(),
+				parameters.getMatterViscosity(), parameters.getGasViscosity());
 	}
 
 	private void createRandomRotateUnivers() {
@@ -676,7 +677,8 @@ public class Univers {
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
 				parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
+				parameters.getGasDistribution(),
+				parameters.getMatterViscosity(), parameters.getGasViscosity());
 
 		createUniversMain(
 				new Vector3d(0, 0, 0),
@@ -740,7 +742,8 @@ public class Univers {
 				axisOfRing, parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), ratio,
 				parameters.getMatterDistribution(),
-				parameters.getGasDistribution()));
+				parameters.getGasDistribution(),
+				parameters.getMatterViscosity(), parameters.getGasViscosity()));
 
 		miniListMatter.addAll(createUniversMain(
 				origin,
@@ -798,7 +801,8 @@ public class Univers {
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.01,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 1),
 				parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
+				parameters.getGasDistribution(),
+				parameters.getMatterViscosity(), parameters.getGasViscosity());
 
 		createUniversMain(
 				new Vector3d(0, 0, 0),
@@ -932,7 +936,8 @@ public class Univers {
 				new Vector3d(0, 1, 0), parameters.getNebulaRadius() * 0.1,
 				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1),
 				parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
+				parameters.getGasDistribution(),
+				parameters.getMatterViscosity(), parameters.getGasViscosity());
 		Matter m1 = new Matter(parameters, new Vector3d(
 				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
@@ -954,12 +959,14 @@ public class Univers {
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() / 2 * 0.9,
 				parameters.getNebulaRadius() / 2, new Vector3d(1, 1, 0.05),
 				parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
+				parameters.getGasDistribution(),
+				parameters.getMatterViscosity(), parameters.getGasViscosity());
 		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.9,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05),
 				parameters.getMatterDistribution(),
-				parameters.getGasDistribution());
+				parameters.getGasDistribution(),
+				parameters.getMatterViscosity(), parameters.getGasViscosity());
 		Matter m1 = new Matter(parameters, new Vector3d(
 				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
