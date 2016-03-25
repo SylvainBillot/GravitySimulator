@@ -145,6 +145,8 @@ public class Matter implements Serializable {
 		this.speed = speed;
 	}
 
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
 	public Vector3d getAccel() {
 		return accel;
 	}
