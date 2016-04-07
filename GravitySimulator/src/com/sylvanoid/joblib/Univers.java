@@ -248,6 +248,10 @@ public class Univers {
 
 			// Compute accelerations
 			computeBarnesHutGravity();
+
+			// Experiment infinite univers
+			//removeAccelerationToCentroid();
+
 			// Change Speed
 			changeSpeed();
 
@@ -384,6 +388,16 @@ public class Univers {
 			pool.invoke(barnesHutGravity);
 		} else {
 			barnesHutGravity.compute();
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void removeAccelerationToCentroid() {
+		for (Matter m : listMatter) {
+			double attraction = HelperNewton.attraction(m, this, parameters);
+			m.getAccel()
+					.add(HelperVector.acceleration(m.getPoint(), gPoint,
+							-attraction));
 		}
 	}
 

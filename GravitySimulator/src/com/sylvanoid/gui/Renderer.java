@@ -114,11 +114,14 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glShadeModel(GL2.GL_SMOOTH);
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		gl.glClearDepth(1.0f);
+		gl.glClearDepth(0.0f);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+		
+//		gl.glBlendFunc (GL2.GL_ONE, GL2.GL_ONE);
+
 		gl.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
-		gl.glBlendFuncSeparate(GL2.GL_SRC_ALPHA, GL2.GL_ONE, GL2.GL_ONE,
-				GL2.GL_ZERO);
+		gl.glBlendFuncSeparate(GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE);
+
 		LoadGLTextures(gl);
 		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
 				java.awt.Font.PLAIN, textSize));
@@ -220,8 +223,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 		/* Show current univers */
 		drawUnivers(gl);
-		//drawUniversSimplePoint(gl);
-		//drawUniversSimpleSphere(gl, glu);
+		// drawUniversSimplePoint(gl);
+		// drawUniversSimpleSphere(gl, glu);
 	}
 
 	private void LoadGLTextures(GL gl) {
@@ -537,7 +540,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		}
 
 	}
-	
+
 	@SuppressWarnings("unused")
 	private void drawUniversSimpleSphere(GL2 gl, GLU glu) {
 		gl.glEnable(GL2.GL_POINT);
@@ -552,7 +555,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				gl.glLoadIdentity();
 				double r = 0;
 				r = (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-							.getRayon() * parameters.getScala());
+						.getRayon() * parameters.getScala());
 
 				gl.glTranslated(parameters.getScala() * m.getPoint().x,
 						parameters.getScala() * m.getPoint().y,
@@ -560,17 +563,17 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
 				GLUquadric quad = glu.gluNewQuadric();
-		        glu.gluQuadricDrawStyle(quad, GLU.GLU_FILL);
-		        glu.gluQuadricNormals(quad, GLU.GLU_FLAT);
-		        glu.gluQuadricOrientation(quad, GLU.GLU_OUTSIDE);
-		        glu.gluSphere(quad, r, 16, 16);
-		        glu.gluDeleteQuadric(quad);
-				
+				glu.gluQuadricDrawStyle(quad, GLU.GLU_FILL);
+				glu.gluQuadricNormals(quad, GLU.GLU_FLAT);
+				glu.gluQuadricOrientation(quad, GLU.GLU_OUTSIDE);
+				glu.gluSphere(quad, r, 16, 16);
+				glu.gluDeleteQuadric(quad);
+
 				gl.glEnd();
 			}
 		}
 		gl.glDisable(GL2.GL_POINT);
-		
+
 	}
 
 	private void drawUnivers(GL2 gl) {
@@ -624,6 +627,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
 								net.jafama.FastMath.random() * 2
 										* net.jafama.FastMath.PI)));
+
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
