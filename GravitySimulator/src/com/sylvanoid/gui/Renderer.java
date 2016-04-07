@@ -22,6 +22,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.GLUquadric;
 import javax.vecmath.Vector3d;
 
 import org.jcodec.api.SequenceEncoder;
@@ -219,6 +220,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 		/* Show current univers */
 		drawUnivers(gl);
+		//drawUniversSimplePoint(gl);
+		//drawUniversSimpleSphere(gl, glu);
 	}
 
 	private void LoadGLTextures(GL gl) {
@@ -534,6 +537,41 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		}
 
 	}
+	
+	@SuppressWarnings("unused")
+	private void drawUniversSimpleSphere(GL2 gl, GLU glu) {
+		gl.glEnable(GL2.GL_POINT);
+		gl.glPushMatrix();
+		for (Matter m : univers.getListMatter()) {
+			if (m.getTypeOfObject().equals(TypeOfObject.Matter)
+					&& parameters.isShowMatter()
+					|| m.getTypeOfObject().equals(TypeOfObject.Gas)
+					&& parameters.isShowGas()
+					|| m.getTypeOfObject().equals(TypeOfObject.Dark)
+					&& parameters.isShowDarkMatter()) {
+				gl.glLoadIdentity();
+				double r = 0;
+				r = (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+							.getRayon() * parameters.getScala());
+
+				gl.glTranslated(parameters.getScala() * m.getPoint().x,
+						parameters.getScala() * m.getPoint().y,
+						parameters.getScala() * m.getPoint().z);
+
+				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
+				GLUquadric quad = glu.gluNewQuadric();
+		        glu.gluQuadricDrawStyle(quad, GLU.GLU_FILL);
+		        glu.gluQuadricNormals(quad, GLU.GLU_FLAT);
+		        glu.gluQuadricOrientation(quad, GLU.GLU_OUTSIDE);
+		        glu.gluSphere(quad, r, 16, 16);
+		        glu.gluDeleteQuadric(quad);
+				
+				gl.glEnd();
+			}
+		}
+		gl.glDisable(GL2.GL_POINT);
+		
+	}
 
 	private void drawUnivers(GL2 gl) {
 		gl.glEnable(GL2.GL_BLEND);
@@ -551,34 +589,14 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				switch (m.getTypeOfObject()) {
 				case Matter:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-					if (m.getMass() > HelperVariable.MINIMALSTARMASS) {
-						gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
-					}
-					if (m.getMass() > HelperVariable.MINIMALGALAXYMASS) {
-						gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
-					}
-					if (m.getMass() > HelperVariable.MINIMALSTARMASS
-							&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
-						r = (net.jafama.FastMath.random() * 0.5 + 2.5)
-								* (m.getRayon() * parameters.getScala() < 1 ? 1
-										: m.getRayon() * parameters.getScala());
-					} else {
-						r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1
-								: m.getRayon() * parameters.getScala());
-					}
+					r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+							.getRayon() * parameters.getScala());
 					break;
 
 				case Gas:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-					if (m.getMass() > HelperVariable.MINIMALSTARMASS
-							&& m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
-						r = (net.jafama.FastMath.random() * 0.5 + 2.5)
-								* (m.getRayon() * parameters.getScala() < 1 ? 1
-										: m.getRayon() * parameters.getScala());
-					} else {
-						r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1
-								: m.getRayon() * parameters.getScala());
-					}
+					r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+							.getRayon() * parameters.getScala());
 					break;
 
 				case Dark:
@@ -602,16 +620,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				double phi02 = afterRotateX.angle(parameters.getLookAt())
 						* net.jafama.FastMath.signum(parameters.getLookAt().x);
 
-				if (m.getMass() < HelperVariable.MINIMALGALAXYMASS) {
-					gl.glMultMatrixd(HelperVector
-							.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
-									net.jafama.FastMath.random() * 2
-											* net.jafama.FastMath.PI)));
-				} else {
-					gl.glMultMatrixd(HelperVector.make3DTransformMatrix(m
-							.getAngles()));
-				}
-
+				gl.glMultMatrixd(HelperVector
+						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
+								net.jafama.FastMath.random() * 2
+										* net.jafama.FastMath.PI)));
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
 				pts[1] = new Vector3d(r, -r, 0); // BR
