@@ -970,14 +970,8 @@ public class Univers {
 
 	private void createPlanetariesGenesis() {
 		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), parameters.getNebulaRadius() / 2 * 0.9,
-				parameters.getNebulaRadius() / 2, new Vector3d(1, 1, 0.05),
-				parameters.getMatterDistribution(),
-				parameters.getGasDistribution(),
-				parameters.getMatterViscosity(), parameters.getGasViscosity());
-		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.9,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.05),
+				new Vector3d(0, 0, 1), 0,
+				parameters.getNebulaRadius() , new Vector3d(1, 1, 0.05),
 				parameters.getMatterDistribution(),
 				parameters.getGasDistribution(),
 				parameters.getMatterViscosity(), parameters.getGasViscosity());
