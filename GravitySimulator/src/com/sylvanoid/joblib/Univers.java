@@ -81,7 +81,7 @@ public class Univers {
 		visibleMass = 0;
 		darkMass = 0;
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.Random) {
-			createRandomStaticUvivers();
+			createRandomStaticUnivers();
 		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUnivers) {
 			createRandomRotateUnivers();
@@ -678,7 +678,7 @@ public class Univers {
 		return miniListMatter;
 	}
 
-	private void createRandomStaticUvivers() {
+	private void createRandomStaticUnivers() {
 		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 0), 0, parameters.getNebulaRadius(),
 				new Vector3d(1, 1, 1), parameters.getMatterDistribution(),
