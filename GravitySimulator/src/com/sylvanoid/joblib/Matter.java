@@ -470,7 +470,7 @@ public class Matter implements Serializable {
 	}
 
 	public void expansionUnivers() {
-		double length = point.length() + point.length() * HelperVariable.H0
+		double length = point.length() + point.length() * HelperVariable.H0ms
 				* parameters.getTimeFactor();
 		point.normalize();
 		point.scale(length);

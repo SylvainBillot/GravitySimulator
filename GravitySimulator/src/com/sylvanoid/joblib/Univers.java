@@ -250,8 +250,8 @@ public class Univers {
 			computeBarnesHutGravity();
 
 			// Experiment infinite univers
-			//removeAccelerationToCentroid();
-
+			// removeAccelerationToCentroid();
+			
 			// Change Speed
 			changeSpeed();
 
@@ -276,10 +276,12 @@ public class Univers {
 
 			parameters.setTimeFactor(parameters.getTimeFactor()
 					* parameters.getTimeMultiplicator());
-			parameters.setGasViscosity(parameters.getGasViscosity()
-					/ parameters.getTimeMultiplicator());
-			parameters.setMatterViscosity(parameters.getMatterViscosity()
-					/ parameters.getTimeMultiplicator());
+			/*
+			 * parameters.setGasViscosity(parameters.getGasViscosity() /
+			 * parameters.getTimeMultiplicator());
+			 * parameters.setMatterViscosity(parameters.getMatterViscosity() /
+			 * parameters.getTimeMultiplicator());
+			 */
 
 			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 					- startTimeBH);
@@ -491,10 +493,8 @@ public class Univers {
 					double q = HelperNewton.distance(m, m1)
 							/ (parameters.getCollisionDistanceRatio() * (m
 									.getRayon() + m1.getRayon()));
-					if (q < 1) {
-						p += net.jafama.FastMath.pow2(1 - q);
-						pn += net.jafama.FastMath.pow3(1 - q);
-					}
+					p += net.jafama.FastMath.pow2(1 - q);
+					pn += net.jafama.FastMath.pow3(1 - q);
 				}
 				// compute pressure and near-pressure
 				P = k * (p - p0);
@@ -970,9 +970,8 @@ public class Univers {
 
 	private void createPlanetariesGenesis() {
 		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), 0,
-				parameters.getNebulaRadius() , new Vector3d(1, 1, 0.05),
-				parameters.getMatterDistribution(),
+				new Vector3d(0, 0, 1), 0, parameters.getNebulaRadius(),
+				new Vector3d(1, 1, 0.05), parameters.getMatterDistribution(),
 				parameters.getGasDistribution(),
 				parameters.getMatterViscosity(), parameters.getGasViscosity());
 		Matter m1 = new Matter(parameters, new Vector3d(
