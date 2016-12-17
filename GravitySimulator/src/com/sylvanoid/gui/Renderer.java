@@ -68,7 +68,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
-		// TODO Auto-generated method stub
 		univers.process(guiProgram.getDatafile(), guiProgram.getDataInputfile());
 
 		if (parameters.isShowTrace()) {
@@ -96,7 +95,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			try {
 				out.encodeImage(img);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -104,19 +102,17 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		// TODO Auto-generated method stub
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glShadeModel(GL2.GL_SMOOTH);
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		gl.glClearDepth(0.0f);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
-		
+
 		//gl.glBlendFunc (GL2.GL_ONE, GL2.GL_ONE);
 
 		gl.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
@@ -131,7 +127,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	@Override
 	public void reshape(GLAutoDrawable drawable, int xstart, int ystart,
 			int width, int height) {
-		// TODO Auto-generated method stub
 	}
 
 	private void render(GLAutoDrawable drawable) {
@@ -669,19 +664,16 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	@Override
 	public void keyPressed(java.awt.event.KeyEvent e) {
-		// TODO Auto-generated method stub
 		processKeyEvent(e, true);
 	}
 
 	@Override
 	public void keyReleased(java.awt.event.KeyEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void keyTyped(java.awt.event.KeyEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -779,37 +771,31 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		mousePoint = new Point(-1, -1);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		mousePoint = new Point(e.getPoint());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 		double dx = (double) (mousePoint.x - e.getX()) / 3;
 		double dy = (double) (mousePoint.y - e.getY()) / 3;
 		if (dx != 0) {
@@ -831,13 +817,11 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getPreciseWheelRotation() == 1) {
 			parameters.setScala(parameters.getScala() * (1 / 1.05));
 		} else {

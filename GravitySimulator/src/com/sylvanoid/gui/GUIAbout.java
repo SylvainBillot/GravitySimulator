@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 
 public class GUIAbout extends JDialog {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private GUIAbout me;
@@ -46,10 +46,9 @@ public class GUIAbout extends JDialog {
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				me.setVisible(false);
 				me.mother.setVisible(true);
-				
+
 			}
 		});
 		add(btnCancel, BorderLayout.SOUTH);

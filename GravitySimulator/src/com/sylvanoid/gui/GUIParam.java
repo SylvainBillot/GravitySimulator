@@ -22,7 +22,7 @@ import com.sylvanoid.common.TypeOfUnivers;
 
 public class GUIParam extends JDialog {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private GUIParam me;
@@ -665,7 +665,6 @@ public class GUIParam extends JDialog {
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				me.setVisible(false);
 				me.mother.setVisible(true);
 				me.mother.getAnimator().start();
@@ -676,7 +675,6 @@ public class GUIParam extends JDialog {
 		btnOK.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				try {
 					me.mother.getParameters().setParallelization(
 							me.parallelization.isSelected());

@@ -16,7 +16,7 @@ import com.sylvanoid.joblib.Parameters;
 
 public class GUIFollowOther extends JDialog {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private GUIProgram mother;
@@ -46,7 +46,6 @@ public class GUIFollowOther extends JDialog {
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				me.setVisible(false);
 				me.mother.setVisible(true);
 				me.mother.getAnimator().start();
@@ -57,7 +56,6 @@ public class GUIFollowOther extends JDialog {
 		btnOK.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				try {
 					parameters.setFollowCentroid(false);
 					parameters.setFollowMaxMass(false);

@@ -51,7 +51,7 @@ import com.sylvanoid.joblib.Univers;
 
 public class GUIProgram extends JFrame {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -68,25 +68,7 @@ public class GUIProgram extends JFrame {
 
 	public static void main(String[] args) {
 
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					for (LookAndFeelInfo info : UIManager
-							.getInstalledLookAndFeels()) {
-						if ("Nimbus".equals(info.getName())) {
-							UIManager.setLookAndFeel(info.getClassName());
-							break;
-						}
-					}
-				} catch (Exception e) {
-					// If Nimbus is not available, you can set the GUI to
-					// another look and feel.
-				}
-				GUIProgram ex = new GUIProgram();
-				ex.setVisible(true);
-			}
-		});
+		EventQueue.invokeLater(onStart());
 	}
 
 	public GUIProgram() {
@@ -99,100 +81,17 @@ public class GUIProgram extends JFrame {
 				.getScreenSize();
 		setSize((int) dimension.getWidth(), (int) dimension.getHeight());
 		setLocationRelativeTo(null);
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				try {
-					me.getOut().finish();
-					me.getDatafile().flush();
-					me.getDatafile().close();
-					me.getDataInputfile().close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} finally {
-					animator.stop();
-					System.exit(0);
-				}
-			}
-		});
+		addWindowListener(onClose());
 		JMenuBar menuBar = new JMenuBar();
 		add(menuBar, BorderLayout.NORTH);
 		JMenu menuFichier = new JMenu("File");
 		menuBar.add(menuFichier);
 		JMenuItem menuItemBaseParam = new JMenuItem("Some random unvivers ...");
-		menuItemBaseParam.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				animator.stop();
-				GUIParam guiParam = new GUIParam(me);
-				guiParam.setVisible(true);
-			}
-		});
+		menuItemBaseParam.addActionListener(menuParameters());
 		JMenuItem menuItemExport = new JMenuItem("Export univer ...");
-		menuItemExport.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				animator.stop();
-				try {
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setDialogTitle("Specify a file to save");
-					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					fileChooser.setMultiSelectionEnabled(false);
-					fileChooser.setFileFilter(new XmlFilter());
-					fileChooser.setSelectedFile(new File("univers.xml"));
-					int userSelection = fileChooser.showSaveDialog(me);
-					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						OutputStream output = new FileOutputStream(fileChooser
-								.getSelectedFile().getAbsolutePath());
-						JAXBContext context = JAXBContext
-								.newInstance(Univers.class);
-						Marshaller m = context.createMarshaller();
-						m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-						m.marshal(univers, output);
-						output.close();
-					}
-				} catch (JAXBException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				animator.start();
-			}
-		});
+		menuItemExport.addActionListener(menuExport());
 		JMenuItem menuItemImport = new JMenuItem("Import univers ...");
-		menuItemImport.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				animator.stop();
-				try {
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					fileChooser.setMultiSelectionEnabled(false);
-					fileChooser.setFileFilter(new XmlFilter());
-					fileChooser.setDialogTitle("Specify a file to load");
-					int userSelection = fileChooser.showOpenDialog(me);
-					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						File file = new File(fileChooser.getSelectedFile()
-								.getAbsolutePath());
-						JAXBContext jaxbContext = JAXBContext
-								.newInstance(Univers.class);
-						Unmarshaller jaxbUnmarshaller = jaxbContext
-								.createUnmarshaller();
-						univers = (Univers) jaxbUnmarshaller.unmarshal(file);
-						renderer.reload(me);
-					}
-				} catch (JAXBException e1) {
-					e1.printStackTrace();
-				}
-				me.setParameters(univers.getParameters());
-				for (Matter m : univers.getListMatter()) {
-					m.setParameters(univers.getParameters());
-				}
-				animator.start();
-			}
-		});
+		menuItemImport.addActionListener(menuImport());
 		menuFichier.add(menuItemBaseParam);
 		menuFichier.add(menuItemExport);
 		menuFichier.add(menuItemImport);
@@ -200,31 +99,11 @@ public class GUIProgram extends JFrame {
 		JMenu menuProcess = new JMenu("Process");
 		menuBar.add(menuProcess);
 		JMenuItem menuItemStart = new JMenuItem("Start");
-		menuItemStart.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				animator.start();
-			}
-		});
+		menuItemStart.addActionListener(menuStart());
 		JMenuItem menuItemStop = new JMenuItem("Stop");
-		menuItemStop.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				animator.stop();
-			}
-		});
+		menuItemStop.addActionListener(menuStop());
 		JMenuItem menuItemReset = new JMenuItem("Reset");
-		menuItemReset.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				me.reset();
-			}
-		});
+		menuItemReset.addActionListener(menuReset());
 		menuProcess.add(menuItemStart);
 		menuProcess.add(menuItemStop);
 		menuProcess.add(menuItemReset);
@@ -232,154 +111,40 @@ public class GUIProgram extends JFrame {
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
 		JMenuItem menuItemStopFollow = new JMenuItem("Stop following");
-		menuItemStopFollow.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setFollowCentroid(false);
-				parameters.setFollowMaxMass(false);
-				parameters.setObjectToFollow(null);
-			}
-		});
+		menuItemStopFollow.addActionListener(menuStopFollowing());
 		JMenuItem menuItemCentreEcran = new JMenuItem("Look at 0");
-		menuItemCentreEcran.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setFollowCentroid(false);
-				parameters.setFollowMaxMass(false);
-				parameters.setObjectToFollow(null);
-				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-				diffLookAt.negate();
-				parameters.setEyes(diffLookAt);
-				renderer.reload(me);
-			}
-		});
+		menuItemCentreEcran.addActionListener(menuLookAtZero());
 		JMenuItem menuItemplusMassif = new JMenuItem("Follow maximum mass");
-		menuItemplusMassif.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setFollowCentroid(false);
-				parameters.setFollowMaxMass(true);
-				parameters.setObjectToFollow(null);
-			}
-		});
-
+		menuItemplusMassif.addActionListener(menuFollowMaxMass());
 		JMenuItem menuItemBarycentre = new JMenuItem("Follow centroid");
-		menuItemBarycentre.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setFollowCentroid(true);
-				parameters.setFollowMaxMass(false);
-				parameters.setObjectToFollow(null);
-			}
-		});
-
+		menuItemBarycentre.addActionListener(menuFollowCentroid());
 		JMenuItem menuItemFollowSomething = new JMenuItem(
 				"Follow something ...");
-		menuItemFollowSomething.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				animator.stop();
-				GUIFollowOther guiFO = new GUIFollowOther(me);
-				guiFO.setVisible(true);
-			}
-		});
-
+		menuItemFollowSomething.addActionListener(menuFollowSomething());
 		JCheckBoxMenuItem menuItemShowTrace = new JCheckBoxMenuItem(
 				"Show Trace", parameters.isShowTrace());
-		menuItemShowTrace.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setShowTrace(!parameters.isShowTrace());
-				me.forTrace = new LinkedList<List<Vector3d[]>>();
-				renderer.reload(me);
-			}
-		});
-
+		menuItemShowTrace.addActionListener(menuShowTrace());
 		JCheckBoxMenuItem menuItemPermanentRotationy = new JCheckBoxMenuItem(
 				"Permanent Y Rotation", parameters.isPermanentRotationy());
-		menuItemPermanentRotationy.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setPermanentRotationy(!parameters
-						.isPermanentRotationy());
-			}
-		});
-
+		menuItemPermanentRotationy.addActionListener(menuYRotation());
 		JCheckBoxMenuItem menuItemShowAxis = new JCheckBoxMenuItem("Show Axis",
 				parameters.isShowAxis());
-		menuItemShowAxis.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setShowAxis(!parameters.isShowAxis());
-			}
-		});
-
+		menuItemShowAxis.addActionListener(menuShowAxis());
 		JCheckBoxMenuItem menuItemShowGrid = new JCheckBoxMenuItem(
 				"Show grids", parameters.isShowgrid());
-		menuItemShowGrid.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setShowgrid(!parameters.isShowgrid());
-			}
-		});
-
+		menuItemShowGrid.addActionListener(menuShowGrid());
 		JCheckBoxMenuItem menuItemShowInfo = new JCheckBoxMenuItem("Show info",
 				parameters.isShowInfo());
-		menuItemShowInfo.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setShowInfo(!parameters.isShowInfo());
-			}
-		});
-
+		menuItemShowInfo.addActionListener(menuShowInfo());
 		JCheckBoxMenuItem menuItemShowMatter = new JCheckBoxMenuItem(
 				"Show matter", parameters.isShowMatter());
-		menuItemShowMatter.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setShowMatter(!parameters.isShowMatter());
-			}
-		});
-		
-		JCheckBoxMenuItem menuItemShowGas = new JCheckBoxMenuItem(
-				"Show gas", parameters.isShowGas());
-		menuItemShowGas.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setShowGas(!parameters.isShowGas());
-			}
-		});
-		
+		menuItemShowMatter.addActionListener(menuShowMatter());
+		JCheckBoxMenuItem menuItemShowGas = new JCheckBoxMenuItem("Show gas",
+				parameters.isShowGas());
+		menuItemShowGas.addActionListener(menuShowGas());
 		JCheckBoxMenuItem menuItemShowDM = new JCheckBoxMenuItem(
 				"Show dark matter", parameters.isShowDarkMatter());
-		menuItemShowDM.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				parameters.setShowDarkMatter(!parameters.isShowDarkMatter());
-			}
-		});
+		menuItemShowDM.addActionListener(menuShowDarkMatter());
 
 		menuVisu.add(menuItemShowTrace);
 		menuVisu.add(menuItemPermanentRotationy);
@@ -399,103 +164,11 @@ public class GUIProgram extends JFrame {
 		JMenu menuData = new JMenu("Data (Experimental)");
 		final JCheckBoxMenuItem menuItemExportData = new JCheckBoxMenuItem(
 				"Export to ...", parameters.isExportData());
-		menuItemExportData.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				animator.stop();
-				if (!parameters.isExportData()) {
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setDialogTitle("Specify data file name");
-					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					fileChooser.setMultiSelectionEnabled(false);
-					fileChooser.setFileFilter(new DataFilter());
-					fileChooser.setSelectedFile(new File("out.dat"));
-					int userSelection = fileChooser.showSaveDialog(me);
-					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						try {
-							if (!fileChooser.getSelectedFile()
-									.getAbsolutePath().toLowerCase()
-									.endsWith(".dat")) {
-								File myFile = new File(fileChooser
-										.getSelectedFile().getAbsolutePath()
-										+ ".dat");
-								GZIPOutputStream zip = new GZIPOutputStream(
-										new FileOutputStream(myFile));
-								dataFile = new BufferedWriter(
-										new OutputStreamWriter(zip));
-							} else {
-								File myFile = new File(fileChooser
-										.getSelectedFile().getAbsolutePath());
-								GZIPOutputStream zip = new GZIPOutputStream(
-										new FileOutputStream(myFile));
-								dataFile = new BufferedWriter(
-										new OutputStreamWriter(zip));
-							}
-							parameters.setExportData(true);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				} else {
-					try {
-						dataFile.flush();
-						dataFile.close();
-						parameters.setExportData(false);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				renderer.reload(me);
-				animator.start();
-				menuItemExportData.setSelected(parameters.isExportData());
-			}
-		});
+		menuItemExportData.addActionListener(menuExportData(menuItemExportData));
 
 		final JCheckBoxMenuItem menuItemPlayData = new JCheckBoxMenuItem(
 				"Play data ...", parameters.isPlayData());
-		menuItemPlayData.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				animator.stop();
-				if (!parameters.isPlayData()) {
-					JFileChooser fileChooser = new JFileChooser();
-					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					fileChooser.setMultiSelectionEnabled(false);
-					fileChooser.setFileFilter(new DataFilter());
-					fileChooser.setDialogTitle("Specify a file to load");
-					int userSelection = fileChooser.showOpenDialog(me);
-					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						try {
-							GZIPInputStream zip = new GZIPInputStream(
-									new FileInputStream(fileChooser
-											.getSelectedFile()
-											.getAbsolutePath()));
-							dataFileInput = new BufferedReader(
-									new InputStreamReader(zip));
-							parameters.setPlayData(true);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				} else {
-					try {
-						dataFileInput.close();
-						parameters.setPlayData(false);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				renderer.reload(me);
-				animator.start();
-				menuItemPlayData.setSelected(parameters.isPlayData());
-			}
-		});
+		menuItemPlayData.addActionListener(menuPlayData(menuItemPlayData));
 
 		menuBar.add(menuData);
 		menuData.add(menuItemExportData);
@@ -504,67 +177,14 @@ public class GUIProgram extends JFrame {
 		JMenu menuVideo = new JMenu("Video");
 		final JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
 				"Record to ...", parameters.isExportToVideo());
-		menuItemExportVideo.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				animator.stop();
-				if (!parameters.isExportToVideo()) {
-					try {
-						JFileChooser fileChooser = new JFileChooser();
-						fileChooser.setDialogTitle("Specify video name");
-						fileChooser
-								.setFileSelectionMode(JFileChooser.FILES_ONLY);
-						fileChooser.setMultiSelectionEnabled(false);
-						fileChooser.setFileFilter(new MpejFilter());
-						fileChooser.setSelectedFile(new File("out.mpeg"));
-						int userSelection = fileChooser.showSaveDialog(me);
-						if (userSelection == JFileChooser.APPROVE_OPTION) {
-							if (!fileChooser.getSelectedFile()
-									.getAbsolutePath().toLowerCase()
-									.endsWith(".mpeg")) {
-								out = new SequenceEncoder(new File(fileChooser
-										.getSelectedFile().getAbsolutePath()
-										+ ".mpeg"));
-
-							} else {
-								out = new SequenceEncoder(new File(fileChooser
-										.getSelectedFile().getAbsolutePath()));
-							}
-							parameters.setExportToVideo(true);
-						}
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else {
-					try {
-						out.finish();
-						parameters.setExportToVideo(false);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-				menuItemExportVideo.setSelected(parameters.isExportToVideo());
-				renderer.reload(me);
-				animator.start();
-			}
-		});
+		menuItemExportVideo.addActionListener(menuRecord(menuItemExportVideo));
 		menuBar.add(menuVideo);
 		menuVideo.add(menuItemExportVideo);
 
 		JMenu menuAbout = new JMenu("?");
 		JMenuItem menuItemAbout = new JMenuItem("About");
 		menuBar.add(menuAbout);
-		menuItemAbout.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				GUIAbout guiAbout = new GUIAbout(me);
-				guiAbout.setVisible(true);
-			}
-		});
+		menuItemAbout.addActionListener(menuAbout());
 		menuAbout.add(menuItemAbout);
 
 		GLProfile glp = GLProfile.getDefault();
@@ -638,5 +258,444 @@ public class GUIProgram extends JFrame {
 
 	public BufferedReader getDataInputfile() {
 		return dataFileInput;
+	}
+
+	static private Runnable onStart() {
+		return new Runnable() {
+			@Override
+			public void run() {
+				try {
+					for (LookAndFeelInfo info : UIManager
+							.getInstalledLookAndFeels()) {
+						if ("Nimbus".equals(info.getName())) {
+							UIManager.setLookAndFeel(info.getClassName());
+							break;
+						}
+					}
+				} catch (Exception e) {
+					// If Nimbus is not available, you can set the GUI to
+					// another look and feel.
+				}
+				GUIProgram ex = new GUIProgram();
+				ex.setVisible(true);
+			}
+		};
+	}
+
+	private WindowAdapter onClose() {
+		return new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				try {
+					me.getOut().finish();
+					me.getDatafile().flush();
+					me.getDatafile().close();
+					me.getDataInputfile().close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} finally {
+					animator.stop();
+					System.exit(0);
+				}
+			}
+		};
+	}
+
+	private ActionListener menuParameters() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+				GUIParam guiParam = new GUIParam(me);
+				guiParam.setVisible(true);
+			}
+		};
+	}
+
+	private ActionListener menuExport() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+				try {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify a file to save");
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new XmlFilter());
+					fileChooser.setSelectedFile(new File("univers.xml"));
+					int userSelection = fileChooser.showSaveDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						OutputStream output = new FileOutputStream(fileChooser
+								.getSelectedFile().getAbsolutePath());
+						JAXBContext context = JAXBContext
+								.newInstance(Univers.class);
+						Marshaller m = context.createMarshaller();
+						m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+						m.marshal(univers, output);
+						output.close();
+					}
+				} catch (JAXBException | IOException e1) {
+					e1.printStackTrace();
+				}
+				animator.start();
+			}
+		};
+	}
+
+	private ActionListener menuImport() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+				try {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new XmlFilter());
+					fileChooser.setDialogTitle("Specify a file to load");
+					int userSelection = fileChooser.showOpenDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						File file = new File(fileChooser.getSelectedFile()
+								.getAbsolutePath());
+						JAXBContext jaxbContext = JAXBContext
+								.newInstance(Univers.class);
+						Unmarshaller jaxbUnmarshaller = jaxbContext
+								.createUnmarshaller();
+						univers = (Univers) jaxbUnmarshaller.unmarshal(file);
+						renderer.reload(me);
+					}
+				} catch (JAXBException e1) {
+					e1.printStackTrace();
+				}
+				me.setParameters(univers.getParameters());
+				for (Matter m : univers.getListMatter()) {
+					m.setParameters(univers.getParameters());
+				}
+				animator.start();
+			}
+		};
+	}
+
+	private ActionListener menuStart() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.start();
+			}
+		};
+	}
+
+	private ActionListener menuStop() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+			}
+		};
+	}
+
+	private ActionListener menuReset() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				me.reset();
+			}
+		};
+	}
+
+	private ActionListener menuStopFollowing() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setFollowCentroid(false);
+				parameters.setFollowMaxMass(false);
+				parameters.setObjectToFollow(null);
+			}
+		};
+	}
+
+	private ActionListener menuLookAtZero() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setFollowCentroid(false);
+				parameters.setFollowMaxMass(false);
+				parameters.setObjectToFollow(null);
+				Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+				diffLookAt.negate();
+				parameters.setEyes(diffLookAt);
+				renderer.reload(me);
+			}
+		};
+	}
+
+	private ActionListener menuFollowMaxMass() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setFollowCentroid(false);
+				parameters.setFollowMaxMass(true);
+				parameters.setObjectToFollow(null);
+			}
+		};
+	}
+
+	private ActionListener menuFollowCentroid() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setFollowCentroid(true);
+				parameters.setFollowMaxMass(false);
+				parameters.setObjectToFollow(null);
+			}
+		};
+	}
+
+	private ActionListener menuFollowSomething() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+				GUIFollowOther guiFO = new GUIFollowOther(me);
+				guiFO.setVisible(true);
+			}
+		};
+	}
+
+	private ActionListener menuShowTrace() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setShowTrace(!parameters.isShowTrace());
+				me.forTrace = new LinkedList<List<Vector3d[]>>();
+				renderer.reload(me);
+			}
+		};
+	}
+
+	private ActionListener menuYRotation() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setPermanentRotationy(!parameters
+						.isPermanentRotationy());
+			}
+		};
+	}
+
+	private ActionListener menuShowAxis() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setShowAxis(!parameters.isShowAxis());
+			}
+		};
+	}
+
+	private ActionListener menuShowGrid() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setShowgrid(!parameters.isShowgrid());
+			}
+		};
+	}
+
+	private ActionListener menuShowInfo() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setShowInfo(!parameters.isShowInfo());
+			}
+		};
+	}
+
+	private ActionListener menuShowMatter() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setShowMatter(!parameters.isShowMatter());
+			}
+		};
+	}
+
+	private ActionListener menuShowGas() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setShowGas(!parameters.isShowGas());
+			}
+		};
+	}
+
+	private ActionListener menuShowDarkMatter() {
+		return new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setShowDarkMatter(!parameters.isShowDarkMatter());
+			}
+		};
+	}
+
+	private ActionListener menuExportData(final JCheckBoxMenuItem menuItemExportData) {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				animator.stop();
+				if (!parameters.isExportData()) {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify data file name");
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new DataFilter());
+					fileChooser.setSelectedFile(new File("out.dat"));
+					int userSelection = fileChooser.showSaveDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						try {
+							if (!fileChooser.getSelectedFile()
+									.getAbsolutePath().toLowerCase()
+									.endsWith(".dat")) {
+								File myFile = new File(fileChooser
+										.getSelectedFile().getAbsolutePath()
+										+ ".dat");
+								GZIPOutputStream zip = new GZIPOutputStream(
+										new FileOutputStream(myFile));
+								dataFile = new BufferedWriter(
+										new OutputStreamWriter(zip));
+							} else {
+								File myFile = new File(fileChooser
+										.getSelectedFile().getAbsolutePath());
+								GZIPOutputStream zip = new GZIPOutputStream(
+										new FileOutputStream(myFile));
+								dataFile = new BufferedWriter(
+										new OutputStreamWriter(zip));
+							}
+							parameters.setExportData(true);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				} else {
+					try {
+						dataFile.flush();
+						dataFile.close();
+						parameters.setExportData(false);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				renderer.reload(me);
+				animator.start();
+				menuItemExportData.setSelected(parameters.isExportData());
+			}
+		};
+	}
+
+	private ActionListener menuPlayData(final JCheckBoxMenuItem menuItemPlayData) {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				animator.stop();
+				if (!parameters.isPlayData()) {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new DataFilter());
+					fileChooser.setDialogTitle("Specify a file to load");
+					int userSelection = fileChooser.showOpenDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						try {
+							GZIPInputStream zip = new GZIPInputStream(
+									new FileInputStream(fileChooser
+											.getSelectedFile()
+											.getAbsolutePath()));
+							dataFileInput = new BufferedReader(
+									new InputStreamReader(zip));
+							parameters.setPlayData(true);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				} else {
+					try {
+						dataFileInput.close();
+						parameters.setPlayData(false);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				renderer.reload(me);
+				animator.start();
+				menuItemPlayData.setSelected(parameters.isPlayData());
+			}
+		};
+	}
+
+	private ActionListener menuRecord(final JCheckBoxMenuItem menuItemExportVideo) {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+				if (!parameters.isExportToVideo()) {
+					try {
+						JFileChooser fileChooser = new JFileChooser();
+						fileChooser.setDialogTitle("Specify video name");
+						fileChooser
+								.setFileSelectionMode(JFileChooser.FILES_ONLY);
+						fileChooser.setMultiSelectionEnabled(false);
+						fileChooser.setFileFilter(new MpejFilter());
+						fileChooser.setSelectedFile(new File("out.mpeg"));
+						int userSelection = fileChooser.showSaveDialog(me);
+						if (userSelection == JFileChooser.APPROVE_OPTION) {
+							if (!fileChooser.getSelectedFile()
+									.getAbsolutePath().toLowerCase()
+									.endsWith(".mpeg")) {
+								out = new SequenceEncoder(new File(fileChooser
+										.getSelectedFile().getAbsolutePath()
+										+ ".mpeg"));
+
+							} else {
+								out = new SequenceEncoder(new File(fileChooser
+										.getSelectedFile().getAbsolutePath()));
+							}
+							parameters.setExportToVideo(true);
+						}
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				} else {
+					try {
+						out.finish();
+						parameters.setExportToVideo(false);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				renderer.reload(me);
+				animator.start();
+				menuItemExportVideo.setSelected(parameters.isExportToVideo());
+			}
+		};
+	}
+
+	private ActionListener menuAbout() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GUIAbout guiAbout = new GUIAbout(me);
+				guiAbout.setVisible(true);
+			}
+		};
 	}
 }

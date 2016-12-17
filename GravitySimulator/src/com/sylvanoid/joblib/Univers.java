@@ -251,7 +251,7 @@ public class Univers {
 
 			// Experiment infinite univers
 			// removeAccelerationToCentroid();
-			
+
 			// Change Speed
 			changeSpeed();
 
@@ -303,10 +303,8 @@ public class Univers {
 					parameters.setPlayData(false);
 				}
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			computeMassLimitsCentroidSpeed(true);
@@ -463,7 +461,6 @@ public class Univers {
 						.toString((Serializable) listMatter));
 				bufferedWriter.newLine();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -533,7 +530,7 @@ public class Univers {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param origine
 	 * @param initialSpeed
 	 * @param axisOfRing
@@ -568,7 +565,7 @@ public class Univers {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param origine
 	 * @param initialSpeed
 	 * @param axisOfRing

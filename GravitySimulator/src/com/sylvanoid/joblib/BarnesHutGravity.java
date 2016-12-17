@@ -12,7 +12,7 @@ import com.sylvanoid.common.TypeOfImpact;
 
 public class BarnesHutGravity extends RecursiveTask<Integer> {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Univers univers;
@@ -25,7 +25,6 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 
 	@Override
 	protected Integer compute() {
-		// TODO Auto-generated method stub
 		if (univers.getMass() > parameters.getNegligeableMass()
 				&& !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);

@@ -11,7 +11,7 @@ import com.sylvanoid.common.HelperNewton;
 
 public class BarnesHutCollision extends RecursiveTask<Integer> {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Univers univers;
@@ -27,7 +27,6 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 	@Override
 	protected Integer compute() {
 		Integer valReturn = 0;
-		// TODO Auto-generated method stub
 		if (univers.getMass() > parameters.getNegligeableMass()
 				&& !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
