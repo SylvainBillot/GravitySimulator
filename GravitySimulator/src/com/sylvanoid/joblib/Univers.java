@@ -436,11 +436,6 @@ public class Univers {
 			}
 			changeSpeed();
 			break;
-		case ViscosityWithoutDoubleRelaxation:
-			for (MatterPair mp : collisionPairs.values()) {
-				mp.applyViscosity();
-			}
-			break;
 		case NoAcell:
 			break;
 		default:
@@ -483,6 +478,7 @@ public class Univers {
 			double pn = 0;
 			double P = 0;
 			double Pn = 0;
+			double pre = 0;
 			if ((!parameters.isStaticDarkMatter() || m.getTypeOfObject() != TypeOfObject.Dark)
 					&& m.getFusionWith().size() > 0) {
 				// compute density and near-density
@@ -507,9 +503,8 @@ public class Univers {
 
 					Vector3d rijm1 = new Vector3d(rij);
 					Vector3d rijm2 = new Vector3d(rij);
-					double delta = parameters.getTimeFactor()
-							* (P * (1 - q) + Pn
-									* net.jafama.FastMath.pow2(1 - q));
+					pre = (P * (1 - q) + Pn * net.jafama.FastMath.pow2(1 - q));
+					double delta = parameters.getTimeFactor() * pre;
 					rijm1.scale(m1.getMass() * delta
 							/ (m.getMass() + m1.getMass()));
 					rijm2.scale(m.getMass() * delta
@@ -520,6 +515,7 @@ public class Univers {
 				}
 				m.getSpeed().sub(dm);
 			}
+			// m.setPresure(pre);
 		}
 	}
 

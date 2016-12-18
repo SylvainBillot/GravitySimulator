@@ -15,7 +15,7 @@ import com.sylvanoid.common.Vector3dAdapter;
 @XmlRootElement
 public class Parameters implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
@@ -71,22 +71,27 @@ public class Parameters implements Serializable {
 	private double darkMatterDistribution = 5;
 	private double darkMatterNubulaFactor = 5;
 	private Vector3d darkMatterXYZRatio = new Vector3d(1,1,1);
-	
+
 	private double matterViscosity = 1;
 	private double gasViscosity = 1;
 	private double darkMatterViscosity = 0;
-	
+
 	private double collisionDistanceRatio = 1;
-	
+
 	private double viscoElasticity = 1;
 	private double viscoElasticityNear = 1;
 	private double pressureZero = 0;
-	
+
 	private boolean recoverFrictionEnegy = false;
 	private double recoverFrictionEnergyRatio = 0.5;
-	
+
 	private boolean expansionUnivers = true;
 	private double timeMultiplicator = 1.000;
+
+
+	private double matterRendererExtender = 3;
+	private double gasRendererExtender = 3;
+	private double darkMatterRendererExtender = 5;
 
 	public Parameters() {
 
@@ -615,6 +620,48 @@ public class Parameters implements Serializable {
 	 */
 	public void setTimeMultiplicator(double timeMultiplicator) {
 		this.timeMultiplicator = timeMultiplicator;
+	}
+
+	/**
+	 * @return the matterRendererExtender
+	 */
+	public double getMatterRendererExtender() {
+		return matterRendererExtender;
+	}
+
+	/**
+	 * @param matterRendererExtender the matterRendererExtender to set
+	 */
+	public void setMatterRendererExtender(double matterRendererExtender) {
+		this.matterRendererExtender = matterRendererExtender;
+	}
+
+	/**
+	 * @return the gasRendererExtender
+	 */
+	public double getGasRendererExtender() {
+		return gasRendererExtender;
+	}
+
+	/**
+	 * @param gasRendererExtender the gasRendererExtender to set
+	 */
+	public void setGasRendererExtender(double gasRendererExtender) {
+		this.gasRendererExtender = gasRendererExtender;
+	}
+
+	/**
+	 * @return the darkMatterRendererExtender
+	 */
+	public double getDarkMatterRendererExtender() {
+		return darkMatterRendererExtender;
+	}
+
+	/**
+	 * @param darkMatterRendererExtender the darkMatterRendererExtender to set
+	 */
+	public void setDarkMatterRendererExtender(double darkMatterRendererExtender) {
+		this.darkMatterRendererExtender = darkMatterRendererExtender;
 	}
 
 }

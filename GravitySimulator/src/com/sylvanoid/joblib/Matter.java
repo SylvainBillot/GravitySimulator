@@ -19,7 +19,7 @@ import com.sylvanoid.common.Vector3dAdapter;
 @XmlRootElement(name = "matter")
 public class Matter implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private Parameters parameters;
@@ -35,6 +35,7 @@ public class Matter implements Serializable {
 	private double density;
 	private double rayon;
 	private double viscosity;
+	private double presure;
 	private List<Matter> fusionWith = new ArrayList<Matter>();
 	private List<Matter> neighbors = new ArrayList<Matter>();
 
@@ -66,8 +67,10 @@ public class Matter implements Serializable {
 		this.density = density;
 		this.typeOfObject = typeOfObject;
 		this.viscosity = initialeViscosity;
+		this.presure = 0;
 		this.name = "id: " + this.hashCode();
-		this.rayon = net.jafama.FastMath.pow(3 * (mass / density)
+		this.rayon = net.jafama.FastMath.pow(3
+				* (mass / getPressureWeightedDensity())
 				/ (4 * net.jafama.FastMath.PI), (double) 1 / (double) 3);
 	}
 
@@ -160,7 +163,8 @@ public class Matter implements Serializable {
 	}
 
 	public void setMass(double mass) {
-		rayon = net.jafama.FastMath.pow(3 * (mass / density)
+		rayon = net.jafama.FastMath.pow(3
+				* (mass / getPressureWeightedDensity())
 				/ (4 * net.jafama.FastMath.PI), (double) 1 / (double) 3);
 		this.mass = mass;
 	}
@@ -170,6 +174,9 @@ public class Matter implements Serializable {
 	}
 
 	public void setDensity(double density) {
+		rayon = net.jafama.FastMath.pow(3
+				* (mass / getPressureWeightedDensity())
+				/ (4 * net.jafama.FastMath.PI), (double) 1 / (double) 3);
 		this.density = density;
 	}
 
@@ -179,6 +186,22 @@ public class Matter implements Serializable {
 
 	public void setViscosity(double vicosity) {
 		this.viscosity = vicosity;
+	}
+
+	public double getPressureWeightedViscosity() {
+		return viscosity * (1 - presure);
+	}
+
+	public double getPresure() {
+		return presure;
+	}
+
+	public void setPresure(double presure) {
+		this.presure = presure;
+	}
+
+	public double getPressureWeightedDensity() {
+		return density * (1 / (1 - presure));
 	}
 
 	public boolean isDark() {
@@ -257,7 +280,7 @@ public class Matter implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return move quantity
 	 */
 	public Vector3d getP() {
@@ -265,7 +288,7 @@ public class Matter implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return Kinetic energy
 	 */
 	public double getK() {

@@ -218,7 +218,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 		/* Show current univers */
 		drawUnivers(gl);
-		// drawUniversSimplePoint(gl);
+		//drawUniversSimplePoint(gl);
 		// drawUniversSimpleSphere(gl, glu);
 	}
 
@@ -587,19 +587,19 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				switch (m.getTypeOfObject()) {
 				case Matter:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-					r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+					r = parameters.getMatterRendererExtender() * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
 							.getRayon() * parameters.getScala());
 					break;
 
 				case Gas:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-					r = 3 * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
+					r = parameters.getGasRendererExtender() * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
 							.getRayon() * parameters.getScala());
 					break;
 
 				case Dark:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-					r = 5 * m.getRayon() * parameters.getScala();
+					r = parameters.getDarkMatterRendererExtender() * m.getRayon() * parameters.getScala();
 					break;
 
 				default:
