@@ -515,7 +515,8 @@ public class Univers {
 				}
 				m.getSpeed().sub(dm);
 			}
-			// m.setPresure(pre);
+			/* Try to modify viscosity and density with presure */
+			//m.setPresure(pre);
 		}
 	}
 
@@ -940,8 +941,8 @@ public class Univers {
 
 	private void createPlanetaryRandom() {
 		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 1, 0), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 0.1, 1),
+				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.2),
 				parameters.getMatterDistribution(),
 				parameters.getGasDistribution(),
 				parameters.getMatterViscosity(), parameters.getGasViscosity());
@@ -954,11 +955,36 @@ public class Univers {
 		listMatter.add(m1);
 		mass += m1.getMass();
 		visibleMass += m1.getMass();
+
+		TreeMap<Double, Double> innerMassTreeMap = new TreeMap<Double, Double>();
 		for (Matter m : listMatter) {
-			if (m != m1) {
-				m.orbitalCircularSpeed(m1, new Vector3d(0, 1, 0));
+			double distance = new Point3d(m.getPoint()).distance(new Point3d(
+					new Vector3d(0, 0, 0)));
+			if (innerMassTreeMap.get(distance) == null) {
+				innerMassTreeMap.put(distance, m.getMass());
+			} else {
+				innerMassTreeMap.put(distance,
+						m.getMass() + innerMassTreeMap.get(distance));
 			}
 		}
+
+		TreeMap<Double, Double> innerMassTreeMapCumul = new TreeMap<Double, Double>();
+		double innerMass = 0;
+		for (Map.Entry<Double, Double> entry : innerMassTreeMap.entrySet()) {
+			innerMass += entry.getValue();
+			innerMassTreeMapCumul.put(entry.getKey(), innerMass);
+		}
+
+		for (Matter m : listMatter) {
+			if (m != m1) {
+				double distance = new Point3d(m.getPoint())
+						.distance(new Point3d(new Vector3d(0, 0, 0)));
+				m.orbitalCircularSpeed(new Vector3d(0, 0, 0), distance,
+						innerMassTreeMapCumul.get(distance), new Vector3d(0, 0,
+								1));
+			}
+		}
+
 	}
 
 	private void createPlanetariesGenesis() {

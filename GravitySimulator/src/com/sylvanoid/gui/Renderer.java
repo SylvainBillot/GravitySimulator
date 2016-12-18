@@ -113,7 +113,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glClearDepth(0.0f);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
 
-		//gl.glBlendFunc (GL2.GL_ONE, GL2.GL_ONE);
+		// gl.glBlendFunc (GL2.GL_ONE, GL2.GL_ONE);
 
 		gl.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
 		gl.glBlendFuncSeparate(GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE);
@@ -218,7 +218,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 		/* Show current univers */
 		drawUnivers(gl);
-		//drawUniversSimplePoint(gl);
+		// drawUniversSimplePoint(gl);
 		// drawUniversSimpleSphere(gl, glu);
 	}
 
@@ -587,19 +587,26 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				switch (m.getTypeOfObject()) {
 				case Matter:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-					r = parameters.getMatterRendererExtender() * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-							.getRayon() * parameters.getScala());
+					r = (parameters.getMatterRendererExtender() * m.getRayon()
+							* parameters.getScala() < 1 ? 1 : parameters
+							.getMatterRendererExtender()
+							* m.getRayon()
+							* parameters.getScala());
 					break;
 
 				case Gas:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-					r = parameters.getGasRendererExtender() * (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-							.getRayon() * parameters.getScala());
+					r = (parameters.getGasRendererExtender() * m.getRayon()
+							* parameters.getScala() < 1 ? 1 : parameters
+							.getGasRendererExtender()
+							* m.getRayon()
+							* parameters.getScala());
 					break;
 
 				case Dark:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-					r = parameters.getDarkMatterRendererExtender() * m.getRayon() * parameters.getScala();
+					r = parameters.getDarkMatterRendererExtender()
+							* m.getRayon() * parameters.getScala();
 					break;
 
 				default:
