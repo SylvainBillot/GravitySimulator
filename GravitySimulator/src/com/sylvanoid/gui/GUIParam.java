@@ -88,7 +88,462 @@ public class GUIParam extends JDialog {
 		}
 		typeOfUnivers.setSelectedItem(mother.getParameters().getTypeOfUnivers()
 				.getLabel());
-		typeOfUnivers.addActionListener(new ActionListener() {
+		typeOfUnivers.addActionListener(chooseTypeOfUnivers());
+		add(typeOfUnivers);
+
+		add(new JLabel("Parallelization:"));
+		parallelization = new JCheckBox();
+		parallelization.setSelected(me.mother.getParameters()
+				.isParallelization());
+		add(parallelization);
+
+		add(new JLabel("Scala 1/x:"));
+		scala = new JFormattedTextField(dfsc);
+		scala.setValue(me.mother.getParameters().getScala());
+		add(scala);
+
+		add(new JLabel("Time factor:"));
+		timeFactor = new JFormattedTextField(dfsc);
+		timeFactor.setValue(me.mother.getParameters().getTimeFactor());
+		add(timeFactor);
+
+		add(new JLabel("Number of object:"));
+		numberOfObjects = new JFormattedTextField(dfsc);
+		numberOfObjects
+				.setValue(me.mother.getParameters().getNumberOfObjects());
+		add(numberOfObjects);
+
+		add(new JLabel("Nebula radius:"));
+		nebulaRadius = new JFormattedTextField(dfsc);
+		nebulaRadius.setValue(me.mother.getParameters().getNebulaRadius());
+		add(nebulaRadius);
+
+		add(new JLabel("Density of objects:"));
+		densiteMin = new JFormattedTextField(dfsc);
+		densiteMin.setValue(me.mother.getParameters().getDensity());
+		add(densiteMin);
+
+		add(new JLabel("Mass object:"));
+		JPanel massObject = new JPanel();
+		massObject.setLayout(new GridLayout(1, 4));
+		add(massObject);
+		massObjectMin = new JFormattedTextField(dfsc);
+		massObjectMin.setValue(me.mother.getParameters().getMassObjectMin());
+		massObject.add(new JLabel("Min:"));
+		massObject.add(massObjectMin);
+		massObjectMax = new JFormattedTextField(dfsc);
+		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
+		massObject.add(new JLabel("Max:"));
+		massObject.add(massObjectMax);
+
+		add(new JLabel("Matter distribution:"));
+		matterDistribution = new JFormattedTextField(dfsc);
+		matterDistribution.setValue(me.mother.getParameters()
+				.getMatterDistribution());
+		add(matterDistribution);
+
+		add(new JLabel("Nb galactic Arms:"));
+		nbArms = new JFormattedTextField(dfsc);
+		nbArms.setValue(me.mother.getParameters().getNbARms());
+		add(nbArms);
+
+		add(new JLabel("Ellipses eccentricity (]0-1[):"));
+		ellipseRatio = new JFormattedTextField(fdpc);
+		ellipseRatio.setValue(me.mother.getParameters().getEllipseRatio());
+		add(ellipseRatio);
+
+		add(new JLabel("Ellipses shift (ratio of nebula radius):"));
+		ellipseShiftRatio = new JFormattedTextField(dfsc);
+		ellipseShiftRatio.setValue(me.mother.getParameters()
+				.getEllipseShiftRatio());
+		add(ellipseShiftRatio);
+
+		add(new JLabel("Negligeable mass:"));
+		negligeableMass = new JFormattedTextField(dfsc);
+		negligeableMass
+				.setValue(me.mother.getParameters().getNegligeableMass());
+		add(negligeableMass);
+
+		add(new JLabel("Num of gas particle:"));
+		numOfLowMassParticule = new JFormattedTextField(dfsc);
+		numOfLowMassParticule.setValue(me.mother.getParameters()
+				.getNumOfLowMassParticule());
+		add(numOfLowMassParticule);
+
+		add(new JLabel("Gas particles max mass:"));
+		lowMassParticuleMass = new JFormattedTextField(dfsc);
+		lowMassParticuleMass.setValue(me.mother.getParameters()
+				.getLowMassParticuleMass());
+		add(lowMassParticuleMass);
+
+		add(new JLabel("Gas particle density:"));
+		lowMassDensity = new JFormattedTextField(dfsc);
+		lowMassDensity.setValue(me.mother.getParameters().getLowMassDensity());
+		add(lowMassDensity);
+
+		add(new JLabel("Gas distribution:"));
+		gasDistribution = new JFormattedTextField(dfsc);
+		gasDistribution
+				.setValue(me.mother.getParameters().getGasDistribution());
+		add(gasDistribution);
+
+		add(new JLabel("Dark Matter or central star Mass:"));
+		darkMatterMass = new JFormattedTextField(dfsc);
+		darkMatterMass.setValue(me.mother.getParameters().getDarkMatterMass());
+		add(darkMatterMass);
+
+		add(new JLabel("Dark Matter or central star Density:"));
+		darkMatterDensity = new JFormattedTextField(dfsc);
+		darkMatterDensity.setValue(me.mother.getParameters()
+				.getDarkMatterDensity());
+		add(darkMatterDensity);
+
+		add(new JLabel("Dark Matterdistribution:"));
+		darkMatterDistribution = new JFormattedTextField(dfsc);
+		darkMatterDistribution.setValue(me.mother.getParameters()
+				.getDarkMatterDistribution());
+		add(darkMatterDistribution);
+
+		add(new JLabel("Dark matter xyz ratio"));
+		JPanel darkMatterRatio = new JPanel();
+		add(darkMatterRatio);
+		darkMatterRatio.setLayout(new GridLayout(1, 6));
+		darkMatterXRatio = new JFormattedTextField(dfsc);
+		darkMatterXRatio.setValue(me.mother.getParameters()
+				.getDarkMatterXYZRatio().x);
+		darkMatterRatio.add(new JLabel("X:"));
+		darkMatterRatio.add(darkMatterXRatio);
+
+		darkMatterYRatio = new JFormattedTextField(dfsc);
+		darkMatterYRatio.setValue(me.mother.getParameters()
+				.getDarkMatterXYZRatio().y);
+		darkMatterRatio.add(new JLabel("Y:"));
+		darkMatterRatio.add(darkMatterYRatio);
+
+		darkMatterZRatio = new JFormattedTextField(dfsc);
+		darkMatterZRatio.setValue(me.mother.getParameters()
+				.getDarkMatterXYZRatio().z);
+		darkMatterRatio.add(new JLabel("Z:"));
+		darkMatterRatio.add(darkMatterZRatio);
+
+		add(new JLabel("Demi Distance between Galaxies X:"));
+		JPanel demiDistance = new JPanel();
+		demiDistance.setLayout(new GridLayout(1, 6));
+		add(demiDistance);
+		demiDistanceBetweenGalaxiesX = new JFormattedTextField(dfsc);
+		demiDistanceBetweenGalaxiesX.setValue(me.mother.getParameters()
+				.getDemiDistanceBetweenGalaxies().x);
+		demiDistance.add(new JLabel("X:"));
+		demiDistance.add(demiDistanceBetweenGalaxiesX);
+
+		demiDistanceBetweenGalaxiesY = new JFormattedTextField(dfsc);
+		demiDistanceBetweenGalaxiesY.setValue(me.mother.getParameters()
+				.getDemiDistanceBetweenGalaxies().y);
+		demiDistance.add(new JLabel("Y:"));
+		demiDistance.add(demiDistanceBetweenGalaxiesY);
+
+		demiDistanceBetweenGalaxiesZ = new JFormattedTextField(dfsc);
+		demiDistanceBetweenGalaxiesZ.setValue(me.mother.getParameters()
+				.getDemiDistanceBetweenGalaxies().z);
+		demiDistance.add(new JLabel("Z:"));
+		demiDistance.add(demiDistanceBetweenGalaxiesZ);
+
+		add(new JLabel("Manage Impact:"));
+		manageImpact = new JCheckBox();
+		manageImpact.setSelected(me.mother.getParameters().isManageImpact());
+		manageImpact.addActionListener(chooseManageImpact());
+		add(manageImpact);
+
+		add(new JLabel("Type Of Impact:"));
+		typeOfImpact = new JComboBox<String>();
+		for (TypeOfImpact toi : TypeOfImpact.values()) {
+			typeOfImpact.addItem(toi.getLabel());
+		}
+		typeOfImpact.setSelectedItem(mother.getParameters().getTypeOfImpact()
+				.getLabel());
+		add(typeOfImpact);
+
+		add(new JLabel("Collision distance ratio rij:"));
+		collisionDistanceRatio = new JFormattedTextField(dfsc);
+		collisionDistanceRatio.setValue(me.mother.getParameters()
+				.getCollisionDistanceRatio());
+		add(collisionDistanceRatio);
+
+		add(new JLabel("Matter Viscosity:"));
+		matterViscosity = new JFormattedTextField(dfsc);
+		matterViscosity
+				.setValue(me.mother.getParameters().getMatterViscosity());
+		add(matterViscosity);
+
+		add(new JLabel("Gas Viscosity:"));
+		gasViscosity = new JFormattedTextField(dfsc);
+		gasViscosity.setValue(me.mother.getParameters().getGasViscosity());
+		add(gasViscosity);
+
+		add(new JLabel("Visco elasticity:"));
+		viscoElasticity = new JFormattedTextField(dfsc);
+		viscoElasticity
+				.setValue(me.mother.getParameters().getViscoElasticity());
+		add(viscoElasticity);
+
+		add(new JLabel("Visco elasticity Near:"));
+		viscoElasticityNear = new JFormattedTextField(dfsc);
+		viscoElasticityNear.setValue(me.mother.getParameters()
+				.getViscoElasticityNear());
+		add(viscoElasticityNear);
+
+		add(new JLabel("Rest of Presure:"));
+		pressureZero = new JFormattedTextField(dfsc);
+		pressureZero.setValue(me.mother.getParameters().getPressureZero());
+		add(pressureZero);
+
+		add(new JLabel("Recover Friction Energy (Experimental):"));
+		recoverFrictionEnergy = new JCheckBox();
+		recoverFrictionEnergy.setSelected(me.mother.getParameters()
+				.isRecoverFrictionEnegy());
+		recoverFrictionEnergy.addActionListener(chooseRecoverEnergy());
+
+		add(recoverFrictionEnergy);
+
+		add(new JLabel("Recover Friction Energy Ratio:"));
+		recoverFrictionEnergyRatio = new JFormattedTextField(dfsc);
+		recoverFrictionEnergyRatio.setValue(me.mother.getParameters()
+				.getRecoverFrictionEnergyRatio());
+		add(recoverFrictionEnergyRatio);
+
+		add(new JLabel("Static Dark Matter:"));
+		staticDarkMatter = new JCheckBox();
+		staticDarkMatter.setSelected(me.mother.getParameters()
+				.isStaticDarkMatter());
+		add(staticDarkMatter);
+
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(cancelAction());
+		add(btnCancel);
+		JButton btnOK = new JButton("OK");
+		btnOK.addActionListener(okAction());
+		add(btnOK);
+
+		enableDisableParam();
+	}
+
+	public GUIProgram getMother() {
+		return mother;
+	}
+
+	private void enableDisableParam() {
+		timeFactor.setEnabled(false);
+		scala.setEnabled(false);
+		manageImpact.setEnabled(false);
+		numberOfObjects.setEnabled(false);
+		nebulaRadius.setEnabled(false);
+		densiteMin.setEnabled(false);
+		massObjectMin.setEnabled(false);
+		massObjectMax.setEnabled(false);
+		matterDistribution.setEnabled(false);
+		negligeableMass.setEnabled(false);
+		numOfLowMassParticule.setEnabled(false);
+		lowMassParticuleMass.setEnabled(false);
+		lowMassDensity.setEnabled(false);
+		gasDistribution.setEnabled(false);
+		typeOfImpact.setEnabled(manageImpact.isSelected());
+		collisionDistanceRatio.setEnabled(manageImpact.isSelected());
+		matterViscosity.setEnabled(manageImpact.isSelected());
+		gasViscosity.setEnabled(manageImpact.isSelected());
+		viscoElasticity.setEnabled(manageImpact.isSelected());
+		viscoElasticityNear.setEnabled(manageImpact.isSelected());
+		pressureZero.setEnabled(manageImpact.isSelected());
+		recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
+		recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
+				&& recoverFrictionEnergy.isSelected());
+		darkMatterMass.setEnabled(false);
+		darkMatterDensity.setEnabled(false);
+		darkMatterDistribution.setEnabled(false);
+		ellipseRatio.setEnabled(false);
+		ellipseShiftRatio.setEnabled(false);
+		demiDistanceBetweenGalaxiesX.setEnabled(false);
+		demiDistanceBetweenGalaxiesY.setEnabled(false);
+		demiDistanceBetweenGalaxiesZ.setEnabled(false);
+		nbArms.setEnabled(false);
+		staticDarkMatter.setEnabled(false);
+		darkMatterXRatio.setEnabled(false);
+		darkMatterYRatio.setEnabled(false);
+		darkMatterZRatio.setEnabled(false);
+		switch (typeOfUnivers.getSelectedIndex()) {
+		case 0:
+			// TypeOfUnivers.Planetary;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			break;
+		case 1:
+			// TypeOfUnivers.PlanetaryRandom;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			matterDistribution.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			gasDistribution.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			break;
+		case 2:
+			// TypeOfUnivers.Random;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			matterDistribution.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			gasDistribution.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			break;
+		case 3:
+			// TypeOfUnivers.RandomRotateUnivers;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			matterDistribution.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			gasDistribution.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			darkMatterDistribution.setEnabled(true);
+			ellipseRatio.setEnabled(true);
+			ellipseShiftRatio.setEnabled(true);
+			nbArms.setEnabled(true);
+			darkMatterXRatio.setEnabled(true);
+			darkMatterYRatio.setEnabled(true);
+			darkMatterZRatio.setEnabled(true);
+			break;
+		case 4:
+			// TypeOfUnivers.GalaxiesCollision;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			matterDistribution.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			gasDistribution.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			demiDistanceBetweenGalaxiesX.setEnabled(true);
+			demiDistanceBetweenGalaxiesY.setEnabled(true);
+			demiDistanceBetweenGalaxiesZ.setEnabled(true);
+			staticDarkMatter.setEnabled(true);
+			break;
+		case 5:
+			// TypeOfUnivers.PlanetariesGenesis;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			matterDistribution.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			gasDistribution.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			break;
+		case 6:
+			// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			matterDistribution.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			gasDistribution.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			darkMatterDistribution.setEnabled(true);
+			ellipseRatio.setEnabled(false);
+			ellipseShiftRatio.setEnabled(false);
+			nbArms.setEnabled(false);
+			staticDarkMatter.setEnabled(true);
+			darkMatterXRatio.setEnabled(true);
+			darkMatterYRatio.setEnabled(true);
+			darkMatterZRatio.setEnabled(true);
+			break;
+		case 7:
+			// TypeOfUnivers.RandomStaticSphericalUnivers
+			manageImpact.setEnabled(true);
+			timeFactor.setEnabled(true);
+			scala.setEnabled(true);
+			numberOfObjects.setEnabled(true);
+			densiteMin.setEnabled(true);
+			nebulaRadius.setEnabled(true);
+			massObjectMin.setEnabled(true);
+			massObjectMax.setEnabled(true);
+			matterDistribution.setEnabled(true);
+			darkMatterMass.setEnabled(true);
+			negligeableMass.setEnabled(true);
+			numOfLowMassParticule.setEnabled(true);
+			lowMassParticuleMass.setEnabled(true);
+			lowMassDensity.setEnabled(true);
+			gasDistribution.setEnabled(true);
+			darkMatterDensity.setEnabled(true);
+			darkMatterDistribution.setEnabled(true);
+			ellipseRatio.setEnabled(false);
+			ellipseShiftRatio.setEnabled(false);
+			nbArms.setEnabled(false);
+			staticDarkMatter.setEnabled(true);
+			darkMatterXRatio.setEnabled(true);
+			darkMatterYRatio.setEnabled(true);
+			darkMatterZRatio.setEnabled(true);
+			break;
+		}
+	}
+
+
+	private ActionListener chooseTypeOfUnivers() {
+		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switch (typeOfUnivers.getSelectedIndex()) {
 				case 0:
@@ -131,7 +586,7 @@ public class GUIParam extends JDialog {
 					scala.setValue(1E-9);
 					numberOfObjects.setValue(20);
 					typeOfImpact.setSelectedIndex(0);
-					densiteMin.setValue(1);
+					densiteMin.setValue(1E-2);
 					nebulaRadius.setValue(HelperVariable.UA * 5);
 					massObjectMin.setValue(HelperVariable.M / 2E3);
 					massObjectMax.setValue(HelperVariable.M / 1E3);
@@ -414,170 +869,11 @@ public class GUIParam extends JDialog {
 				}
 				enableDisableParam();
 			}
-		});
-		add(typeOfUnivers);
+		};
+	}
 
-		add(new JLabel("Parallelization:"));
-		parallelization = new JCheckBox();
-		parallelization.setSelected(me.mother.getParameters()
-				.isParallelization());
-		add(parallelization);
-
-		add(new JLabel("Scala 1/x:"));
-		scala = new JFormattedTextField(dfsc);
-		scala.setValue(me.mother.getParameters().getScala());
-		add(scala);
-
-		add(new JLabel("Time factor:"));
-		timeFactor = new JFormattedTextField(dfsc);
-		timeFactor.setValue(me.mother.getParameters().getTimeFactor());
-		add(timeFactor);
-
-		add(new JLabel("Number of object:"));
-		numberOfObjects = new JFormattedTextField(dfsc);
-		numberOfObjects
-				.setValue(me.mother.getParameters().getNumberOfObjects());
-		add(numberOfObjects);
-
-		add(new JLabel("Nebula radius:"));
-		nebulaRadius = new JFormattedTextField(dfsc);
-		nebulaRadius.setValue(me.mother.getParameters().getNebulaRadius());
-		add(nebulaRadius);
-
-		add(new JLabel("Density of objects:"));
-		densiteMin = new JFormattedTextField(dfsc);
-		densiteMin.setValue(me.mother.getParameters().getDensity());
-		add(densiteMin);
-
-		add(new JLabel("Mass object:"));
-		JPanel massObject = new JPanel();
-		massObject.setLayout(new GridLayout(1, 4));
-		add(massObject);
-		massObjectMin = new JFormattedTextField(dfsc);
-		massObjectMin.setValue(me.mother.getParameters().getMassObjectMin());
-		massObject.add(new JLabel("Min:"));
-		massObject.add(massObjectMin);
-		massObjectMax = new JFormattedTextField(dfsc);
-		massObjectMax.setValue(me.mother.getParameters().getMassObjectMax());
-		massObject.add(new JLabel("Max:"));
-		massObject.add(massObjectMax);
-
-		add(new JLabel("Matter distribution:"));
-		matterDistribution = new JFormattedTextField(dfsc);
-		matterDistribution.setValue(me.mother.getParameters()
-				.getMatterDistribution());
-		add(matterDistribution);
-
-		add(new JLabel("Nb galactic Arms:"));
-		nbArms = new JFormattedTextField(dfsc);
-		nbArms.setValue(me.mother.getParameters().getNbARms());
-		add(nbArms);
-
-		add(new JLabel("Ellipses eccentricity (]0-1[):"));
-		ellipseRatio = new JFormattedTextField(fdpc);
-		ellipseRatio.setValue(me.mother.getParameters().getEllipseRatio());
-		add(ellipseRatio);
-
-		add(new JLabel("Ellipses shift (ratio of nebula radius):"));
-		ellipseShiftRatio = new JFormattedTextField(dfsc);
-		ellipseShiftRatio.setValue(me.mother.getParameters()
-				.getEllipseShiftRatio());
-		add(ellipseShiftRatio);
-
-		add(new JLabel("Negligeable mass:"));
-		negligeableMass = new JFormattedTextField(dfsc);
-		negligeableMass
-				.setValue(me.mother.getParameters().getNegligeableMass());
-		add(negligeableMass);
-
-		add(new JLabel("Num of gas particle:"));
-		numOfLowMassParticule = new JFormattedTextField(dfsc);
-		numOfLowMassParticule.setValue(me.mother.getParameters()
-				.getNumOfLowMassParticule());
-		add(numOfLowMassParticule);
-
-		add(new JLabel("Gas particles max mass:"));
-		lowMassParticuleMass = new JFormattedTextField(dfsc);
-		lowMassParticuleMass.setValue(me.mother.getParameters()
-				.getLowMassParticuleMass());
-		add(lowMassParticuleMass);
-
-		add(new JLabel("Gas particle density:"));
-		lowMassDensity = new JFormattedTextField(dfsc);
-		lowMassDensity.setValue(me.mother.getParameters().getLowMassDensity());
-		add(lowMassDensity);
-
-		add(new JLabel("Gas distribution:"));
-		gasDistribution = new JFormattedTextField(dfsc);
-		gasDistribution
-				.setValue(me.mother.getParameters().getGasDistribution());
-		add(gasDistribution);
-
-		add(new JLabel("Dark Matter or central star Mass:"));
-		darkMatterMass = new JFormattedTextField(dfsc);
-		darkMatterMass.setValue(me.mother.getParameters().getDarkMatterMass());
-		add(darkMatterMass);
-
-		add(new JLabel("Dark Matter or central star Density:"));
-		darkMatterDensity = new JFormattedTextField(dfsc);
-		darkMatterDensity.setValue(me.mother.getParameters()
-				.getDarkMatterDensity());
-		add(darkMatterDensity);
-
-		add(new JLabel("Dark Matterdistribution:"));
-		darkMatterDistribution = new JFormattedTextField(dfsc);
-		darkMatterDistribution.setValue(me.mother.getParameters()
-				.getDarkMatterDistribution());
-		add(darkMatterDistribution);
-
-		add(new JLabel("Dark matter xyz ratio"));
-		JPanel darkMatterRatio = new JPanel();
-		add(darkMatterRatio);
-		darkMatterRatio.setLayout(new GridLayout(1, 6));
-		darkMatterXRatio = new JFormattedTextField(dfsc);
-		darkMatterXRatio.setValue(me.mother.getParameters()
-				.getDarkMatterXYZRatio().x);
-		darkMatterRatio.add(new JLabel("X:"));
-		darkMatterRatio.add(darkMatterXRatio);
-
-		darkMatterYRatio = new JFormattedTextField(dfsc);
-		darkMatterYRatio.setValue(me.mother.getParameters()
-				.getDarkMatterXYZRatio().y);
-		darkMatterRatio.add(new JLabel("Y:"));
-		darkMatterRatio.add(darkMatterYRatio);
-
-		darkMatterZRatio = new JFormattedTextField(dfsc);
-		darkMatterZRatio.setValue(me.mother.getParameters()
-				.getDarkMatterXYZRatio().z);
-		darkMatterRatio.add(new JLabel("Z:"));
-		darkMatterRatio.add(darkMatterZRatio);
-
-		add(new JLabel("Demi Distance between Galaxies X:"));
-		JPanel demiDistance = new JPanel();
-		demiDistance.setLayout(new GridLayout(1, 6));
-		add(demiDistance);
-		demiDistanceBetweenGalaxiesX = new JFormattedTextField(dfsc);
-		demiDistanceBetweenGalaxiesX.setValue(me.mother.getParameters()
-				.getDemiDistanceBetweenGalaxies().x);
-		demiDistance.add(new JLabel("X:"));
-		demiDistance.add(demiDistanceBetweenGalaxiesX);
-
-		demiDistanceBetweenGalaxiesY = new JFormattedTextField(dfsc);
-		demiDistanceBetweenGalaxiesY.setValue(me.mother.getParameters()
-				.getDemiDistanceBetweenGalaxies().y);
-		demiDistance.add(new JLabel("Y:"));
-		demiDistance.add(demiDistanceBetweenGalaxiesY);
-
-		demiDistanceBetweenGalaxiesZ = new JFormattedTextField(dfsc);
-		demiDistanceBetweenGalaxiesZ.setValue(me.mother.getParameters()
-				.getDemiDistanceBetweenGalaxies().z);
-		demiDistance.add(new JLabel("Z:"));
-		demiDistance.add(demiDistanceBetweenGalaxiesZ);
-
-		add(new JLabel("Manage Impact:"));
-		manageImpact = new JCheckBox();
-		manageImpact.setSelected(me.mother.getParameters().isManageImpact());
-		manageImpact.addActionListener(new ActionListener() {
+	private ActionListener chooseManageImpact() {
+		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				typeOfImpact.setEnabled(manageImpact.isSelected());
 				collisionDistanceRatio.setEnabled(manageImpact.isSelected());
@@ -590,89 +886,31 @@ public class GUIParam extends JDialog {
 				recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
 						&& recoverFrictionEnergy.isSelected());
 			}
-		});
-		add(manageImpact);
+		};
+	}
 
-		add(new JLabel("Type Of Impact:"));
-		typeOfImpact = new JComboBox<String>();
-		for (TypeOfImpact toi : TypeOfImpact.values()) {
-			typeOfImpact.addItem(toi.getLabel());
-		}
-		typeOfImpact.setSelectedItem(mother.getParameters().getTypeOfImpact()
-				.getLabel());
-		add(typeOfImpact);
-
-		add(new JLabel("Collision distance ratio rij:"));
-		collisionDistanceRatio = new JFormattedTextField(dfsc);
-		collisionDistanceRatio.setValue(me.mother.getParameters()
-				.getCollisionDistanceRatio());
-		add(collisionDistanceRatio);
-
-		add(new JLabel("Matter Viscosity:"));
-		matterViscosity = new JFormattedTextField(dfsc);
-		matterViscosity
-				.setValue(me.mother.getParameters().getMatterViscosity());
-		add(matterViscosity);
-
-		add(new JLabel("Gas Viscosity:"));
-		gasViscosity = new JFormattedTextField(dfsc);
-		gasViscosity.setValue(me.mother.getParameters().getGasViscosity());
-		add(gasViscosity);
-
-		add(new JLabel("Visco elasticity:"));
-		viscoElasticity = new JFormattedTextField(dfsc);
-		viscoElasticity
-				.setValue(me.mother.getParameters().getViscoElasticity());
-		add(viscoElasticity);
-
-		add(new JLabel("Visco elasticity Near:"));
-		viscoElasticityNear = new JFormattedTextField(dfsc);
-		viscoElasticityNear.setValue(me.mother.getParameters()
-				.getViscoElasticityNear());
-		add(viscoElasticityNear);
-
-		add(new JLabel("Rest of Presure:"));
-		pressureZero = new JFormattedTextField(dfsc);
-		pressureZero.setValue(me.mother.getParameters().getPressureZero());
-		add(pressureZero);
-
-		add(new JLabel("Recover Friction Energy (Experimental):"));
-		recoverFrictionEnergy = new JCheckBox();
-		recoverFrictionEnergy.setSelected(me.mother.getParameters()
-				.isRecoverFrictionEnegy());
-		recoverFrictionEnergy.addActionListener(new ActionListener() {
+	private ActionListener chooseRecoverEnergy() {
+		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
 						&& recoverFrictionEnergy.isSelected());
 			}
-		});
+		};
+	}
 
-		add(recoverFrictionEnergy);
-
-		add(new JLabel("Recover Friction Energy Ratio:"));
-		recoverFrictionEnergyRatio = new JFormattedTextField(dfsc);
-		recoverFrictionEnergyRatio.setValue(me.mother.getParameters()
-				.getRecoverFrictionEnergyRatio());
-		add(recoverFrictionEnergyRatio);
-
-		add(new JLabel("Static Dark Matter:"));
-		staticDarkMatter = new JCheckBox();
-		staticDarkMatter.setSelected(me.mother.getParameters()
-				.isStaticDarkMatter());
-		add(staticDarkMatter);
-
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
+	private ActionListener cancelAction() {
+		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				me.setVisible(false);
 				me.mother.setVisible(true);
 				me.mother.getAnimator().start();
 			}
-		});
-		add(btnCancel);
-		JButton btnOK = new JButton("OK");
-		btnOK.addActionListener(new ActionListener() {
+		};
+	}
+
+	private ActionListener okAction() {
+		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -794,223 +1032,6 @@ public class GUIParam extends JDialog {
 					d.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 				}
 			}
-		});
-		add(btnOK);
-
-		enableDisableParam();
-	}
-
-	public GUIProgram getMother() {
-		return mother;
-	}
-
-	private void enableDisableParam() {
-		timeFactor.setEnabled(false);
-		scala.setEnabled(false);
-		manageImpact.setEnabled(false);
-		numberOfObjects.setEnabled(false);
-		nebulaRadius.setEnabled(false);
-		densiteMin.setEnabled(false);
-		massObjectMin.setEnabled(false);
-		massObjectMax.setEnabled(false);
-		matterDistribution.setEnabled(false);
-		negligeableMass.setEnabled(false);
-		numOfLowMassParticule.setEnabled(false);
-		lowMassParticuleMass.setEnabled(false);
-		lowMassDensity.setEnabled(false);
-		gasDistribution.setEnabled(false);
-		typeOfImpact.setEnabled(manageImpact.isSelected());
-		collisionDistanceRatio.setEnabled(manageImpact.isSelected());
-		matterViscosity.setEnabled(manageImpact.isSelected());
-		gasViscosity.setEnabled(manageImpact.isSelected());
-		viscoElasticity.setEnabled(manageImpact.isSelected());
-		viscoElasticityNear.setEnabled(manageImpact.isSelected());
-		pressureZero.setEnabled(manageImpact.isSelected());
-		recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
-		recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
-				&& recoverFrictionEnergy.isSelected());
-		darkMatterMass.setEnabled(false);
-		darkMatterDensity.setEnabled(false);
-		darkMatterDistribution.setEnabled(false);
-		ellipseRatio.setEnabled(false);
-		ellipseShiftRatio.setEnabled(false);
-		demiDistanceBetweenGalaxiesX.setEnabled(false);
-		demiDistanceBetweenGalaxiesY.setEnabled(false);
-		demiDistanceBetweenGalaxiesZ.setEnabled(false);
-		nbArms.setEnabled(false);
-		staticDarkMatter.setEnabled(false);
-		darkMatterXRatio.setEnabled(false);
-		darkMatterYRatio.setEnabled(false);
-		darkMatterZRatio.setEnabled(false);
-		switch (typeOfUnivers.getSelectedIndex()) {
-		case 0:
-			// TypeOfUnivers.Planetary;
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			break;
-		case 1:
-			// TypeOfUnivers.PlanetaryRandom;
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			numberOfObjects.setEnabled(true);
-			densiteMin.setEnabled(true);
-			nebulaRadius.setEnabled(true);
-			massObjectMin.setEnabled(true);
-			massObjectMax.setEnabled(true);
-			matterDistribution.setEnabled(true);
-			negligeableMass.setEnabled(true);
-			numOfLowMassParticule.setEnabled(true);
-			lowMassParticuleMass.setEnabled(true);
-			lowMassDensity.setEnabled(true);
-			gasDistribution.setEnabled(true);
-			darkMatterMass.setEnabled(true);
-			darkMatterDensity.setEnabled(true);
-			break;
-		case 2:
-			// TypeOfUnivers.Random;
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			numberOfObjects.setEnabled(true);
-			densiteMin.setEnabled(true);
-			nebulaRadius.setEnabled(true);
-			massObjectMin.setEnabled(true);
-			massObjectMax.setEnabled(true);
-			matterDistribution.setEnabled(true);
-			negligeableMass.setEnabled(true);
-			numOfLowMassParticule.setEnabled(true);
-			lowMassParticuleMass.setEnabled(true);
-			lowMassDensity.setEnabled(true);
-			gasDistribution.setEnabled(true);
-			darkMatterMass.setEnabled(true);
-			darkMatterDensity.setEnabled(true);
-			break;
-		case 3:
-			// TypeOfUnivers.RandomRotateUnivers;
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			numberOfObjects.setEnabled(true);
-			densiteMin.setEnabled(true);
-			nebulaRadius.setEnabled(true);
-			massObjectMin.setEnabled(true);
-			massObjectMax.setEnabled(true);
-			matterDistribution.setEnabled(true);
-			darkMatterMass.setEnabled(true);
-			negligeableMass.setEnabled(true);
-			numOfLowMassParticule.setEnabled(true);
-			lowMassParticuleMass.setEnabled(true);
-			lowMassDensity.setEnabled(true);
-			gasDistribution.setEnabled(true);
-			darkMatterDensity.setEnabled(true);
-			darkMatterDistribution.setEnabled(true);
-			ellipseRatio.setEnabled(true);
-			ellipseShiftRatio.setEnabled(true);
-			nbArms.setEnabled(true);
-			darkMatterXRatio.setEnabled(true);
-			darkMatterYRatio.setEnabled(true);
-			darkMatterZRatio.setEnabled(true);
-			break;
-		case 4:
-			// TypeOfUnivers.GalaxiesCollision;
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			numberOfObjects.setEnabled(true);
-			densiteMin.setEnabled(true);
-			nebulaRadius.setEnabled(true);
-			massObjectMin.setEnabled(true);
-			massObjectMax.setEnabled(true);
-			matterDistribution.setEnabled(true);
-			negligeableMass.setEnabled(true);
-			numOfLowMassParticule.setEnabled(true);
-			lowMassParticuleMass.setEnabled(true);
-			lowMassDensity.setEnabled(true);
-			gasDistribution.setEnabled(true);
-			darkMatterMass.setEnabled(true);
-			darkMatterDensity.setEnabled(true);
-			demiDistanceBetweenGalaxiesX.setEnabled(true);
-			demiDistanceBetweenGalaxiesY.setEnabled(true);
-			demiDistanceBetweenGalaxiesZ.setEnabled(true);
-			staticDarkMatter.setEnabled(true);
-			break;
-		case 5:
-			// TypeOfUnivers.PlanetariesGenesis;
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			numberOfObjects.setEnabled(true);
-			densiteMin.setEnabled(true);
-			nebulaRadius.setEnabled(true);
-			massObjectMin.setEnabled(true);
-			massObjectMax.setEnabled(true);
-			matterDistribution.setEnabled(true);
-			negligeableMass.setEnabled(true);
-			numOfLowMassParticule.setEnabled(true);
-			lowMassParticuleMass.setEnabled(true);
-			lowMassDensity.setEnabled(true);
-			gasDistribution.setEnabled(true);
-			darkMatterMass.setEnabled(true);
-			darkMatterDensity.setEnabled(true);
-			darkMatterMass.setEnabled(true);
-			darkMatterDensity.setEnabled(true);
-			break;
-		case 6:
-			// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			numberOfObjects.setEnabled(true);
-			densiteMin.setEnabled(true);
-			nebulaRadius.setEnabled(true);
-			massObjectMin.setEnabled(true);
-			massObjectMax.setEnabled(true);
-			matterDistribution.setEnabled(true);
-			darkMatterMass.setEnabled(true);
-			negligeableMass.setEnabled(true);
-			numOfLowMassParticule.setEnabled(true);
-			lowMassParticuleMass.setEnabled(true);
-			lowMassDensity.setEnabled(true);
-			gasDistribution.setEnabled(true);
-			darkMatterDensity.setEnabled(true);
-			darkMatterDistribution.setEnabled(true);
-			ellipseRatio.setEnabled(false);
-			ellipseShiftRatio.setEnabled(false);
-			nbArms.setEnabled(false);
-			staticDarkMatter.setEnabled(true);
-			darkMatterXRatio.setEnabled(true);
-			darkMatterYRatio.setEnabled(true);
-			darkMatterZRatio.setEnabled(true);
-			break;
-		case 7:
-			// TypeOfUnivers.RandomStaticSphericalUnivers
-			manageImpact.setEnabled(true);
-			timeFactor.setEnabled(true);
-			scala.setEnabled(true);
-			numberOfObjects.setEnabled(true);
-			densiteMin.setEnabled(true);
-			nebulaRadius.setEnabled(true);
-			massObjectMin.setEnabled(true);
-			massObjectMax.setEnabled(true);
-			matterDistribution.setEnabled(true);
-			darkMatterMass.setEnabled(true);
-			negligeableMass.setEnabled(true);
-			numOfLowMassParticule.setEnabled(true);
-			lowMassParticuleMass.setEnabled(true);
-			lowMassDensity.setEnabled(true);
-			gasDistribution.setEnabled(true);
-			darkMatterDensity.setEnabled(true);
-			darkMatterDistribution.setEnabled(true);
-			ellipseRatio.setEnabled(false);
-			ellipseShiftRatio.setEnabled(false);
-			nbArms.setEnabled(false);
-			staticDarkMatter.setEnabled(true);
-			darkMatterXRatio.setEnabled(true);
-			darkMatterYRatio.setEnabled(true);
-			darkMatterZRatio.setEnabled(true);
-			break;
-		}
+		};
 	}
 }
