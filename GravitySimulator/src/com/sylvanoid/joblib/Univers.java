@@ -516,7 +516,7 @@ public class Univers {
 				m.getSpeed().sub(dm);
 			}
 			/* Try to modify viscosity and density with presure */
-			//m.setPresure(pre);
+			// m.setPresure(pre);
 		}
 	}
 
@@ -940,18 +940,19 @@ public class Univers {
 	}
 
 	private void createPlanetaryRandom() {
-		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), parameters.getNebulaRadius() * 0.1,
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.2),
-				parameters.getMatterDistribution(),
-				parameters.getGasDistribution(),
-				parameters.getMatterViscosity(), parameters.getGasViscosity());
 		Matter m1 = new Matter(parameters, new Vector3d(
 				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
 				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
 				new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
 				parameters.getDarkMatterDensity(), TypeOfObject.Matter,
 				parameters.getMatterViscosity());
+		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
+				new Vector3d(0, 0, 1),
+				m1.getRayon() * parameters.getMatterRendererExtender(),
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.2),
+				parameters.getMatterDistribution(),
+				parameters.getGasDistribution(),
+				parameters.getMatterViscosity(), parameters.getGasViscosity());
 		listMatter.add(m1);
 		mass += m1.getMass();
 		visibleMass += m1.getMass();

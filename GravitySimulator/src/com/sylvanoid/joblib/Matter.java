@@ -508,21 +508,7 @@ public class Matter implements Serializable {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
 			double orbitalSpeedValue = net.jafama.FastMath
 					.sqrt((HelperVariable.G * innerMass) / distance);
-
-			Vector3d accel = HelperVector.acceleration(point, gPoint,
-					orbitalSpeedValue);
-			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-					net.jafama.FastMath.signum(axis.x) * net.jafama.FastMath.PI
-							/ 2), net.jafama.FastMath.PI / 2) : accel;
-			accel = axis.y != 0 ? HelperVector.rotate(accel, new Vector3d(0,
-					net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI
-							/ 2, 0), net.jafama.FastMath.signum(axis.y)
-					* net.jafama.FastMath.PI / 2) : accel;
-			accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-					net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI
-							/ 2), net.jafama.FastMath.signum(axis.z)
-					* net.jafama.FastMath.PI / 2) : accel;
-			speed.add(accel);
+			orbitalCircularSpeed(gPoint, axis, orbitalSpeedValue);
 		}
 	}
 
@@ -534,22 +520,18 @@ public class Matter implements Serializable {
 					.sqrt(HelperVariable.G
 							* net.jafama.FastMath.pow2(totalMass)
 							/ ((mass + totalMass) * distance));
-			Vector3d accel = HelperVector.acceleration(point, gPoint,
-					orbitalSpeedValue);
-			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(
-					net.jafama.FastMath.signum(axis.x), 0, 0),
-					net.jafama.FastMath.PI / 2) : accel;
-			accel = axis.y != 0 ? HelperVector.rotate(accel, new Vector3d(0,
-					net.jafama.FastMath.signum(axis.y), 0),
-					net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI
-							/ 2) : accel;
-			accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-					net.jafama.FastMath.signum(axis.z)),
-					net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI
-							/ 2) : accel;
-
-			speed.add(accel);
+			orbitalCircularSpeed(gPoint, axis, orbitalSpeedValue);
 		}
+	}
+
+	private void orbitalCircularSpeed(Vector3d gPoint, Vector3d axis,
+			double orbitalSpeedValue) {
+		Vector3d accel = HelperVector.acceleration(point, gPoint,1);
+		Vector3d cross = new Vector3d();
+		cross.cross(axis, accel);
+		cross.normalize();
+		cross.scale(orbitalSpeedValue);
+		speed.add(cross);
 	}
 
 	public void orbitalEllipticSpeed(double totalMass, Vector3d gPoint,
