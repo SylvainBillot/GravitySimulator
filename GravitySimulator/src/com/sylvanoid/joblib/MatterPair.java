@@ -77,9 +77,15 @@ public class MatterPair implements Comparable<MatterPair> {
 		radialSpeed.sub(m1.getPoint());
 		radialSpeed.normalize();
 		double u = relativeSpeed.dot(radialSpeed);
+		/*
 		double delta = m1.getParameters().getTimeFactor()
 				* (1 - distanceByradius())
 				* (theta * u + beta * net.jafama.FastMath.pow2(u));
+				* */
+
+		double delta = (1 - distanceByradius())
+				* (theta * u + beta * net.jafama.FastMath.pow2(u));
+
 		Vector3d radialSpeedM1 = new Vector3d(radialSpeed);
 		radialSpeedM1.scale(delta * m2.getMass()
 				/ (m1.getMass() + m2.getMass()));

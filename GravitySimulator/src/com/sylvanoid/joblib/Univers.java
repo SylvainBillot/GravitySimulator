@@ -250,7 +250,7 @@ public class Univers {
 			computeBarnesHutGravity();
 
 			// Experiment infinite univers
-			// removeAccelerationToCentroid();
+			//removeAccelerationToCentroid();
 
 			// Change Speed
 			changeSpeed();
@@ -271,7 +271,7 @@ public class Univers {
 					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
 				computeBarnesHutCollision();
 				doubleDensityRelaxation();
-				// adjustSpeedFromPositions();
+				//adjustSpeedFromPositions();
 			}
 
 			parameters.setTimeFactor(parameters.getTimeFactor()
@@ -949,7 +949,7 @@ public class Univers {
 		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
 				new Vector3d(0, 0, 1),
 				m1.getRayon() * parameters.getMatterRendererExtender(),
-				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.2),
+				parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
 				parameters.getMatterDistribution(),
 				parameters.getGasDistribution(),
 				parameters.getMatterViscosity(), parameters.getGasViscosity());
