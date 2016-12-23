@@ -71,6 +71,15 @@ public class GUIParam extends JDialog {
 	private DecimalFormat fdpc = new DecimalFormat("0.####%");
 
 	public GUIParam(GUIProgram mother) {
+		builder(mother);
+		enableDisableParam();
+	}
+
+	public GUIProgram getMother() {
+		return mother;
+	}
+
+	private void builder(GUIProgram mother) {
 		this.me = this;
 		this.mother = mother;
 		setTitle("Parameters");
@@ -323,12 +332,6 @@ public class GUIParam extends JDialog {
 		JButton btnOK = new JButton("OK");
 		btnOK.addActionListener(okAction());
 		add(btnOK);
-
-		enableDisableParam();
-	}
-
-	public GUIProgram getMother() {
-		return mother;
 	}
 
 	private void enableDisableParam() {
@@ -541,12 +544,12 @@ public class GUIParam extends JDialog {
 		}
 	}
 
-
 	private ActionListener chooseTypeOfUnivers() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switch (typeOfUnivers.getSelectedIndex()) {
 				case 0:
+					// TypeOfUnivers.Planetary;
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.Planetary);
 					manageImpact.setSelected(false);
@@ -577,6 +580,7 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergyRatio.setValue(1);
 					break;
 				case 1:
+					// TypeOfUnivers.PlanetaryRandom;
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.PlanetaryRandom);
 					manageImpact.setSelected(true);
@@ -714,9 +718,12 @@ public class GUIParam extends JDialog {
 					darkMatterMass.setValue(2E40);
 					darkMatterDensity.setValue(1E-24);
 					darkMatterDistribution.setValue(5);
-					demiDistanceBetweenGalaxiesX.setValue(HelperVariable.PC * 5E4);
-					demiDistanceBetweenGalaxiesY.setValue(HelperVariable.PC * 2E4);
-					demiDistanceBetweenGalaxiesZ.setValue(HelperVariable.PC * 2E4);
+					demiDistanceBetweenGalaxiesX
+							.setValue(HelperVariable.PC * 5E4);
+					demiDistanceBetweenGalaxiesY
+							.setValue(HelperVariable.PC * 2E4);
+					demiDistanceBetweenGalaxiesZ
+							.setValue(HelperVariable.PC * 2E4);
 					ellipseRatio.setValue(0.15);
 					ellipseShiftRatio.setValue(1);
 					nbArms.setValue(3);
@@ -733,15 +740,15 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergy.setSelected(false);
 					recoverFrictionEnergyRatio.setValue(1);
 					break;
-				case 5:
+				case 5: //Planetary genesis
 					me.mother.getParameters().setTypeOfUnivers(
 							TypeOfUnivers.PlanetariesGenesis);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEDAY);
 					scala.setValue(5E-10);
 					typeOfImpact.setSelectedIndex(0);
-					numberOfObjects.setValue(1000);
-					densiteMin.setValue(1);
+					numberOfObjects.setValue(10000);
+					densiteMin.setValue(1E-2);
 					nebulaRadius.setValue(HelperVariable.UA * 3);
 					massObjectMin.setValue(HelperVariable.M / 1000000);
 					massObjectMax.setValue(HelperVariable.M / 100000);

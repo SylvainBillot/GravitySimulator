@@ -72,6 +72,71 @@ public class GUIProgram extends JFrame {
 	}
 
 	public GUIProgram() {
+		builder();
+		animator = new FPSAnimator(gljpanel, HelperVariable.MAXFPS, true);
+		animator.start();
+	}
+
+	public FPSAnimator getAnimator() {
+		return animator;
+	}
+
+	public void setUnivers(Univers univers) {
+		this.univers = univers;
+	}
+
+	public Univers getUnivers() {
+		return univers;
+	}
+
+	public LinkedList<List<Vector3d[]>> getForTrace() {
+		return forTrace;
+	}
+
+	public Parameters getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Parameters parameters) {
+		this.parameters = parameters;
+	}
+
+	public GLJPanel getGljpanel() {
+		return gljpanel;
+	}
+
+	public void setGljpanel(GLJPanel gljpanel) {
+		this.gljpanel = gljpanel;
+	}
+
+	public FPSAnimator getAminator() {
+		return animator;
+	}
+
+	public void reset() {
+		forTrace = new LinkedList<List<Vector3d[]>>();
+		animator.stop();
+		parameters.setElapsedTime(0);
+		parameters.setEyes(new Vector3d(0, 0, 900));
+		parameters.setLookAt(new Vector3d(0, 0, -900));
+		univers = new Univers(parameters);
+		renderer.reload(this);
+		animator.start();
+	}
+
+	public SequenceEncoder getOut() {
+		return out;
+	}
+
+	public BufferedWriter getDatafile() {
+		return dataFile;
+	}
+
+	public BufferedReader getDataInputfile() {
+		return dataFileInput;
+	}
+
+	private void builder() {
 		this.me = this;
 		parameters = new Parameters();
 		univers = new Univers(parameters);
@@ -92,9 +157,15 @@ public class GUIProgram extends JFrame {
 		menuItemExport.addActionListener(menuExport());
 		JMenuItem menuItemImport = new JMenuItem("Import univers ...");
 		menuItemImport.addActionListener(menuImport());
+		JMenuItem menuItemExportParams = new JMenuItem("Export parameters ...");
+		menuItemExportParams.addActionListener(menuExportParams());
+		JMenuItem menuItemImportParams = new JMenuItem("Import parameters ...");
+		menuItemImportParams.addActionListener(menuImportParams());
 		menuFichier.add(menuItemBaseParam);
 		menuFichier.add(menuItemExport);
 		menuFichier.add(menuItemImport);
+		menuFichier.add(menuItemExportParams);
+		menuFichier.add(menuItemImportParams);
 
 		JMenu menuProcess = new JMenu("Process");
 		menuBar.add(menuProcess);
@@ -164,7 +235,8 @@ public class GUIProgram extends JFrame {
 		JMenu menuData = new JMenu("Data (Experimental)");
 		final JCheckBoxMenuItem menuItemExportData = new JCheckBoxMenuItem(
 				"Export to ...", parameters.isExportData());
-		menuItemExportData.addActionListener(menuExportData(menuItemExportData));
+		menuItemExportData
+				.addActionListener(menuExportData(menuItemExportData));
 
 		final JCheckBoxMenuItem menuItemPlayData = new JCheckBoxMenuItem(
 				"Play data ...", parameters.isPlayData());
@@ -197,67 +269,6 @@ public class GUIProgram extends JFrame {
 		gljpanel.addMouseMotionListener(renderer);
 		gljpanel.addMouseWheelListener(renderer);
 		me.add(gljpanel, BorderLayout.CENTER);
-		animator = new FPSAnimator(gljpanel, HelperVariable.MAXFPS, true);
-		animator.start();
-	}
-
-	public FPSAnimator getAnimator() {
-		return animator;
-	}
-
-	public void setUnivers(Univers univers) {
-		this.univers = univers;
-	}
-
-	public Univers getUnivers() {
-		return univers;
-	}
-
-	public LinkedList<List<Vector3d[]>> getForTrace() {
-		return forTrace;
-	}
-
-	public Parameters getParameters() {
-		return parameters;
-	}
-
-	public void setParameters(Parameters parameters) {
-		this.parameters = parameters;
-	}
-
-	public GLJPanel getGljpanel() {
-		return gljpanel;
-	}
-
-	public void setGljpanel(GLJPanel gljpanel) {
-		this.gljpanel = gljpanel;
-	}
-
-	public FPSAnimator getAminator() {
-		return animator;
-	}
-
-	public void reset() {
-		forTrace = new LinkedList<List<Vector3d[]>>();
-		animator.stop();
-		parameters.setElapsedTime(0);
-		parameters.setEyes(new Vector3d(0, 0, 900));
-		parameters.setLookAt(new Vector3d(0, 0, -900));
-		univers = new Univers(parameters);
-		renderer.reload(this);
-		animator.start();
-	}
-
-	public SequenceEncoder getOut() {
-		return out;
-	}
-
-	public BufferedWriter getDatafile() {
-		return dataFile;
-	}
-
-	public BufferedReader getDataInputfile() {
-		return dataFileInput;
 	}
 
 	static private Runnable onStart() {
@@ -375,6 +386,69 @@ public class GUIProgram extends JFrame {
 			}
 		};
 	}
+
+	private ActionListener menuExportParams() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+				try {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setDialogTitle("Specify a file to save");
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new XmlFilter());
+					fileChooser.setSelectedFile(new File("parameters.xml"));
+					int userSelection = fileChooser.showSaveDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						OutputStream output = new FileOutputStream(fileChooser
+								.getSelectedFile().getAbsolutePath());
+						JAXBContext context = JAXBContext
+								.newInstance(Parameters.class);
+						Marshaller m = context.createMarshaller();
+						m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+						m.marshal(parameters, output);
+						output.close();
+					}
+				} catch (JAXBException | IOException e1) {
+					e1.printStackTrace();
+				}
+				animator.start();
+			}
+		};
+	}
+
+	private ActionListener menuImportParams() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+				try {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new XmlFilter());
+					fileChooser.setDialogTitle("Specify a file to load");
+					int userSelection = fileChooser.showOpenDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						File file = new File(fileChooser.getSelectedFile()
+								.getAbsolutePath());
+						JAXBContext jaxbContext = JAXBContext
+								.newInstance(Univers.class);
+						Unmarshaller jaxbUnmarshaller = jaxbContext
+								.createUnmarshaller();
+						parameters = (Parameters) jaxbUnmarshaller.unmarshal(file);
+						renderer.reload(me);
+					}
+				} catch (JAXBException e1) {
+					e1.printStackTrace();
+				}
+				GUIParam guiParam = new GUIParam(me);
+				guiParam.setVisible(true);
+			}
+		};
+	}
+
 
 	private ActionListener menuStart() {
 		return new ActionListener() {
@@ -548,7 +622,8 @@ public class GUIProgram extends JFrame {
 		};
 	}
 
-	private ActionListener menuExportData(final JCheckBoxMenuItem menuItemExportData) {
+	private ActionListener menuExportData(
+			final JCheckBoxMenuItem menuItemExportData) {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -642,7 +717,8 @@ public class GUIProgram extends JFrame {
 		};
 	}
 
-	private ActionListener menuRecord(final JCheckBoxMenuItem menuItemExportVideo) {
+	private ActionListener menuRecord(
+			final JCheckBoxMenuItem menuItemExportVideo) {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

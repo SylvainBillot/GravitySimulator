@@ -516,7 +516,7 @@ public class Univers {
 				m.getSpeed().sub(dm);
 			}
 			/* Try to modify viscosity and density with presure */
-			// m.setPresure(pre);
+			//m.setPresure(pre);
 		}
 	}
 
