@@ -503,30 +503,26 @@ public class Matter implements Serializable {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
 
-	public void orbitalCircularSpeed(Vector3d gPoint, double distance,
-			double innerMass, Vector3d axis) {
-		if (!parameters.isStaticDarkMatter() || !isDark()) {
-			double orbitalSpeedValue = net.jafama.FastMath
-					.sqrt((HelperVariable.G * innerMass) / distance);
-			orbitalCircularSpeed(gPoint, axis, orbitalSpeedValue);
-		}
-	}
-
-	private void orbitalCircularSpeed(double totalMass, Vector3d gPoint,
+	private void orbitalCircularSpeed(double otherMass, Vector3d gPoint,
 			Vector3d axis) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
 			double distance = new Point3d(point).distance(new Point3d(gPoint));
+			orbitalCircularSpeed(gPoint, distance, otherMass, axis);
+		}
+	}
+
+	public void orbitalCircularSpeed(Vector3d gPoint, double distance,
+			double otherMass, Vector3d axis) {
+		if (!parameters.isStaticDarkMatter() || !isDark()) {
 			double orbitalSpeedValue = net.jafama.FastMath
-					.sqrt(HelperVariable.G
-							* net.jafama.FastMath.pow2(totalMass)
-							/ ((mass + totalMass) * distance));
+					.sqrt((HelperVariable.G * otherMass) / distance);
 			orbitalCircularSpeed(gPoint, axis, orbitalSpeedValue);
 		}
 	}
 
 	private void orbitalCircularSpeed(Vector3d gPoint, Vector3d axis,
 			double orbitalSpeedValue) {
-		Vector3d accel = HelperVector.acceleration(point, gPoint,1);
+		Vector3d accel = HelperVector.acceleration(point, gPoint, 1);
 		Vector3d cross = new Vector3d();
 		cross.cross(axis, accel);
 		cross.normalize();

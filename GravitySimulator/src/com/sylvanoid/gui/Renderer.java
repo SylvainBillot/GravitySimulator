@@ -25,7 +25,7 @@ import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUquadric;
 import javax.vecmath.Vector3d;
 
-import org.jcodec.api.SequenceEncoder;
+import org.jcodec.api.awt.SequenceEncoder;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
 import com.sylvanoid.common.HelperVariable;
@@ -95,6 +95,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			try {
 				out.encodeImage(img);
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

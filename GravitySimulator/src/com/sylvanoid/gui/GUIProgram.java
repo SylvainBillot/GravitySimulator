@@ -38,7 +38,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.jcodec.api.SequenceEncoder;
+import org.jcodec.api.awt.SequenceEncoder;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.sylvanoid.common.DataFilter;
@@ -731,15 +731,15 @@ public class GUIProgram extends JFrame {
 								.setFileSelectionMode(JFileChooser.FILES_ONLY);
 						fileChooser.setMultiSelectionEnabled(false);
 						fileChooser.setFileFilter(new MpejFilter());
-						fileChooser.setSelectedFile(new File("out.mpeg"));
+						fileChooser.setSelectedFile(new File("out.mp4"));
 						int userSelection = fileChooser.showSaveDialog(me);
 						if (userSelection == JFileChooser.APPROVE_OPTION) {
 							if (!fileChooser.getSelectedFile()
 									.getAbsolutePath().toLowerCase()
-									.endsWith(".mpeg")) {
+									.endsWith(".mp4")) {
 								out = new SequenceEncoder(new File(fileChooser
 										.getSelectedFile().getAbsolutePath()
-										+ ".mpeg"));
+										+ ".mp4"));
 
 							} else {
 								out = new SequenceEncoder(new File(fileChooser
