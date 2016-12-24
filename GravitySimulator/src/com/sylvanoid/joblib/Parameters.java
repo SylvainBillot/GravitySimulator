@@ -17,81 +17,81 @@ public class Parameters implements Serializable {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 1L;
-	private static TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
-	private static double elapsedTime = 0;
-	private static double timeFactor = 6000;
-	private static double darkMatterMass = 1E12;
-	private static double darkMatterDensity = 1E10;
-	private static boolean manageImpact = false;
-	private static boolean exportToVideo = false;
-	private static TypeOfImpact typeOfImpact = TypeOfImpact.Fusion;
-	private static double density = 100;
-	private static int numberOfObjects = 1000;
-	private static double nebulaRadius = HelperVariable.UA * 10;
-	private static double massObjectMin = 10000;
-	private static double massObjectMax = 100000;
-	private static Vector3d eyes = new Vector3d(0, 0, 900);
-	private static Vector3d lookAt = new Vector3d(0.001, 0, -900);
-	private static boolean followMaxMass = false;
-	private static boolean followCentroid = false;
-	private static boolean permanentRotationy = false;
-	private static double scala = 1E-9;
-	private static boolean showAxis = true;
-	private static boolean showgrid = false;
-	private static boolean showInfo = true;
-	private static boolean showMatter = true;
-	private static boolean showGas = true;
-	private static boolean showDarkMatter = false;
-	private static Matter objectToFollow = null;
-	private static boolean showTrace = false;
-	private static int numOfCompute = 0;
-	private static int numOfAccelCompute = 0;
-	private static double cycleComputeTime = 0;
-	private static double limitComputeTime = 0;
-	private static double moveComputeTime = 0;
-	private static double barnesHuttComputeTime = 0;
-	private static double klength = 0;
-	private static double plength = 0;
-	private static double ellipseRatio = 0.75;
-	private static double ellipseShiftRatio = 3;
-	private static double negligeableMass = 0;
-	private static int numOfLowMassParticule = 0;
-	private static double lowMassParticuleMass = 1;
-	private static double lowMassDensity = 1;
-	private static Vector3d demiDistanceBetweenGalaxies = new Vector3d(
+	public static final long serialVersionUID = 1L;
+	public static TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
+	public static double elapsedTime = 0;
+	public static double timeFactor = 6000;
+	public static double darkMatterMass = 1E12;
+	public static double darkMatterDensity = 1E10;
+	public static boolean manageImpact = false;
+	public static boolean exportToVideo = false;
+	public static TypeOfImpact typeOfImpact = TypeOfImpact.Fusion;
+	public static double density = 100;
+	public static int numberOfObjects = 1000;
+	public static double nebulaRadius = HelperVariable.UA * 10;
+	public static double massObjectMin = 10000;
+	public static double massObjectMax = 100000;
+	public static Vector3d eyes = new Vector3d(0, 0, 900);
+	public static Vector3d lookAt = new Vector3d(0.001, 0, -900);
+	public static boolean followMaxMass = false;
+	public static boolean followCentroid = false;
+	public static boolean permanentRotationy = false;
+	public static double scala = 1E-9;
+	public static boolean showAxis = true;
+	public static boolean showgrid = false;
+	public static boolean showInfo = true;
+	public static boolean showMatter = true;
+	public static boolean showGas = true;
+	public static boolean showDarkMatter = false;
+	public static Matter objectToFollow = null;
+	public static boolean showTrace = false;
+	public static int numOfCompute = 0;
+	public static int numOfAccelCompute = 0;
+	public static double cycleComputeTime = 0;
+	public static double limitComputeTime = 0;
+	public static double moveComputeTime = 0;
+	public static double barnesHuttComputeTime = 0;
+	public static double klength = 0;
+	public static double plength = 0;
+	public static double ellipseRatio = 0.75;
+	public static double ellipseShiftRatio = 3;
+	public static double negligeableMass = 0;
+	public static int numOfLowMassParticule = 0;
+	public static double lowMassParticuleMass = 1;
+	public static double lowMassDensity = 1;
+	public static Vector3d demiDistanceBetweenGalaxies = new Vector3d(
 			200000 * HelperVariable.PC, 0, 0);
-	private static int nbARms = 3;
-	private static boolean exportData = false;
-	private static boolean playData = false;
-	private static boolean parallelization = false;
-	private static boolean staticDarkMatter = true;
-	private static double matterDistribution = 5;
-	private static double gasDistribution = 1;
-	private static double darkMatterDistribution = 5;
-	private static double darkMatterNubulaFactor = 5;
-	private static Vector3d darkMatterXYZRatio = new Vector3d(1,1,1);
+	public static int nbARms = 3;
+	public static boolean exportData = false;
+	public static boolean playData = false;
+	public static boolean parallelization = false;
+	public static boolean staticDarkMatter = true;
+	public static double matterDistribution = 5;
+	public static double gasDistribution = 1;
+	public static double darkMatterDistribution = 5;
+	public static double darkMatterNubulaFactor = 5;
+	public static Vector3d darkMatterXYZRatio = new Vector3d(1,1,1);
 
-	private static double matterViscosity = 1;
-	private static double gasViscosity = 1;
-	private static double darkMatterViscosity = 0;
+	public static double matterViscosity = 1;
+	public static double gasViscosity = 1;
+	public static double darkMatterViscosity = 0;
 
-	private static double collisionDistanceRatio = 1;
+	public static double collisionDistanceRatio = 1;
 
-	private static double viscoElasticity = 1;
-	private static double viscoElasticityNear = 1;
-	private static double pressureZero = 0;
+	public static double viscoElasticity = 1;
+	public static double viscoElasticityNear = 1;
+	public static double pressureZero = 0;
 
-	private static boolean recoverFrictionEnegy = false;
-	private static double recoverFrictionEnergyRatio = 0.5;
+	public static boolean recoverFrictionEnegy = false;
+	public static double recoverFrictionEnergyRatio = 0.5;
 
-	private static boolean expansionUnivers = true;
-	private static double timeMultiplicator = 1.000;
+	public static boolean expansionUnivers = true;
+	public static double timeMultiplicator = 1.000;
 
 
-	private static double matterRendererExtender = 3;
-	private static double gasRendererExtender = 3;
-	private static double darkMatterRendererExtender = 5;
+	public static double matterRendererExtender = 3;
+	public static double gasRendererExtender = 3;
+	public static double darkMatterRendererExtender = 5;
 
 	public Parameters() {
 
