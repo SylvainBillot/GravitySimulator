@@ -18,80 +18,80 @@ public class Parameters implements Serializable {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
-	private double elapsedTime = 0;
-	private double timeFactor = 6000;
-	private double darkMatterMass = 1E12;
-	private double darkMatterDensity = 1E10;
-	private boolean manageImpact = false;
-	private boolean exportToVideo = false;
-	private TypeOfImpact typeOfImpact = TypeOfImpact.Fusion;
-	private double density = 100;
-	private int numberOfObjects = 1000;
-	private double nebulaRadius = HelperVariable.UA * 10;
-	private double massObjectMin = 10000;
-	private double massObjectMax = 100000;
-	private Vector3d eyes = new Vector3d(0, 0, 900);
-	private Vector3d lookAt = new Vector3d(0.001, 0, -900);
-	private boolean followMaxMass = false;
-	private boolean followCentroid = false;
-	private boolean permanentRotationy = false;
-	private double scala = 1E-9;
-	private boolean showAxis = true;
-	private boolean showgrid = false;
-	private boolean showInfo = true;
-	private boolean showMatter = true;
-	private boolean showGas = true;
-	private boolean showDarkMatter = false;
-	private Matter objectToFollow = null;
-	private boolean showTrace = false;
-	private int numOfCompute = 0;
-	private int numOfAccelCompute = 0;
-	private double cycleComputeTime = 0;
-	private double limitComputeTime = 0;
-	private double moveComputeTime = 0;
-	private double barnesHuttComputeTime = 0;
-	private double klength = 0;
-	private double plength = 0;
-	private double ellipseRatio = 0.75;
-	private double ellipseShiftRatio = 3;
-	private double negligeableMass = 0;
-	private int numOfLowMassParticule = 0;
-	private double lowMassParticuleMass = 1;
-	private double lowMassDensity = 1;
-	private Vector3d demiDistanceBetweenGalaxies = new Vector3d(
+	private static TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
+	private static double elapsedTime = 0;
+	private static double timeFactor = 6000;
+	private static double darkMatterMass = 1E12;
+	private static double darkMatterDensity = 1E10;
+	private static boolean manageImpact = false;
+	private static boolean exportToVideo = false;
+	private static TypeOfImpact typeOfImpact = TypeOfImpact.Fusion;
+	private static double density = 100;
+	private static int numberOfObjects = 1000;
+	private static double nebulaRadius = HelperVariable.UA * 10;
+	private static double massObjectMin = 10000;
+	private static double massObjectMax = 100000;
+	private static Vector3d eyes = new Vector3d(0, 0, 900);
+	private static Vector3d lookAt = new Vector3d(0.001, 0, -900);
+	private static boolean followMaxMass = false;
+	private static boolean followCentroid = false;
+	private static boolean permanentRotationy = false;
+	private static double scala = 1E-9;
+	private static boolean showAxis = true;
+	private static boolean showgrid = false;
+	private static boolean showInfo = true;
+	private static boolean showMatter = true;
+	private static boolean showGas = true;
+	private static boolean showDarkMatter = false;
+	private static Matter objectToFollow = null;
+	private static boolean showTrace = false;
+	private static int numOfCompute = 0;
+	private static int numOfAccelCompute = 0;
+	private static double cycleComputeTime = 0;
+	private static double limitComputeTime = 0;
+	private static double moveComputeTime = 0;
+	private static double barnesHuttComputeTime = 0;
+	private static double klength = 0;
+	private static double plength = 0;
+	private static double ellipseRatio = 0.75;
+	private static double ellipseShiftRatio = 3;
+	private static double negligeableMass = 0;
+	private static int numOfLowMassParticule = 0;
+	private static double lowMassParticuleMass = 1;
+	private static double lowMassDensity = 1;
+	private static Vector3d demiDistanceBetweenGalaxies = new Vector3d(
 			200000 * HelperVariable.PC, 0, 0);
-	private int nbARms = 3;
-	private boolean exportData = false;
-	private boolean playData = false;
-	private boolean parallelization = false;
-	private boolean staticDarkMatter = true;
-	private double matterDistribution = 5;
-	private double gasDistribution = 1;
-	private double darkMatterDistribution = 5;
-	private double darkMatterNubulaFactor = 5;
-	private Vector3d darkMatterXYZRatio = new Vector3d(1,1,1);
+	private static int nbARms = 3;
+	private static boolean exportData = false;
+	private static boolean playData = false;
+	private static boolean parallelization = false;
+	private static boolean staticDarkMatter = true;
+	private static double matterDistribution = 5;
+	private static double gasDistribution = 1;
+	private static double darkMatterDistribution = 5;
+	private static double darkMatterNubulaFactor = 5;
+	private static Vector3d darkMatterXYZRatio = new Vector3d(1,1,1);
 
-	private double matterViscosity = 1;
-	private double gasViscosity = 1;
-	private double darkMatterViscosity = 0;
+	private static double matterViscosity = 1;
+	private static double gasViscosity = 1;
+	private static double darkMatterViscosity = 0;
 
-	private double collisionDistanceRatio = 1;
+	private static double collisionDistanceRatio = 1;
 
-	private double viscoElasticity = 1;
-	private double viscoElasticityNear = 1;
-	private double pressureZero = 0;
+	private static double viscoElasticity = 1;
+	private static double viscoElasticityNear = 1;
+	private static double pressureZero = 0;
 
-	private boolean recoverFrictionEnegy = false;
-	private double recoverFrictionEnergyRatio = 0.5;
+	private static boolean recoverFrictionEnegy = false;
+	private static double recoverFrictionEnergyRatio = 0.5;
 
-	private boolean expansionUnivers = true;
-	private double timeMultiplicator = 1.000;
+	private static boolean expansionUnivers = true;
+	private static double timeMultiplicator = 1.000;
 
 
-	private double matterRendererExtender = 3;
-	private double gasRendererExtender = 3;
-	private double darkMatterRendererExtender = 5;
+	private static double matterRendererExtender = 3;
+	private static double gasRendererExtender = 3;
+	private static double darkMatterRendererExtender = 5;
 
 	public Parameters() {
 
@@ -102,7 +102,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setElapsedTime(double elapsedTime) {
-		this.elapsedTime = elapsedTime;
+		Parameters.elapsedTime = elapsedTime;
 	}
 
 	public double getTimeFactor() {
@@ -110,7 +110,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setTimeFactor(double timeFactor) {
-		this.timeFactor = timeFactor;
+		Parameters.timeFactor = timeFactor;
 	}
 
 	public double getDarkMatterDensity() {
@@ -118,7 +118,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setDarkMatterDensity(double darkMatterDensity) {
-		this.darkMatterDensity = darkMatterDensity;
+		Parameters.darkMatterDensity = darkMatterDensity;
 	}
 
 	public double getDarkMatterMass() {
@@ -126,7 +126,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setDarkMatterMass(double darkMatterMass) {
-		this.darkMatterMass = darkMatterMass;
+		Parameters.darkMatterMass = darkMatterMass;
 	}
 
 	public boolean isManageImpact() {
@@ -134,7 +134,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setManageImpact(boolean manageImpact) {
-		this.manageImpact = manageImpact;
+		Parameters.manageImpact = manageImpact;
 	}
 
 	public TypeOfUnivers getTypeOfUnivers() {
@@ -142,7 +142,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setTypeOfUnivers(TypeOfUnivers typeOfUnivers) {
-		this.typeOfUnivers = typeOfUnivers;
+		Parameters.typeOfUnivers = typeOfUnivers;
 	}
 
 	public TypeOfImpact getTypeOfImpact() {
@@ -150,7 +150,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setTypeOfImpact(TypeOfImpact typeOfImpact) {
-		this.typeOfImpact = typeOfImpact;
+		Parameters.typeOfImpact = typeOfImpact;
 	}
 
 	public boolean isExportToVideo() {
@@ -158,7 +158,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setExportToVideo(boolean exportToVideo) {
-		this.exportToVideo = exportToVideo;
+		Parameters.exportToVideo = exportToVideo;
 	}
 
 	public double getDensity() {
@@ -166,7 +166,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setDensity(double density) {
-		this.density = density;
+		Parameters.density = density;
 	}
 
 	public int getNumberOfObjects() {
@@ -174,7 +174,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setNumberOfObjects(int numberOfObjects) {
-		this.numberOfObjects = numberOfObjects;
+		Parameters.numberOfObjects = numberOfObjects;
 	}
 
 	public double getNebulaRadius() {
@@ -182,7 +182,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setNebulaRadius(double nebulaRadius) {
-		this.nebulaRadius = nebulaRadius;
+		Parameters.nebulaRadius = nebulaRadius;
 	}
 
 	public double getMassObjectMin() {
@@ -190,7 +190,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setMassObjectMin(double massObjectMin) {
-		this.massObjectMin = massObjectMin;
+		Parameters.massObjectMin = massObjectMin;
 	}
 
 	public double getMassObjectMax() {
@@ -198,7 +198,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setMassObjectMax(double massObjectMax) {
-		this.massObjectMax = massObjectMax;
+		Parameters.massObjectMax = massObjectMax;
 	}
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
@@ -208,7 +208,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setEyes(Vector3d eyes) {
-		this.eyes = eyes;
+		Parameters.eyes = eyes;
 	}
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
@@ -218,7 +218,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setLookAt(Vector3d lookAt) {
-		this.lookAt = lookAt;
+		Parameters.lookAt = lookAt;
 	}
 
 	public boolean isFollowMaxMass() {
@@ -226,7 +226,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setFollowMaxMass(boolean followMaxMass) {
-		this.followMaxMass = followMaxMass;
+		Parameters.followMaxMass = followMaxMass;
 	}
 
 	public boolean isFollowCentroid() {
@@ -234,7 +234,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setFollowCentroid(boolean followCentroid) {
-		this.followCentroid = followCentroid;
+		Parameters.followCentroid = followCentroid;
 	}
 
 	public boolean isPermanentRotationy() {
@@ -242,7 +242,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setPermanentRotationy(boolean permanentRotationy) {
-		this.permanentRotationy = permanentRotationy;
+		Parameters.permanentRotationy = permanentRotationy;
 	}
 
 	public double getScala() {
@@ -250,7 +250,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setScala(double scala) {
-		this.scala = scala;
+		Parameters.scala = scala;
 	}
 
 	public boolean isShowAxis() {
@@ -258,7 +258,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setShowAxis(boolean showAxis) {
-		this.showAxis = showAxis;
+		Parameters.showAxis = showAxis;
 	}
 
 	public boolean isShowgrid() {
@@ -266,7 +266,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setShowgrid(boolean showgrid) {
-		this.showgrid = showgrid;
+		Parameters.showgrid = showgrid;
 	}
 
 	public boolean isShowInfo() {
@@ -274,7 +274,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setShowInfo(boolean showInfo) {
-		this.showInfo = showInfo;
+		Parameters.showInfo = showInfo;
 	}
 
 	public boolean isShowMatter() {
@@ -282,7 +282,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setShowMatter(boolean showMatter) {
-		this.showMatter = showMatter;
+		Parameters.showMatter = showMatter;
 	}
 
 	public boolean isShowGas() {
@@ -290,7 +290,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setShowGas(boolean showGas) {
-		this.showGas = showGas;
+		Parameters.showGas = showGas;
 	}
 
 	public boolean isShowDarkMatter() {
@@ -298,7 +298,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setShowDarkMatter(boolean showDarkMatter) {
-		this.showDarkMatter = showDarkMatter;
+		Parameters.showDarkMatter = showDarkMatter;
 	}
 
 	public Matter getObjectToFollow() {
@@ -306,7 +306,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setObjectToFollow(Matter objectToFollow) {
-		this.objectToFollow = objectToFollow;
+		Parameters.objectToFollow = objectToFollow;
 	}
 
 	public boolean isShowTrace() {
@@ -314,7 +314,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setShowTrace(boolean showTrace) {
-		this.showTrace = showTrace;
+		Parameters.showTrace = showTrace;
 	}
 
 	public int getNumOfCompute() {
@@ -322,7 +322,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setNumOfCompute(int numOfCompute) {
-		this.numOfCompute = numOfCompute;
+		Parameters.numOfCompute = numOfCompute;
 	}
 
 	public int getNumOfAccelCompute() {
@@ -330,7 +330,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setNumOfAccelCompute(int numOfAccelCompute) {
-		this.numOfAccelCompute = numOfAccelCompute;
+		Parameters.numOfAccelCompute = numOfAccelCompute;
 	}
 
 	public double getNegligeableMass() {
@@ -338,7 +338,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setNegligeableMass(double negligeableMass) {
-		this.negligeableMass = negligeableMass;
+		Parameters.negligeableMass = negligeableMass;
 	}
 
 	public double getCycleComputeTime() {
@@ -346,7 +346,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setCycleComputeTime(double cycleComputeTime) {
-		this.cycleComputeTime = cycleComputeTime;
+		Parameters.cycleComputeTime = cycleComputeTime;
 	}
 
 	public double getLimitComputeTime() {
@@ -354,7 +354,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setLimitComputeTime(double limitComputeTime) {
-		this.limitComputeTime = limitComputeTime;
+		Parameters.limitComputeTime = limitComputeTime;
 	}
 
 	public double getMoveComputeTime() {
@@ -362,7 +362,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setMoveComputeTime(double moveComputeTime) {
-		this.moveComputeTime = moveComputeTime;
+		Parameters.moveComputeTime = moveComputeTime;
 	}
 
 	public double getBarnesHuttComputeTime() {
@@ -370,7 +370,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setBarnesHuttComputeTime(double barnesHuttComputeTime) {
-		this.barnesHuttComputeTime = barnesHuttComputeTime;
+		Parameters.barnesHuttComputeTime = barnesHuttComputeTime;
 	}
 
 	public double getKlength() {
@@ -378,7 +378,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setKlength(double klength) {
-		this.klength = klength;
+		Parameters.klength = klength;
 	}
 
 	public double getPlength() {
@@ -386,7 +386,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setPlength(double plength) {
-		this.plength = plength;
+		Parameters.plength = plength;
 	}
 
 	public int getNumOfLowMassParticule() {
@@ -394,7 +394,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setNumOfLowMassParticule(int numOfLowMassParticule) {
-		this.numOfLowMassParticule = numOfLowMassParticule;
+		Parameters.numOfLowMassParticule = numOfLowMassParticule;
 	}
 
 	public double getLowMassParticuleMass() {
@@ -402,7 +402,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setLowMassParticuleMass(double lowMassParticuleMass) {
-		this.lowMassParticuleMass = lowMassParticuleMass;
+		Parameters.lowMassParticuleMass = lowMassParticuleMass;
 	}
 
 	public double getLowMassDensity() {
@@ -410,7 +410,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setLowMassDensity(double lowMassDensity) {
-		this.lowMassDensity = lowMassDensity;
+		Parameters.lowMassDensity = lowMassDensity;
 	}
 
 	public double getEllipseShiftRatio() {
@@ -418,7 +418,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setEllipseShiftRatio(double ellipseShiftRatio) {
-		this.ellipseShiftRatio = ellipseShiftRatio;
+		Parameters.ellipseShiftRatio = ellipseShiftRatio;
 	}
 
 	public double getEllipseRatio() {
@@ -426,7 +426,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setEllipseRatio(double ellipseRatio) {
-		this.ellipseRatio = ellipseRatio;
+		Parameters.ellipseRatio = ellipseRatio;
 	}
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
@@ -437,7 +437,7 @@ public class Parameters implements Serializable {
 
 	public void setDemiDistanceBetweenGalaxies(
 			Vector3d demiDistanceBetweenGalaxies) {
-		this.demiDistanceBetweenGalaxies = demiDistanceBetweenGalaxies;
+		Parameters.demiDistanceBetweenGalaxies = demiDistanceBetweenGalaxies;
 	}
 
 	public int getNbARms() {
@@ -445,7 +445,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setNbARms(int nbARms) {
-		this.nbARms = nbARms;
+		Parameters.nbARms = nbARms;
 	}
 
 	public boolean isExportData() {
@@ -453,7 +453,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setExportData(boolean exportData) {
-		this.exportData = exportData;
+		Parameters.exportData = exportData;
 	}
 
 	public boolean isPlayData() {
@@ -461,7 +461,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setPlayData(boolean playData) {
-		this.playData = playData;
+		Parameters.playData = playData;
 	}
 
 	public boolean isParallelization() {
@@ -469,7 +469,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setParallelization(boolean parallelization) {
-		this.parallelization = parallelization;
+		Parameters.parallelization = parallelization;
 	}
 
 	public boolean isStaticDarkMatter() {
@@ -477,7 +477,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setStaticDarkMatter(boolean staticDarkMatter) {
-		this.staticDarkMatter = staticDarkMatter;
+		Parameters.staticDarkMatter = staticDarkMatter;
 	}
 
 	public double getMatterDistribution() {
@@ -485,7 +485,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setMatterDistribution(double matterDistribution) {
-		this.matterDistribution = matterDistribution;
+		Parameters.matterDistribution = matterDistribution;
 	}
 
 	public double getGasDistribution() {
@@ -493,7 +493,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setGasDistribution(double gasDistribution) {
-		this.gasDistribution = gasDistribution;
+		Parameters.gasDistribution = gasDistribution;
 	}
 
 	public double getDarkMatterDistribution() {
@@ -501,7 +501,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setDarkMatterDistribution(double darkMatterDistribution) {
-		this.darkMatterDistribution = darkMatterDistribution;
+		Parameters.darkMatterDistribution = darkMatterDistribution;
 	}
 
 	public double getDarkMatterNubulaFactor() {
@@ -509,7 +509,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setDarkMatterNubulaFactor(double darkMatterNubulaFactor) {
-		this.darkMatterNubulaFactor = darkMatterNubulaFactor;
+		Parameters.darkMatterNubulaFactor = darkMatterNubulaFactor;
 	}
 
 	public double getMatterViscosity() {
@@ -517,7 +517,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setMatterViscosity(double matterViscosity) {
-		this.matterViscosity = matterViscosity;
+		Parameters.matterViscosity = matterViscosity;
 	}
 
 	public double getGasViscosity() {
@@ -525,7 +525,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setGasViscosity(double gasViscosity) {
-		this.gasViscosity = gasViscosity;
+		Parameters.gasViscosity = gasViscosity;
 	}
 
 	public double getDarkMatterViscosity() {
@@ -533,7 +533,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setDarkMatterViscosity(double darkMatterViscosity) {
-		this.darkMatterViscosity = darkMatterViscosity;
+		Parameters.darkMatterViscosity = darkMatterViscosity;
 	}
 
 	public double getCollisionDistanceRatio() {
@@ -541,7 +541,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setCollisionDistanceRatio(double collisionDistanceRatio) {
-		this.collisionDistanceRatio = collisionDistanceRatio;
+		Parameters.collisionDistanceRatio = collisionDistanceRatio;
 	}
 
 	public double getViscoElasticity() {
@@ -549,7 +549,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setViscoElasticity(double viscoElasticity) {
-		this.viscoElasticity = viscoElasticity;
+		Parameters.viscoElasticity = viscoElasticity;
 	}
 
 	public double getViscoElasticityNear() {
@@ -557,7 +557,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setViscoElasticityNear(double viscoElasticityNear) {
-		this.viscoElasticityNear = viscoElasticityNear;
+		Parameters.viscoElasticityNear = viscoElasticityNear;
 	}
 
 	public double getPressureZero() {
@@ -565,7 +565,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setPressureZero(double pressureZero) {
-		this.pressureZero = pressureZero;
+		Parameters.pressureZero = pressureZero;
 	}
 
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
@@ -575,7 +575,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setDarkMatterXYZRatio(Vector3d darkMatterXYZRatio) {
-		this.darkMatterXYZRatio = darkMatterXYZRatio;
+		Parameters.darkMatterXYZRatio = darkMatterXYZRatio;
 	}
 
 	public boolean isRecoverFrictionEnegy() {
@@ -583,7 +583,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setRecoverFrictionEnegy(boolean recoverFrictionEnegy) {
-		this.recoverFrictionEnegy = recoverFrictionEnegy;
+		Parameters.recoverFrictionEnegy = recoverFrictionEnegy;
 	}
 
 	public double getRecoverFrictionEnergyRatio() {
@@ -591,7 +591,7 @@ public class Parameters implements Serializable {
 	}
 
 	public void setRecoverFrictionEnergyRatio(double recoverFrictionEnergyRatio) {
-		this.recoverFrictionEnergyRatio = recoverFrictionEnergyRatio;
+		Parameters.recoverFrictionEnergyRatio = recoverFrictionEnergyRatio;
 	}
 
 	/**
@@ -605,7 +605,7 @@ public class Parameters implements Serializable {
 	 * @param expansionUnivers the expansionUnivers to set
 	 */
 	public void setExpansionUnivers(boolean expansionUnivers) {
-		this.expansionUnivers = expansionUnivers;
+		Parameters.expansionUnivers = expansionUnivers;
 	}
 
 	/**
@@ -619,7 +619,7 @@ public class Parameters implements Serializable {
 	 * @param timeMultiplicator the timeMultiplicator to set
 	 */
 	public void setTimeMultiplicator(double timeMultiplicator) {
-		this.timeMultiplicator = timeMultiplicator;
+		Parameters.timeMultiplicator = timeMultiplicator;
 	}
 
 	/**
@@ -633,7 +633,7 @@ public class Parameters implements Serializable {
 	 * @param matterRendererExtender the matterRendererExtender to set
 	 */
 	public void setMatterRendererExtender(double matterRendererExtender) {
-		this.matterRendererExtender = matterRendererExtender;
+		Parameters.matterRendererExtender = matterRendererExtender;
 	}
 
 	/**
@@ -647,7 +647,7 @@ public class Parameters implements Serializable {
 	 * @param gasRendererExtender the gasRendererExtender to set
 	 */
 	public void setGasRendererExtender(double gasRendererExtender) {
-		this.gasRendererExtender = gasRendererExtender;
+		Parameters.gasRendererExtender = gasRendererExtender;
 	}
 
 	/**
@@ -661,7 +661,7 @@ public class Parameters implements Serializable {
 	 * @param darkMatterRendererExtender the darkMatterRendererExtender to set
 	 */
 	public void setDarkMatterRendererExtender(double darkMatterRendererExtender) {
-		this.darkMatterRendererExtender = darkMatterRendererExtender;
+		Parameters.darkMatterRendererExtender = darkMatterRendererExtender;
 	}
 
 }
