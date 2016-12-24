@@ -72,6 +72,10 @@ public class GUIProgram extends JFrame {
 	}
 
 	public GUIProgram() {
+		this.me = this;
+		parameters = new Parameters();
+		univers = new Univers(parameters);
+		forTrace = new LinkedList<List<Vector3d[]>>();
 		builder();
 		animator = new FPSAnimator(gljpanel, HelperVariable.MAXFPS, true);
 		animator.start();
@@ -137,10 +141,6 @@ public class GUIProgram extends JFrame {
 	}
 
 	private void builder() {
-		this.me = this;
-		parameters = new Parameters();
-		univers = new Univers(parameters);
-		forTrace = new LinkedList<List<Vector3d[]>>();
 		setTitle("Gravity Simulator");
 		Dimension dimension = java.awt.Toolkit.getDefaultToolkit()
 				.getScreenSize();
