@@ -157,6 +157,8 @@ public class GUIProgram extends JFrame {
 		menuItemExport.addActionListener(menuExport());
 		JMenuItem menuItemImport = new JMenuItem("Import univers ...");
 		menuItemImport.addActionListener(menuImport());
+		JMenuItem menuItemAddMatterList = new JMenuItem("Add univers ...");
+		menuItemAddMatterList.addActionListener(menuAddMatterList());
 		JMenuItem menuItemExportParams = new JMenuItem("Export parameters ...");
 		menuItemExportParams.addActionListener(menuExportParams());
 		JMenuItem menuItemImportParams = new JMenuItem("Import parameters ...");
@@ -164,6 +166,7 @@ public class GUIProgram extends JFrame {
 		menuFichier.add(menuItemBaseParam);
 		menuFichier.add(menuItemExport);
 		menuFichier.add(menuItemImport);
+		menuFichier.add(menuItemAddMatterList);
 		menuFichier.add(menuItemExportParams);
 		menuFichier.add(menuItemImportParams);
 
@@ -386,6 +389,43 @@ public class GUIProgram extends JFrame {
 			}
 		};
 	}
+
+	private ActionListener menuAddMatterList() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				animator.stop();
+				try {
+					JFileChooser fileChooser = new JFileChooser();
+					fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setFileFilter(new XmlFilter());
+					fileChooser.setDialogTitle("Specify a file to load");
+					int userSelection = fileChooser.showOpenDialog(me);
+					if (userSelection == JFileChooser.APPROVE_OPTION) {
+						File file = new File(fileChooser.getSelectedFile()
+								.getAbsolutePath());
+						JAXBContext jaxbContext = JAXBContext
+								.newInstance(Univers.class);
+						Unmarshaller jaxbUnmarshaller = jaxbContext
+								.createUnmarshaller();
+						Univers u = new Univers();
+						u = (Univers) jaxbUnmarshaller.unmarshal(file);
+						for (Matter m : u.getListMatter()) {
+							m.setParameters(univers.getParameters());
+							univers.getListMatter().add(m);
+						}
+						renderer.reload(me);
+					}
+				} catch (JAXBException e1) {
+					e1.printStackTrace();
+				}
+				animator.start();
+			}
+		};
+	}
+
+
 
 	private ActionListener menuExportParams() {
 		return new ActionListener() {

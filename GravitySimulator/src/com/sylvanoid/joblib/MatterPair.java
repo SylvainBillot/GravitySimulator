@@ -72,8 +72,8 @@ public class MatterPair implements Comparable<MatterPair> {
 	}
 
 	public void applyViscosity() {
-		double theta = (m1.getPressureWeightedViscosity() * m1.getMass() + m2
-				.getPressureWeightedViscosity() * m2.getMass())
+		double theta = (m1.getViscosity() * m1.getMass() + m2
+				.getViscosity() * m2.getMass())
 				/ (m1.getMass() + m2.getMass());
 		double beta = 0;
 		Vector3d relativeSpeed = new Vector3d(m1.getSpeed());

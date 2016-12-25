@@ -28,6 +28,10 @@ public class GUIFollowOther extends JDialog {
 		this.me = this;
 		this.mother = mother;
 		this.parameters = mother.getParameters();
+		builder(mother);
+	}
+
+	private void builder(GUIProgram mother) {
 		setTitle("Follow someyhing");
 		setModal(true);
 		int w = 600;
@@ -43,17 +47,26 @@ public class GUIFollowOther extends JDialog {
 		}
 		add(matters);
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
+		btnCancel.addActionListener(cancelAction());
+		add(btnCancel);
+		JButton btnOK = new JButton("OK");
+		btnOK.addActionListener(okAction());
+		add(btnOK);
+	}
+
+	private ActionListener cancelAction() {
+		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				me.setVisible(false);
 				me.mother.setVisible(true);
 				me.mother.getAnimator().start();
 			}
-		});
-		add(btnCancel);
-		JButton btnOK = new JButton("OK");
-		btnOK.addActionListener(new ActionListener() {
+		};
+	}
+
+	private ActionListener okAction() {
+		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -71,8 +84,7 @@ public class GUIFollowOther extends JDialog {
 					d.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 				}
 			}
-		});
-		add(btnOK);
+		};
 	}
 
 }
