@@ -183,7 +183,8 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 										detectColision = true;
 									}
 
-									MatterPair toAdd = new MatterPair(m, mgu);
+									MatterPair toAdd = new MatterPair(m, mgu,
+											parameters);
 									if (collisionPairs.get(m.getName()
 											+ mgu.getName()) == null
 											&& collisionPairs.get(mgu.getName()

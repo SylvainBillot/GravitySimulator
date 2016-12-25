@@ -9,6 +9,7 @@ import com.sylvanoid.common.HelperNewton;
 public class MatterPair implements Comparable<MatterPair> {
 	private Matter m1;
 	private Matter m2;
+	private Parameters parameters;
 
 	@Override
 	public int compareTo(MatterPair o) {
@@ -37,9 +38,10 @@ public class MatterPair implements Comparable<MatterPair> {
 		return Objects.hash(m1, m2);
 	}
 
-	public MatterPair(Matter m1, Matter m2) {
+	public MatterPair(Matter m1, Matter m2, Parameters parameters) {
 		this.m1 = m1;
 		this.m2 = m2;
+		this.parameters = parameters;
 	}
 
 	public Matter getM1() {
@@ -78,7 +80,7 @@ public class MatterPair implements Comparable<MatterPair> {
 		radialSpeed.normalize();
 		double u = relativeSpeed.dot(radialSpeed);
 		/*
-		double delta = m1.getParameters().getTimeFactor()
+		double delta = parameters.getTimeFactor()
 				* (1 - distanceByradius())
 				* (theta * u + beta * net.jafama.FastMath.pow2(u));
 				* */
@@ -96,7 +98,7 @@ public class MatterPair implements Comparable<MatterPair> {
 		m1.getAccel().sub(radialSpeedM1);
 		m2.getAccel().add(radialSpeedM2);
 
-		if (m1.getParameters().isRecoverFrictionEnegy()) {
+		if (parameters.isRecoverFrictionEnegy()) {
 			// try to recover energy
 			relativeSpeed = new Vector3d(m1.getSpeed());
 			relativeSpeed.sub(m2.getSpeed());
@@ -112,7 +114,7 @@ public class MatterPair implements Comparable<MatterPair> {
 			Vector3d transversalSpeed = new Vector3d(relativeSpeed);
 			transversalSpeed.sub(radialSpeed);
 
-			delta = m1.getParameters().getRecoverFrictionEnergyRatio()
+			delta = parameters.getRecoverFrictionEnergyRatio()
 					* transversalSpeed.length() * delta / radialSpeed.length();
 			transversalSpeed.normalize();
 			Vector3d transversalSpeedM1 = new Vector3d(transversalSpeed);
@@ -130,7 +132,7 @@ public class MatterPair implements Comparable<MatterPair> {
 
 	private double distanceByradius() {
 		return HelperNewton.distance(m1, m2)
-				/ (m1.getParameters().getCollisionDistanceRatio() * (m1
+				/ (parameters.getCollisionDistanceRatio() * (m1
 						.getRayon() + m2.getRayon()));
 	}
 
