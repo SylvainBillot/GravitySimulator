@@ -15,6 +15,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperNewton;
@@ -59,10 +60,11 @@ public class Univers {
 	@XmlElement
 	private Vector3d p = new Vector3d(0, 0, 0);
 
+	@XmlTransient
 	private Matter maxMassElement = null;
-
+	@XmlTransient
 	private Univers father;
-
+	@XmlTransient
 	private ConcurrentHashMap<String, MatterPair> collisionPairs = new ConcurrentHashMap<String, MatterPair>();
 
 	@Override
@@ -96,7 +98,7 @@ public class Univers {
 			createPlanetaryRandom();
 		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesis) {
-			createPlanetariesGenesis();
+			createPlanetaryRandom();
 		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUniverCircular) {
 			createRandomRotateUniversCircular();
@@ -250,7 +252,7 @@ public class Univers {
 			computeBarnesHutGravity();
 
 			// Experiment infinite univers
-			//removeAccelerationToCentroid();
+			// removeAccelerationToCentroid();
 
 			// Change Speed
 			changeSpeed();
@@ -271,7 +273,7 @@ public class Univers {
 					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
 				computeBarnesHutCollision();
 				doubleDensityRelaxation();
-				//adjustSpeedFromPositions();
+				// adjustSpeedFromPositions();
 			}
 
 			parameters.setTimeFactor(parameters.getTimeFactor()
@@ -516,7 +518,7 @@ public class Univers {
 				m.getSpeed().sub(dm);
 			}
 			/* Try to modify viscosity and density with presure */
-			//m.setPresure(pre);
+			// m.setPresure(pre);
 		}
 	}
 
@@ -986,26 +988,6 @@ public class Univers {
 			}
 		}
 
-	}
-
-	private void createPlanetariesGenesis() {
-		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0),
-				new Vector3d(0, 0, 1), 0, parameters.getNebulaRadius(),
-				new Vector3d(1, 1, 0.05), parameters.getMatterDistribution(),
-				parameters.getGasDistribution(),
-				parameters.getMatterViscosity(), parameters.getGasViscosity());
-		Matter m1 = new Matter(parameters, new Vector3d(
-				net.jafama.FastMath.random(), net.jafama.FastMath.random(),
-				net.jafama.FastMath.random()), parameters.getDarkMatterMass(),
-				new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
-				parameters.getDarkMatterDensity(), TypeOfObject.Matter,
-				parameters.getMatterViscosity());
-		listMatter.add(m1);
-		for (Matter m : listMatter) {
-			if (m != m1) {
-				m.orbitalCircularSpeed(m1, new Vector3d(0, 0, 1));
-			}
-		}
 	}
 
 	public Parameters getParameters() {

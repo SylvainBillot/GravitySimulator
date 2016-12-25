@@ -6,17 +6,17 @@ public enum TypeOfUnivers {
 	Random						("Random Static Univers"),
 	RandomRotateUnivers			("Random Rotate Univers Eliptic"),
 	GalaxiesCollision			("Galaxies Interactions"),
-	PlanetariesGenesis			("Planetaries Genenesis ?"),
+	PlanetariesGenesis			("Planetaries Genenesis"),
 	RandomRotateUniverCircular  ("Random Rotate Univers Circular"),
 	RandomStaticSphericalUnivers("Random Static Spherical Univers"),
 	;
 
 	private final String label;
-	
+
 	private TypeOfUnivers(String label){
 		this.label=label;
 	}
-	
+
 	public String getLabel(){
 		return label;
 	}

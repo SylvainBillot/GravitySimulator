@@ -38,6 +38,10 @@ public class MatterPair implements Comparable<MatterPair> {
 		return Objects.hash(m1, m2);
 	}
 
+	public MatterPair() {
+
+	}
+
 	public MatterPair(Matter m1, Matter m2, Parameters parameters) {
 		this.m1 = m1;
 		this.m2 = m2;

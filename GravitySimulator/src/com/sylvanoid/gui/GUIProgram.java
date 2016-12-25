@@ -373,14 +373,14 @@ public class GUIProgram extends JFrame {
 						Unmarshaller jaxbUnmarshaller = jaxbContext
 								.createUnmarshaller();
 						univers = (Univers) jaxbUnmarshaller.unmarshal(file);
+						me.setParameters(univers.getParameters());
+						for (Matter m : univers.getListMatter()) {
+							m.setParameters(univers.getParameters());
+						}
 						renderer.reload(me);
 					}
 				} catch (JAXBException e1) {
 					e1.printStackTrace();
-				}
-				me.setParameters(univers.getParameters());
-				for (Matter m : univers.getListMatter()) {
-					m.setParameters(univers.getParameters());
 				}
 				animator.start();
 			}

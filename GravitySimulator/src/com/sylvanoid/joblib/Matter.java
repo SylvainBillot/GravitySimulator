@@ -214,6 +214,7 @@ public class Matter implements Serializable {
 		return rayon;
 	}
 
+	@XmlTransient
 	public List<Matter> getFusionWith() {
 		return fusionWith;
 	}
@@ -222,6 +223,7 @@ public class Matter implements Serializable {
 		this.fusionWith = fusionWith;
 	}
 
+	@XmlTransient
 	public List<Matter> getNeighbors() {
 		return neighbors;
 	}
