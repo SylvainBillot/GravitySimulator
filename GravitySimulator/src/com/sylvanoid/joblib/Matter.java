@@ -8,6 +8,7 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.sylvanoid.common.HelperNewton;
@@ -74,6 +75,7 @@ public class Matter implements Serializable {
 				/ (4 * net.jafama.FastMath.PI), (double) 1 / (double) 3);
 	}
 
+	@XmlTransient
 	public Parameters getParameters() {
 		return parameters;
 	}
