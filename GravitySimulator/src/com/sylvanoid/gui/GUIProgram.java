@@ -403,19 +403,26 @@ public class GUIProgram extends JFrame {
 					fileChooser.setDialogTitle("Specify a file to load");
 					int userSelection = fileChooser.showOpenDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						File file = new File(fileChooser.getSelectedFile()
-								.getAbsolutePath());
-						JAXBContext jaxbContext = JAXBContext
-								.newInstance(Univers.class);
-						Unmarshaller jaxbUnmarshaller = jaxbContext
-								.createUnmarshaller();
-						Univers u = new Univers();
-						u = (Univers) jaxbUnmarshaller.unmarshal(file);
-						for (Matter m : u.getListMatter()) {
-							m.setParameters(univers.getParameters());
-							univers.getListMatter().add(m);
+						GUIAddUnivers guiAddUnivers = new GUIAddUnivers(me);
+						guiAddUnivers.setVisible(true);
+						if (guiAddUnivers.isOk()) {
+							File file = new File(fileChooser.getSelectedFile()
+									.getAbsolutePath());
+							JAXBContext jaxbContext = JAXBContext
+									.newInstance(Univers.class);
+							Unmarshaller jaxbUnmarshaller = jaxbContext
+									.createUnmarshaller();
+							Univers u = new Univers();
+							u = (Univers) jaxbUnmarshaller.unmarshal(file);
+							for (Matter m : u.getListMatter()) {
+								m.setParameters(univers.getParameters());
+								m.getPointBefore().add(guiAddUnivers.getOffset());
+								m.getPoint().add(guiAddUnivers.getOffset());
+								m.getSpeed().add(guiAddUnivers.getSpeed());
+								univers.getListMatter().add(m);
+							}
+							renderer.reload(me);
 						}
-						renderer.reload(me);
 					}
 				} catch (JAXBException e1) {
 					e1.printStackTrace();
@@ -424,8 +431,6 @@ public class GUIProgram extends JFrame {
 			}
 		};
 	}
-
-
 
 	private ActionListener menuExportParams() {
 		return new ActionListener() {
@@ -477,7 +482,8 @@ public class GUIProgram extends JFrame {
 								.newInstance(Univers.class);
 						Unmarshaller jaxbUnmarshaller = jaxbContext
 								.createUnmarshaller();
-						parameters = (Parameters) jaxbUnmarshaller.unmarshal(file);
+						parameters = (Parameters) jaxbUnmarshaller
+								.unmarshal(file);
 						renderer.reload(me);
 					}
 				} catch (JAXBException e1) {
@@ -488,7 +494,6 @@ public class GUIProgram extends JFrame {
 			}
 		};
 	}
-
 
 	private ActionListener menuStart() {
 		return new ActionListener() {
