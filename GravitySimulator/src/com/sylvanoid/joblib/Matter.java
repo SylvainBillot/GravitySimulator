@@ -681,6 +681,23 @@ public class Matter implements Serializable {
 		}
 	}
 
+
+	public void rotate(Vector3d origine, Vector3d rotate) {
+		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(  1,0,0  ), rotate.getX());
+		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(  0,1,0  ), rotate.getY());
+		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(  0,0,1  ), rotate.getZ());
+
+		point = HelperVector.rotate(point, origine, new Vector3d(  1,0,0  ), rotate.getX());
+		point = HelperVector.rotate(point, origine, new Vector3d(  0,1,0  ), rotate.getY());
+		point = HelperVector.rotate(point, origine, new Vector3d(  0,0,1  ), rotate.getZ());
+
+		speed = HelperVector.rotate(speed, origine, new Vector3d(  1,0,0  ), rotate.getX());
+		speed = HelperVector.rotate(speed, origine, new Vector3d(  0,1,0  ), rotate.getY());
+		speed = HelperVector.rotate(speed, origine, new Vector3d(  0,0,1  ), rotate.getZ());
+
+	}
+
+
 	public static List<Matter> fusionWithRecursiveAdd(Matter m, Matter m1,
 			List<Matter> noMore) {
 		List<Matter> f = new ArrayList<Matter>();

@@ -9,6 +9,14 @@ import javax.vecmath.Vector3d;
 import javax.vecmath.Vector4d;
 
 public abstract class HelperVector {
+	/**
+	 *
+	 * @param vector
+	 * @param centroid
+	 * @param axis
+	 * @param angle
+	 * @return Vector3d
+	 */
 	public static Vector3d rotate(Vector3d vector, Vector3d centroid,
 			Vector3d axis, double angle) {
 		Vector3d newVector = new Vector3d(vector);
@@ -21,6 +29,13 @@ public abstract class HelperVector {
 		return result;
 	}
 
+	/**
+	 *
+	 * @param vector
+	 * @param axis
+	 * @param angle
+	 * @return Vector3d
+	 */
 	public static Vector3d rotate(Vector3d vector, Vector3d axis, double angle) {
 		Matrix3d rotate = new Matrix3d();
 		rotate.set(new AxisAngle4d(axis, angle));
@@ -29,6 +44,12 @@ public abstract class HelperVector {
 		return result;
 	}
 
+	/**
+	 *
+	 * @param obj1
+	 * @param obj2
+	 * @return Vector3d
+	 */
 	public static Vector3d rThetaPhi(Vector3d obj1, Vector3d obj2) {
 		Vector3d tmpVect = new Vector3d(obj2);
 		tmpVect.sub(obj1);
@@ -38,6 +59,13 @@ public abstract class HelperVector {
 						+ net.jafama.FastMath.pow2(tmpVect.y)), tmpVect.z));
 	}
 
+	/**
+	 *
+	 * @param radius
+	 * @param theta
+	 * @param phi
+	 * @return Vector3d
+	 */
 	public static Vector3d polToCoord(double radius, double theta, double phi) {
 		return new Vector3d(radius * net.jafama.FastMath.cos(theta)
 				* net.jafama.FastMath.sin(phi),
@@ -46,12 +74,24 @@ public abstract class HelperVector {
 						* net.jafama.FastMath.cos(phi));
 	}
 
+	/**
+	 *
+	 * @param obj1
+	 * @param obj2
+	 * @param attraction
+	 * @return Vector3d
+	 */
 	public static Vector3d acceleration(Vector3d obj1, Vector3d obj2,
 			double attraction) {
 		Vector3d tmpVect = rThetaPhi(obj1, obj2);
 		return polToCoord(attraction, tmpVect.y, tmpVect.z);
 	}
-	
+
+	/**
+	 *
+	 * @param angles
+	 * @return DoubleBuffer
+	 */
 	public static DoubleBuffer make3DTransformMatrix(Vector3d angles) {
 		double[] matrix = new double[16];
 		double x = angles.x;
@@ -87,6 +127,11 @@ public abstract class HelperVector {
 		return DoubleBuffer.wrap(matrix);
 	}
 
+	/**
+	 *
+	 * @param speed
+	 * @return Matrix4d
+	 */
 	public static Matrix4d lorentzMatrix(Vector3d speed) {
 		double beta = speed.length() / HelperVariable.C;
 		double beta2 = net.jafama.FastMath.pow2(beta);
@@ -118,6 +163,13 @@ public abstract class HelperVector {
 		return new Matrix4d(matrix);
 	}
 
+	/**
+	 *
+	 * @param time
+	 * @param speed
+	 * @param p1
+	 * @return Vector4d
+	 */
 	public static Vector4d lorentzCoord(double time, Vector3d speed,
 			Vector3d p1) {
 		Vector4d valReturn = new Vector4d(p1.x, p1.y, p1.z,time);

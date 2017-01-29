@@ -416,7 +416,10 @@ public class GUIProgram extends JFrame {
 							u = (Univers) jaxbUnmarshaller.unmarshal(file);
 							for (Matter m : u.getListMatter()) {
 								m.setParameters(univers.getParameters());
-								m.getPointBefore().add(guiAddUnivers.getOffset());
+								m.rotate(new Vector3d(0, 0, 0),
+										guiAddUnivers.getRotate());
+								m.getPointBefore().add(
+										guiAddUnivers.getOffset());
 								m.getPoint().add(guiAddUnivers.getOffset());
 								m.getSpeed().add(guiAddUnivers.getSpeed());
 								univers.getListMatter().add(m);

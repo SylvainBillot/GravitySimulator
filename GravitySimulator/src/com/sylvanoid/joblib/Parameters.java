@@ -85,7 +85,7 @@ public class Parameters implements Serializable {
 	private boolean recoverFrictionEnegy = false;
 	private double recoverFrictionEnergyRatio = 0.5;
 
-	private boolean expansionUnivers = true;
+	private boolean expansionUnivers = false;
 	private double timeMultiplicator = 1.000;
 
 	private double matterRendererExtender = 3;
