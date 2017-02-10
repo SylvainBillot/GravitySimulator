@@ -36,6 +36,7 @@ public class Parameters implements Serializable {
 	private boolean followMaxMass = false;
 	private boolean followCentroid = false;
 	private boolean permanentRotationy = false;
+	private boolean viewSimplePointOnly = false;
 	private double scala = 1E-9;
 	private boolean showAxis = true;
 	private boolean showgrid = false;
@@ -59,8 +60,6 @@ public class Parameters implements Serializable {
 	private int numOfLowMassParticule = 0;
 	private double lowMassParticuleMass = 1;
 	private double lowMassDensity = 1;
-	private Vector3d demiDistanceBetweenGalaxies = new Vector3d(
-			200000 * HelperVariable.PC, 0, 0);
 	private int nbARms = 3;
 	private boolean exportData = false;
 	private boolean playData = false;
@@ -71,26 +70,21 @@ public class Parameters implements Serializable {
 	private double darkMatterDistribution = 5;
 	private double darkMatterNubulaFactor = 5;
 	private Vector3d darkMatterXYZRatio = new Vector3d(1, 1, 1);
-
 	private double matterViscosity = 1;
 	private double gasViscosity = 1;
-	private double darkMatterViscosity = 0;
-
+	private double darkMatterViscosity = 1;
 	private double collisionDistanceRatio = 1;
-
 	private double viscoElasticity = 1;
 	private double viscoElasticityNear = 1;
 	private double pressureZero = 0;
-
 	private boolean recoverFrictionEnegy = false;
 	private double recoverFrictionEnergyRatio = 0.5;
-
 	private boolean expansionUnivers = false;
 	private double timeMultiplicator = 1.000;
-
 	private double matterRendererExtender = 3;
 	private double gasRendererExtender = 3;
 	private double darkMatterRendererExtender = 5;
+	private boolean viscousDarkMatter = false;
 
 	public Parameters() {
 
@@ -242,6 +236,20 @@ public class Parameters implements Serializable {
 
 	public void setPermanentRotationy(boolean permanentRotationy) {
 		this.permanentRotationy = permanentRotationy;
+	}
+
+	/**
+	 * @return the viewSimplePointOnly
+	 */
+	public boolean isViewSimplePointOnly() {
+		return viewSimplePointOnly;
+	}
+
+	/**
+	 * @param viewSimplePointOnly the viewSimplePointOnly to set
+	 */
+	public void setViewSimplePointOnly(boolean viewSimplePointOnly) {
+		this.viewSimplePointOnly = viewSimplePointOnly;
 	}
 
 	public double getScala() {
@@ -426,17 +434,6 @@ public class Parameters implements Serializable {
 
 	public void setEllipseRatio(double ellipseRatio) {
 		this.ellipseRatio = ellipseRatio;
-	}
-
-	@XmlJavaTypeAdapter(Vector3dAdapter.class)
-	@XmlElement
-	public Vector3d getDemiDistanceBetweenGalaxies() {
-		return demiDistanceBetweenGalaxies;
-	}
-
-	public void setDemiDistanceBetweenGalaxies(
-			Vector3d demiDistanceBetweenGalaxies) {
-		this.demiDistanceBetweenGalaxies = demiDistanceBetweenGalaxies;
 	}
 
 	public int getNbARms() {
@@ -666,6 +663,20 @@ public class Parameters implements Serializable {
 	 */
 	public void setDarkMatterRendererExtender(double darkMatterRendererExtender) {
 		this.darkMatterRendererExtender = darkMatterRendererExtender;
+	}
+
+	/**
+	 * @return the visousDarkMatter
+	 */
+	public boolean isViscousDarkMatter() {
+		return viscousDarkMatter;
+	}
+
+	/**
+	 * @param visousDarkMatter the visousDarkMatter to set
+	 */
+	public void setViscousDarkMatter(boolean visousDarkMatter) {
+		this.viscousDarkMatter = visousDarkMatter;
 	}
 
 }

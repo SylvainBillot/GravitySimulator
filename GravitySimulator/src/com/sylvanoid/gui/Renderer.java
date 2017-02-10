@@ -218,8 +218,11 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		// drawGravitationalFields(gl);
 
 		/* Show current univers */
-		drawUnivers(gl);
-		// drawUniversSimplePoint(gl);
+		if (!parameters.isViewSimplePointOnly()) {
+			drawUnivers(gl);
+		} else {
+			drawUniversSimplePoint(gl);
+		}
 		// drawUniversSimpleSphere(gl, glu);
 	}
 
@@ -524,17 +527,23 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glPopMatrix();
 	}
 
-	@SuppressWarnings("unused")
 	private void drawUniversSimplePoint(GL2 gl) {
+		gl.glPushMatrix();
 		for (Matter m : univers.getListMatter()) {
-			gl.glBegin(GL2.GL_POINTS);
-			gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
-			gl.glVertex3d(parameters.getScala() * m.getPoint().x,
-					parameters.getScala() * m.getPoint().y,
-					parameters.getScala() * m.getPoint().z);
-			gl.glEnd();
+			if (m.getTypeOfObject().equals(TypeOfObject.Matter)
+					&& parameters.isShowMatter()
+					|| m.getTypeOfObject().equals(TypeOfObject.Gas)
+					&& parameters.isShowGas()
+					|| m.getTypeOfObject().equals(TypeOfObject.Dark)
+					&& parameters.isShowDarkMatter()) {
+				gl.glBegin(GL2.GL_POINTS);
+				gl.glColor3d(255, 255, 255);
+				gl.glVertex3d(parameters.getScala() * m.getPoint().x,
+						parameters.getScala() * m.getPoint().y,
+						parameters.getScala() * m.getPoint().z);
+				gl.glEnd();
+			}
 		}
-
 	}
 
 	@SuppressWarnings("unused")

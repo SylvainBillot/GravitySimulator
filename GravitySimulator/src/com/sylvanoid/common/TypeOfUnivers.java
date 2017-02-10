@@ -5,7 +5,6 @@ public enum TypeOfUnivers {
 	PlanetaryRandom				("Random Planetary System"),
 	Random						("Random Static Univers"),
 	RandomRotateUnivers			("Random Rotate Univers Eliptic"),
-	GalaxiesCollision			("Galaxies Interactions"),
 	PlanetariesGenesis			("Planetaries Genenesis"),
 	RandomRotateUniverCircular  ("Random Rotate Univers Circular"),
 	RandomStaticSphericalUnivers("Random Static Spherical Univers"),

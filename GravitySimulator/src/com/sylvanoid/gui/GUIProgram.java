@@ -184,6 +184,9 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
+		JCheckBoxMenuItem menuViewSimplePoint = new JCheckBoxMenuItem(
+				"View simples points", parameters.isViewSimplePointOnly());
+		menuViewSimplePoint.addActionListener(menuViewSimplePoint());
 		JMenuItem menuItemStopFollow = new JMenuItem("Stop following");
 		menuItemStopFollow.addActionListener(menuStopFollowing());
 		JMenuItem menuItemCentreEcran = new JMenuItem("Look at 0");
@@ -220,6 +223,7 @@ public class GUIProgram extends JFrame {
 				"Show dark matter", parameters.isShowDarkMatter());
 		menuItemShowDM.addActionListener(menuShowDarkMatter());
 
+		menuVisu.add(menuViewSimplePoint);
 		menuVisu.add(menuItemShowTrace);
 		menuVisu.add(menuItemPermanentRotationy);
 		menuVisu.add(menuItemStopFollow);
@@ -523,6 +527,16 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				me.reset();
+			}
+		};
+	}
+
+	private ActionListener menuViewSimplePoint() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setViewSimplePointOnly(!parameters
+						.isViewSimplePointOnly());
 			}
 		};
 	}

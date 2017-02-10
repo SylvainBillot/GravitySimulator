@@ -88,9 +88,6 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUnivers) {
 			createRandomRotateUnivers();
 		}
-		if (parameters.getTypeOfUnivers() == TypeOfUnivers.GalaxiesCollision) {
-			createGalaxiesCollision();
-		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.Planetary) {
 			createPlanetary();
 		}
@@ -264,8 +261,7 @@ public class Univers {
 
 			move();
 
-			if (!parameters.isStaticDarkMatter()
-					&& parameters.isExpansionUnivers()) {
+			if (parameters.isExpansionUnivers()) {
 				expansionUnivers();
 			}
 
@@ -867,20 +863,6 @@ public class Univers {
 				parameters.getViscoElasticity(),
 				parameters.getViscoElasticityNear(),
 				parameters.getPressureZero());
-	}
-
-	private void createGalaxiesCollision() {
-		Vector3d dbg1 = new Vector3d(
-				parameters.getDemiDistanceBetweenGalaxies());
-		Vector3d dbg2 = new Vector3d(
-				parameters.getDemiDistanceBetweenGalaxies());
-		dbg2.negate();
-
-		createRandomRotateUniversCircular(dbg1, new Vector3d(0, 0, 1),
-				new Vector3d(1, 1, 0.25));
-		createRandomRotateUniversCircular(dbg2, new Vector3d(0, 1, 0),
-				new Vector3d(1, 0.25, 1));
-
 	}
 
 	private void createPlanetary() {
