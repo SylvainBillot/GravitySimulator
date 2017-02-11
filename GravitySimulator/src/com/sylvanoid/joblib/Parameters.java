@@ -85,6 +85,7 @@ public class Parameters implements Serializable {
 	private double gasRendererExtender = 3;
 	private double darkMatterRendererExtender = 5;
 	private boolean viscousDarkMatter = false;
+	private boolean infiniteUnivers = false;
 
 	public Parameters() {
 
@@ -246,7 +247,8 @@ public class Parameters implements Serializable {
 	}
 
 	/**
-	 * @param viewSimplePointOnly the viewSimplePointOnly to set
+	 * @param viewSimplePointOnly
+	 *            the viewSimplePointOnly to set
 	 */
 	public void setViewSimplePointOnly(boolean viewSimplePointOnly) {
 		this.viewSimplePointOnly = viewSimplePointOnly;
@@ -673,10 +675,26 @@ public class Parameters implements Serializable {
 	}
 
 	/**
-	 * @param visousDarkMatter the visousDarkMatter to set
+	 * @param visousDarkMatter
+	 *            the visousDarkMatter to set
 	 */
 	public void setViscousDarkMatter(boolean visousDarkMatter) {
 		this.viscousDarkMatter = visousDarkMatter;
+	}
+
+	/**
+	 * @return the infiniteUnivers
+	 */
+	public boolean isInfiniteUnivers() {
+		return infiniteUnivers;
+	}
+
+	/**
+	 * @param infiniteUnivers
+	 *            the infiniteUnivers to set
+	 */
+	public void setInfiniteUnivers(boolean infiniteUnivers) {
+		this.infiniteUnivers = infiniteUnivers;
 	}
 
 }

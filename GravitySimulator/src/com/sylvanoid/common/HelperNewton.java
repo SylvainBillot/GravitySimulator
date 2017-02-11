@@ -46,14 +46,15 @@ public class HelperNewton {
 				new Point3d(m2.getPointBefore()), m2.getMass(), parameters);
 	}
 
-	private static double distance(Point3d p1, Point3d p2) {
-		return p1.distance(p2);
-	}
-
-	private static double attraction(Point3d p1, Point3d p2, double mass,
+	public static double attraction(Point3d p1, Point3d p2, double mass,
 			Parameters parameters) {
 		return parameters.getTimeFactor() * HelperVariable.G
 				* ((mass / net.jafama.FastMath.pow2(distance(p1, p2))));
+	}
+
+
+	private static double distance(Point3d p1, Point3d p2) {
+		return p1.distance(p2);
 	}
 
 }

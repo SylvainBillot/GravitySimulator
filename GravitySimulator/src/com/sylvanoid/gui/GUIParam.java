@@ -57,6 +57,7 @@ public class GUIParam extends JDialog {
 	private JFormattedTextField collisionDistanceRatio;
 	private JFormattedTextField matterViscosity;
 	private JFormattedTextField gasViscosity;
+	private JFormattedTextField darkMatterViscosity;
 	private JFormattedTextField viscoElasticity;
 	private JFormattedTextField viscoElasticityNear;
 	private JFormattedTextField pressureZero;
@@ -88,11 +89,11 @@ public class GUIParam extends JDialog {
 		setTitle("Parameters");
 		setModal(true);
 		int w = 1024;
-		int h = 520;
+		int h = 540;
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(18, 4));
+		setLayout(new GridLayout(19, 4));
 		add(new JLabel("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
@@ -253,6 +254,11 @@ public class GUIParam extends JDialog {
 		gasViscosity.setValue(parameters.getGasViscosity());
 		add(gasViscosity);
 
+		add(new JLabel("Dark Matter Viscosity ratio:"));
+		darkMatterViscosity = new JFormattedTextField(dfsc);
+		darkMatterViscosity.setValue(parameters.getDarkMatterViscosity());
+		add(darkMatterViscosity);
+
 		add(new JLabel("Visco elasticity:"));
 		viscoElasticity = new JFormattedTextField(dfsc);
 		viscoElasticity.setValue(parameters.getViscoElasticity());
@@ -301,7 +307,6 @@ public class GUIParam extends JDialog {
 		visousDarkMatter.setSelected(parameters.isViscousDarkMatter());
 		add(visousDarkMatter);
 
-
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(cancelAction());
 		add(btnCancel);
@@ -329,6 +334,7 @@ public class GUIParam extends JDialog {
 		collisionDistanceRatio.setEnabled(manageImpact.isSelected());
 		matterViscosity.setEnabled(manageImpact.isSelected());
 		gasViscosity.setEnabled(manageImpact.isSelected());
+		darkMatterViscosity.setEnabled(manageImpact.isSelected());
 		viscoElasticity.setEnabled(manageImpact.isSelected());
 		viscoElasticityNear.setEnabled(manageImpact.isSelected());
 		pressureZero.setEnabled(manageImpact.isSelected());
@@ -535,6 +541,7 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
+					darkMatterViscosity.setValue(1);
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
@@ -575,6 +582,7 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
+					darkMatterViscosity.setValue(1);
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
@@ -614,6 +622,7 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
+					darkMatterViscosity.setValue(1);
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
@@ -657,6 +666,7 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
+					darkMatterViscosity.setValue(1);
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
@@ -697,6 +707,7 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
+					darkMatterViscosity.setValue(1);
 					viscoElasticity.setValue(1);
 					viscoElasticityNear.setValue(1);
 					pressureZero.setValue(0);
@@ -740,6 +751,7 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
+					darkMatterViscosity.setValue(1);
 					viscoElasticity.setValue(1E-11);
 					viscoElasticityNear.setValue(1E-11);
 					pressureZero.setValue(0);
@@ -783,6 +795,7 @@ public class GUIParam extends JDialog {
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1);
 					gasViscosity.setValue(1);
+					darkMatterViscosity.setValue(1);
 					viscoElasticity.setValue(1E-11);
 					viscoElasticityNear.setValue(1E-11);
 					pressureZero.setValue(0);
@@ -904,6 +917,9 @@ public class GUIParam extends JDialog {
 					parameters
 							.setGasViscosity(Double.parseDouble(me.gasViscosity
 									.getValue().toString()));
+					parameters.setDarkMatterViscosity(Double
+							.parseDouble(me.darkMatterViscosity.getValue()
+									.toString()));
 					parameters.setViscoElasticity(Double
 							.parseDouble(me.viscoElasticity.getValue()
 									.toString()));
