@@ -48,6 +48,9 @@ public class Univers {
 	private Vector3d gPoint = new Vector3d(0, 0, 0);
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
+	private Vector3d gPointBefore = new Vector3d(0, 0, 0);
+	@XmlJavaTypeAdapter(Vector3dAdapter.class)
+	@XmlElement
 	private Vector3d speed = new Vector3d(0, 0, 0);
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
@@ -218,6 +221,7 @@ public class Univers {
 				/ ((max.x - min.x) * (max.y - min.y) * (max.z - min.z));
 		density = listMatter.size()
 				/ ((max.x - min.x) * (max.y - min.y) * (max.z - min.z));
+		gPointBefore = new Vector3d(gPoint);
 		gPoint = new Vector3d(tmpGx / mass, tmpGy / mass, tmpGz / mass);
 
 		parameters.setLimitComputeTime(parameters.getLimitComputeTime()
@@ -237,7 +241,6 @@ public class Univers {
 				parameters.setLimitComputeTime(System.currentTimeMillis()
 						- startTimeCycle);
 				long startTimeBH = System.currentTimeMillis();
-
 				/*
 				 * Needed to disable acceleration with collision particle
 				 */
@@ -248,6 +251,9 @@ public class Univers {
 
 				// Compute accelerations
 				computeBarnesHutGravity();
+				// computeNNGravity();
+
+				// infinit univers
 				if (parameters.isInfiniteUnivers()) {
 					// experimental
 					computeInfiniteUnivers();
@@ -271,17 +277,10 @@ public class Univers {
 						&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
 					computeBarnesHutCollision();
 					doubleDensityRelaxation();
-					// adjustSpeedFromPositions();
 				}
 
 				parameters.setTimeFactor(parameters.getTimeFactor()
 						* parameters.getTimeMultiplicator());
-				/*
-				 * parameters.setGasViscosity(parameters.getGasViscosity() /
-				 * parameters.getTimeMultiplicator());
-				 * parameters.setMatterViscosity(parameters.getMatterViscosity()
-				 * / parameters.getTimeMultiplicator());
-				 */
 
 				parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
 						- startTimeBH);
@@ -350,18 +349,23 @@ public class Univers {
 	}
 
 
-	public void centroidAsZeroPoint() {
-		computeMassLimitsCentroidSpeed(true);
-		for(Matter m: listMatter){
-			m.getPoint().sub(gPoint);
-			m.getPointBefore().sub(gPoint);
-		}
+	public void resetGpoint() {
+		computeMassLimitsCentroidSpeed(false);
+		gPointBefore = new Vector3d(gPoint);
 	}
 
-
 	private void changeSpeed() {
+		// Correction of gPoint derive because barnesHut is not perfect
+		Vector3d gDelta = new Vector3d(gPoint);
+		gDelta.sub(gPointBefore);
+		Vector3d gSpeed = new Vector3d(gDelta.x
+				/ parameters.getTimeFactor(), gDelta.y
+				/ parameters.getTimeFactor(), gDelta.z
+				/ parameters.getTimeFactor());
+
 		for (Matter m : listMatter) {
 			m.changeSpeed();
+			m.getSpeed().sub(gSpeed);
 		}
 	}
 
@@ -401,6 +405,21 @@ public class Univers {
 			pool.invoke(barnesHutGravity);
 		} else {
 			barnesHutGravity.compute();
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private void computeNNGravity() {
+		for (Matter m1 : listMatter) {
+			for (Matter m2 : listMatter) {
+				if (m1 != m2) {
+					double attraction = HelperNewton.attraction(m1, m2,
+							parameters);
+					m1.getAccel().add(
+							HelperVector.acceleration(m1.getPoint(),
+									m2.getPoint(), attraction));
+				}
+			}
 		}
 	}
 
@@ -1080,6 +1099,10 @@ public class Univers {
 
 	public Vector3d getGPoint() {
 		return gPoint;
+	}
+
+	public Vector3d getGPointBefore() {
+		return gPointBefore;
 	}
 
 	public Vector3d getSpeed() {

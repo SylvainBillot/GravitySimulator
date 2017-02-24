@@ -349,7 +349,6 @@ public class GUIProgram extends JFrame {
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						OutputStream output = new FileOutputStream(fileChooser
 								.getSelectedFile().getAbsolutePath());
-						univers.centroidAsZeroPoint();
 						JAXBContext context = JAXBContext
 								.newInstance(Univers.class);
 						Marshaller m = context.createMarshaller();
@@ -432,6 +431,7 @@ public class GUIProgram extends JFrame {
 								m.getPoint().add(guiAddUnivers.getOffset());
 								m.getSpeed().add(guiAddUnivers.getSpeed());
 								univers.getListMatter().add(m);
+								univers.resetGpoint();
 							}
 							renderer.reload(me);
 						}
