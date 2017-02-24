@@ -227,88 +227,92 @@ public class Univers {
 	@SuppressWarnings("unchecked")
 	public void process(BufferedWriter bufferedWriter,
 			BufferedReader bufferedReader) {
-		if (!parameters.isPlayData()) {
-			parameters.setLimitComputeTime(0);
-			parameters.setNumOfCompute(0);
-			parameters.setNumOfAccelCompute(0);
-			long startTimeCycle = System.currentTimeMillis();
-			computeMassLimitsCentroidSpeed(true);
-			parameters.setLimitComputeTime(System.currentTimeMillis()
-					- startTimeCycle);
-			long startTimeBH = System.currentTimeMillis();
+		if (!parameters.isFrozen()) {
+			if (!parameters.isPlayData()) {
+				parameters.setLimitComputeTime(0);
+				parameters.setNumOfCompute(0);
+				parameters.setNumOfAccelCompute(0);
+				long startTimeCycle = System.currentTimeMillis();
+				computeMassLimitsCentroidSpeed(true);
+				parameters.setLimitComputeTime(System.currentTimeMillis()
+						- startTimeCycle);
+				long startTimeBH = System.currentTimeMillis();
 
-			/*
-			 * Needed to disable acceleration with collision particle
-			 */
-			if (parameters.isManageImpact()
-					&& parameters.getTypeOfImpact() != TypeOfImpact.Viscosity) {
-				computeBarnesHutCollision();
-			}
-
-			// Compute accelerations
-			computeBarnesHutGravity();
-			if (parameters.isInfiniteUnivers()) {
-				//experimental
-				computeInfiniteUnivers();
-			}
-
-			// Change Speed
-			changeSpeed();
-
-			if (parameters.isManageImpact()) {
-				computeBarnesHutCollision();
-				speedsAfterImpact(parameters.getTypeOfImpact());
-			}
-
-			move();
-
-			if (parameters.isExpansionUnivers()) {
-				expansionUnivers();
-			}
-
-			if (parameters.isManageImpact()
-					&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
-				computeBarnesHutCollision();
-				doubleDensityRelaxation();
-				// adjustSpeedFromPositions();
-			}
-
-			parameters.setTimeFactor(parameters.getTimeFactor()
-					* parameters.getTimeMultiplicator());
-			/*
-			 * parameters.setGasViscosity(parameters.getGasViscosity() /
-			 * parameters.getTimeMultiplicator());
-			 * parameters.setMatterViscosity(parameters.getMatterViscosity() /
-			 * parameters.getTimeMultiplicator());
-			 */
-
-			parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
-					- startTimeBH);
-			moveEnd(bufferedWriter);
-			parameters.setCycleComputeTime(System.currentTimeMillis()
-					- startTimeCycle);
-			parameters.setKlength(k);
-			parameters.setPlength(p.length());
-		} else {
-			parameters.setNumOfCompute(-9999);
-			parameters.setNumOfAccelCompute(-9999);
-			long startTimeCycle = System.currentTimeMillis();
-			try {
-				String s = bufferedReader.readLine();
-				if (s != null) {
-					listMatter = new ArrayList<Matter>(
-							(List<Matter>) HelperTools.fromString(s));
-				} else {
-					parameters.setPlayData(false);
+				/*
+				 * Needed to disable acceleration with collision particle
+				 */
+				if (parameters.isManageImpact()
+						&& parameters.getTypeOfImpact() != TypeOfImpact.Viscosity) {
+					computeBarnesHutCollision();
 				}
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+
+				// Compute accelerations
+				computeBarnesHutGravity();
+				if (parameters.isInfiniteUnivers()) {
+					// experimental
+					computeInfiniteUnivers();
+				}
+
+				// Change Speed
+				changeSpeed();
+
+				if (parameters.isManageImpact()) {
+					computeBarnesHutCollision();
+					speedsAfterImpact(parameters.getTypeOfImpact());
+				}
+
+				move();
+
+				if (parameters.isExpansionUnivers()) {
+					expansionUnivers();
+				}
+
+				if (parameters.isManageImpact()
+						&& parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
+					computeBarnesHutCollision();
+					doubleDensityRelaxation();
+					// adjustSpeedFromPositions();
+				}
+
+				parameters.setTimeFactor(parameters.getTimeFactor()
+						* parameters.getTimeMultiplicator());
+				/*
+				 * parameters.setGasViscosity(parameters.getGasViscosity() /
+				 * parameters.getTimeMultiplicator());
+				 * parameters.setMatterViscosity(parameters.getMatterViscosity()
+				 * / parameters.getTimeMultiplicator());
+				 */
+
+				parameters.setBarnesHuttComputeTime(System.currentTimeMillis()
+						- startTimeBH);
+				moveEnd(bufferedWriter);
+				parameters.setCycleComputeTime(System.currentTimeMillis()
+						- startTimeCycle);
+				parameters.setKlength(k);
+				parameters.setPlength(p.length());
+			} else {
+				parameters.setNumOfCompute(-9999);
+				parameters.setNumOfAccelCompute(-9999);
+				long startTimeCycle = System.currentTimeMillis();
+				try {
+					String s = bufferedReader.readLine();
+					if (s != null) {
+						listMatter = new ArrayList<Matter>(
+								(List<Matter>) HelperTools.fromString(s));
+					} else {
+						parameters.setPlayData(false);
+					}
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				computeMassLimitsCentroidSpeed(true);
+				parameters.setCycleComputeTime(System.currentTimeMillis()
+						- startTimeCycle);
 			}
-			computeMassLimitsCentroidSpeed(true);
-			parameters.setCycleComputeTime(System.currentTimeMillis()
-					- startTimeCycle);
+			parameters.setElapsedTime(parameters.getElapsedTime()
+					+ parameters.getTimeFactor());
 		}
 	}
 
@@ -344,6 +348,16 @@ public class Univers {
 		}
 		return valReturn;
 	}
+
+
+	public void centroidAsZeroPoint() {
+		computeMassLimitsCentroidSpeed(true);
+		for(Matter m: listMatter){
+			m.getPoint().sub(gPoint);
+			m.getPointBefore().sub(gPoint);
+		}
+	}
+
 
 	private void changeSpeed() {
 		for (Matter m : listMatter) {

@@ -131,9 +131,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	}
 
 	private void render(GLAutoDrawable drawable) {
-		parameters.setElapsedTime(parameters.getElapsedTime()
-				+ parameters.getTimeFactor());
-
 		if (parameters.isFollowCentroid()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();

@@ -172,12 +172,16 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuProcess = new JMenu("Process");
 		menuBar.add(menuProcess);
+		JCheckBoxMenuItem menuItemFreeze = new JCheckBoxMenuItem("Freeze univers",
+				parameters.isFrozen());
+		menuItemFreeze.addActionListener(menuFreeze());
 		JMenuItem menuItemStart = new JMenuItem("Start");
 		menuItemStart.addActionListener(menuStart());
 		JMenuItem menuItemStop = new JMenuItem("Stop");
 		menuItemStop.addActionListener(menuStop());
 		JMenuItem menuItemReset = new JMenuItem("Reset");
 		menuItemReset.addActionListener(menuReset());
+		menuProcess.add(menuItemFreeze);
 		menuProcess.add(menuItemStart);
 		menuProcess.add(menuItemStop);
 		menuProcess.add(menuItemReset);
@@ -345,6 +349,7 @@ public class GUIProgram extends JFrame {
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						OutputStream output = new FileOutputStream(fileChooser
 								.getSelectedFile().getAbsolutePath());
+						univers.centroidAsZeroPoint();
 						JAXBContext context = JAXBContext
 								.newInstance(Univers.class);
 						Marshaller m = context.createMarshaller();
@@ -498,6 +503,15 @@ public class GUIProgram extends JFrame {
 				}
 				GUIParam guiParam = new GUIParam(me);
 				guiParam.setVisible(true);
+			}
+		};
+	}
+
+	private ActionListener menuFreeze() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parameters.setFrozen(!parameters.isFrozen());
 			}
 		};
 	}

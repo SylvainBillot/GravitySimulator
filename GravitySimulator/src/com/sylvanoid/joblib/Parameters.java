@@ -18,6 +18,7 @@ public class Parameters implements Serializable {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	private boolean frozen =false;
 	private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
 	private double elapsedTime = 0;
 	private double timeFactor = 6000;
@@ -89,6 +90,20 @@ public class Parameters implements Serializable {
 
 	public Parameters() {
 
+	}
+
+	/**
+	 * @return the frozen
+	 */
+	public boolean isFrozen() {
+		return frozen;
+	}
+
+	/**
+	 * @param frozen the frozen to set
+	 */
+	public void setFrozen(boolean frozen) {
+		this.frozen = frozen;
 	}
 
 	public double getElapsedTime() {
