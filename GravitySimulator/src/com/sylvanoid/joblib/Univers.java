@@ -251,7 +251,7 @@ public class Univers {
 
 				// Compute accelerations
 				computeBarnesHutGravity();
-				// computeNNGravity();
+				//computeNNGravity();
 
 				// infinit univers
 				if (parameters.isInfiniteUnivers()) {
