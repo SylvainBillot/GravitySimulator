@@ -413,7 +413,8 @@ public class Univers {
 		for (Matter m1 : listMatter) {
 			for (Matter m2 : listMatter) {
 				if (m1 != m2) {
-					parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute()+1);
+					parameters.setNumOfAccelCompute(parameters
+							.getNumOfAccelCompute() + 1);
 					double attraction = HelperNewton.attraction(m1, m2,
 							parameters);
 					m1.getAccel().add(
