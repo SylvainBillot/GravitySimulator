@@ -250,8 +250,11 @@ public class Univers {
 				}
 
 				// Compute accelerations
-				computeBarnesHutGravity();
-				//computeNNGravity();
+				if (parameters.isBarnesHut()) {
+					computeBarnesHutGravity();
+				} else {
+					computeNNGravity();
+				}
 
 				// infinit univers
 				if (parameters.isInfiniteUnivers()) {
@@ -348,7 +351,6 @@ public class Univers {
 		return valReturn;
 	}
 
-
 	public void resetGpoint() {
 		computeMassLimitsCentroidSpeed(false);
 		gPointBefore = new Vector3d(gPoint);
@@ -358,10 +360,9 @@ public class Univers {
 		// Correction of gPoint derive because barnesHut is not perfect
 		Vector3d gDelta = new Vector3d(gPoint);
 		gDelta.sub(gPointBefore);
-		Vector3d gSpeed = new Vector3d(gDelta.x
-				/ parameters.getTimeFactor(), gDelta.y
-				/ parameters.getTimeFactor(), gDelta.z
-				/ parameters.getTimeFactor());
+		Vector3d gSpeed = new Vector3d(gDelta.x / parameters.getTimeFactor(),
+				gDelta.y / parameters.getTimeFactor(), gDelta.z
+						/ parameters.getTimeFactor());
 
 		for (Matter m : listMatter) {
 			m.changeSpeed();
@@ -408,11 +409,11 @@ public class Univers {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private void computeNNGravity() {
 		for (Matter m1 : listMatter) {
 			for (Matter m2 : listMatter) {
 				if (m1 != m2) {
+					parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute()+1);
 					double attraction = HelperNewton.attraction(m1, m2,
 							parameters);
 					m1.getAccel().add(

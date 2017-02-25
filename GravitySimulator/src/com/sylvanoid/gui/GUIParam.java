@@ -29,6 +29,7 @@ public class GUIParam extends JDialog {
 	private GUIParam me;
 	private GUIProgram mother;
 	private JCheckBox parallelization;
+	private JCheckBox barnessHut;
 	private JComboBox<String> typeOfUnivers;
 	private JFormattedTextField timeFactor;
 	private JFormattedTextField scala;
@@ -107,6 +108,11 @@ public class GUIParam extends JDialog {
 		parallelization = new JCheckBox();
 		parallelization.setSelected(parameters.isParallelization());
 		add(parallelization);
+
+		add(new JLabel("BarneHut/NN:"));
+		barnessHut = new JCheckBox();
+		barnessHut.setSelected(parameters.isBarnesHut());
+		add(barnessHut);
 
 		add(new JLabel("Scala 1/x:"));
 		scala = new JFormattedTextField(dfsc);
@@ -857,6 +863,7 @@ public class GUIParam extends JDialog {
 				try {
 					parameters.setParallelization(me.parallelization
 							.isSelected());
+					parameters.setBarnesHut(me.barnessHut.isSelected());
 					parameters.setTimeFactor(Double.parseDouble(me.timeFactor
 							.getValue().toString()));
 					parameters.setScala(Double.parseDouble(me.scala.getValue()

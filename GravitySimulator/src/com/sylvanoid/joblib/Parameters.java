@@ -65,6 +65,7 @@ public class Parameters implements Serializable {
 	private boolean exportData = false;
 	private boolean playData = false;
 	private boolean parallelization = false;
+	private boolean barnesHut = true;
 	private boolean staticDarkMatter = true;
 	private double matterDistribution = 5;
 	private double gasDistribution = 1;
@@ -483,6 +484,20 @@ public class Parameters implements Serializable {
 
 	public void setParallelization(boolean parallelization) {
 		this.parallelization = parallelization;
+	}
+
+	/**
+	 * @return the barnesHut
+	 */
+	public boolean isBarnesHut() {
+		return barnesHut;
+	}
+
+	/**
+	 * @param barnesHut the barnesHut to set
+	 */
+	public void setBarnesHut(boolean barnesHut) {
+		this.barnesHut = barnesHut;
 	}
 
 	public boolean isStaticDarkMatter() {
