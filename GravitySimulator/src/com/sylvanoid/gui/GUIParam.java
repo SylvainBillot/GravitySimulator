@@ -20,6 +20,7 @@ import com.sylvanoid.common.HelperVariable;
 import com.sylvanoid.common.TypeOfImpact;
 import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.joblib.Parameters;
+import javax.swing.SwingConstants;
 
 public class GUIParam extends JDialog {
 	/**
@@ -89,236 +90,281 @@ public class GUIParam extends JDialog {
 	private void builder(GUIProgram mother) {
 		setTitle("Parameters");
 		setModal(true);
-		int w = 1024;
-		int h = 540;
-		setLocation(new Point((mother.getWidth() - w) / 2,
-				(mother.getHeight() - h) / 2));
-		setSize(new Dimension(1028, 582));
-		setLayout(new GridLayout(19, 4));
-		add(new JLabel("Type of Univers:"));
+		setSize(new Dimension(1024, 582));
+		int w = getSize().width;
+		int h = getSize().height;
+		setLocation(new Point((mother.getWidth() - w) / 2, (mother.getHeight() - h) / 2));
+		
+		getContentPane().setLayout(new GridLayout(19, 4));
+		getContentPane().add(new JLabel("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
 			typeOfUnivers.addItem(tou.getLabel());
 		}
 		typeOfUnivers.setSelectedItem(parameters.getTypeOfUnivers().getLabel());
 		typeOfUnivers.addActionListener(chooseTypeOfUnivers());
-		add(typeOfUnivers);
+		getContentPane().add(typeOfUnivers);
 
-		add(new JLabel("Parallelization:"));
+		getContentPane().add(new JLabel("Parallelization:"));
 		parallelization = new JCheckBox();
 		parallelization.setSelected(parameters.isParallelization());
-		add(parallelization);
+		getContentPane().add(parallelization);
 
-		add(new JLabel("BarneHut/NN:"));
+		getContentPane().add(new JLabel("BarneHut/NN:"));
 		barnessHut = new JCheckBox();
 		barnessHut.setSelected(parameters.isBarnesHut());
-		add(barnessHut);
+		getContentPane().add(barnessHut);
 
-		add(new JLabel("Scala 1/x:"));
+		getContentPane().add(new JLabel("Scala 1/x:"));
 		scala = new JFormattedTextField(dfsc);
+		scala.setHorizontalAlignment(SwingConstants.RIGHT);
 		scala.setValue(parameters.getScala());
-		add(scala);
+		getContentPane().add(scala);
 
-		add(new JLabel("Time factor:"));
+		getContentPane().add(new JLabel("Time factor:"));
 		timeFactor = new JFormattedTextField(dfsc);
+		timeFactor.setHorizontalAlignment(SwingConstants.RIGHT);
 		timeFactor.setValue(parameters.getTimeFactor());
-		add(timeFactor);
+		getContentPane().add(timeFactor);
 
-		add(new JLabel("Number of object:"));
+		getContentPane().add(new JLabel("Number of object:"));
 		numberOfObjects = new JFormattedTextField(dfsc);
+		numberOfObjects.setHorizontalAlignment(SwingConstants.RIGHT);
 		numberOfObjects.setValue(parameters.getNumberOfObjects());
-		add(numberOfObjects);
+		getContentPane().add(numberOfObjects);
 
-		add(new JLabel("Nebula radius:"));
+		getContentPane().add(new JLabel("Nebula radius:"));
 		nebulaRadius = new JFormattedTextField(dfsc);
+		nebulaRadius.setHorizontalAlignment(SwingConstants.RIGHT);
 		nebulaRadius.setValue(parameters.getNebulaRadius());
-		add(nebulaRadius);
+		getContentPane().add(nebulaRadius);
 
-		add(new JLabel("Density of objects:"));
+		getContentPane().add(new JLabel("Density of objects:"));
 		densiteMin = new JFormattedTextField(dfsc);
+		densiteMin.setHorizontalAlignment(SwingConstants.RIGHT);
 		densiteMin.setValue(parameters.getDensity());
-		add(densiteMin);
+		getContentPane().add(densiteMin);
 
-		add(new JLabel("Mass object:"));
+		getContentPane().add(new JLabel("Mass object:"));
 		JPanel massObject = new JPanel();
-		massObject.setLayout(new GridLayout(1, 4));
-		add(massObject);
+		getContentPane().add(massObject);
 		massObjectMin = new JFormattedTextField(dfsc);
+		massObjectMin.setHorizontalAlignment(SwingConstants.RIGHT);
+		massObjectMin.setBounds(36, 0, 80, 29);
 		massObjectMin.setValue(parameters.getMassObjectMin());
-		massObject.add(new JLabel("Min:"));
+		massObject.setLayout(null);
+		JLabel label = new JLabel("Min:");
+		label.setBounds(0, 0, 46, 29);
+		massObject.add(label);
 		massObject.add(massObjectMin);
 		massObjectMax = new JFormattedTextField(dfsc);
+		massObjectMax.setHorizontalAlignment(SwingConstants.RIGHT);
+		massObjectMax.setBounds(164, 0, 80, 29);
 		massObjectMax.setValue(parameters.getMassObjectMax());
-		massObject.add(new JLabel("Max:"));
+		JLabel label_1 = new JLabel("Max:");
+		label_1.setBounds(128, 0, 39, 29);
+		massObject.add(label_1);
 		massObject.add(massObjectMax);
 
-		add(new JLabel("Matter distribution:"));
+		getContentPane().add(new JLabel("Matter distribution:"));
 		matterDistribution = new JFormattedTextField(dfsc);
+		matterDistribution.setHorizontalAlignment(SwingConstants.RIGHT);
 		matterDistribution.setValue(parameters.getMatterDistribution());
-		add(matterDistribution);
+		getContentPane().add(matterDistribution);
 
-		add(new JLabel("Nb galactic Arms:"));
+		getContentPane().add(new JLabel("Nb galactic Arms:"));
 		nbArms = new JFormattedTextField(dfsc);
+		nbArms.setHorizontalAlignment(SwingConstants.RIGHT);
 		nbArms.setValue(parameters.getNbARms());
-		add(nbArms);
+		getContentPane().add(nbArms);
 
-		add(new JLabel("Ellipses eccentricity (]0-1[):"));
+		getContentPane().add(new JLabel("Ellipses eccentricity (]0-1[):"));
 		ellipseRatio = new JFormattedTextField(fdpc);
+		ellipseRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		ellipseRatio.setValue(parameters.getEllipseRatio());
-		add(ellipseRatio);
+		getContentPane().add(ellipseRatio);
 
-		add(new JLabel("Ellipses shift (ratio of nebula radius):"));
+		getContentPane().add(new JLabel("Ellipses shift (ratio of nebula radius):"));
 		ellipseShiftRatio = new JFormattedTextField(dfsc);
+		ellipseShiftRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		ellipseShiftRatio.setValue(parameters.getEllipseShiftRatio());
-		add(ellipseShiftRatio);
+		getContentPane().add(ellipseShiftRatio);
 
-		add(new JLabel("Negligeable mass:"));
+		getContentPane().add(new JLabel("Negligeable mass:"));
 		negligeableMass = new JFormattedTextField(dfsc);
+		negligeableMass.setHorizontalAlignment(SwingConstants.RIGHT);
 		negligeableMass.setValue(parameters.getNegligeableMass());
-		add(negligeableMass);
+		getContentPane().add(negligeableMass);
 
-		add(new JLabel("Num of gas particle:"));
+		getContentPane().add(new JLabel("Num of gas particle:"));
 		numOfLowMassParticule = new JFormattedTextField(dfsc);
+		numOfLowMassParticule.setHorizontalAlignment(SwingConstants.RIGHT);
 		numOfLowMassParticule.setValue(parameters.getNumOfLowMassParticule());
-		add(numOfLowMassParticule);
+		getContentPane().add(numOfLowMassParticule);
 
-		add(new JLabel("Gas particles max mass:"));
+		getContentPane().add(new JLabel("Gas particles max mass:"));
 		lowMassParticuleMass = new JFormattedTextField(dfsc);
+		lowMassParticuleMass.setHorizontalAlignment(SwingConstants.RIGHT);
 		lowMassParticuleMass.setValue(parameters.getLowMassParticuleMass());
-		add(lowMassParticuleMass);
+		getContentPane().add(lowMassParticuleMass);
 
-		add(new JLabel("Gas particle density:"));
+		getContentPane().add(new JLabel("Gas particle density:"));
 		lowMassDensity = new JFormattedTextField(dfsc);
+		lowMassDensity.setHorizontalAlignment(SwingConstants.RIGHT);
 		lowMassDensity.setValue(parameters.getLowMassDensity());
-		add(lowMassDensity);
+		getContentPane().add(lowMassDensity);
 
-		add(new JLabel("Gas distribution:"));
+		getContentPane().add(new JLabel("Gas distribution:"));
 		gasDistribution = new JFormattedTextField(dfsc);
+		gasDistribution.setHorizontalAlignment(SwingConstants.RIGHT);
 		gasDistribution.setValue(parameters.getGasDistribution());
-		add(gasDistribution);
+		getContentPane().add(gasDistribution);
 
-		add(new JLabel("Dark Matter or central star Mass:"));
+		getContentPane().add(new JLabel("Dark Matter or central star Mass:"));
 		darkMatterMass = new JFormattedTextField(dfsc);
+		darkMatterMass.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterMass.setValue(parameters.getDarkMatterMass());
-		add(darkMatterMass);
+		getContentPane().add(darkMatterMass);
 
-		add(new JLabel("Dark Matter or central star Density:"));
+		getContentPane().add(new JLabel("Dark Matter or central star Density:"));
 		darkMatterDensity = new JFormattedTextField(dfsc);
+		darkMatterDensity.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterDensity.setValue(parameters.getDarkMatterDensity());
-		add(darkMatterDensity);
+		getContentPane().add(darkMatterDensity);
 
-		add(new JLabel("Dark Matterdistribution:"));
+		getContentPane().add(new JLabel("Dark Matterdistribution:"));
 		darkMatterDistribution = new JFormattedTextField(dfsc);
+		darkMatterDistribution.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterDistribution.setValue(parameters.getDarkMatterDistribution());
-		add(darkMatterDistribution);
+		getContentPane().add(darkMatterDistribution);
 
-		add(new JLabel("Dark matter xyz ratio"));
+		getContentPane().add(new JLabel("Dark matter xyz ratio"));
 		JPanel darkMatterRatio = new JPanel();
-		add(darkMatterRatio);
-		darkMatterRatio.setLayout(new GridLayout(1, 6));
+		getContentPane().add(darkMatterRatio);
 		darkMatterXRatio = new JFormattedTextField(dfsc);
+		darkMatterXRatio.setHorizontalAlignment(SwingConstants.RIGHT);
+		darkMatterXRatio.setBounds(23, 0, 50, 29);
 		darkMatterXRatio.setValue(parameters.getDarkMatterXYZRatio().x);
-		darkMatterRatio.add(new JLabel("X:"));
+		darkMatterRatio.setLayout(null);
+		JLabel label_2 = new JLabel("X:");
+		label_2.setBounds(2, 0, 22, 29);
+		darkMatterRatio.add(label_2);
 		darkMatterRatio.add(darkMatterXRatio);
 
 		darkMatterYRatio = new JFormattedTextField(dfsc);
+		darkMatterYRatio.setHorizontalAlignment(SwingConstants.RIGHT);
+		darkMatterYRatio.setBounds(102, 0, 50, 29);
 		darkMatterYRatio.setValue(parameters.getDarkMatterXYZRatio().y);
-		darkMatterRatio.add(new JLabel("Y:"));
+		JLabel label_3 = new JLabel("Y:");
+		label_3.setBounds(86, 0, 22, 29);
+		darkMatterRatio.add(label_3);
 		darkMatterRatio.add(darkMatterYRatio);
 
 		darkMatterZRatio = new JFormattedTextField(dfsc);
+		darkMatterZRatio.setHorizontalAlignment(SwingConstants.RIGHT);
+		darkMatterZRatio.setBounds(193, 0, 50, 29);
 		darkMatterZRatio.setValue(parameters.getDarkMatterXYZRatio().z);
-		darkMatterRatio.add(new JLabel("Z:"));
+		JLabel label_4 = new JLabel("Z:");
+		label_4.setBounds(170, 0, 22, 29);
+		darkMatterRatio.add(label_4);
 		darkMatterRatio.add(darkMatterZRatio);
 
-		add(new JLabel("Manage Impact:"));
+		getContentPane().add(new JLabel("Manage Impact:"));
 		manageImpact = new JCheckBox();
 		manageImpact.setSelected(parameters.isManageImpact());
 		manageImpact.addActionListener(chooseManageImpact());
-		add(manageImpact);
+		getContentPane().add(manageImpact);
 
-		add(new JLabel("Type Of Impact:"));
+		getContentPane().add(new JLabel("Type Of Impact:"));
 		typeOfImpact = new JComboBox<String>();
 		for (TypeOfImpact toi : TypeOfImpact.values()) {
 			typeOfImpact.addItem(toi.getLabel());
 		}
 		typeOfImpact.setSelectedItem(parameters.getTypeOfImpact().getLabel());
-		add(typeOfImpact);
+		getContentPane().add(typeOfImpact);
 
-		add(new JLabel("Collision distance ratio rij:"));
+		getContentPane().add(new JLabel("Collision distance ratio rij:"));
 		collisionDistanceRatio = new JFormattedTextField(dfsc);
+		collisionDistanceRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		collisionDistanceRatio.setValue(parameters.getCollisionDistanceRatio());
-		add(collisionDistanceRatio);
+		getContentPane().add(collisionDistanceRatio);
 
-		add(new JLabel("Matter Viscosity ratio:"));
+		getContentPane().add(new JLabel("Matter Viscosity ratio:"));
 		matterViscosity = new JFormattedTextField(dfsc);
+		matterViscosity.setHorizontalAlignment(SwingConstants.RIGHT);
 		matterViscosity.setValue(parameters.getMatterViscosity());
-		add(matterViscosity);
+		getContentPane().add(matterViscosity);
 
-		add(new JLabel("Gas Viscosity ratio:"));
+		getContentPane().add(new JLabel("Gas Viscosity ratio:"));
 		gasViscosity = new JFormattedTextField(dfsc);
+		gasViscosity.setHorizontalAlignment(SwingConstants.RIGHT);
 		gasViscosity.setValue(parameters.getGasViscosity());
-		add(gasViscosity);
+		getContentPane().add(gasViscosity);
 
-		add(new JLabel("Dark Matter Viscosity ratio:"));
+		getContentPane().add(new JLabel("Dark Matter Viscosity ratio:"));
 		darkMatterViscosity = new JFormattedTextField(dfsc);
+		darkMatterViscosity.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterViscosity.setValue(parameters.getDarkMatterViscosity());
-		add(darkMatterViscosity);
+		getContentPane().add(darkMatterViscosity);
 
-		add(new JLabel("Visco elasticity:"));
+		getContentPane().add(new JLabel("Visco elasticity:"));
 		viscoElasticity = new JFormattedTextField(dfsc);
+		viscoElasticity.setHorizontalAlignment(SwingConstants.RIGHT);
 		viscoElasticity.setValue(parameters.getViscoElasticity());
-		add(viscoElasticity);
+		getContentPane().add(viscoElasticity);
 
-		add(new JLabel("Visco elasticity Near:"));
+		getContentPane().add(new JLabel("Visco elasticity Near:"));
 		viscoElasticityNear = new JFormattedTextField(dfsc);
+		viscoElasticityNear.setHorizontalAlignment(SwingConstants.RIGHT);
 		viscoElasticityNear.setValue(parameters.getViscoElasticityNear());
-		add(viscoElasticityNear);
+		getContentPane().add(viscoElasticityNear);
 
-		add(new JLabel("Rest of Presure:"));
+		getContentPane().add(new JLabel("Rest of Presure:"));
 		pressureZero = new JFormattedTextField(dfsc);
+		pressureZero.setHorizontalAlignment(SwingConstants.RIGHT);
 		pressureZero.setValue(parameters.getPressureZero());
-		add(pressureZero);
+		getContentPane().add(pressureZero);
 
-		add(new JLabel("Recover Friction Energy (Experimental):"));
+		getContentPane().add(new JLabel("Recover Friction Energy (Experimental):"));
 		recoverFrictionEnergy = new JCheckBox();
 		recoverFrictionEnergy.setSelected(parameters.isRecoverFrictionEnegy());
 		recoverFrictionEnergy.addActionListener(chooseRecoverEnergy());
 
-		add(recoverFrictionEnergy);
+		getContentPane().add(recoverFrictionEnergy);
 
-		add(new JLabel("Recover Friction Energy Ratio:"));
+		getContentPane().add(new JLabel("Recover Friction Energy Ratio:"));
 		recoverFrictionEnergyRatio = new JFormattedTextField(dfsc);
-		recoverFrictionEnergyRatio.setValue(parameters
-				.getRecoverFrictionEnergyRatio());
-		add(recoverFrictionEnergyRatio);
+		recoverFrictionEnergyRatio.setHorizontalAlignment(SwingConstants.RIGHT);
+		recoverFrictionEnergyRatio.setValue(parameters.getRecoverFrictionEnergyRatio());
+		getContentPane().add(recoverFrictionEnergyRatio);
 
-		add(new JLabel("Static Dark Matter:"));
+		getContentPane().add(new JLabel("Static Dark Matter:"));
 		staticDarkMatter = new JCheckBox();
 		staticDarkMatter.setSelected(parameters.isStaticDarkMatter());
-		add(staticDarkMatter);
+		getContentPane().add(staticDarkMatter);
 
-		add(new JLabel("Expansion Of Univers:"));
+		getContentPane().add(new JLabel("Expansion Of Univers:"));
 		expansionUnivers = new JCheckBox();
 		expansionUnivers.setSelected(parameters.isExpansionUnivers());
-		add(expansionUnivers);
+		getContentPane().add(expansionUnivers);
 
-		add(new JLabel("Time multiplicator:"));
+		getContentPane().add(new JLabel("Time multiplicator:"));
 		timeMultiplicator = new JFormattedTextField(dfsc);
+		timeMultiplicator.setHorizontalAlignment(SwingConstants.RIGHT);
 		timeMultiplicator.setValue(parameters.getTimeMultiplicator());
-		add(timeMultiplicator);
+		getContentPane().add(timeMultiplicator);
 
-		add(new JLabel("Viscous Dark Matter:"));
+		getContentPane().add(new JLabel("Viscous Dark Matter:"));
 		visousDarkMatter = new JCheckBox();
 		visousDarkMatter.setSelected(parameters.isViscousDarkMatter());
-		add(visousDarkMatter);
+		getContentPane().add(visousDarkMatter);
 
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(cancelAction());
-		add(btnCancel);
+		getContentPane().add(btnCancel);
 		JButton btnOK = new JButton("OK");
 		btnOK.addActionListener(okAction());
-		add(btnOK);
+		getContentPane().add(btnOK);
 	}
 
 	private void enableDisableParam() {
@@ -345,8 +391,7 @@ public class GUIParam extends JDialog {
 		viscoElasticityNear.setEnabled(manageImpact.isSelected());
 		pressureZero.setEnabled(manageImpact.isSelected());
 		recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
-		recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
-				&& recoverFrictionEnergy.isSelected());
+		recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected() && recoverFrictionEnergy.isSelected());
 		darkMatterMass.setEnabled(false);
 		darkMatterDensity.setEnabled(false);
 		darkMatterDistribution.setEnabled(false);
@@ -641,8 +686,7 @@ public class GUIParam extends JDialog {
 					visousDarkMatter.setSelected(false);
 					break;
 				case 3:
-					parameters
-							.setTypeOfUnivers(TypeOfUnivers.RandomRotateUnivers);
+					parameters.setTypeOfUnivers(TypeOfUnivers.RandomRotateUnivers);
 					manageImpact.setSelected(false);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
@@ -650,15 +694,12 @@ public class GUIParam extends JDialog {
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-20);
 					nebulaRadius.setValue(HelperVariable.PC * 3E4);
-					massObjectMin
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
-					massObjectMax
-							.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
+					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
 					matterDistribution.setValue(1);
 					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(0);
-					lowMassParticuleMass
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E2);
+					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1E2);
 					lowMassDensity.setValue(1E-27);
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E40);
@@ -685,8 +726,7 @@ public class GUIParam extends JDialog {
 					visousDarkMatter.setSelected(false);
 					break;
 				case 4: // Planetary genesis
-					parameters
-							.setTypeOfUnivers(TypeOfUnivers.PlanetariesGenesis);
+					parameters.setTypeOfUnivers(TypeOfUnivers.PlanetariesGenesis);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEDAY);
 					scala.setValue(5E-10);
@@ -726,8 +766,7 @@ public class GUIParam extends JDialog {
 					visousDarkMatter.setSelected(false);
 					break;
 				case 5:
-					parameters
-							.setTypeOfUnivers(TypeOfUnivers.RandomRotateUniverCircular);
+					parameters.setTypeOfUnivers(TypeOfUnivers.RandomRotateUniverCircular);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-19);
@@ -735,15 +774,12 @@ public class GUIParam extends JDialog {
 					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 4E4);
-					massObjectMin
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E4);
-					massObjectMax
-							.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 1E4);
+					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
 					matterDistribution.setValue(5);
 					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(10000);
-					lowMassParticuleMass
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
+					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1E6);
 					lowMassDensity.setValue(5E-24);
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(1E40);
@@ -770,8 +806,7 @@ public class GUIParam extends JDialog {
 					visousDarkMatter.setSelected(false);
 					break;
 				case 6:
-					parameters
-							.setTypeOfUnivers(TypeOfUnivers.RandomStaticSphericalUnivers);
+					parameters.setTypeOfUnivers(TypeOfUnivers.RandomStaticSphericalUnivers);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
 					scala.setValue(3E-24);
@@ -779,15 +814,12 @@ public class GUIParam extends JDialog {
 					numberOfObjects.setValue(0);
 					densiteMin.setValue(1E-19);
 					nebulaRadius.setValue(HelperVariable.PC * 5E9);
-					massObjectMin
-							.setValue(HelperVariable.MINIMALSTARMASS * 1E5);
-					massObjectMax
-							.setValue(HelperVariable.MAXIMALSTARMASS * 1E4);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 1E5);
+					massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS * 1E4);
 					matterDistribution.setValue(1);
 					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(10000);
-					lowMassParticuleMass
-							.setValue(HelperVariable.MINIMALSTARMASS * 2.5E20);
+					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 2.5E20);
 					lowMassDensity.setValue(1E-24);
 					gasDistribution.setValue(1);
 					darkMatterMass.setValue(2.59E53);
@@ -830,8 +862,7 @@ public class GUIParam extends JDialog {
 				viscoElasticityNear.setEnabled(manageImpact.isSelected());
 				pressureZero.setEnabled(manageImpact.isSelected());
 				recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
-				recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
-						&& recoverFrictionEnergy.isSelected());
+				recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected() && recoverFrictionEnergy.isSelected());
 			}
 		};
 	}
@@ -839,8 +870,7 @@ public class GUIParam extends JDialog {
 	private ActionListener chooseRecoverEnergy() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected()
-						&& recoverFrictionEnergy.isSelected());
+				recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected() && recoverFrictionEnergy.isSelected());
 			}
 		};
 	}
@@ -861,112 +891,52 @@ public class GUIParam extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					parameters.setParallelization(me.parallelization
-							.isSelected());
+					parameters.setParallelization(me.parallelization.isSelected());
 					parameters.setBarnesHut(me.barnessHut.isSelected());
-					parameters.setTimeFactor(Double.parseDouble(me.timeFactor
-							.getValue().toString()));
-					parameters.setScala(Double.parseDouble(me.scala.getValue()
-							.toString()));
+					parameters.setTimeFactor(Double.parseDouble(me.timeFactor.getValue().toString()));
+					parameters.setScala(Double.parseDouble(me.scala.getValue().toString()));
+					parameters.setNumberOfObjects(Integer.parseInt(me.numberOfObjects.getValue().toString()));
+					parameters.setNebulaRadius(Double.parseDouble(me.nebulaRadius.getValue().toString()));
+					parameters.setDensity(Double.parseDouble(me.densiteMin.getValue().toString()));
+					parameters.setMassObjectMin(Double.parseDouble(me.massObjectMin.getValue().toString()));
+					parameters.setMassObjectMax(Double.parseDouble(me.massObjectMax.getValue().toString()));
+					parameters.setMatterDistribution(Double.parseDouble(me.matterDistribution.getValue().toString()));
+					parameters.setNbARms(Integer.parseInt(me.nbArms.getValue().toString()));
+					parameters.setEllipseRatio(Double.parseDouble(me.ellipseRatio.getValue().toString()));
+					parameters.setEllipseShiftRatio(Double.parseDouble(me.ellipseShiftRatio.getValue().toString()));
+					parameters.setNegligeableMass(Double.parseDouble(me.negligeableMass.getValue().toString()));
 					parameters
-							.setNumberOfObjects(Integer
-									.parseInt(me.numberOfObjects.getValue()
-											.toString()));
+							.setNumOfLowMassParticule(Integer.parseInt(me.numOfLowMassParticule.getValue().toString()));
 					parameters
-							.setNebulaRadius(Double.parseDouble(me.nebulaRadius
-									.getValue().toString()));
-					parameters.setDensity(Double.parseDouble(me.densiteMin
-							.getValue().toString()));
-					parameters
-							.setMassObjectMin(Double
-									.parseDouble(me.massObjectMin.getValue()
-											.toString()));
-					parameters
-							.setMassObjectMax(Double
-									.parseDouble(me.massObjectMax.getValue()
-											.toString()));
-					parameters.setMatterDistribution(Double
-							.parseDouble(me.matterDistribution.getValue()
-									.toString()));
-					parameters.setNbARms(Integer.parseInt(me.nbArms.getValue()
-							.toString()));
-					parameters
-							.setEllipseRatio(Double.parseDouble(me.ellipseRatio
-									.getValue().toString()));
-					parameters.setEllipseShiftRatio(Double
-							.parseDouble(me.ellipseShiftRatio.getValue()
-									.toString()));
-					parameters.setNegligeableMass(Double
-							.parseDouble(me.negligeableMass.getValue()
-									.toString()));
-					parameters.setNumOfLowMassParticule(Integer
-							.parseInt(me.numOfLowMassParticule.getValue()
-									.toString()));
-					parameters.setLowMassParticuleMass(Double
-							.parseDouble(me.lowMassParticuleMass.getValue()
-									.toString()));
-					parameters.setLowMassDensity(Double
-							.parseDouble(me.lowMassDensity.getValue()
-									.toString()));
-					parameters.setGasDistribution(Double
-							.parseDouble(me.gasDistribution.getValue()
-									.toString()));
+							.setLowMassParticuleMass(Double.parseDouble(me.lowMassParticuleMass.getValue().toString()));
+					parameters.setLowMassDensity(Double.parseDouble(me.lowMassDensity.getValue().toString()));
+					parameters.setGasDistribution(Double.parseDouble(me.gasDistribution.getValue().toString()));
 					parameters.setManageImpact(me.manageImpact.isSelected());
-					parameters
-							.setTypeOfImpact(TypeOfImpact.values()[me.typeOfImpact
-									.getSelectedIndex()]);
-					parameters.setCollisionDistanceRatio(Double
-							.parseDouble(me.collisionDistanceRatio.getValue()
-									.toString()));
-					parameters.setMatterViscosity(Double
-							.parseDouble(me.matterViscosity.getValue()
-									.toString()));
-					parameters
-							.setGasViscosity(Double.parseDouble(me.gasViscosity
-									.getValue().toString()));
-					parameters.setDarkMatterViscosity(Double
-							.parseDouble(me.darkMatterViscosity.getValue()
-									.toString()));
-					parameters.setViscoElasticity(Double
-							.parseDouble(me.viscoElasticity.getValue()
-									.toString()));
-					parameters.setViscoElasticityNear(Double
-							.parseDouble(me.viscoElasticityNear.getValue()
-									.toString()));
-					parameters
-							.setPressureZero(Double.parseDouble(me.pressureZero
-									.getValue().toString()));
-					parameters.setDarkMatterMass(Double
-							.parseDouble(me.darkMatterMass.getValue()
-									.toString()));
-					parameters.setDarkMatterDensity(Double
-							.parseDouble(me.darkMatterDensity.getValue()
-									.toString()));
-					parameters.setDarkMatterDistribution(Double
-							.parseDouble(me.darkMatterDistribution.getValue()
-									.toString()));
-					parameters.setDarkMatterXYZRatio(new Vector3d(Double
-							.parseDouble(me.darkMatterXRatio.getValue()
-									.toString()), Double
-							.parseDouble(me.darkMatterYRatio.getValue()
-									.toString()), Double
-							.parseDouble(me.darkMatterZRatio.getValue()
-									.toString())));
-					parameters.setStaticDarkMatter(me.staticDarkMatter
-							.isSelected());
-					parameters.setExpansionUnivers(me.expansionUnivers
-							.isSelected());
-					parameters.setRecoverFrictionEnegy(me.recoverFrictionEnergy
-							.isSelected());
-					parameters.setRecoverFrictionEnergyRatio(Double
-							.parseDouble(me.recoverFrictionEnergyRatio
-									.getValue().toString()));
-					parameters.setTimeMultiplicator(Double
-							.parseDouble(me.timeMultiplicator.getValue()
-									.toString()));
+					parameters.setTypeOfImpact(TypeOfImpact.values()[me.typeOfImpact.getSelectedIndex()]);
+					parameters.setCollisionDistanceRatio(
+							Double.parseDouble(me.collisionDistanceRatio.getValue().toString()));
+					parameters.setMatterViscosity(Double.parseDouble(me.matterViscosity.getValue().toString()));
+					parameters.setGasViscosity(Double.parseDouble(me.gasViscosity.getValue().toString()));
+					parameters.setDarkMatterViscosity(Double.parseDouble(me.darkMatterViscosity.getValue().toString()));
+					parameters.setViscoElasticity(Double.parseDouble(me.viscoElasticity.getValue().toString()));
+					parameters.setViscoElasticityNear(Double.parseDouble(me.viscoElasticityNear.getValue().toString()));
+					parameters.setPressureZero(Double.parseDouble(me.pressureZero.getValue().toString()));
+					parameters.setDarkMatterMass(Double.parseDouble(me.darkMatterMass.getValue().toString()));
+					parameters.setDarkMatterDensity(Double.parseDouble(me.darkMatterDensity.getValue().toString()));
+					parameters.setDarkMatterDistribution(
+							Double.parseDouble(me.darkMatterDistribution.getValue().toString()));
+					parameters.setDarkMatterXYZRatio(
+							new Vector3d(Double.parseDouble(me.darkMatterXRatio.getValue().toString()),
+									Double.parseDouble(me.darkMatterYRatio.getValue().toString()),
+									Double.parseDouble(me.darkMatterZRatio.getValue().toString())));
+					parameters.setStaticDarkMatter(me.staticDarkMatter.isSelected());
+					parameters.setExpansionUnivers(me.expansionUnivers.isSelected());
+					parameters.setRecoverFrictionEnegy(me.recoverFrictionEnergy.isSelected());
+					parameters.setRecoverFrictionEnergyRatio(
+							Double.parseDouble(me.recoverFrictionEnergyRatio.getValue().toString()));
+					parameters.setTimeMultiplicator(Double.parseDouble(me.timeMultiplicator.getValue().toString()));
 
-					parameters.setViscousDarkMatter(me.visousDarkMatter
-							.isSelected());
+					parameters.setViscousDarkMatter(me.visousDarkMatter.isSelected());
 
 					parameters.setEyes(new Vector3d(0, 0, 900));
 					parameters.setLookAt(new Vector3d(0, 0, -900));
