@@ -78,10 +78,7 @@ public class GUIFollowOther extends JDialog {
 					me.mother.setVisible(true);
 					me.mother.getAnimator().start();
 				} catch (Exception em) {
-					JDialog d = new JDialog();
-					d.add(new Label("Error: " + em.getMessage()));
-					d.setVisible(true);
-					d.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+					em.printStackTrace();
 				}
 			}
 		};

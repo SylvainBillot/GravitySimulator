@@ -17,12 +17,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GL2;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUquadric;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.glu.GLU;
+import com.jogamp.opengl.glu.GLUquadric;
 import javax.vecmath.Vector3d;
 
 import org.jcodec.api.awt.SequenceEncoder;
@@ -229,12 +229,12 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
 		com.sylvanoid.common.TextureReader.Texture texture03 = null;
 		try {
-			texture00 = TextureReader.readTexture("resources/images/Dark.png");
-			texture01 = TextureReader.readTexture("resources/images/Star.bmp");
+			texture00 = TextureReader.readTexture("src/resources/images/Dark.png");
+			texture01 = TextureReader.readTexture("src/resources/images/Star.bmp");
 			texture02 = TextureReader
-					.readTexture("resources/images/Planetary.png");
+					.readTexture("src/resources/images/Planetary.png");
 			texture03 = TextureReader
-					.readTexture("resources/images/Galaxy.png");
+					.readTexture("src/resources/images/Galaxy.png");
 
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -41,7 +41,7 @@ public class GUIAddUnivers extends JDialog {
 	public GUIAddUnivers(GUIProgram mother) {
 		this.me = this;
 		this.mother = mother;
-		builder(mother);
+		this.builder(mother);
 	}
 
 	private void builder(GUIProgram mother) {
@@ -141,10 +141,7 @@ public class GUIAddUnivers extends JDialog {
 					me.mother.setVisible(true);
 					me.mother.getAnimator().start();
 				} catch (Exception em) {
-					JDialog d = new JDialog();
-					d.add(new Label("Error: " + em.getMessage()));
-					d.setVisible(true);
-					d.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+					em.printStackTrace();
 				}
 			}
 		};

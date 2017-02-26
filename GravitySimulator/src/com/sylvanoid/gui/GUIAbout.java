@@ -28,7 +28,7 @@ public class GUIAbout extends JDialog {
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
 		setSize(new Dimension(w, h));
-		setLayout(new BorderLayout());
+		getContentPane().setLayout(new BorderLayout());
 		String text = "<html><body>Gravity Simulator<br/>" +
 				"V0.9 Beta<br/>GNU GENERAL PUBLIC LICENSE<br/>" +
 				"Credit: Sylvain Billot<br/>" +
@@ -36,12 +36,12 @@ public class GUIAbout extends JDialog {
 				"Credit: jogl 2 library<br/>" +
 				"Credit: gluegen 2 library<br/>" +
 				"Credit: vecmath library<br/>" +
-				"Credit: jcodec-0.1.5 library<br/>" +
+				"Credit: jcodec library<br/>" +
 				"Credit: jafama library<br/>" +
 				"</body></html>";
 		JLabel content = new JLabel(text);
 		content.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-		add(content, BorderLayout.CENTER);
+		getContentPane().add(content, BorderLayout.CENTER);
 		JButton btnCancel = new JButton("OK");
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
@@ -51,7 +51,7 @@ public class GUIAbout extends JDialog {
 
 			}
 		});
-		add(btnCancel, BorderLayout.SOUTH);
+		getContentPane().add(btnCancel, BorderLayout.SOUTH);
 
 	}
 }
