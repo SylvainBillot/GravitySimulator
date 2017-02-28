@@ -31,42 +31,58 @@ import com.sylvanoid.common.Vector3dAdapter;
 public class Univers {
 	@XmlElement
 	private Parameters parameters;
+	
 	@XmlElement
 	private double mass;
+	
 	@XmlElement
 	private double visibleMass;
+	
 	@XmlElement
 	private double darkMass;
+	
 	@XmlElement
 	private double volumicMass;
+	
 	@XmlElement
 	private double density;
+	
 	@XmlElement
 	private List<Matter> listMatter;
+	
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	private Vector3d gPoint = new Vector3d(0, 0, 0);
+	
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	private Vector3d gPointBefore = new Vector3d(0, 0, 0);
+	
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	private Vector3d speed = new Vector3d(0, 0, 0);
+	
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
+	
 	private Vector3d min = new Vector3d(0, 0, 0);
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	private Vector3d max = new Vector3d(0, 0, 0);
+	
+	@XmlElement
 	private double k = 0;
+	
 	@XmlJavaTypeAdapter(Vector3dAdapter.class)
 	@XmlElement
 	private Vector3d p = new Vector3d(0, 0, 0);
 
 	@XmlTransient
 	private Matter maxMassElement = null;
+	
 	@XmlTransient
 	private Univers father;
+	
 	@XmlTransient
 	private ConcurrentHashMap<String, MatterPair> collisionPairs = new ConcurrentHashMap<String, MatterPair>();
 
@@ -475,12 +491,12 @@ public class Univers {
 			break;
 		case SoftImpact:
 			for (MatterPair mp : collisionPairs.values()) {
-				mp.impact(0);
+				mp.impact(0.0);
 			}
 			break;
 		case HardImpact:
 			for (MatterPair mp : collisionPairs.values()) {
-				mp.impact(1);
+				mp.impact(1.0);
 			}
 			break;
 		case Viscosity:
