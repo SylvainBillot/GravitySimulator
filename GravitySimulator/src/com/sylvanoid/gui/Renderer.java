@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
@@ -89,8 +88,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		render(drawable);
 
 		if (parameters.isExportToVideo()) {
-			GL2 gl = drawable.getGL().getGL2();
-			BufferedImage img = toImage(gl, drawable.getSurfaceWidth(),
+			GL2 gl2 = drawable.getGL().getGL2();
+			BufferedImage img = toImage(gl2, drawable.getSurfaceWidth(),
 					drawable.getSurfaceHeight());
 			try {
 				out.encodeImage(img);
@@ -108,18 +107,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		GL2 gl = drawable.getGL().getGL2();
-		gl.glShadeModel(GL2.GL_SMOOTH);
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		gl.glClearDepth(0.0f);
-		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+		GL2 gl2 = drawable.getGL().getGL2();
+		gl2.glShadeModel(GL2.GL_SMOOTH);
+		gl2.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		gl2.glClearDepth(0.0f);
+		gl2.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
 
 		// gl.glBlendFunc (GL2.GL_ONE, GL2.GL_ONE);
 
-		gl.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
-		gl.glBlendFuncSeparate(GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE);
+		gl2.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
+		gl2.glBlendFuncSeparate(GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE);
 
-		LoadGLTextures(gl);
+		LoadGLTextures(gl2);
 		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
 				java.awt.Font.PLAIN, textSize));
 		drawable.getAnimator().setUpdateFPSFrames(10, null);
@@ -174,10 +173,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			parameters.getEyes().add(diffLookAt);
 		}
 
-		GL2 gl = drawable.getGL().getGL2();
-		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-		gl.glMatrixMode(GL2.GL_PROJECTION);
-		gl.glLoadIdentity();
+		GL2 gl2 = drawable.getGL().getGL2();
+		gl2.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+		gl2.glMatrixMode(GL2.GL_PROJECTION);
+		gl2.glLoadIdentity();
 		// Perspective.
 		float widthHeightRatio = (float) guiProgram.getWidth()
 				/ (float) guiProgram.getHeight();
@@ -189,18 +188,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 				parameters.getEyes().z, centerOfVision.x, centerOfVision.y,
 				centerOfVision.z, 0, 1, 0);
 
-		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();
-		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
+		gl2.glMatrixMode(GL2.GL_MODELVIEW);
+		gl2.glLoadIdentity();
+		gl2.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
 
 		if (parameters.isShowgrid()) {
 			// Show grid
-			drawGrid(gl);
+			drawGrid(gl2);
 		}
 
 		if (parameters.isShowAxis()) {
 			// Show Axis
-			drawAxis(gl);
+			drawAxis(gl2);
 		}
 		if (parameters.isShowInfo()) {
 			// Show info
@@ -209,21 +208,21 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 		if (parameters.isShowTrace()) {
 			/* Show trace */
-			drawTrace(gl);
+			drawTrace(gl2);
 		}
 
 		// drawGravitationalFields(gl);
 
 		/* Show current univers */
 		if (!parameters.isViewSimplePointOnly()) {
-			drawUnivers(gl);
+			drawUnivers(gl2);
 		} else {
-			drawUniversSimplePoint(gl);
+			drawUniversSimplePoint(gl2);
 		}
-		// drawUniversSimpleSphere(gl, glu);
+		// drawUniversSimpleSphere(gl2, glu);
 	}
 
-	private void LoadGLTextures(GL gl) {
+	private void LoadGLTextures(GL2 gl) {
 		com.sylvanoid.common.TextureReader.Texture texture00 = null;
 		com.sylvanoid.common.TextureReader.Texture texture01 = null;
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
@@ -245,7 +244,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
 				GL2.GL_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
 				GL2.GL_LINEAR);
 		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture00.getWidth(),
 				texture00.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
@@ -263,7 +262,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
 				GL2.GL_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
 				GL2.GL_LINEAR);
 		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture02.getWidth(),
 				texture02.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
@@ -272,7 +271,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
 				GL2.GL_LINEAR);
-		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
 				GL2.GL_LINEAR);
 		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture03.getWidth(),
 				texture03.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
@@ -667,10 +666,11 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		int[] bd = ((DataBufferInt) bi.getRaster().getDataBuffer()).getData();
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
-				int b = 2 * glBB.get();
-				int g = 2 * glBB.get();
-				int r = 2 * glBB.get();
-				bd[(h - y - 1) * w + x] = (r << 16) | (g << 8) | b | 0xFF000000;
+				int r = (int)(glBB.get() * 255) << 16;
+	            int g = (int)(glBB.get() * 255) << 8;
+	            int b = (int)(glBB.get() * 255);
+	            int i = ((h - 1) - y) * w + x;
+	            bd[i] = r + g + b;
 			}
 		}
 		return bi;
