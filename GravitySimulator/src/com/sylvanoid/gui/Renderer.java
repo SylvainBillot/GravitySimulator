@@ -1,6 +1,8 @@
 package com.sylvanoid.gui;
 
+import java.awt.AWTException;
 import java.awt.Point;
+import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -8,10 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -35,8 +34,7 @@ import com.sylvanoid.joblib.Matter;
 import com.sylvanoid.joblib.Parameters;
 import com.sylvanoid.joblib.Univers;
 
-public class Renderer implements GLEventListener, KeyListener, MouseListener,
-		MouseMotionListener, MouseWheelListener {
+public class Renderer implements GLEventListener, KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private int textSize = 10;
 	private double theta = net.jafama.FastMath.PI / 180;
@@ -48,10 +46,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	private SequenceEncoder out;
 	private GLU glu = new GLU();
 	private int textures[] = new int[4]; // Storage For One textures
-
 	private TextRenderer textRenderer;
-
 	private java.awt.Point mousePoint = new Point(-1, -1);
+
+	private int cptImg = 0;
 
 	public Renderer(GUIProgram guiProgram) {
 		reload(guiProgram);
@@ -73,10 +71,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
 			for (Matter m : univers.getListMatter()) {
 				Vector3d[] myLine = new Vector3d[2];
-				myLine[0] = new Vector3d(m.getPointBefore().x,
-						m.getPointBefore().y, m.getPointBefore().z);
-				myLine[1] = new Vector3d(m.getPoint().x, m.getPoint().y,
-						m.getPoint().z);
+				myLine[0] = new Vector3d(m.getPointBefore().x, m.getPointBefore().y, m.getPointBefore().z);
+				myLine[1] = new Vector3d(m.getPoint().x, m.getPoint().y, m.getPoint().z);
 				tmpList.add(myLine);
 			}
 			forTrace.add(tmpList);
@@ -88,12 +84,13 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		render(drawable);
 
 		if (parameters.isExportToVideo()) {
-			GL2 gl2 = drawable.getGL().getGL2();
-			BufferedImage img = toImage(gl2, drawable.getSurfaceWidth(),
-					drawable.getSurfaceHeight());
 			try {
-				out.encodeImage(img);
-			} catch (IOException e) {
+				cptImg++;
+				cptImg %= parameters.getVideoPicBy();
+				if (cptImg == 0) {
+					out.encodeImage((new Robot()).createScreenCapture(guiProgram.getBounds()));
+				}
+			} catch (IOException | AWTException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -119,24 +116,20 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl2.glBlendFuncSeparate(GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE);
 
 		LoadGLTextures(gl2);
-		textRenderer = new TextRenderer(new java.awt.Font("SansSerif",
-				java.awt.Font.PLAIN, textSize));
+		textRenderer = new TextRenderer(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, textSize));
 		drawable.getAnimator().setUpdateFPSFrames(10, null);
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int xstart, int ystart,
-			int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int xstart, int ystart, int width, int height) {
 	}
 
 	private void render(GLAutoDrawable drawable) {
 		if (parameters.isFollowCentroid()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
-			Vector3d tmpvecScala = new Vector3d(univers.getGPoint().x
-					* parameters.getScala(), univers.getGPoint().y
-					* parameters.getScala(), univers.getGPoint().z
-					* parameters.getScala());
+			Vector3d tmpvecScala = new Vector3d(univers.getGPoint().x * parameters.getScala(),
+					univers.getGPoint().y * parameters.getScala(), univers.getGPoint().z * parameters.getScala());
 			diffLookAt.add(tmpvecScala);
 			parameters.setEyes(diffLookAt);
 		}
@@ -144,11 +137,9 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
-			Vector3d tmpvecScala = new Vector3d(univers.getMaxMassElement()
-					.getPoint());
-			tmpvecScala = new Vector3d(tmpvecScala.x * parameters.getScala(),
-					tmpvecScala.y * parameters.getScala(), tmpvecScala.z
-							* parameters.getScala());
+			Vector3d tmpvecScala = new Vector3d(univers.getMaxMassElement().getPoint());
+			tmpvecScala = new Vector3d(tmpvecScala.x * parameters.getScala(), tmpvecScala.y * parameters.getScala(),
+					tmpvecScala.z * parameters.getScala());
 			diffLookAt.add(tmpvecScala);
 
 			parameters.setEyes(diffLookAt);
@@ -157,18 +148,16 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		if (parameters.getObjectToFollow() != null) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
 			diffLookAt.negate();
-			Vector3d tmpvecScala = new Vector3d(parameters.getObjectToFollow()
-					.getPoint());
-			tmpvecScala = new Vector3d(tmpvecScala.x * parameters.getScala(),
-					tmpvecScala.y * parameters.getScala(), tmpvecScala.z
-							* parameters.getScala());
+			Vector3d tmpvecScala = new Vector3d(parameters.getObjectToFollow().getPoint());
+			tmpvecScala = new Vector3d(tmpvecScala.x * parameters.getScala(), tmpvecScala.y * parameters.getScala(),
+					tmpvecScala.z * parameters.getScala());
 			diffLookAt.add(tmpvecScala);
 			parameters.setEyes(diffLookAt);
 		}
 		if (parameters.isPermanentRotationy()) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 1, 0), -net.jafama.FastMath.PI / 1000));
+			parameters.setLookAt(
+					HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 1, 0), -net.jafama.FastMath.PI / 1000));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 		}
@@ -178,15 +167,12 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl2.glMatrixMode(GL2.GL_PROJECTION);
 		gl2.glLoadIdentity();
 		// Perspective.
-		float widthHeightRatio = (float) guiProgram.getWidth()
-				/ (float) guiProgram.getHeight();
-		glu.gluPerspective(45, widthHeightRatio, 1,
-				parameters.getNebulaRadius() * 1000);
+		float widthHeightRatio = (float) guiProgram.getWidth() / (float) guiProgram.getHeight();
+		glu.gluPerspective(45, widthHeightRatio, 1, parameters.getNebulaRadius() * 1000);
 		Vector3d centerOfVision = new Vector3d(parameters.getEyes());
 		centerOfVision.add(parameters.getLookAt());
-		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y,
-				parameters.getEyes().z, centerOfVision.x, centerOfVision.y,
-				centerOfVision.z, 0, 1, 0);
+		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y, parameters.getEyes().z, centerOfVision.x,
+				centerOfVision.y, centerOfVision.z, 0, 1, 0);
 
 		gl2.glMatrixMode(GL2.GL_MODELVIEW);
 		gl2.glLoadIdentity();
@@ -230,10 +216,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		try {
 			texture00 = TextureReader.readTexture("src/resources/images/Dark.png");
 			texture01 = TextureReader.readTexture("src/resources/images/Star.bmp");
-			texture02 = TextureReader
-					.readTexture("src/resources/images/Planetary.png");
-			texture03 = TextureReader
-					.readTexture("src/resources/images/Galaxy.png");
+			texture02 = TextureReader.readTexture("src/resources/images/Planetary.png");
+			texture03 = TextureReader.readTexture("src/resources/images/Galaxy.png");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -242,46 +226,33 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glGenTextures(3, textures, 0);
 
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-				GL2.GL_LINEAR);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
-				GL2.GL_LINEAR);
-		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture00.getWidth(),
-				texture00.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
-				texture00.getPixels());
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
+		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture00.getWidth(), texture00.getHeight(), 0, GL2.GL_RGB,
+				GL2.GL_UNSIGNED_BYTE, texture00.getPixels());
 
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[1]);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-				GL2.GL_LINEAR);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
-				GL2.GL_LINEAR);
-		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture01.getWidth(),
-				texture01.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
-				texture01.getPixels());
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
+		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture01.getWidth(), texture01.getHeight(), 0, GL2.GL_RGB,
+				GL2.GL_UNSIGNED_BYTE, texture01.getPixels());
 
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-				GL2.GL_LINEAR);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
-				GL2.GL_LINEAR);
-		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture02.getWidth(),
-				texture02.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
-				texture02.getPixels());
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
+		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture02.getWidth(), texture02.getHeight(), 0, GL2.GL_RGB,
+				GL2.GL_UNSIGNED_BYTE, texture02.getPixels());
 
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[3]);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
-				GL2.GL_LINEAR);
-		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
-				GL2.GL_LINEAR);
-		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture03.getWidth(),
-				texture03.getHeight(), 0, GL2.GL_RGB, GL2.GL_UNSIGNED_BYTE,
-				texture03.getPixels());
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);
+		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
+		gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, 3, texture03.getWidth(), texture03.getHeight(), 0, GL2.GL_RGB,
+				GL2.GL_UNSIGNED_BYTE, texture03.getPixels());
 
 	}
 
 	private void drawGrid(GL2 gl) {
-		double gridRadius = parameters.getNebulaRadius()
-				* parameters.getScala() * 2;
+		double gridRadius = parameters.getNebulaRadius() * parameters.getScala() * 2;
 		double gridStep = gridRadius / 10;
 		Vector3d color = new Vector3d(0.08, 0.08, 0.08);
 		for (double i = 0; i <= gridRadius; i += gridStep) {
@@ -370,8 +341,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 
 	@SuppressWarnings("unused")
 	private void drawGravitationalFields(GL2 gl) {
-		double gridRadius = parameters.getNebulaRadius()
-				* parameters.getScala() * 2;
+		double gridRadius = parameters.getNebulaRadius() * parameters.getScala() * 2;
 		double gridStep = gridRadius / 10;
 		Vector3d color = new Vector3d(0.5, 0.5, 0.5);
 		for (double i = -gridRadius; i <= gridRadius; i += gridStep) {
@@ -407,101 +377,68 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	private void drawInfo(GLAutoDrawable drawable) {
 		DecimalFormat df2d = new DecimalFormat("0.0000");
 		DecimalFormat dfsc = new DecimalFormat("0.####E0");
-		textRenderer.beginRendering(drawable.getSurfaceWidth(),
-				drawable.getSurfaceHeight());
+		textRenderer.beginRendering(drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1f);
-		textRenderer.draw("Scala: 1/" + dfsc.format(1 / parameters.getScala()),
-				10, drawable.getSurfaceHeight() - textSize * 1);
+		textRenderer.draw("Scala: 1/" + dfsc.format(1 / parameters.getScala()), 10,
+				drawable.getSurfaceHeight() - textSize * 1);
 
 		if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525) {
-			textRenderer.draw(
-					"Elapsed time (day): "
-							+ df2d.format(parameters.getElapsedTime()
-									/ HelperVariable.ONEDAY), 10,
-					drawable.getSurfaceHeight() - textSize * 2);
+			textRenderer.draw("Elapsed time (day): " + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEDAY),
+					10, drawable.getSurfaceHeight() - textSize * 2);
 		} else if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525 * 1E3) {
 			textRenderer.draw(
-					"Elapsed time (year): "
-							+ df2d.format(parameters.getElapsedTime()
-									/ HelperVariable.ONEYEAR), 10,
+					"Elapsed time (year): " + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEYEAR), 10,
 					drawable.getSurfaceHeight() - textSize * 2);
 		} else {
 			textRenderer.draw(
 					"Elapsed time (millions of year): "
-							+ df2d.format(parameters.getElapsedTime()
-									/ HelperVariable.ONEYEAR / 1E6), 10,
-					drawable.getSurfaceHeight() - textSize * 2);
+							+ df2d.format(parameters.getElapsedTime() / HelperVariable.ONEYEAR / 1E6),
+					10, drawable.getSurfaceHeight() - textSize * 2);
 		}
 		if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525) {
-			textRenderer.draw(
-					"Time Step (day): "
-							+ df2d.format(parameters.getTimeFactor()
-									/ HelperVariable.ONEDAY), 10,
+			textRenderer.draw("Time Step (day): " + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEDAY), 10,
 					drawable.getSurfaceHeight() - textSize * 3);
 		} else if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525 * 1E3) {
-			textRenderer.draw(
-					"Time Step (year): "
-							+ df2d.format(parameters.getTimeFactor()
-									/ HelperVariable.ONEYEAR), 10,
-					drawable.getSurfaceHeight() - textSize * 3);
+			textRenderer.draw("Time Step (year): " + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEYEAR),
+					10, drawable.getSurfaceHeight() - textSize * 3);
 		} else {
 			textRenderer.draw(
 					"Time Step (millions of year): "
-							+ df2d.format(parameters.getTimeFactor()
-									/ HelperVariable.ONEYEAR / 1E6), 10,
-					drawable.getSurfaceHeight() - textSize * 3);
+							+ df2d.format(parameters.getTimeFactor() / HelperVariable.ONEYEAR / 1E6),
+					10, drawable.getSurfaceHeight() - textSize * 3);
 
 		}
-		textRenderer.draw("Num of Object: " + univers.getListMatter().size(),
-				10, drawable.getSurfaceHeight() - textSize * 4);
+		textRenderer.draw("Num of Object: " + univers.getListMatter().size(), 10,
+				drawable.getSurfaceHeight() - textSize * 4);
 		textRenderer.draw(
-				"Maximum Mass Object (M): "
-						+ dfsc.format(univers.getMaxMassElement().getMass()
-								/ HelperVariable.M), 10,
+				"Maximum Mass Object (M): " + dfsc.format(univers.getMaxMassElement().getMass() / HelperVariable.M), 10,
 				drawable.getSurfaceHeight() - textSize * 5);
-		textRenderer.draw(
-				"Univers visible mass (M): "
-						+ dfsc.format(univers.getVisibleMass()
-								/ HelperVariable.M), 10,
+		textRenderer.draw("Univers visible mass (M): " + dfsc.format(univers.getVisibleMass() / HelperVariable.M), 10,
 				drawable.getSurfaceHeight() - textSize * 6);
-		textRenderer
-				.draw("Univers dark mass (M): "
-						+ dfsc.format(univers.getDarkMass() / HelperVariable.M),
-						10, drawable.getSurfaceHeight() - textSize * 7);
+		textRenderer.draw("Univers dark mass (M): " + dfsc.format(univers.getDarkMass() / HelperVariable.M), 10,
+				drawable.getSurfaceHeight() - textSize * 7);
 
-		textRenderer.draw(
-				"Num of recursive Barnes Hut computed: "
-						+ parameters.getNumOfCompute(), 10,
+		textRenderer.draw("Num of recursive Barnes Hut computed: " + parameters.getNumOfCompute(), 10,
 				drawable.getSurfaceHeight() - textSize * 10);
-		textRenderer.draw(
-				"Num of acceleration computed: "
-						+ parameters.getNumOfAccelCompute(), 10,
+		textRenderer.draw("Num of acceleration computed: " + parameters.getNumOfAccelCompute(), 10,
 				drawable.getSurfaceHeight() - textSize * 11);
-		textRenderer.draw(
-				"Cycle compute time (ms): " + parameters.getCycleComputeTime(),
-				10, drawable.getSurfaceHeight() - textSize * 12);
-		textRenderer.draw(
-				"Limit compute time (ms): " + parameters.getLimitComputeTime(),
-				10, drawable.getSurfaceHeight() - textSize * 13);
-		textRenderer.draw(
-				"Barnes Hut compute time (ms): "
-						+ parameters.getBarnesHuttComputeTime(), 10,
+		textRenderer.draw("Cycle compute time (ms): " + parameters.getCycleComputeTime(), 10,
+				drawable.getSurfaceHeight() - textSize * 12);
+		textRenderer.draw("Limit compute time (ms): " + parameters.getLimitComputeTime(), 10,
+				drawable.getSurfaceHeight() - textSize * 13);
+		textRenderer.draw("Barnes Hut compute time (ms): " + parameters.getBarnesHuttComputeTime(), 10,
 				drawable.getSurfaceHeight() - textSize * 14);
-		textRenderer.draw(
-				"Move compute time (ms): " + parameters.getMoveComputeTime(),
-				10, drawable.getSurfaceHeight() - textSize * 15);
+		textRenderer.draw("Move compute time (ms): " + parameters.getMoveComputeTime(), 10,
+				drawable.getSurfaceHeight() - textSize * 15);
 
 		textRenderer.draw("K (j): " + dfsc.format(parameters.getKlength()), 10,
 				drawable.getSurfaceHeight() - textSize * 17);
 		textRenderer.draw("P: " + dfsc.format(parameters.getPlength()), 10,
 				drawable.getSurfaceHeight() - textSize * 18);
 
-		textRenderer.draw(
-				"FPS: " + df2d.format(drawable.getAnimator().getLastFPS()), 10,
-				10);
+		textRenderer.draw("FPS: " + df2d.format(drawable.getAnimator().getLastFPS()), 10, 10);
 
-		textRenderer.draw("https://github.com/SylvainBillot/GravitySimulator",
-				drawable.getSurfaceWidth() - 275, 10);
+		textRenderer.draw("https://github.com/SylvainBillot/GravitySimulator", drawable.getSurfaceWidth() - 275, 10);
 		textRenderer.endRendering();
 	}
 
@@ -511,12 +448,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		for (List<Vector3d[]> tmpList : forTrace) {
 			for (Vector3d[] p : tmpList) {
 				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex3d(parameters.getScala() * p[0].x,
-						parameters.getScala() * p[0].y, parameters.getScala()
-								* p[0].z);
-				gl.glVertex3d(parameters.getScala() * p[1].x,
-						parameters.getScala() * p[1].y, parameters.getScala()
-								* p[1].z);
+				gl.glVertex3d(parameters.getScala() * p[0].x, parameters.getScala() * p[0].y,
+						parameters.getScala() * p[0].z);
+				gl.glVertex3d(parameters.getScala() * p[1].x, parameters.getScala() * p[1].y,
+						parameters.getScala() * p[1].z);
 				gl.glEnd();
 			}
 		}
@@ -526,16 +461,12 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 	private void drawUniversSimplePoint(GL2 gl) {
 		gl.glPushMatrix();
 		for (Matter m : univers.getListMatter()) {
-			if (m.getTypeOfObject().equals(TypeOfObject.Matter)
-					&& parameters.isShowMatter()
-					|| m.getTypeOfObject().equals(TypeOfObject.Gas)
-					&& parameters.isShowGas()
-					|| m.getTypeOfObject().equals(TypeOfObject.Dark)
-					&& parameters.isShowDarkMatter()) {
+			if (m.getTypeOfObject().equals(TypeOfObject.Matter) && parameters.isShowMatter()
+					|| m.getTypeOfObject().equals(TypeOfObject.Gas) && parameters.isShowGas()
+					|| m.getTypeOfObject().equals(TypeOfObject.Dark) && parameters.isShowDarkMatter()) {
 				gl.glBegin(GL2.GL_POINTS);
 				gl.glColor3d(255, 255, 255);
-				gl.glVertex3d(parameters.getScala() * m.getPoint().x,
-						parameters.getScala() * m.getPoint().y,
+				gl.glVertex3d(parameters.getScala() * m.getPoint().x, parameters.getScala() * m.getPoint().y,
 						parameters.getScala() * m.getPoint().z);
 				gl.glEnd();
 			}
@@ -547,19 +478,14 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glEnable(GL2.GL_POINT);
 		gl.glPushMatrix();
 		for (Matter m : univers.getListMatter()) {
-			if (m.getTypeOfObject().equals(TypeOfObject.Matter)
-					&& parameters.isShowMatter()
-					|| m.getTypeOfObject().equals(TypeOfObject.Gas)
-					&& parameters.isShowGas()
-					|| m.getTypeOfObject().equals(TypeOfObject.Dark)
-					&& parameters.isShowDarkMatter()) {
+			if (m.getTypeOfObject().equals(TypeOfObject.Matter) && parameters.isShowMatter()
+					|| m.getTypeOfObject().equals(TypeOfObject.Gas) && parameters.isShowGas()
+					|| m.getTypeOfObject().equals(TypeOfObject.Dark) && parameters.isShowDarkMatter()) {
 				gl.glLoadIdentity();
 				double r = 0;
-				r = (m.getRayon() * parameters.getScala() < 1 ? 1 : m
-						.getRayon() * parameters.getScala());
+				r = (m.getRayon() * parameters.getScala() < 1 ? 1 : m.getRayon() * parameters.getScala());
 
-				gl.glTranslated(parameters.getScala() * m.getPoint().x,
-						parameters.getScala() * m.getPoint().y,
+				gl.glTranslated(parameters.getScala() * m.getPoint().x, parameters.getScala() * m.getPoint().y,
 						parameters.getScala() * m.getPoint().z);
 
 				gl.glColor3d(m.getColor().x, m.getColor().y, m.getColor().z);
@@ -582,59 +508,44 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		gl.glEnable(GL2.GL_TEXTURE_2D);
 		gl.glPushMatrix();
 		for (Matter m : univers.getListMatter()) {
-			if (m.getTypeOfObject().equals(TypeOfObject.Matter)
-					&& parameters.isShowMatter()
-					|| m.getTypeOfObject().equals(TypeOfObject.Gas)
-					&& parameters.isShowGas()
-					|| m.getTypeOfObject().equals(TypeOfObject.Dark)
-					&& parameters.isShowDarkMatter()) {
+			if (m.getTypeOfObject().equals(TypeOfObject.Matter) && parameters.isShowMatter()
+					|| m.getTypeOfObject().equals(TypeOfObject.Gas) && parameters.isShowGas()
+					|| m.getTypeOfObject().equals(TypeOfObject.Dark) && parameters.isShowDarkMatter()) {
 				gl.glLoadIdentity();
 				double r = 0;
 				switch (m.getTypeOfObject()) {
 				case Matter:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-					r = (parameters.getMatterRendererExtender() * m.getRayon()
-							* parameters.getScala() < 1 ? 1 : parameters
-							.getMatterRendererExtender()
-							* m.getRayon()
-							* parameters.getScala());
+					r = (parameters.getMatterRendererExtender() * m.getRayon() * parameters.getScala() < 1 ? 1
+							: parameters.getMatterRendererExtender() * m.getRayon() * parameters.getScala());
 					break;
 
 				case Gas:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-					r = (parameters.getGasRendererExtender() * m.getRayon()
-							* parameters.getScala() < 1 ? 1 : parameters
-							.getGasRendererExtender()
-							* m.getRayon()
-							* parameters.getScala());
+					r = (parameters.getGasRendererExtender() * m.getRayon() * parameters.getScala() < 1 ? 1
+							: parameters.getGasRendererExtender() * m.getRayon() * parameters.getScala());
 					break;
 
 				case Dark:
 					gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-					r = parameters.getDarkMatterRendererExtender()
-							* m.getRayon() * parameters.getScala();
+					r = parameters.getDarkMatterRendererExtender() * m.getRayon() * parameters.getScala();
 					break;
 
 				default:
 					break;
 				}
 
-				gl.glTranslated(parameters.getScala() * m.getPoint().x,
-						parameters.getScala() * m.getPoint().y,
+				gl.glTranslated(parameters.getScala() * m.getPoint().x, parameters.getScala() * m.getPoint().y,
 						parameters.getScala() * m.getPoint().z);
 
-				double phi01 = new Vector3d(0, 0, 1).angle(parameters
-						.getLookAt())
+				double phi01 = new Vector3d(0, 0, 1).angle(parameters.getLookAt())
 						* -net.jafama.FastMath.signum(parameters.getLookAt().y);
-				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0,
-						1), new Vector3d(1, 0, 0), phi01);
+				Vector3d afterRotateX = HelperVector.rotate(new Vector3d(0, 0, 1), new Vector3d(1, 0, 0), phi01);
 				double phi02 = afterRotateX.angle(parameters.getLookAt())
 						* net.jafama.FastMath.signum(parameters.getLookAt().x);
 
-				gl.glMultMatrixd(HelperVector
-						.make3DTransformMatrix(new Vector3d(-phi01, -phi02,
-								net.jafama.FastMath.random() * 2
-										* net.jafama.FastMath.PI)));
+				gl.glMultMatrixd(HelperVector.make3DTransformMatrix(
+						new Vector3d(-phi01, -phi02, net.jafama.FastMath.random() * 2 * net.jafama.FastMath.PI)));
 
 				Vector3d[] pts = new Vector3d[4];
 				pts[0] = new Vector3d(-r, -r, 0); // BL
@@ -656,24 +567,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		}
 		gl.glDisable(GL2.GL_BLEND);
 		gl.glDisable(GL2.GL_TEXTURE_2D);
-	}
-
-	private BufferedImage toImage(GL2 gl, int w, int h) {
-		gl.glReadBuffer(GL2.GL_FRONT);
-		ByteBuffer glBB = ByteBuffer.allocateDirect(4 * w * h);
-		gl.glReadPixels(0, 0, w, h, GL2.GL_RGB, GL2.GL_BYTE, glBB);
-		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		int[] bd = ((DataBufferInt) bi.getRaster().getDataBuffer()).getData();
-		for (int y = 0; y < h; y++) {
-			for (int x = 0; x < w; x++) {
-				int r = (int)(glBB.get() * 255) << 16;
-	            int g = (int)(glBB.get() * 255) << 8;
-	            int b = (int)(glBB.get() * 255);
-	            int i = ((h - 1) - y) * w + x;
-	            bd[i] = r + g + b;
-			}
-		}
-		return bi;
 	}
 
 	@Override
@@ -702,26 +595,22 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			parameters.setScala(parameters.getScala() * (1 / 1.01));
 			break;
 		case KeyEvent.VK_LEFT:
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 1, 0), -theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 1, 0), -theta));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 			break;
 		case KeyEvent.VK_RIGHT:
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 1, 0), theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 1, 0), theta));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 			break;
 		case KeyEvent.VK_UP:
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(1, 0, 0), -theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(1, 0, 0), -theta));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 			break;
 		case KeyEvent.VK_DOWN:
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(1, 0, 0), theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(1, 0, 0), theta));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 			break;
@@ -742,43 +631,37 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
 			parameters.setObjectToFollow(null);
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 1, 0), theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 1, 0), theta));
 			break;
 		case '6':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
 			parameters.setObjectToFollow(null);
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 1, 0), -theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 1, 0), -theta));
 			break;
 		case '8':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
 			parameters.setObjectToFollow(null);
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(1, 0, 0), theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(1, 0, 0), theta));
 			break;
 		case '2':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
 			parameters.setObjectToFollow(null);
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(1, 0, 0), -theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(1, 0, 0), -theta));
 			break;
 		case '1':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
 			parameters.setObjectToFollow(null);
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 0, 1), theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 0, 1), theta));
 			break;
 		case '3':
 			parameters.setFollowCentroid(false);
 			parameters.setFollowMaxMass(false);
 			parameters.setObjectToFollow(null);
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 0, 1), -theta));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 0, 1), -theta));
 			break;
 		}
 	}
@@ -814,15 +697,13 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener,
 		double dy = (double) (mousePoint.y - e.getY()) / 3;
 		if (dx != 0) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(0, 1, 0), theta * dx));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 1, 0), theta * dx));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 		}
 		if (dy != 0) {
 			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(),
-					new Vector3d(1, 0, 0), theta * dy));
+			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(1, 0, 0), theta * dy));
 			diffLookAt.sub(parameters.getLookAt());
 			parameters.getEyes().add(diffLookAt);
 		}

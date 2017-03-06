@@ -88,6 +88,8 @@ public class Parameters implements Serializable {
 	private double darkMatterRendererExtender = 5;
 	private boolean viscousDarkMatter = false;
 	private boolean infiniteUnivers = false;
+	private int videoPicBy = 1;
+	
 
 	public Parameters() {
 
@@ -725,6 +727,20 @@ public class Parameters implements Serializable {
 	 */
 	public void setInfiniteUnivers(boolean infiniteUnivers) {
 		this.infiniteUnivers = infiniteUnivers;
+	}
+
+	/**
+	 * @return the videoPicBy
+	 */
+	public int getVideoPicBy() {
+		return videoPicBy;
+	}
+
+	/**
+	 * @param videoPicBy the videoPicBy to set
+	 */
+	public void setVideoPicBy(int videoPicBy) {
+		this.videoPicBy = videoPicBy;
 	}
 
 }
