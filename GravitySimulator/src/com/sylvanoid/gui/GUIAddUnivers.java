@@ -119,7 +119,6 @@ public class GUIAddUnivers extends JDialog {
 
 	private ActionListener okAction() {
 		return new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				me.ok = true;
 				try {

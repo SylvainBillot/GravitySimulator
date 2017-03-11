@@ -37,7 +37,6 @@ public class GUIAbout extends JDialog {
 		getContentPane().add(content, BorderLayout.CENTER);
 		JButton btnCancel = new JButton("OK");
 		btnCancel.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				me.setVisible(false);
 				me.mother.setVisible(true);

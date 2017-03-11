@@ -877,7 +877,6 @@ public class GUIParam extends JDialog {
 
 	private ActionListener cancelAction() {
 		return new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				me.setVisible(false);
 				me.mother.setVisible(true);
@@ -888,7 +887,6 @@ public class GUIParam extends JDialog {
 
 	private ActionListener okAction() {
 		return new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					parameters.setParallelization(me.parallelization.isSelected());

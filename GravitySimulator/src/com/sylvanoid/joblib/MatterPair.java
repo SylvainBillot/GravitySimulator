@@ -11,7 +11,6 @@ public class MatterPair implements Comparable<MatterPair> {
 	private Matter m2;
 	private Parameters parameters;
 
-	@Override
 	public int compareTo(MatterPair o) {
 		if (distanceByradius() > o.distanceByradius()) {
 			return 1;

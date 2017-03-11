@@ -214,10 +214,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 		com.sylvanoid.common.TextureReader.Texture texture02 = null;
 		com.sylvanoid.common.TextureReader.Texture texture03 = null;
 		try {
-			texture00 = TextureReader.readTexture("src/resources/images/Dark.png");
-			texture01 = TextureReader.readTexture("src/resources/images/Star.bmp");
-			texture02 = TextureReader.readTexture("src/resources/images/Planetary.png");
-			texture03 = TextureReader.readTexture("src/resources/images/Galaxy.png");
+			texture00 = TextureReader.readTexture("images/Dark.png");
+			texture01 = TextureReader.readTexture("images/Star.bmp");
+			texture02 = TextureReader.readTexture("images/Planetary.png");
+			texture03 = TextureReader.readTexture("images/Galaxy.png");
 
 		} catch (IOException e) {
 			e.printStackTrace();
