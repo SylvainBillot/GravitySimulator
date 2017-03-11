@@ -130,6 +130,10 @@ public class MatterPair implements Comparable<MatterPair> {
 		}
 	}
 
+	public double distance() {
+		return HelperNewton.distance(m1, m2);
+	}
+	
 	private double distanceByradius() {
 		return HelperNewton.distance(m1, m2)
 				/ (parameters.getCollisionDistanceRatio() * (m1.getRayon() + m2.getRayon()));

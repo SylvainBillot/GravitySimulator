@@ -85,7 +85,7 @@ public class Univers {
 
 	@XmlTransient
 	private ConcurrentHashMap<String, MatterPair> collisionPairs = new ConcurrentHashMap<String, MatterPair>();
-
+	
 	@Override
 	public String toString() {
 		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y + " gz:" + gPoint.z);
