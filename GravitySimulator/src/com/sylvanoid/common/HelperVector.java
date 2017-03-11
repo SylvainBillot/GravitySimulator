@@ -17,8 +17,7 @@ public abstract class HelperVector {
 	 * @param angle
 	 * @return Vector3d
 	 */
-	public static Vector3d rotate(Vector3d vector, Vector3d centroid,
-			Vector3d axis, double angle) {
+	public static Vector3d rotate(Vector3d vector, Vector3d centroid, Vector3d axis, double angle) {
 		Vector3d newVector = new Vector3d(vector);
 		newVector.sub(centroid);
 		Matrix3d rotate = new Matrix3d();
@@ -53,10 +52,9 @@ public abstract class HelperVector {
 	public static Vector3d rThetaPhi(Vector3d obj1, Vector3d obj2) {
 		Vector3d tmpVect = new Vector3d(obj2);
 		tmpVect.sub(obj1);
-		return new Vector3d(tmpVect.length(), net.jafama.FastMath.atan2(
-				tmpVect.y, tmpVect.x), net.jafama.FastMath.atan2(
-				net.jafama.FastMath.sqrt(net.jafama.FastMath.pow2(tmpVect.x)
-						+ net.jafama.FastMath.pow2(tmpVect.y)), tmpVect.z));
+		return new Vector3d(tmpVect.length(), net.jafama.FastMath.atan2(tmpVect.y, tmpVect.x),
+				net.jafama.FastMath.atan2(net.jafama.FastMath
+						.sqrt(net.jafama.FastMath.pow2(tmpVect.x) + net.jafama.FastMath.pow2(tmpVect.y)), tmpVect.z));
 	}
 
 	/**
@@ -67,11 +65,9 @@ public abstract class HelperVector {
 	 * @return Vector3d
 	 */
 	public static Vector3d polToCoord(double radius, double theta, double phi) {
-		return new Vector3d(radius * net.jafama.FastMath.cos(theta)
-				* net.jafama.FastMath.sin(phi),
-				radius * net.jafama.FastMath.sin(theta)
-						* net.jafama.FastMath.sin(phi), radius
-						* net.jafama.FastMath.cos(phi));
+		return new Vector3d(radius * net.jafama.FastMath.cos(theta) * net.jafama.FastMath.sin(phi),
+				radius * net.jafama.FastMath.sin(theta) * net.jafama.FastMath.sin(phi),
+				radius * net.jafama.FastMath.cos(phi));
 	}
 
 	/**
@@ -81,8 +77,7 @@ public abstract class HelperVector {
 	 * @param attraction
 	 * @return Vector3d
 	 */
-	public static Vector3d acceleration(Vector3d obj1, Vector3d obj2,
-			double attraction) {
+	public static Vector3d acceleration(Vector3d obj1, Vector3d obj2, double attraction) {
 		Vector3d tmpVect = rThetaPhi(obj1, obj2);
 		return polToCoord(attraction, tmpVect.y, tmpVect.z);
 	}
@@ -135,8 +130,8 @@ public abstract class HelperVector {
 	public static Matrix4d lorentzMatrix(Vector3d speed) {
 		double beta = speed.length() / HelperVariable.C;
 		double beta2 = net.jafama.FastMath.pow2(beta);
-		Vector3d betaxyz = new Vector3d(speed.x / HelperVariable.C, speed.y
-				/ HelperVariable.C, speed.z / HelperVariable.C);
+		Vector3d betaxyz = new Vector3d(speed.x / HelperVariable.C, speed.y / HelperVariable.C,
+				speed.z / HelperVariable.C);
 		double gamma = 1 / net.jafama.FastMath.sqrt(1 - beta2);
 
 		double[] matrix = new double[16];
@@ -170,9 +165,8 @@ public abstract class HelperVector {
 	 * @param p1
 	 * @return Vector4d
 	 */
-	public static Vector4d lorentzCoord(double time, Vector3d speed,
-			Vector3d p1) {
-		Vector4d valReturn = new Vector4d(p1.x, p1.y, p1.z,time);
+	public static Vector4d lorentzCoord(double time, Vector3d speed, Vector3d p1) {
+		Vector4d valReturn = new Vector4d(p1.x, p1.y, p1.z, time);
 		lorentzMatrix(speed).transform(valReturn);
 		return valReturn;
 	}

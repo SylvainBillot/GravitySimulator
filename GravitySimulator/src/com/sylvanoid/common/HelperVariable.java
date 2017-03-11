@@ -2,7 +2,7 @@ package com.sylvanoid.common;
 
 public abstract class HelperVariable {
 	public static final int MAXFPS = 120;
-	
+
 	public static final double G = 6.67234E-11; // N.m2 kg-1 s-2
 	public static final double C = 299792458; // m s-1
 	public static final double M = 1.9884E30; // kg
@@ -14,7 +14,9 @@ public abstract class HelperVariable {
 	public static final double MAXIMALSTARMASS = 300 * HelperVariable.M; // kg
 	public static final double MINIMALGALAXYMASS = 1E9 * HelperVariable.M; // kg
 	public static final double H0 = 67.8; // mps s-1
-	public static final double H0ms = (HelperVariable.H0 *1E3) /( HelperVariable.PC * 1E6); // m s-1
-	public static final double OMEGAm = 0.286; //the ratio of the density of the Univers
+	public static final double H0ms = (HelperVariable.H0 * 1E3) / (HelperVariable.PC * 1E6); // m
+																								// s-1
+	public static final double OMEGAm = 0.286; // the ratio of the density of
+												// the Univers
 	public static final double OMEGAvac = 0.714; //
 }

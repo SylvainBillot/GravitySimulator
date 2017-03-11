@@ -27,43 +27,31 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 	@Override
 	protected Integer compute() {
 		Integer valReturn = 0;
-		if (univers.getMass() > parameters.getNegligeableMass()
-				&& !univers.sameCoordonate()) {
+		if (univers.getMass() > parameters.getNegligeableMass() && !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
 			double cx = univers.getMin().x
-					+ (univers.getMax().x - univers.getMin().x)
-					/ (1.5 + net.jafama.FastMath.random());
+					+ (univers.getMax().x - univers.getMin().x) / (1.5 + net.jafama.FastMath.random());
 			double cy = univers.getMin().y
-					+ (univers.getMax().y - univers.getMin().y)
-					/ (1.5 + net.jafama.FastMath.random());
+					+ (univers.getMax().y - univers.getMin().y) / (1.5 + net.jafama.FastMath.random());
 			double cz = univers.getMin().z
-					+ (univers.getMax().z - univers.getMin().z)
-					/ (1.5 + net.jafama.FastMath.random());
+					+ (univers.getMax().z - univers.getMin().z) / (1.5 + net.jafama.FastMath.random());
 
 			Univers suba = new Univers(univers, new Vector3d(cx, cy, cz),
-					new Vector3d(univers.getMax().x, univers.getMax().y,
-							univers.getMax().z));
-			Univers subb = new Univers(univers, new Vector3d(cx, cy,
-					univers.getMin().z), new Vector3d(univers.getMax().x,
-					univers.getMax().y, cz));
-			Univers subc = new Univers(univers, new Vector3d(cx,
-					univers.getMin().y, cz), new Vector3d(univers.getMax().x,
-					cy, univers.getMax().z));
-			Univers subd = new Univers(univers, new Vector3d(cx,
-					univers.getMin().y, univers.getMin().z), new Vector3d(
-					univers.getMax().x, cy, cz));
-			Univers sube = new Univers(univers, new Vector3d(
-					univers.getMin().x, cy, cz), new Vector3d(cx,
-					univers.getMax().y, univers.getMax().z));
-			Univers subf = new Univers(univers, new Vector3d(
-					univers.getMin().x, cy, univers.getMin().z), new Vector3d(
-					cx, univers.getMax().y, cz));
-			Univers subg = new Univers(univers, new Vector3d(
-					univers.getMin().x, univers.getMin().y, cz), new Vector3d(
-					cx, cy, univers.getMax().z));
+					new Vector3d(univers.getMax().x, univers.getMax().y, univers.getMax().z));
+			Univers subb = new Univers(univers, new Vector3d(cx, cy, univers.getMin().z),
+					new Vector3d(univers.getMax().x, univers.getMax().y, cz));
+			Univers subc = new Univers(univers, new Vector3d(cx, univers.getMin().y, cz),
+					new Vector3d(univers.getMax().x, cy, univers.getMax().z));
+			Univers subd = new Univers(univers, new Vector3d(cx, univers.getMin().y, univers.getMin().z),
+					new Vector3d(univers.getMax().x, cy, cz));
+			Univers sube = new Univers(univers, new Vector3d(univers.getMin().x, cy, cz),
+					new Vector3d(cx, univers.getMax().y, univers.getMax().z));
+			Univers subf = new Univers(univers, new Vector3d(univers.getMin().x, cy, univers.getMin().z),
+					new Vector3d(cx, univers.getMax().y, cz));
+			Univers subg = new Univers(univers, new Vector3d(univers.getMin().x, univers.getMin().y, cz),
+					new Vector3d(cx, cy, univers.getMax().z));
 			Univers subh = new Univers(univers,
-					new Vector3d(univers.getMin().x, univers.getMin().y,
-							univers.getMin().z), new Vector3d(cx, cy, cz));
+					new Vector3d(univers.getMin().x, univers.getMin().y, univers.getMin().z), new Vector3d(cx, cy, cz));
 
 			for (Matter m : univers.getListMatter()) {
 				if (m.getPoint().x > cx) {
@@ -171,27 +159,19 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 						detectColision = false;
 						for (Matter mgu : gu.getListMatter()) {
 							if (m != mgu) {
-								if ((HelperNewton.distance(m, mgu)
-										/ (parameters
-												.getCollisionDistanceRatio() * (m
-												.getRayon() + mgu.getRayon())) < 1)
-										&& (m.getTypeOfObject().equals(mgu
-												.getTypeOfObject()))) {
+								if ((HelperNewton.distance(m, mgu) / (parameters.getCollisionDistanceRatio()
+										* (m.getRayon() + mgu.getRayon())) < 1)
+										&& (m.getTypeOfObject().equals(mgu.getTypeOfObject()))) {
 									valReturn++;
 									if (!m.getFusionWith().contains(mgu)) {
 										m.getFusionWith().add(mgu);
 										detectColision = true;
 									}
 
-									MatterPair toAdd = new MatterPair(m, mgu,
-											parameters);
-									if (collisionPairs.get(m.getName()
-											+ mgu.getName()) == null
-											&& collisionPairs.get(mgu.getName()
-													+ m.getName()) == null) {
-										collisionPairs.put(
-												m.getName() + mgu.getName(),
-												toAdd);
+									MatterPair toAdd = new MatterPair(m, mgu, parameters);
+									if (collisionPairs.get(m.getName() + mgu.getName()) == null
+											&& collisionPairs.get(mgu.getName() + m.getName()) == null) {
+										collisionPairs.put(m.getName() + mgu.getName(), toAdd);
 									}
 								}
 							}

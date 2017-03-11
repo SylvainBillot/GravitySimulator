@@ -25,8 +25,7 @@ public class ResourceRetriever {
 		}
 	}
 
-	public static InputStream getResourceAsStream(final String filename)
-			throws IOException {
+	public static InputStream getResourceAsStream(final String filename) throws IOException {
 		// Try to load resource from jar
 		InputStream stream = ClassLoader.getSystemResourceAsStream(filename);
 		// If not found in jar, then load from disk
@@ -39,6 +38,7 @@ public class ResourceRetriever {
 
 	/**
 	 * Loads the text content from the stream and returns it.
+	 * 
 	 * @param ins
 	 * @return
 	 * @throws IOException

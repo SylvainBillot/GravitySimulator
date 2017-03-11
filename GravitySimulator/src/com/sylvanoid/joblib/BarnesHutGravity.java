@@ -25,43 +25,31 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 
 	@Override
 	protected Integer compute() {
-		if (univers.getMass() > parameters.getNegligeableMass()
-				&& !univers.sameCoordonate()) {
+		if (univers.getMass() > parameters.getNegligeableMass() && !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
 			double cx = univers.getMin().x
-					+ (univers.getMax().x - univers.getMin().x)
-					/ (1.5 + net.jafama.FastMath.random());
+					+ (univers.getMax().x - univers.getMin().x) / (1.5 + net.jafama.FastMath.random());
 			double cy = univers.getMin().y
-					+ (univers.getMax().y - univers.getMin().y)
-					/ (1.5 + net.jafama.FastMath.random());
+					+ (univers.getMax().y - univers.getMin().y) / (1.5 + net.jafama.FastMath.random());
 			double cz = univers.getMin().z
-					+ (univers.getMax().z - univers.getMin().z)
-					/ (1.5 + net.jafama.FastMath.random());
+					+ (univers.getMax().z - univers.getMin().z) / (1.5 + net.jafama.FastMath.random());
 
 			Univers suba = new Univers(univers, new Vector3d(cx, cy, cz),
-					new Vector3d(univers.getMax().x, univers.getMax().y,
-							univers.getMax().z));
-			Univers subb = new Univers(univers, new Vector3d(cx, cy,
-					univers.getMin().z), new Vector3d(univers.getMax().x,
-					univers.getMax().y, cz));
-			Univers subc = new Univers(univers, new Vector3d(cx,
-					univers.getMin().y, cz), new Vector3d(univers.getMax().x,
-					cy, univers.getMax().z));
-			Univers subd = new Univers(univers, new Vector3d(cx,
-					univers.getMin().y, univers.getMin().z), new Vector3d(
-					univers.getMax().x, cy, cz));
-			Univers sube = new Univers(univers, new Vector3d(
-					univers.getMin().x, cy, cz), new Vector3d(cx,
-					univers.getMax().y, univers.getMax().z));
-			Univers subf = new Univers(univers, new Vector3d(
-					univers.getMin().x, cy, univers.getMin().z), new Vector3d(
-					cx, univers.getMax().y, cz));
-			Univers subg = new Univers(univers, new Vector3d(
-					univers.getMin().x, univers.getMin().y, cz), new Vector3d(
-					cx, cy, univers.getMax().z));
+					new Vector3d(univers.getMax().x, univers.getMax().y, univers.getMax().z));
+			Univers subb = new Univers(univers, new Vector3d(cx, cy, univers.getMin().z),
+					new Vector3d(univers.getMax().x, univers.getMax().y, cz));
+			Univers subc = new Univers(univers, new Vector3d(cx, univers.getMin().y, cz),
+					new Vector3d(univers.getMax().x, cy, univers.getMax().z));
+			Univers subd = new Univers(univers, new Vector3d(cx, univers.getMin().y, univers.getMin().z),
+					new Vector3d(univers.getMax().x, cy, cz));
+			Univers sube = new Univers(univers, new Vector3d(univers.getMin().x, cy, cz),
+					new Vector3d(cx, univers.getMax().y, univers.getMax().z));
+			Univers subf = new Univers(univers, new Vector3d(univers.getMin().x, cy, univers.getMin().z),
+					new Vector3d(cx, univers.getMax().y, cz));
+			Univers subg = new Univers(univers, new Vector3d(univers.getMin().x, univers.getMin().y, cz),
+					new Vector3d(cx, cy, univers.getMax().z));
 			Univers subh = new Univers(univers,
-					new Vector3d(univers.getMin().x, univers.getMin().y,
-							univers.getMin().z), new Vector3d(cx, cy, cz));
+					new Vector3d(univers.getMin().x, univers.getMin().y, univers.getMin().z), new Vector3d(cx, cy, cz));
 
 			for (Matter m : univers.getListMatter()) {
 				if (m.getPoint().x > cx) {
@@ -159,37 +147,23 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 
 			for (Univers u : subUnivers) {
 				for (Univers uvoisin : subUnivers) {
-					if (u != uvoisin
-							&& uvoisin.getListMatter().size() > 0
-							&& uvoisin.getMass() > parameters
-									.getNegligeableMass()) {
+					if (u != uvoisin && uvoisin.getListMatter().size() > 0
+							&& uvoisin.getMass() > parameters.getNegligeableMass()) {
 						for (Matter m : u.getListMatter()) {
-							if ((!parameters.isStaticDarkMatter() || !m
-									.isDark())) {
-								parameters.setNumOfAccelCompute(parameters
-										.getNumOfAccelCompute() + 1);
+							if ((!parameters.isStaticDarkMatter() || !m.isDark())) {
+								parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute() + 1);
 								if (parameters.isManageImpact()
 										&& parameters.getTypeOfImpact() != TypeOfImpact.Viscosity) {
 									Univers uAdjusted = new Univers(uvoisin);
-									if (uAdjusted.adjustMassAndCentroid(m
-											.getFusionWith()) != 0) {
-										double attraction = HelperNewton
-												.attraction(m, uAdjusted,
-														parameters);
-										m.getAccel().add(
-												HelperVector.acceleration(
-														m.getPoint(),
-														uAdjusted.getGPoint(),
-														attraction));
+									if (uAdjusted.adjustMassAndCentroid(m.getFusionWith()) != 0) {
+										double attraction = HelperNewton.attraction(m, uAdjusted, parameters);
+										m.getAccel().add(HelperVector.acceleration(m.getPoint(), uAdjusted.getGPoint(),
+												attraction));
 									}
 								} else {
-									double attraction = HelperNewton
-											.attraction(m, uvoisin, parameters);
+									double attraction = HelperNewton.attraction(m, uvoisin, parameters);
 									m.getAccel().add(
-											HelperVector.acceleration(
-													m.getPoint(),
-													uvoisin.getGPoint(),
-													attraction));
+											HelperVector.acceleration(m.getPoint(), uvoisin.getGPoint(), attraction));
 								}
 							}
 						}

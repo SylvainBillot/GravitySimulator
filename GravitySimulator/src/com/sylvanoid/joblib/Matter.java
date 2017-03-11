@@ -45,9 +45,8 @@ public class Matter implements Serializable {
 
 	@Override
 	public String toString() {
-		return name + " mass:" + mass + " x:" + point.x + " y:" + point.y
-				+ " z:" + point.z + " vx:" + speed.x + " vy:" + speed.y
-				+ " vz:" + speed.z;
+		return name + " mass:" + mass + " x:" + point.x + " y:" + point.y + " z:" + point.z + " vx:" + speed.x + " vy:"
+				+ speed.y + " vz:" + speed.z;
 	}
 
 	public Matter() {
@@ -60,11 +59,9 @@ public class Matter implements Serializable {
 		mass = net.jafama.FastMath.random();
 	}
 
-	public Matter(Parameters parameters, Vector3d point, double mass,
-			Vector3d speed, Vector3d color, double density,
-			TypeOfObject typeOfObject, double initialeViscosity,
-			double initialViscoElasticity, double initialViscoElasticityNear,
-			double initialPressureZero) {
+	public Matter(Parameters parameters, Vector3d point, double mass, Vector3d speed, Vector3d color, double density,
+			TypeOfObject typeOfObject, double initialeViscosity, double initialViscoElasticity,
+			double initialViscoElasticityNear, double initialPressureZero) {
 		this.parameters = parameters;
 		this.setPoint(point);
 		this.mass = mass;
@@ -78,8 +75,8 @@ public class Matter implements Serializable {
 		this.pressureZero = initialPressureZero;
 		this.presure = 0;
 		this.name = "id: " + this.hashCode();
-		this.rayon = net.jafama.FastMath.pow(3 * (mass / getDensity())
-				/ (4 * net.jafama.FastMath.PI), (double) 1 / (double) 3);
+		this.rayon = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+				(double) 1 / (double) 3);
 	}
 
 	@XmlTransient
@@ -172,8 +169,8 @@ public class Matter implements Serializable {
 	}
 
 	public void setMass(double mass) {
-		rayon = net.jafama.FastMath.pow(3 * (mass / getDensity())
-				/ (4 * net.jafama.FastMath.PI), (double) 1 / (double) 3);
+		rayon = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+				(double) 1 / (double) 3);
 		this.mass = mass;
 	}
 
@@ -182,8 +179,8 @@ public class Matter implements Serializable {
 	}
 
 	public void setDensity(double density) {
-		rayon = net.jafama.FastMath.pow(3 * (mass / getDensity())
-				/ (4 * net.jafama.FastMath.PI), (double) 1 / (double) 3);
+		rayon = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+				(double) 1 / (double) 3);
 		this.density = density;
 	}
 
@@ -276,53 +273,42 @@ public class Matter implements Serializable {
 
 	public Vector3d getPlusV() {
 		return new Vector3d(point.x + speed.x * parameters.getTimeFactor(),
-				point.y + speed.y * parameters.getTimeFactor(), point.z
-						+ speed.z * parameters.getTimeFactor());
+				point.y + speed.y * parameters.getTimeFactor(), point.z + speed.z * parameters.getTimeFactor());
 	}
 
 	public Vector3d getPlusV(double timeRatio) {
-		return new Vector3d(point.x + speed.x * parameters.getTimeFactor()
-				* timeRatio, point.y + speed.y * parameters.getTimeFactor()
-				* timeRatio, point.z + speed.z * parameters.getTimeFactor()
-				* timeRatio);
+		return new Vector3d(point.x + speed.x * parameters.getTimeFactor() * timeRatio,
+				point.y + speed.y * parameters.getTimeFactor() * timeRatio,
+				point.z + speed.z * parameters.getTimeFactor() * timeRatio);
 	}
 
 	public Vector3d getMinusV() {
 		return new Vector3d(point.x - speed.x * parameters.getTimeFactor(),
-				point.y - speed.y * parameters.getTimeFactor(), point.z
-						- speed.z * parameters.getTimeFactor());
+				point.y - speed.y * parameters.getTimeFactor(), point.z - speed.z * parameters.getTimeFactor());
 	}
 
 	public Vector3d maxWithR() {
-		return new Vector3d((point.x > getPlusV().x) ? (point.x + rayon)
-				: (getPlusV().x + rayon),
-				(point.y > getPlusV().y) ? (point.y + rayon)
-						: (getPlusV().y + rayon),
-				(point.z > getPlusV().z) ? (point.z + rayon)
-						: (getPlusV().z + rayon));
+		return new Vector3d((point.x > getPlusV().x) ? (point.x + rayon) : (getPlusV().x + rayon),
+				(point.y > getPlusV().y) ? (point.y + rayon) : (getPlusV().y + rayon),
+				(point.z > getPlusV().z) ? (point.z + rayon) : (getPlusV().z + rayon));
 	}
 
 	public Vector3d minWithR() {
-		return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x - rayon)
-				: (point.x - rayon),
-				(point.y > getPlusV().y) ? (getPlusV().y - rayon)
-						: (point.y - rayon),
-				(point.z > getPlusV().z) ? (getPlusV().z - rayon)
-						: (point.z - rayon));
+		return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x - rayon) : (point.x - rayon),
+				(point.y > getPlusV().y) ? (getPlusV().y - rayon) : (point.y - rayon),
+				(point.z > getPlusV().z) ? (getPlusV().z - rayon) : (point.z - rayon));
 	}
 
 	public Vector3d max() {
-		return new Vector3d((point.x > getPlusV().x) ? (point.x)
-				: (getPlusV().x), (point.y > getPlusV().y) ? (point.y)
-				: (getPlusV().y), (point.z > getPlusV().z) ? (point.z)
-				: (getPlusV().z));
+		return new Vector3d((point.x > getPlusV().x) ? (point.x) : (getPlusV().x),
+				(point.y > getPlusV().y) ? (point.y) : (getPlusV().y),
+				(point.z > getPlusV().z) ? (point.z) : (getPlusV().z));
 	}
 
 	public Vector3d min() {
-		return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x)
-				: (point.x), (point.y > getPlusV().y) ? (getPlusV().y)
-				: (point.y), (point.z > getPlusV().z) ? (getPlusV().z)
-				: (point.z));
+		return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x) : (point.x),
+				(point.y > getPlusV().y) ? (getPlusV().y) : (point.y),
+				(point.z > getPlusV().z) ? (getPlusV().z) : (point.z));
 	}
 
 	/**
@@ -372,25 +358,19 @@ public class Matter implements Serializable {
 				}
 			}
 			listMatter.remove(this);
-			listMatter
-					.add(new Matter(parameters, newPoint, newMass, newSpeed,
-							newColor, newDensity, typeOfObject, newVicosity,
-							newViscoElasticity, newViscoElasticityNear,
-							newPressureZero));
+			listMatter.add(new Matter(parameters, newPoint, newMass, newSpeed, newColor, newDensity, typeOfObject,
+					newVicosity, newViscoElasticity, newViscoElasticityNear, newPressureZero));
 		}
 	}
 
 	public Vector3d speedAfterImpactWith(Matter m, double Cr) {
-		Vector3d newSpeed = new Vector3d((Cr * m.getMass()
-				* (m.getSpeed().x - speed.x) + mass * speed.x + m.getMass()
-				* m.getSpeed().x)
-				/ (mass + m.getMass()), (Cr * m.getMass()
-				* (m.getSpeed().y - speed.y) + mass * speed.y + m.getMass()
-				* m.getSpeed().y)
-				/ (mass + m.getMass()), (Cr * m.getMass()
-				* (m.getSpeed().z - speed.z) + mass * speed.z + m.getMass()
-				* m.getSpeed().z)
-				/ (mass + m.getMass()));
+		Vector3d newSpeed = new Vector3d(
+				(Cr * m.getMass() * (m.getSpeed().x - speed.x) + mass * speed.x + m.getMass() * m.getSpeed().x)
+						/ (mass + m.getMass()),
+				(Cr * m.getMass() * (m.getSpeed().y - speed.y) + mass * speed.y + m.getMass() * m.getSpeed().y)
+						/ (mass + m.getMass()),
+				(Cr * m.getMass() * (m.getSpeed().z - speed.z) + mass * speed.z + m.getMass() * m.getSpeed().z)
+						/ (mass + m.getMass()));
 		return newSpeed;
 	}
 
@@ -400,15 +380,11 @@ public class Matter implements Serializable {
 		deltaSpeed.sub(m.getSpeed());
 		Vector3d deltaPoint = new Vector3d(point);
 		deltaPoint.sub(m.getPoint());
-		double a = net.jafama.FastMath.pow2(deltaSpeed.x)
-				+ net.jafama.FastMath.pow2(deltaSpeed.y)
+		double a = net.jafama.FastMath.pow2(deltaSpeed.x) + net.jafama.FastMath.pow2(deltaSpeed.y)
 				+ net.jafama.FastMath.pow2(deltaSpeed.z);
-		double b = deltaPoint.x * deltaSpeed.x + deltaPoint.y * deltaSpeed.y
-				+ deltaPoint.z * deltaSpeed.z;
-		double c = (net.jafama.FastMath.pow2(deltaPoint.x)
-				+ net.jafama.FastMath.pow2(deltaPoint.y) + net.jafama.FastMath
-					.pow2(deltaPoint.z))
-				- net.jafama.FastMath.pow2(rayon + m.getRayon());
+		double b = deltaPoint.x * deltaSpeed.x + deltaPoint.y * deltaSpeed.y + deltaPoint.z * deltaSpeed.z;
+		double c = (net.jafama.FastMath.pow2(deltaPoint.x) + net.jafama.FastMath.pow2(deltaPoint.y)
+				+ net.jafama.FastMath.pow2(deltaPoint.z)) - net.jafama.FastMath.pow2(rayon + m.getRayon());
 		double delta = net.jafama.FastMath.pow2(b) - a * c;
 		if (delta > 0 && a != 0) {
 			double rd = net.jafama.FastMath.sqrt(delta);
@@ -425,8 +401,7 @@ public class Matter implements Serializable {
 
 	public Vector3d positionAfterRepulsionWith(Matter m) {
 		double ratio = rayon / (rayon + m.getRayon());
-		double lengthToMove = rayon - ratio
-				* HelperNewton.distance(point, m.getPoint());
+		double lengthToMove = rayon - ratio * HelperNewton.distance(point, m.getPoint());
 		Vector3d toMove = new Vector3d(point);
 		toMove.sub(m.getPoint());
 		toMove.normalize();
@@ -438,17 +413,14 @@ public class Matter implements Serializable {
 	}
 
 	public Vector3d centroidWith(Matter m) {
-		return new Vector3d((point.x * mass + m.getPoint().x)
-				/ (mass + m.getMass()), (point.y * mass + m.getPoint().y)
-				/ (mass + m.getMass()), (point.z * mass + m.getPoint().z)
-				/ (mass + m.getMass()));
+		return new Vector3d((point.x * mass + m.getPoint().x) / (mass + m.getMass()),
+				(point.y * mass + m.getPoint().y) / (mass + m.getMass()),
+				(point.z * mass + m.getPoint().z) / (mass + m.getMass()));
 	}
 
 	public Vector3d centroidWith(Matter m, Vector3d p1, Vector3d p2) {
-		return new Vector3d((p1.x * mass + p2.x) / (mass + m.getMass()), (p1.y
-				* mass + p2.y)
-				/ (mass + m.getMass()), (p1.z * mass + p2.z)
-				/ (mass + m.getMass()));
+		return new Vector3d((p1.x * mass + p2.x) / (mass + m.getMass()), (p1.y * mass + p2.y) / (mass + m.getMass()),
+				(p1.z * mass + p2.z) / (mass + m.getMass()));
 	}
 
 	public Vector3d globalCentroid() {
@@ -529,8 +501,7 @@ public class Matter implements Serializable {
 		return newPressureZero / newMass;
 	}
 
-	public Vector3d radialSpeedNeighbors(Matter m, double cr,
-			boolean withReverce) {
+	public Vector3d radialSpeedNeighbors(Matter m, double cr, boolean withReverce) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(m.getPoint());
@@ -538,15 +509,13 @@ public class Matter implements Serializable {
 		double angle = speedMinusSpeedAfterImpact.angle(newSpeed);
 		newSpeed.normalize();
 		if (speedMinusSpeedAfterImpact.dot(newSpeed) > 0) {
-			newSpeed.scale(net.jafama.FastMath.cos(angle)
-					* speedMinusSpeedAfterImpact.length());
+			newSpeed.scale(net.jafama.FastMath.cos(angle) * speedMinusSpeedAfterImpact.length());
 			return newSpeed;
 		}
 		return speedMinusSpeedAfterImpact;
 	}
 
-	public Vector3d tangentialSpeedNeighbors(Matter m, double cr,
-			boolean withReverce, double ratio) {
+	public Vector3d tangentialSpeedNeighbors(Matter m, double cr, boolean withReverce, double ratio) {
 		Vector3d speedMinusSpeedAfterImpact = new Vector3d(speed);
 		speedMinusSpeedAfterImpact.sub(speedAfterImpactWith(m, cr));
 		Vector3d newSpeed = new Vector3d(speedMinusSpeedAfterImpact);
@@ -557,8 +526,7 @@ public class Matter implements Serializable {
 	}
 
 	public void adjustSpeedFromPositions() {
-		if (!parameters.isStaticDarkMatter()
-				|| typeOfObject != TypeOfObject.Dark) {
+		if (!parameters.isStaticDarkMatter() || typeOfObject != TypeOfObject.Dark) {
 			double distance = HelperNewton.distance(pointBefore, point);
 			double speedLength = distance / parameters.getTimeFactor();
 			Vector3d newSpeed = new Vector3d(point);
@@ -575,8 +543,7 @@ public class Matter implements Serializable {
 	}
 
 	public void expansionUnivers() {
-		double length = point.length() + point.length() * HelperVariable.H0ms
-				* parameters.getTimeFactor();
+		double length = point.length() + point.length() * HelperVariable.H0ms * parameters.getTimeFactor();
 		point.normalize();
 		point.scale(length);
 	}
@@ -585,25 +552,21 @@ public class Matter implements Serializable {
 		orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
 	}
 
-	private void orbitalCircularSpeed(double otherMass, Vector3d gPoint,
-			Vector3d axis) {
+	private void orbitalCircularSpeed(double otherMass, Vector3d gPoint, Vector3d axis) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
 			double distance = new Point3d(point).distance(new Point3d(gPoint));
 			orbitalCircularSpeed(gPoint, distance, otherMass, axis);
 		}
 	}
 
-	public void orbitalCircularSpeed(Vector3d gPoint, double distance,
-			double otherMass, Vector3d axis) {
+	public void orbitalCircularSpeed(Vector3d gPoint, double distance, double otherMass, Vector3d axis) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
-			double orbitalSpeedValue = net.jafama.FastMath
-					.sqrt((HelperVariable.G * otherMass) / distance);
+			double orbitalSpeedValue = net.jafama.FastMath.sqrt((HelperVariable.G * otherMass) / distance);
 			orbitalCircularSpeed(gPoint, axis, orbitalSpeedValue);
 		}
 	}
 
-	private void orbitalCircularSpeed(Vector3d gPoint, Vector3d axis,
-			double orbitalSpeedValue) {
+	private void orbitalCircularSpeed(Vector3d gPoint, Vector3d axis, double orbitalSpeedValue) {
 		Vector3d accel = HelperVector.acceleration(point, gPoint, 1);
 		Vector3d cross = new Vector3d();
 		cross.cross(axis, accel);
@@ -612,8 +575,7 @@ public class Matter implements Serializable {
 		speed.add(cross);
 	}
 
-	public void orbitalEllipticSpeed(double totalMass, Vector3d gPoint,
-			Vector3d axis, int nbArm) {
+	public void orbitalEllipticSpeed(double totalMass, Vector3d gPoint, Vector3d axis, int nbArm) {
 		if (!parameters.isStaticDarkMatter() || !isDark()) {
 			// axis x --> ellipse on y
 			// axis y --> ellipse on z
@@ -634,28 +596,19 @@ public class Matter implements Serializable {
 			double base = (e * p1 - distance) / e;
 			double h = p2 - base;
 			double a = e * h / (1 - net.jafama.FastMath.pow2(e));
-			double b = e * h
-					/ net.jafama.FastMath.sqrt(1 - net.jafama.FastMath.pow2(e));
-			double c = net.jafama.FastMath.pow2(e) * h
-					/ (1 - net.jafama.FastMath.pow2(e));
-			double n = p1 - net.jafama.FastMath.pow2(b) * (p1 - p2 - c)
-					/ net.jafama.FastMath.pow2(a);
+			double b = e * h / net.jafama.FastMath.sqrt(1 - net.jafama.FastMath.pow2(e));
+			double c = net.jafama.FastMath.pow2(e) * h / (1 - net.jafama.FastMath.pow2(e));
+			double n = p1 - net.jafama.FastMath.pow2(b) * (p1 - p2 - c) / net.jafama.FastMath.pow2(a);
 			Vector3d normalOnAxis = new Vector3d();
 
-			normalOnAxis = axis.x != 0 ? new Vector3d(gPoint.x, n, gPoint.z)
-					: normalOnAxis;
-			normalOnAxis = axis.y != 0 ? new Vector3d(gPoint.x, gPoint.y, n)
-					: normalOnAxis;
-			normalOnAxis = axis.z != 0 ? new Vector3d(n, gPoint.y, gPoint.z)
-					: normalOnAxis;
+			normalOnAxis = axis.x != 0 ? new Vector3d(gPoint.x, n, gPoint.z) : normalOnAxis;
+			normalOnAxis = axis.y != 0 ? new Vector3d(gPoint.x, gPoint.y, n) : normalOnAxis;
+			normalOnAxis = axis.z != 0 ? new Vector3d(n, gPoint.y, gPoint.z) : normalOnAxis;
 
-			double orbitalSpeed = net.jafama.FastMath.sqrt(HelperVariable.G
-					* totalMass * (2 / distance - 1 / a));
-			Vector3d accel = HelperVector.acceleration(point, normalOnAxis,
-					orbitalSpeed);
+			double orbitalSpeed = net.jafama.FastMath.sqrt(HelperVariable.G * totalMass * (2 / distance - 1 / a));
+			Vector3d accel = HelperVector.acceleration(point, normalOnAxis, orbitalSpeed);
 
-			double alea = 2 * ((int) (nbArm * net.jafama.FastMath.random()))
-					/ ((double) nbArm);
+			double alea = 2 * ((int) (nbArm * net.jafama.FastMath.random())) / ((double) nbArm);
 			double angle = net.jafama.FastMath.PI * alea;
 			accel = HelperVector.rotate(accel, gPoint, axis, angle);
 			point = HelperVector.rotate(point, gPoint, axis, angle);
@@ -665,41 +618,33 @@ public class Matter implements Serializable {
 			accel = HelperVector.rotate(accel, gPoint, axis, angle);
 			point = HelperVector.rotate(point, gPoint, axis, angle);
 
-			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(
-					net.jafama.FastMath.signum(axis.x), 0, 0),
+			accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(net.jafama.FastMath.signum(axis.x), 0, 0),
 					net.jafama.FastMath.PI / 2) : accel;
-			accel = axis.y != 0 ? HelperVector.rotate(accel, new Vector3d(0,
-					net.jafama.FastMath.signum(axis.y), 0),
-					net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI
-							/ 2) : accel;
-			accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0,
-					net.jafama.FastMath.signum(axis.z)),
-					net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI
-							/ 2) : accel;
+			accel = axis.y != 0 ? HelperVector.rotate(accel, new Vector3d(0, net.jafama.FastMath.signum(axis.y), 0),
+					net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI / 2) : accel;
+			accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0, net.jafama.FastMath.signum(axis.z)),
+					net.jafama.FastMath.signum(axis.z) * net.jafama.FastMath.PI / 2) : accel;
 
 			speed.add(accel);
 		}
 	}
 
-
 	public void rotate(Vector3d origine, Vector3d rotate) {
-		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(  1,0,0  ), rotate.getX());
-		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(  0,1,0  ), rotate.getY());
-		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(  0,0,1  ), rotate.getZ());
+		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(1, 0, 0), rotate.getX());
+		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(0, 1, 0), rotate.getY());
+		pointBefore = HelperVector.rotate(pointBefore, origine, new Vector3d(0, 0, 1), rotate.getZ());
 
-		point = HelperVector.rotate(point, origine, new Vector3d(  1,0,0  ), rotate.getX());
-		point = HelperVector.rotate(point, origine, new Vector3d(  0,1,0  ), rotate.getY());
-		point = HelperVector.rotate(point, origine, new Vector3d(  0,0,1  ), rotate.getZ());
+		point = HelperVector.rotate(point, origine, new Vector3d(1, 0, 0), rotate.getX());
+		point = HelperVector.rotate(point, origine, new Vector3d(0, 1, 0), rotate.getY());
+		point = HelperVector.rotate(point, origine, new Vector3d(0, 0, 1), rotate.getZ());
 
-		speed = HelperVector.rotate(speed, origine, new Vector3d(  1,0,0  ), rotate.getX());
-		speed = HelperVector.rotate(speed, origine, new Vector3d(  0,1,0  ), rotate.getY());
-		speed = HelperVector.rotate(speed, origine, new Vector3d(  0,0,1  ), rotate.getZ());
+		speed = HelperVector.rotate(speed, origine, new Vector3d(1, 0, 0), rotate.getX());
+		speed = HelperVector.rotate(speed, origine, new Vector3d(0, 1, 0), rotate.getY());
+		speed = HelperVector.rotate(speed, origine, new Vector3d(0, 0, 1), rotate.getZ());
 
 	}
 
-
-	public static List<Matter> fusionWithRecursiveAdd(Matter m, Matter m1,
-			List<Matter> noMore) {
+	public static List<Matter> fusionWithRecursiveAdd(Matter m, Matter m1, List<Matter> noMore) {
 		List<Matter> f = new ArrayList<Matter>();
 		if (!noMore.contains(m1)) {
 			noMore.add(m1);

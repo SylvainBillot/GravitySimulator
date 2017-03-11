@@ -37,8 +37,7 @@ public class GUIFollowOther extends JDialog {
 		setSize(new Dimension(600, 100));
 		int w = getSize().width;
 		int h = getSize().height;
-		setLocation(new Point((mother.getWidth() - w) / 2,
-				(mother.getHeight() - h) / 2));
+		setLocation(new Point((mother.getWidth() - w) / 2, (mother.getHeight() - h) / 2));
 		setLayout(new GridLayout(0, 2));
 		add(new Label("Follow this:"));
 		matters = new JComboBox<Matter>();
@@ -72,8 +71,7 @@ public class GUIFollowOther extends JDialog {
 				try {
 					parameters.setFollowCentroid(false);
 					parameters.setFollowMaxMass(false);
-					parameters.setObjectToFollow((Matter) matters
-							.getSelectedItem());
+					parameters.setObjectToFollow((Matter) matters.getSelectedItem());
 					me.setVisible(false);
 					me.mother.setVisible(true);
 					me.mother.getAnimator().start();

@@ -27,7 +27,7 @@ public class Vector3dXml {
 		y = vector3d.getY();
 		z = vector3d.getZ();
 	}
-	
+
 	public Vector3d getVector3d() {
 		return new Vector3d(x, y, z);
 	}

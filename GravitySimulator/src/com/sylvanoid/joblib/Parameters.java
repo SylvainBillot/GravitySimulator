@@ -18,7 +18,7 @@ public class Parameters implements Serializable {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private boolean frozen =false;
+	private boolean frozen = false;
 	private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
 	private double elapsedTime = 0;
 	private double timeFactor = 6000;
@@ -89,7 +89,6 @@ public class Parameters implements Serializable {
 	private boolean viscousDarkMatter = false;
 	private boolean infiniteUnivers = false;
 	private int videoPicBy = 1;
-	
 
 	public Parameters() {
 
@@ -103,7 +102,8 @@ public class Parameters implements Serializable {
 	}
 
 	/**
-	 * @param frozen the frozen to set
+	 * @param frozen
+	 *            the frozen to set
 	 */
 	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
@@ -496,7 +496,8 @@ public class Parameters implements Serializable {
 	}
 
 	/**
-	 * @param barnesHut the barnesHut to set
+	 * @param barnesHut
+	 *            the barnesHut to set
 	 */
 	public void setBarnesHut(boolean barnesHut) {
 		this.barnesHut = barnesHut;
@@ -737,7 +738,8 @@ public class Parameters implements Serializable {
 	}
 
 	/**
-	 * @param videoPicBy the videoPicBy to set
+	 * @param videoPicBy
+	 *            the videoPicBy to set
 	 */
 	public void setVideoPicBy(int videoPicBy) {
 		this.videoPicBy = videoPicBy;

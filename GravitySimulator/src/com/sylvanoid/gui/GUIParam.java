@@ -94,7 +94,7 @@ public class GUIParam extends JDialog {
 		int w = getSize().width;
 		int h = getSize().height;
 		setLocation(new Point((mother.getWidth() - w) / 2, (mother.getHeight() - h) / 2));
-		
+
 		getContentPane().setLayout(new GridLayout(0, 4));
 		getContentPane().add(new JLabel("Type of Univers:"));
 		typeOfUnivers = new JComboBox<String>();
