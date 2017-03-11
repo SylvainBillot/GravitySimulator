@@ -142,8 +142,7 @@ public class GUIProgram extends JFrame {
 
 	private void builder() {
 		setTitle("Gravity Simulator");
-		Dimension dimension = java.awt.Toolkit.getDefaultToolkit()
-				.getScreenSize();
+		Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		setSize((int) dimension.getWidth(), (int) dimension.getHeight());
 		setLocationRelativeTo(null);
 		addWindowListener(onClose());
@@ -172,8 +171,7 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuProcess = new JMenu("Process");
 		menuBar.add(menuProcess);
-		JCheckBoxMenuItem menuItemFreeze = new JCheckBoxMenuItem("Freeze univers",
-				parameters.isFrozen());
+		JCheckBoxMenuItem menuItemFreeze = new JCheckBoxMenuItem("Freeze univers", parameters.isFrozen());
 		menuItemFreeze.addActionListener(menuFreeze());
 		JMenuItem menuItemStart = new JMenuItem("Start");
 		menuItemStart.addActionListener(menuStart());
@@ -188,8 +186,8 @@ public class GUIProgram extends JFrame {
 
 		JMenu menuVisu = new JMenu("View");
 		menuBar.add(menuVisu);
-		JCheckBoxMenuItem menuViewSimplePoint = new JCheckBoxMenuItem(
-				"View simples points", parameters.isViewSimplePointOnly());
+		JCheckBoxMenuItem menuViewSimplePoint = new JCheckBoxMenuItem("View simples points",
+				parameters.isViewSimplePointOnly());
 		menuViewSimplePoint.addActionListener(menuViewSimplePoint());
 		JMenuItem menuItemStopFollow = new JMenuItem("Stop following");
 		menuItemStopFollow.addActionListener(menuStopFollowing());
@@ -199,32 +197,24 @@ public class GUIProgram extends JFrame {
 		menuItemplusMassif.addActionListener(menuFollowMaxMass());
 		JMenuItem menuItemBarycentre = new JMenuItem("Follow centroid");
 		menuItemBarycentre.addActionListener(menuFollowCentroid());
-		JMenuItem menuItemFollowSomething = new JMenuItem(
-				"Follow something ...");
+		JMenuItem menuItemFollowSomething = new JMenuItem("Follow something ...");
 		menuItemFollowSomething.addActionListener(menuFollowSomething());
-		JCheckBoxMenuItem menuItemShowTrace = new JCheckBoxMenuItem(
-				"Show Trace", parameters.isShowTrace());
+		JCheckBoxMenuItem menuItemShowTrace = new JCheckBoxMenuItem("Show Trace", parameters.isShowTrace());
 		menuItemShowTrace.addActionListener(menuShowTrace());
-		JCheckBoxMenuItem menuItemPermanentRotationy = new JCheckBoxMenuItem(
-				"Permanent Y Rotation", parameters.isPermanentRotationy());
+		JCheckBoxMenuItem menuItemPermanentRotationy = new JCheckBoxMenuItem("Permanent Y Rotation",
+				parameters.isPermanentRotationy());
 		menuItemPermanentRotationy.addActionListener(menuYRotation());
-		JCheckBoxMenuItem menuItemShowAxis = new JCheckBoxMenuItem("Show Axis",
-				parameters.isShowAxis());
+		JCheckBoxMenuItem menuItemShowAxis = new JCheckBoxMenuItem("Show Axis", parameters.isShowAxis());
 		menuItemShowAxis.addActionListener(menuShowAxis());
-		JCheckBoxMenuItem menuItemShowGrid = new JCheckBoxMenuItem(
-				"Show grids", parameters.isShowgrid());
+		JCheckBoxMenuItem menuItemShowGrid = new JCheckBoxMenuItem("Show grids", parameters.isShowgrid());
 		menuItemShowGrid.addActionListener(menuShowGrid());
-		JCheckBoxMenuItem menuItemShowInfo = new JCheckBoxMenuItem("Show info",
-				parameters.isShowInfo());
+		JCheckBoxMenuItem menuItemShowInfo = new JCheckBoxMenuItem("Show info", parameters.isShowInfo());
 		menuItemShowInfo.addActionListener(menuShowInfo());
-		JCheckBoxMenuItem menuItemShowMatter = new JCheckBoxMenuItem(
-				"Show matter", parameters.isShowMatter());
+		JCheckBoxMenuItem menuItemShowMatter = new JCheckBoxMenuItem("Show matter", parameters.isShowMatter());
 		menuItemShowMatter.addActionListener(menuShowMatter());
-		JCheckBoxMenuItem menuItemShowGas = new JCheckBoxMenuItem("Show gas",
-				parameters.isShowGas());
+		JCheckBoxMenuItem menuItemShowGas = new JCheckBoxMenuItem("Show gas", parameters.isShowGas());
 		menuItemShowGas.addActionListener(menuShowGas());
-		JCheckBoxMenuItem menuItemShowDM = new JCheckBoxMenuItem(
-				"Show dark matter", parameters.isShowDarkMatter());
+		JCheckBoxMenuItem menuItemShowDM = new JCheckBoxMenuItem("Show dark matter", parameters.isShowDarkMatter());
 		menuItemShowDM.addActionListener(menuShowDarkMatter());
 
 		menuVisu.add(menuViewSimplePoint);
@@ -244,13 +234,10 @@ public class GUIProgram extends JFrame {
 		menuVisu.add(menuItemShowDM);
 
 		JMenu menuData = new JMenu("Data (Experimental)");
-		final JCheckBoxMenuItem menuItemExportData = new JCheckBoxMenuItem(
-				"Export to ...", parameters.isExportData());
-		menuItemExportData
-				.addActionListener(menuExportData(menuItemExportData));
+		final JCheckBoxMenuItem menuItemExportData = new JCheckBoxMenuItem("Export to ...", parameters.isExportData());
+		menuItemExportData.addActionListener(menuExportData(menuItemExportData));
 
-		final JCheckBoxMenuItem menuItemPlayData = new JCheckBoxMenuItem(
-				"Play data ...", parameters.isPlayData());
+		final JCheckBoxMenuItem menuItemPlayData = new JCheckBoxMenuItem("Play data ...", parameters.isPlayData());
 		menuItemPlayData.addActionListener(menuPlayData(menuItemPlayData));
 
 		menuBar.add(menuData);
@@ -258,8 +245,8 @@ public class GUIProgram extends JFrame {
 		menuData.add(menuItemPlayData);
 
 		JMenu menuVideo = new JMenu("Video");
-		final JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem(
-				"Record to ...", parameters.isExportToVideo());
+		final JCheckBoxMenuItem menuItemExportVideo = new JCheckBoxMenuItem("Record to ...",
+				parameters.isExportToVideo());
 		menuItemExportVideo.addActionListener(menuRecord(menuItemExportVideo));
 		menuBar.add(menuVideo);
 		menuVideo.add(menuItemExportVideo);
@@ -287,8 +274,7 @@ public class GUIProgram extends JFrame {
 			@Override
 			public void run() {
 				try {
-					for (LookAndFeelInfo info : UIManager
-							.getInstalledLookAndFeels()) {
+					for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 						if ("Nimbus".equals(info.getName())) {
 							UIManager.setLookAndFeel(info.getClassName());
 							break;
@@ -347,10 +333,8 @@ public class GUIProgram extends JFrame {
 					fileChooser.setSelectedFile(new File("univers.xml"));
 					int userSelection = fileChooser.showSaveDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						OutputStream output = new FileOutputStream(fileChooser
-								.getSelectedFile().getAbsolutePath());
-						JAXBContext context = JAXBContext
-								.newInstance(Univers.class);
+						OutputStream output = new FileOutputStream(fileChooser.getSelectedFile().getAbsolutePath());
+						JAXBContext context = JAXBContext.newInstance(Univers.class);
 						Marshaller m = context.createMarshaller();
 						m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 						m.marshal(univers, output);
@@ -377,12 +361,9 @@ public class GUIProgram extends JFrame {
 					fileChooser.setDialogTitle("Specify a file to load");
 					int userSelection = fileChooser.showOpenDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						File file = new File(fileChooser.getSelectedFile()
-								.getAbsolutePath());
-						JAXBContext jaxbContext = JAXBContext
-								.newInstance(Univers.class);
-						Unmarshaller jaxbUnmarshaller = jaxbContext
-								.createUnmarshaller();
+						File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+						JAXBContext jaxbContext = JAXBContext.newInstance(Univers.class);
+						Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 						univers = (Univers) jaxbUnmarshaller.unmarshal(file);
 						me.setParameters(univers.getParameters());
 						for (Matter m : univers.getListMatter()) {
@@ -414,25 +395,22 @@ public class GUIProgram extends JFrame {
 						GUIAddUnivers guiAddUnivers = new GUIAddUnivers(me);
 						guiAddUnivers.setVisible(true);
 						if (guiAddUnivers.isOk()) {
-							File file = new File(fileChooser.getSelectedFile()
-									.getAbsolutePath());
-							JAXBContext jaxbContext = JAXBContext
-									.newInstance(Univers.class);
-							Unmarshaller jaxbUnmarshaller = jaxbContext
-									.createUnmarshaller();
+							File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+							JAXBContext jaxbContext = JAXBContext.newInstance(Univers.class);
+							Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
 							Univers u = new Univers();
 							u = (Univers) jaxbUnmarshaller.unmarshal(file);
+
 							for (Matter m : u.getListMatter()) {
 								m.setParameters(univers.getParameters());
-								m.rotate(new Vector3d(0, 0, 0),
-										guiAddUnivers.getRotate());
-								m.getPointBefore().add(
-										guiAddUnivers.getOffset());
+								m.rotate(new Vector3d(0, 0, 0), guiAddUnivers.getRotate());
+								m.getPointBefore().add(guiAddUnivers.getOffset());
 								m.getPoint().add(guiAddUnivers.getOffset());
 								m.getSpeed().add(guiAddUnivers.getSpeed());
 								univers.getListMatter().add(m);
-								univers.resetGpoint();
 							}
+							univers.resetGpoint();
 							renderer.reload(me);
 						}
 					}
@@ -458,10 +436,8 @@ public class GUIProgram extends JFrame {
 					fileChooser.setSelectedFile(new File("parameters.xml"));
 					int userSelection = fileChooser.showSaveDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						OutputStream output = new FileOutputStream(fileChooser
-								.getSelectedFile().getAbsolutePath());
-						JAXBContext context = JAXBContext
-								.newInstance(Parameters.class);
+						OutputStream output = new FileOutputStream(fileChooser.getSelectedFile().getAbsolutePath());
+						JAXBContext context = JAXBContext.newInstance(Parameters.class);
 						Marshaller m = context.createMarshaller();
 						m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 						m.marshal(parameters, output);
@@ -488,14 +464,10 @@ public class GUIProgram extends JFrame {
 					fileChooser.setDialogTitle("Specify a file to load");
 					int userSelection = fileChooser.showOpenDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
-						File file = new File(fileChooser.getSelectedFile()
-								.getAbsolutePath());
-						JAXBContext jaxbContext = JAXBContext
-								.newInstance(Univers.class);
-						Unmarshaller jaxbUnmarshaller = jaxbContext
-								.createUnmarshaller();
-						parameters = (Parameters) jaxbUnmarshaller
-								.unmarshal(file);
+						File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+						JAXBContext jaxbContext = JAXBContext.newInstance(Univers.class);
+						Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+						parameters = (Parameters) jaxbUnmarshaller.unmarshal(file);
 						renderer.reload(me);
 					}
 				} catch (JAXBException e1) {
@@ -549,8 +521,7 @@ public class GUIProgram extends JFrame {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				parameters.setViewSimplePointOnly(!parameters
-						.isViewSimplePointOnly());
+				parameters.setViewSimplePointOnly(!parameters.isViewSimplePointOnly());
 			}
 		};
 	}
@@ -632,8 +603,7 @@ public class GUIProgram extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				parameters.setPermanentRotationy(!parameters
-						.isPermanentRotationy());
+				parameters.setPermanentRotationy(!parameters.isPermanentRotationy());
 			}
 		};
 	}
@@ -698,8 +668,7 @@ public class GUIProgram extends JFrame {
 		};
 	}
 
-	private ActionListener menuExportData(
-			final JCheckBoxMenuItem menuItemExportData) {
+	private ActionListener menuExportData(final JCheckBoxMenuItem menuItemExportData) {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -714,23 +683,14 @@ public class GUIProgram extends JFrame {
 					int userSelection = fileChooser.showSaveDialog(me);
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						try {
-							if (!fileChooser.getSelectedFile()
-									.getAbsolutePath().toLowerCase()
-									.endsWith(".dat")) {
-								File myFile = new File(fileChooser
-										.getSelectedFile().getAbsolutePath()
-										+ ".dat");
-								GZIPOutputStream zip = new GZIPOutputStream(
-										new FileOutputStream(myFile));
-								dataFile = new BufferedWriter(
-										new OutputStreamWriter(zip));
+							if (!fileChooser.getSelectedFile().getAbsolutePath().toLowerCase().endsWith(".dat")) {
+								File myFile = new File(fileChooser.getSelectedFile().getAbsolutePath() + ".dat");
+								GZIPOutputStream zip = new GZIPOutputStream(new FileOutputStream(myFile));
+								dataFile = new BufferedWriter(new OutputStreamWriter(zip));
 							} else {
-								File myFile = new File(fileChooser
-										.getSelectedFile().getAbsolutePath());
-								GZIPOutputStream zip = new GZIPOutputStream(
-										new FileOutputStream(myFile));
-								dataFile = new BufferedWriter(
-										new OutputStreamWriter(zip));
+								File myFile = new File(fileChooser.getSelectedFile().getAbsolutePath());
+								GZIPOutputStream zip = new GZIPOutputStream(new FileOutputStream(myFile));
+								dataFile = new BufferedWriter(new OutputStreamWriter(zip));
 							}
 							parameters.setExportData(true);
 						} catch (IOException e) {
@@ -768,11 +728,8 @@ public class GUIProgram extends JFrame {
 					if (userSelection == JFileChooser.APPROVE_OPTION) {
 						try {
 							GZIPInputStream zip = new GZIPInputStream(
-									new FileInputStream(fileChooser
-											.getSelectedFile()
-											.getAbsolutePath()));
-							dataFileInput = new BufferedReader(
-									new InputStreamReader(zip));
+									new FileInputStream(fileChooser.getSelectedFile().getAbsolutePath()));
+							dataFileInput = new BufferedReader(new InputStreamReader(zip));
 							parameters.setPlayData(true);
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -793,8 +750,7 @@ public class GUIProgram extends JFrame {
 		};
 	}
 
-	private ActionListener menuRecord(
-			final JCheckBoxMenuItem menuItemExportVideo) {
+	private ActionListener menuRecord(final JCheckBoxMenuItem menuItemExportVideo) {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -803,23 +759,18 @@ public class GUIProgram extends JFrame {
 					try {
 						JFileChooser fileChooser = new JFileChooser();
 						fileChooser.setDialogTitle("Specify video name");
-						fileChooser
-								.setFileSelectionMode(JFileChooser.FILES_ONLY);
+						fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 						fileChooser.setMultiSelectionEnabled(false);
 						fileChooser.setFileFilter(new MpejFilter());
 						fileChooser.setSelectedFile(new File("out.mp4"));
 						int userSelection = fileChooser.showSaveDialog(me);
 						if (userSelection == JFileChooser.APPROVE_OPTION) {
-							if (!fileChooser.getSelectedFile()
-									.getAbsolutePath().toLowerCase()
-									.endsWith(".mp4")) {
-								out = new SequenceEncoder(new File(fileChooser
-										.getSelectedFile().getAbsolutePath()
-										+ ".mp4"));
+							if (!fileChooser.getSelectedFile().getAbsolutePath().toLowerCase().endsWith(".mp4")) {
+								out = new SequenceEncoder(
+										new File(fileChooser.getSelectedFile().getAbsolutePath() + ".mp4"));
 
 							} else {
-								out = new SequenceEncoder(new File(fileChooser
-										.getSelectedFile().getAbsolutePath()));
+								out = new SequenceEncoder(new File(fileChooser.getSelectedFile().getAbsolutePath()));
 							}
 							parameters.setExportToVideo(true);
 						}

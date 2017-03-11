@@ -34,12 +34,12 @@ public class GUIFollowOther extends JDialog {
 	private void builder(GUIProgram mother) {
 		setTitle("Follow someyhing");
 		setModal(true);
-		int w = 600;
-		int h = 100;
+		setSize(new Dimension(600, 100));
+		int w = getSize().width;
+		int h = getSize().height;
 		setLocation(new Point((mother.getWidth() - w) / 2,
 				(mother.getHeight() - h) / 2));
-		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(2, 2));
+		setLayout(new GridLayout(0, 2));
 		add(new Label("Follow this:"));
 		matters = new JComboBox<Matter>();
 		for (Matter m : mother.getUnivers().getListMatter()) {

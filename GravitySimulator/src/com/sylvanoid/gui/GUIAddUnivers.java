@@ -22,8 +22,8 @@ public class GUIAddUnivers extends JDialog {
 	private GUIAddUnivers me;
 	private boolean ok = false;
 	private Vector3d offset = new Vector3d();
-	private Vector3d speed  = new Vector3d();
-	private Vector3d rotate  = new Vector3d();
+	private Vector3d speed = new Vector3d();
+	private Vector3d rotate = new Vector3d();
 
 	private JFormattedTextField offsetX;
 	private JFormattedTextField offsetY;
@@ -34,7 +34,6 @@ public class GUIAddUnivers extends JDialog {
 	private JFormattedTextField rotateX;
 	private JFormattedTextField rotateY;
 	private JFormattedTextField rotateZ;
-
 
 	private DecimalFormat dfsc = new DecimalFormat("0.####E0");
 
@@ -47,64 +46,63 @@ public class GUIAddUnivers extends JDialog {
 	private void builder(GUIProgram mother) {
 		setTitle("Set offsets");
 		setModal(true);
-		int w = 800;
-		int h = 500;
-		setLocation(new Point((mother.getWidth() - w) / 2,
-				(mother.getHeight() - h) / 2));
-		setSize(new Dimension(w, h));
-		setLayout(new GridLayout(10, 2));
+		setSize(new Dimension(800, 150));
+		int w = getSize().width;
+		int h = getSize().height;
+		setLocation(new Point((mother.getWidth() - w) / 2, (mother.getHeight() - h) / 2));
+		getContentPane().setLayout(new GridLayout(0, 6));
 
-		add(new Label("Offset x:"));
+		getContentPane().add(new Label("Offset x:"));
 		offsetX = new JFormattedTextField(dfsc);
 		offsetX.setValue(offset.getX());
-		add(offsetX);
+		getContentPane().add(offsetX);
 
-		add(new Label("Offset y:"));
+		getContentPane().add(new Label("Offset y:"));
 		offsetY = new JFormattedTextField(dfsc);
 		offsetY.setValue(offset.getY());
-		add(offsetY);
+		getContentPane().add(offsetY);
 
-		add(new Label("Offset z:"));
+		getContentPane().add(new Label("Offset z:"));
 		offsetZ = new JFormattedTextField(dfsc);
 		offsetZ.setValue(offset.getZ());
-		add(offsetZ);
+		getContentPane().add(offsetZ);
 
-		add(new Label("Speed x:"));
+		getContentPane().add(new Label("Speed x:"));
 		speedX = new JFormattedTextField(dfsc);
 		speedX.setValue(speed.getX());
-		add(speedX);
+		getContentPane().add(speedX);
 
-		add(new Label("Speed y:"));
+		getContentPane().add(new Label("Speed y:"));
 		speedY = new JFormattedTextField(dfsc);
 		speedY.setValue(speed.getY());
-		add(speedY);
+		getContentPane().add(speedY);
 
-		add(new Label("Speed z:"));
+		getContentPane().add(new Label("Speed z:"));
 		speedZ = new JFormattedTextField(dfsc);
 		speedZ.setValue(speed.getZ());
-		add(speedZ);
+		getContentPane().add(speedZ);
 
-		add(new Label("Rotate x:"));
+		getContentPane().add(new Label("Rotate x:"));
 		rotateX = new JFormattedTextField(dfsc);
 		rotateX.setValue(rotate.getX());
-		add(rotateX);
+		getContentPane().add(rotateX);
 
-		add(new Label("Rotate y:"));
+		getContentPane().add(new Label("Rotate y:"));
 		rotateY = new JFormattedTextField(dfsc);
 		rotateY.setValue(rotate.getY());
-		add(rotateY);
+		getContentPane().add(rotateY);
 
-		add(new Label("Rotate z:"));
+		getContentPane().add(new Label("Rotate z:"));
 		rotateZ = new JFormattedTextField(dfsc);
 		rotateZ.setValue(rotate.getZ());
-		add(rotateZ);
+		getContentPane().add(rotateZ);
 
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(cancelAction());
-		add(btnCancel);
+		getContentPane().add(btnCancel);
 		JButton btnOK = new JButton("OK");
 		btnOK.addActionListener(okAction());
-		add(btnOK);
+		getContentPane().add(btnOK);
 	}
 
 	private ActionListener cancelAction() {
@@ -125,16 +123,13 @@ public class GUIAddUnivers extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				me.ok = true;
 				try {
-					offset.set(
-							Double.parseDouble(offsetX.getValue().toString()),
+					offset.set(Double.parseDouble(offsetX.getValue().toString()),
 							Double.parseDouble(offsetY.getValue().toString()),
 							Double.parseDouble(offsetZ.getValue().toString()));
-					speed.set(
-							Double.parseDouble(speedX.getValue().toString()),
+					speed.set(Double.parseDouble(speedX.getValue().toString()),
 							Double.parseDouble(speedY.getValue().toString()),
 							Double.parseDouble(speedZ.getValue().toString()));
-					rotate.set(
-							Double.parseDouble(rotateX.getValue().toString()),
+					rotate.set(Double.parseDouble(rotateX.getValue().toString()),
 							Double.parseDouble(rotateY.getValue().toString()),
 							Double.parseDouble(rotateZ.getValue().toString()));
 					me.setVisible(false);
@@ -185,7 +180,8 @@ public class GUIAddUnivers extends JDialog {
 	}
 
 	/**
-	 * @param speed the speed to set
+	 * @param speed
+	 *            the speed to set
 	 */
 	public void setSpeed(Vector3d speed) {
 		this.speed = speed;
@@ -199,7 +195,8 @@ public class GUIAddUnivers extends JDialog {
 	}
 
 	/**
-	 * @param rotate the rotate to set
+	 * @param rotate
+	 *            the rotate to set
 	 */
 	public void setRotate(Vector3d rotate) {
 		this.rotate = rotate;
