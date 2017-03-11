@@ -70,8 +70,7 @@ public class Parameters implements Serializable {
 	private double matterDistribution = 5;
 	private double gasDistribution = 1;
 	private double darkMatterDistribution = 5;
-	private double darkMatterNubulaFactor = 5;
-	private Vector3d darkMatterXYZRatio = new Vector3d(1, 1, 1);
+	private Vector3d darkMatterXYZRatio = new Vector3d(5, 5, 5);
 	private double matterViscosity = 1;
 	private double gasViscosity = 1;
 	private double darkMatterViscosity = 1;
@@ -533,14 +532,6 @@ public class Parameters implements Serializable {
 
 	public void setDarkMatterDistribution(double darkMatterDistribution) {
 		this.darkMatterDistribution = darkMatterDistribution;
-	}
-
-	public double getDarkMatterNubulaFactor() {
-		return darkMatterNubulaFactor;
-	}
-
-	public void setDarkMatterNubulaFactor(double darkMatterNubulaFactor) {
-		this.darkMatterNubulaFactor = darkMatterNubulaFactor;
 	}
 
 	public double getMatterViscosity() {

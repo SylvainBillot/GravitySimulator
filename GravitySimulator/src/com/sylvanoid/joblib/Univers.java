@@ -111,10 +111,10 @@ public class Univers {
 			createPlanetary();
 		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetaryRandom) {
-			createPlanetaryRandom(parameters.getMatterRendererExtender(), new Vector3d(1, 1, 0.25));
+			createPlanetaryRandom();
 		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesis) {
-			createPlanetaryRandom(parameters.getMatterRendererExtender() * 5, new Vector3d(1, 1, 0.05));
+			createPlanetaryGenesisRandom();
 		}
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUniverCircular) {
 			createRandomRotateUniversCircular();
@@ -708,9 +708,7 @@ public class Univers {
 				parameters.getPressureZero());
 
 		createUniversMain(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
-				parameters.getNebulaRadius() * 0.01,
-				parameters.getNebulaRadius() * parameters.getDarkMatterNubulaFactor(),
-				parameters.getDarkMatterXYZRatio(),
+				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius(), parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()
 						/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
@@ -761,8 +759,7 @@ public class Univers {
 				parameters.getPressureZero()));
 
 		miniListMatter.addAll(createUniversMain(origin, new Vector3d(0, 0, 0), axisOfRing,
-				parameters.getNebulaRadius() * nebulaRadiusminRatioDarkMatter,
-				parameters.getNebulaRadius() * parameters.getDarkMatterNubulaFactor(),
+				parameters.getNebulaRadius() * nebulaRadiusminRatioDarkMatter, parameters.getNebulaRadius(),
 				parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()
@@ -804,9 +801,7 @@ public class Univers {
 				parameters.getPressureZero());
 
 		createUniversMain(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
-				parameters.getNebulaRadius() * 0.01,
-				parameters.getNebulaRadius() * parameters.getDarkMatterNubulaFactor(),
-				parameters.getDarkMatterXYZRatio(),
+				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius(), parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()
 						/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
@@ -904,6 +899,14 @@ public class Univers {
 		saturn.setPoint(
 				HelperVector.rotate(saturn.getPoint(), new Vector3d(0, 0, 1), 2.48 * net.jafama.FastMath.PI / 180));
 		moon.orbitalCircularSpeed(earth, new Vector3d(0, 1, 0));
+	}
+
+	private void createPlanetaryRandom() {
+		createPlanetaryRandom(parameters.getMatterRendererExtender(), new Vector3d(1, 1, 0.25));
+	}
+
+	private void createPlanetaryGenesisRandom() {
+		createPlanetaryRandom(parameters.getMatterRendererExtender() * 10, new Vector3d(1, 1, 0.05));
 	}
 
 	private void createPlanetaryRandom(double minimalDistanceCentralStarRadiusRatio, Vector3d ratioxyz) {
