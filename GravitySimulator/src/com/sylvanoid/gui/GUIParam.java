@@ -21,6 +21,7 @@ import com.sylvanoid.common.TypeOfImpact;
 import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.joblib.Parameters;
 import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class GUIParam extends JDialog {
 	/**
@@ -76,6 +77,7 @@ public class GUIParam extends JDialog {
 	private Parameters parameters;
 
 	public GUIParam(GUIProgram mother) {
+		setFont(new Font("Dialog", Font.PLAIN, 10));
 		this.me = this;
 		this.mother = mother;
 		this.parameters = mother.getParameters();
@@ -159,10 +161,10 @@ public class GUIParam extends JDialog {
 		massObject.add(massObjectMin);
 		massObjectMax = new JFormattedTextField(dfsc);
 		massObjectMax.setHorizontalAlignment(SwingConstants.RIGHT);
-		massObjectMax.setBounds(164, 0, 80, 29);
+		massObjectMax.setBounds(175, 0, 80, 29);
 		massObjectMax.setValue(parameters.getMassObjectMax());
 		JLabel label_1 = new JLabel("Max:");
-		label_1.setBounds(128, 0, 39, 29);
+		label_1.setBounds(138, 0, 39, 29);
 		massObject.add(label_1);
 		massObject.add(massObjectMax);
 
@@ -253,19 +255,19 @@ public class GUIParam extends JDialog {
 
 		darkMatterYRatio = new JFormattedTextField(dfsc);
 		darkMatterYRatio.setHorizontalAlignment(SwingConstants.RIGHT);
-		darkMatterYRatio.setBounds(102, 0, 50, 29);
+		darkMatterYRatio.setBounds(113, 0, 50, 29);
 		darkMatterYRatio.setValue(parameters.getDarkMatterXYZRatio().y);
 		JLabel label_3 = new JLabel("Y:");
-		label_3.setBounds(86, 0, 22, 29);
+		label_3.setBounds(93, 0, 22, 29);
 		darkMatterRatio.add(label_3);
 		darkMatterRatio.add(darkMatterYRatio);
 
 		darkMatterZRatio = new JFormattedTextField(dfsc);
 		darkMatterZRatio.setHorizontalAlignment(SwingConstants.RIGHT);
-		darkMatterZRatio.setBounds(193, 0, 50, 29);
+		darkMatterZRatio.setBounds(205, 0, 50, 29);
 		darkMatterZRatio.setValue(parameters.getDarkMatterXYZRatio().z);
 		JLabel label_4 = new JLabel("Z:");
-		label_4.setBounds(170, 0, 22, 29);
+		label_4.setBounds(181, 0, 22, 29);
 		darkMatterRatio.add(label_4);
 		darkMatterRatio.add(darkMatterZRatio);
 
