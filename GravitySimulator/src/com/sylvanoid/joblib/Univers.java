@@ -85,7 +85,7 @@ public class Univers {
 
 	@XmlTransient
 	private ConcurrentHashMap<String, MatterPair> collisionPairs = new ConcurrentHashMap<String, MatterPair>();
-	
+
 	@Override
 	public String toString() {
 		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y + " gz:" + gPoint.z);
@@ -538,24 +538,32 @@ public class Univers {
 				Vector3d dm = new Vector3d(0, 0, 0);
 				m.setPresure(0); // try
 				for (Matter m1 : m.getFusionWith()) {
-					double q = HelperNewton.distance(m, m1)
-							/ (parameters.getCollisionDistanceRatio() * (m.getRayon() + m1.getRayon()));
-					Vector3d rij = new Vector3d(m1.getPoint());
-					rij.sub(m.getPoint());
-					rij.normalize();
+					Vector3d relativeSpeed = new Vector3d(m.getSpeed());
+					relativeSpeed.sub(m1.getSpeed());
+					Vector3d radialSpeed = new Vector3d(m1.getPoint());
+					radialSpeed.sub(m.getPoint());
+					radialSpeed.normalize();
+					double u = relativeSpeed.dot(radialSpeed);
+					if (u > 0) {
+						double q = HelperNewton.distance(m, m1)
+								/ (parameters.getCollisionDistanceRatio() * (m.getRayon() + m1.getRayon()));
+						Vector3d rij = new Vector3d(m1.getPoint());
+						rij.sub(m.getPoint());
+						rij.normalize();
 
-					Vector3d rijm1 = new Vector3d(rij);
-					Vector3d rijm2 = new Vector3d(rij);
-					pre = (P * (1 - q) + Pn * net.jafama.FastMath.pow2(1 - q));
-					double delta = parameters.getTimeFactor() * pre;
-					rijm1.scale(m1.getMass() * delta / (m.getMass() + m1.getMass()));
-					rijm2.scale(m.getMass() * delta / (m.getMass() + m1.getMass()));
+						Vector3d rijm1 = new Vector3d(rij);
+						Vector3d rijm2 = new Vector3d(rij);
+						pre = (P * (1 - q) + Pn * net.jafama.FastMath.pow2(1 - q));
+						double delta = parameters.getTimeFactor() * pre;
+						rijm1.scale(m1.getMass() * delta / (m.getMass() + m1.getMass()));
+						rijm2.scale(m.getMass() * delta / (m.getMass() + m1.getMass()));
 
-					m1.getSpeed().add(rijm2);
-					dm.add(rijm1);
+						m1.getSpeed().add(rijm2);
+						dm.add(rijm1);
 
-					/* Try to get pseudo presure */
-					m.setPresure(m.getPresure() + pre);
+						/* Try to get pseudo presure */
+						m.setPresure(m.getPresure() + pre);
+					}
 
 				}
 				m.getSpeed().sub(dm);
