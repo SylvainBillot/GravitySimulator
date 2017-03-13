@@ -82,9 +82,9 @@ public class Parameters implements Serializable {
 	private double recoverFrictionEnergyRatio = 0.5;
 	private boolean expansionUnivers = false;
 	private double timeMultiplicator = 1.000;
-	private double matterRendererExtender = 3;
-	private double gasRendererExtender = 3;
-	private double darkMatterRendererExtender = 5;
+	private double matterRendererExtender = 10;
+	private double gasRendererExtender = 10;
+	private double darkMatterRendererExtender = 20;
 	private boolean viscousDarkMatter = false;
 	private boolean infiniteUnivers = false;
 	private int videoPicBy = 1;
