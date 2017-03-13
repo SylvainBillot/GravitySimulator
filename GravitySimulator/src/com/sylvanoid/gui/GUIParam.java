@@ -35,6 +35,9 @@ public class GUIParam extends JDialog {
 	private JComboBox<String> typeOfUnivers;
 	private JFormattedTextField timeFactor;
 	private JFormattedTextField scala;
+	private JFormattedTextField matterRendererExtender;
+	private JFormattedTextField gasRendererExtender;
+	private JFormattedTextField darkMatterRendererExtender;
 	private JCheckBox manageImpact;
 	private JFormattedTextField numberOfObjects;
 	private JFormattedTextField nebulaRadius;
@@ -77,6 +80,7 @@ public class GUIParam extends JDialog {
 	private Parameters parameters;
 
 	public GUIParam(GUIProgram mother) {
+		getContentPane().setFont(new Font("Dialog", Font.PLAIN, 10));
 		setFont(new Font("Dialog", Font.PLAIN, 10));
 		this.me = this;
 		this.mother = mother;
@@ -92,14 +96,17 @@ public class GUIParam extends JDialog {
 	private void builder(GUIProgram mother) {
 		setTitle("Parameters");
 		setModal(true);
-		setSize(new Dimension(1024, 582));
+		setSize(new Dimension(1024, 600));
 		int w = getSize().width;
 		int h = getSize().height;
 		setLocation(new Point((mother.getWidth() - w) / 2, (mother.getHeight() - h) / 2));
 
 		getContentPane().setLayout(new GridLayout(0, 4));
-		getContentPane().add(new JLabel("Type of Univers:"));
+		JLabel label_TypeOfUnivers = new JLabel("Type of Univers:");
+		label_TypeOfUnivers.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_TypeOfUnivers);
 		typeOfUnivers = new JComboBox<String>();
+		typeOfUnivers.setFont(new Font("Dialog", Font.BOLD, 10));
 		for (TypeOfUnivers tou : TypeOfUnivers.values()) {
 			typeOfUnivers.addItem(tou.getLabel());
 		}
@@ -107,264 +114,403 @@ public class GUIParam extends JDialog {
 		typeOfUnivers.addActionListener(chooseTypeOfUnivers());
 		getContentPane().add(typeOfUnivers);
 
-		getContentPane().add(new JLabel("Parallelization:"));
+		JLabel label_Parallelization = new JLabel("Parallelization:");
+		label_Parallelization.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_Parallelization);
 		parallelization = new JCheckBox();
 		parallelization.setSelected(parameters.isParallelization());
 		getContentPane().add(parallelization);
 
-		getContentPane().add(new JLabel("BarneHut/NN:"));
+		JLabel label_BarnesHut = new JLabel("BarneHut/NN:");
+		label_BarnesHut.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_BarnesHut);
 		barnessHut = new JCheckBox();
 		barnessHut.setSelected(parameters.isBarnesHut());
 		getContentPane().add(barnessHut);
 
-		getContentPane().add(new JLabel("Scala 1/x:"));
+		JLabel label_Scala = new JLabel("Scala 1/x:");
+		label_Scala.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_Scala);
 		scala = new JFormattedTextField(dfsc);
+		scala.setFont(new Font("Dialog", Font.PLAIN, 10));
 		scala.setHorizontalAlignment(SwingConstants.RIGHT);
 		scala.setValue(parameters.getScala());
 		getContentPane().add(scala);
 
-		getContentPane().add(new JLabel("Time factor:"));
+		JLabel label_TimeFactor = new JLabel("Time factor:");
+		label_TimeFactor.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_TimeFactor);
 		timeFactor = new JFormattedTextField(dfsc);
+		timeFactor.setFont(new Font("Dialog", Font.PLAIN, 10));
 		timeFactor.setHorizontalAlignment(SwingConstants.RIGHT);
 		timeFactor.setValue(parameters.getTimeFactor());
 		getContentPane().add(timeFactor);
 
-		getContentPane().add(new JLabel("Number of object:"));
+		
+		JLabel label_MatterRendererExtender = new JLabel("Matter Renderer Extender:");
+		label_MatterRendererExtender.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_MatterRendererExtender);
+		matterRendererExtender = new JFormattedTextField(dfsc);
+		matterRendererExtender.setFont(new Font("Dialog", Font.PLAIN, 10));
+		matterRendererExtender.setHorizontalAlignment(SwingConstants.RIGHT);
+		matterRendererExtender.setValue(parameters.getTimeFactor());
+		getContentPane().add(matterRendererExtender);
+
+		JLabel label_GasRendererExtender = new JLabel("Gas Renderer Extender:");
+		label_GasRendererExtender.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_GasRendererExtender);
+		gasRendererExtender = new JFormattedTextField(dfsc);
+		gasRendererExtender.setFont(new Font("Dialog", Font.PLAIN, 10));
+		gasRendererExtender.setHorizontalAlignment(SwingConstants.RIGHT);
+		gasRendererExtender.setValue(parameters.getTimeFactor());
+		getContentPane().add(gasRendererExtender);
+
+		JLabel label_DarkMatterRendererExtender = new JLabel("Dark Matter Renderer Extender:");
+		label_DarkMatterRendererExtender.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_DarkMatterRendererExtender);
+		darkMatterRendererExtender = new JFormattedTextField(dfsc);
+		darkMatterRendererExtender.setFont(new Font("Dialog", Font.PLAIN, 10));
+		darkMatterRendererExtender.setHorizontalAlignment(SwingConstants.RIGHT);
+		darkMatterRendererExtender.setValue(parameters.getTimeFactor());
+		getContentPane().add(darkMatterRendererExtender);
+		
+		JLabel label_NumOfObject = new JLabel("Number of object:");
+		label_NumOfObject.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_NumOfObject);
 		numberOfObjects = new JFormattedTextField(dfsc);
+		numberOfObjects.setFont(new Font("Dialog", Font.PLAIN, 10));
 		numberOfObjects.setHorizontalAlignment(SwingConstants.RIGHT);
 		numberOfObjects.setValue(parameters.getNumberOfObjects());
 		getContentPane().add(numberOfObjects);
 
-		getContentPane().add(new JLabel("Nebula radius:"));
+		JLabel label_Radius = new JLabel("Nebula radius:");
+		label_Radius.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_Radius);
 		nebulaRadius = new JFormattedTextField(dfsc);
+		nebulaRadius.setFont(new Font("Dialog", Font.PLAIN, 10));
 		nebulaRadius.setHorizontalAlignment(SwingConstants.RIGHT);
 		nebulaRadius.setValue(parameters.getNebulaRadius());
 		getContentPane().add(nebulaRadius);
 
-		getContentPane().add(new JLabel("Density of objects:"));
+		JLabel label_DensityObject = new JLabel("Density of objects:");
+		label_DensityObject.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_DensityObject);
 		densiteMin = new JFormattedTextField(dfsc);
+		densiteMin.setFont(new Font("Dialog", Font.PLAIN, 10));
 		densiteMin.setHorizontalAlignment(SwingConstants.RIGHT);
 		densiteMin.setValue(parameters.getDensity());
 		getContentPane().add(densiteMin);
 
-		getContentPane().add(new JLabel("Mass object:"));
+		JLabel label_MassObject = new JLabel("Mass object:");
+		label_MassObject.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_MassObject);
 		JPanel massObject = new JPanel();
 		getContentPane().add(massObject);
 		massObjectMin = new JFormattedTextField(dfsc);
+		massObjectMin.setFont(new Font("Dialog", Font.PLAIN, 10));
 		massObjectMin.setHorizontalAlignment(SwingConstants.RIGHT);
 		massObjectMin.setBounds(36, 0, 80, 29);
 		massObjectMin.setValue(parameters.getMassObjectMin());
 		massObject.setLayout(null);
-		JLabel label = new JLabel("Min:");
-		label.setBounds(0, 0, 46, 29);
-		massObject.add(label);
+		JLabel label_min = new JLabel("Min:");
+		label_min.setFont(new Font("Dialog", Font.BOLD, 10));
+		label_min.setBounds(0, 0, 46, 29);
+		massObject.add(label_min);
 		massObject.add(massObjectMin);
 		massObjectMax = new JFormattedTextField(dfsc);
+		massObjectMax.setFont(new Font("Dialog", Font.PLAIN, 10));
 		massObjectMax.setHorizontalAlignment(SwingConstants.RIGHT);
 		massObjectMax.setBounds(175, 0, 80, 29);
 		massObjectMax.setValue(parameters.getMassObjectMax());
-		JLabel label_1 = new JLabel("Max:");
-		label_1.setBounds(138, 0, 39, 29);
-		massObject.add(label_1);
+		JLabel label_max = new JLabel("Max:");
+		label_max.setFont(new Font("Dialog", Font.BOLD, 10));
+		label_max.setBounds(138, 0, 39, 29);
+		massObject.add(label_max);
 		massObject.add(massObjectMax);
 
-		getContentPane().add(new JLabel("Matter distribution:"));
+		JLabel label_MatterDist = new JLabel("Matter distribution:");
+		label_MatterDist.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_MatterDist);
 		matterDistribution = new JFormattedTextField(dfsc);
+		matterDistribution.setFont(new Font("Dialog", Font.PLAIN, 10));
 		matterDistribution.setHorizontalAlignment(SwingConstants.RIGHT);
 		matterDistribution.setValue(parameters.getMatterDistribution());
 		getContentPane().add(matterDistribution);
 
-		getContentPane().add(new JLabel("Nb galactic Arms:"));
+		JLabel label_NbGalArms = new JLabel("Nb galactic Arms:");
+		label_NbGalArms.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_NbGalArms);
 		nbArms = new JFormattedTextField(dfsc);
+		nbArms.setFont(new Font("Dialog", Font.PLAIN, 10));
 		nbArms.setHorizontalAlignment(SwingConstants.RIGHT);
 		nbArms.setValue(parameters.getNbARms());
 		getContentPane().add(nbArms);
 
-		getContentPane().add(new JLabel("Ellipses eccentricity (]0-1[):"));
+		JLabel label_36 = new JLabel("Ellipses eccentricity (]0-1[):");
+		label_36.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_36);
 		ellipseRatio = new JFormattedTextField(fdpc);
+		ellipseRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		ellipseRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		ellipseRatio.setValue(parameters.getEllipseRatio());
 		getContentPane().add(ellipseRatio);
 
-		getContentPane().add(new JLabel("Ellipses shift (ratio of nebula radius):"));
+		JLabel label_11 = new JLabel("Ellipses shift (ratio of nebula radius):");
+		label_11.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_11);
 		ellipseShiftRatio = new JFormattedTextField(dfsc);
+		ellipseShiftRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		ellipseShiftRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		ellipseShiftRatio.setValue(parameters.getEllipseShiftRatio());
 		getContentPane().add(ellipseShiftRatio);
 
-		getContentPane().add(new JLabel("Negligeable mass:"));
+		JLabel label_35 = new JLabel("Negligeable mass:");
+		label_35.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_35);
 		negligeableMass = new JFormattedTextField(dfsc);
+		negligeableMass.setFont(new Font("Dialog", Font.PLAIN, 10));
 		negligeableMass.setHorizontalAlignment(SwingConstants.RIGHT);
 		negligeableMass.setValue(parameters.getNegligeableMass());
 		getContentPane().add(negligeableMass);
 
-		getContentPane().add(new JLabel("Num of gas particle:"));
+		JLabel label_12 = new JLabel("Num of gas particle:");
+		label_12.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_12);
 		numOfLowMassParticule = new JFormattedTextField(dfsc);
+		numOfLowMassParticule.setFont(new Font("Dialog", Font.PLAIN, 10));
 		numOfLowMassParticule.setHorizontalAlignment(SwingConstants.RIGHT);
 		numOfLowMassParticule.setValue(parameters.getNumOfLowMassParticule());
 		getContentPane().add(numOfLowMassParticule);
 
-		getContentPane().add(new JLabel("Gas particles max mass:"));
+		JLabel label_34 = new JLabel("Gas particles max mass:");
+		label_34.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_34);
 		lowMassParticuleMass = new JFormattedTextField(dfsc);
+		lowMassParticuleMass.setFont(new Font("Dialog", Font.PLAIN, 10));
 		lowMassParticuleMass.setHorizontalAlignment(SwingConstants.RIGHT);
 		lowMassParticuleMass.setValue(parameters.getLowMassParticuleMass());
 		getContentPane().add(lowMassParticuleMass);
 
-		getContentPane().add(new JLabel("Gas particle density:"));
+		JLabel label_13 = new JLabel("Gas particle density:");
+		label_13.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_13);
 		lowMassDensity = new JFormattedTextField(dfsc);
+		lowMassDensity.setFont(new Font("Dialog", Font.PLAIN, 10));
 		lowMassDensity.setHorizontalAlignment(SwingConstants.RIGHT);
 		lowMassDensity.setValue(parameters.getLowMassDensity());
 		getContentPane().add(lowMassDensity);
 
-		getContentPane().add(new JLabel("Gas distribution:"));
+		JLabel label_33 = new JLabel("Gas distribution:");
+		label_33.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_33);
 		gasDistribution = new JFormattedTextField(dfsc);
+		gasDistribution.setFont(new Font("Dialog", Font.PLAIN, 10));
 		gasDistribution.setHorizontalAlignment(SwingConstants.RIGHT);
 		gasDistribution.setValue(parameters.getGasDistribution());
 		getContentPane().add(gasDistribution);
 
-		getContentPane().add(new JLabel("Dark Matter or central star Mass:"));
+		JLabel label_14 = new JLabel("Dark Matter or central star Mass:");
+		label_14.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_14);
 		darkMatterMass = new JFormattedTextField(dfsc);
+		darkMatterMass.setFont(new Font("Dialog", Font.PLAIN, 10));
 		darkMatterMass.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterMass.setValue(parameters.getDarkMatterMass());
 		getContentPane().add(darkMatterMass);
 
-		getContentPane().add(new JLabel("Dark Matter or central star Density:"));
+		JLabel label_32 = new JLabel("Dark Matter or central star Density:");
+		label_32.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_32);
 		darkMatterDensity = new JFormattedTextField(dfsc);
+		darkMatterDensity.setFont(new Font("Dialog", Font.PLAIN, 10));
 		darkMatterDensity.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterDensity.setValue(parameters.getDarkMatterDensity());
 		getContentPane().add(darkMatterDensity);
 
-		getContentPane().add(new JLabel("Dark Matterdistribution:"));
+		JLabel label_15 = new JLabel("Dark Matterdistribution:");
+		label_15.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_15);
 		darkMatterDistribution = new JFormattedTextField(dfsc);
+		darkMatterDistribution.setFont(new Font("Dialog", Font.PLAIN, 10));
 		darkMatterDistribution.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterDistribution.setValue(parameters.getDarkMatterDistribution());
 		getContentPane().add(darkMatterDistribution);
 
-		getContentPane().add(new JLabel("Dark matter xyz ratio"));
+		JLabel label_31 = new JLabel("Dark matter xyz ratio");
+		label_31.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_31);
 		JPanel darkMatterRatio = new JPanel();
 		getContentPane().add(darkMatterRatio);
 		darkMatterXRatio = new JFormattedTextField(dfsc);
+		darkMatterXRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		darkMatterXRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterXRatio.setBounds(23, 0, 50, 29);
 		darkMatterXRatio.setValue(parameters.getDarkMatterXYZRatio().x);
 		darkMatterRatio.setLayout(null);
 		JLabel label_2 = new JLabel("X:");
+		label_2.setFont(new Font("Dialog", Font.BOLD, 10));
 		label_2.setBounds(2, 0, 22, 29);
 		darkMatterRatio.add(label_2);
 		darkMatterRatio.add(darkMatterXRatio);
 
 		darkMatterYRatio = new JFormattedTextField(dfsc);
+		darkMatterYRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		darkMatterYRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterYRatio.setBounds(113, 0, 50, 29);
 		darkMatterYRatio.setValue(parameters.getDarkMatterXYZRatio().y);
 		JLabel label_3 = new JLabel("Y:");
+		label_3.setFont(new Font("Dialog", Font.BOLD, 10));
 		label_3.setBounds(93, 0, 22, 29);
 		darkMatterRatio.add(label_3);
 		darkMatterRatio.add(darkMatterYRatio);
 
 		darkMatterZRatio = new JFormattedTextField(dfsc);
+		darkMatterZRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		darkMatterZRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterZRatio.setBounds(205, 0, 50, 29);
 		darkMatterZRatio.setValue(parameters.getDarkMatterXYZRatio().z);
 		JLabel label_4 = new JLabel("Z:");
+		label_4.setFont(new Font("Dialog", Font.BOLD, 10));
 		label_4.setBounds(181, 0, 22, 29);
 		darkMatterRatio.add(label_4);
 		darkMatterRatio.add(darkMatterZRatio);
 
-		getContentPane().add(new JLabel("Manage Impact:"));
+		JLabel label_16 = new JLabel("Manage Impact:");
+		label_16.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_16);
 		manageImpact = new JCheckBox();
 		manageImpact.setSelected(parameters.isManageImpact());
 		manageImpact.addActionListener(chooseManageImpact());
 		getContentPane().add(manageImpact);
 
-		getContentPane().add(new JLabel("Type Of Impact:"));
+		JLabel label_30 = new JLabel("Type Of Impact:");
+		label_30.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_30);
 		typeOfImpact = new JComboBox<String>();
+		typeOfImpact.setFont(new Font("Dialog", Font.BOLD, 10));
 		for (TypeOfImpact toi : TypeOfImpact.values()) {
 			typeOfImpact.addItem(toi.getLabel());
 		}
 		typeOfImpact.setSelectedItem(parameters.getTypeOfImpact().getLabel());
 		getContentPane().add(typeOfImpact);
 
-		getContentPane().add(new JLabel("Collision distance ratio rij:"));
+		JLabel label_17 = new JLabel("Collision distance ratio rij:");
+		label_17.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_17);
 		collisionDistanceRatio = new JFormattedTextField(dfsc);
+		collisionDistanceRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		collisionDistanceRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		collisionDistanceRatio.setValue(parameters.getCollisionDistanceRatio());
 		getContentPane().add(collisionDistanceRatio);
 
-		getContentPane().add(new JLabel("Matter Viscosity ratio:"));
+		JLabel label_29 = new JLabel("Matter Viscosity ratio:");
+		label_29.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_29);
 		matterViscosity = new JFormattedTextField(dfsc);
+		matterViscosity.setFont(new Font("Dialog", Font.PLAIN, 10));
 		matterViscosity.setHorizontalAlignment(SwingConstants.RIGHT);
 		matterViscosity.setValue(parameters.getMatterViscosity());
 		getContentPane().add(matterViscosity);
 
-		getContentPane().add(new JLabel("Gas Viscosity ratio:"));
+		JLabel label_18 = new JLabel("Gas Viscosity ratio:");
+		label_18.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_18);
 		gasViscosity = new JFormattedTextField(dfsc);
+		gasViscosity.setFont(new Font("Dialog", Font.PLAIN, 10));
 		gasViscosity.setHorizontalAlignment(SwingConstants.RIGHT);
 		gasViscosity.setValue(parameters.getGasViscosity());
 		getContentPane().add(gasViscosity);
 
-		getContentPane().add(new JLabel("Dark Matter Viscosity ratio:"));
+		JLabel label_28 = new JLabel("Dark Matter Viscosity ratio:");
+		label_28.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_28);
 		darkMatterViscosity = new JFormattedTextField(dfsc);
+		darkMatterViscosity.setFont(new Font("Dialog", Font.PLAIN, 10));
 		darkMatterViscosity.setHorizontalAlignment(SwingConstants.RIGHT);
 		darkMatterViscosity.setValue(parameters.getDarkMatterViscosity());
 		getContentPane().add(darkMatterViscosity);
 
-		getContentPane().add(new JLabel("Visco elasticity:"));
+		JLabel label_19 = new JLabel("Visco elasticity:");
+		label_19.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_19);
 		viscoElasticity = new JFormattedTextField(dfsc);
+		viscoElasticity.setFont(new Font("Dialog", Font.PLAIN, 10));
 		viscoElasticity.setHorizontalAlignment(SwingConstants.RIGHT);
 		viscoElasticity.setValue(parameters.getViscoElasticity());
 		getContentPane().add(viscoElasticity);
 
-		getContentPane().add(new JLabel("Visco elasticity Near:"));
+		JLabel label_27 = new JLabel("Visco elasticity Near:");
+		label_27.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_27);
 		viscoElasticityNear = new JFormattedTextField(dfsc);
+		viscoElasticityNear.setFont(new Font("Dialog", Font.PLAIN, 10));
 		viscoElasticityNear.setHorizontalAlignment(SwingConstants.RIGHT);
 		viscoElasticityNear.setValue(parameters.getViscoElasticityNear());
 		getContentPane().add(viscoElasticityNear);
 
-		getContentPane().add(new JLabel("Rest of Presure:"));
+		JLabel label_20 = new JLabel("Rest of Presure:");
+		label_20.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_20);
 		pressureZero = new JFormattedTextField(dfsc);
+		pressureZero.setFont(new Font("Dialog", Font.PLAIN, 10));
 		pressureZero.setHorizontalAlignment(SwingConstants.RIGHT);
 		pressureZero.setValue(parameters.getPressureZero());
 		getContentPane().add(pressureZero);
 
-		getContentPane().add(new JLabel("Recover Friction Energy (Experimental):"));
+		JLabel label_26 = new JLabel("Recover Friction Energy (Experimental):");
+		label_26.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_26);
 		recoverFrictionEnergy = new JCheckBox();
 		recoverFrictionEnergy.setSelected(parameters.isRecoverFrictionEnegy());
 		recoverFrictionEnergy.addActionListener(chooseRecoverEnergy());
 
 		getContentPane().add(recoverFrictionEnergy);
 
-		getContentPane().add(new JLabel("Recover Friction Energy Ratio:"));
+		JLabel label_21 = new JLabel("Recover Friction Energy Ratio:");
+		label_21.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_21);
 		recoverFrictionEnergyRatio = new JFormattedTextField(dfsc);
+		recoverFrictionEnergyRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		recoverFrictionEnergyRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		recoverFrictionEnergyRatio.setValue(parameters.getRecoverFrictionEnergyRatio());
 		getContentPane().add(recoverFrictionEnergyRatio);
 
-		getContentPane().add(new JLabel("Static Dark Matter:"));
+		JLabel label_25 = new JLabel("Static Dark Matter:");
+		label_25.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_25);
 		staticDarkMatter = new JCheckBox();
 		staticDarkMatter.setSelected(parameters.isStaticDarkMatter());
 		getContentPane().add(staticDarkMatter);
 
-		getContentPane().add(new JLabel("Expansion Of Univers:"));
+		JLabel label_22 = new JLabel("Expansion Of Univers:");
+		label_22.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_22);
 		expansionUnivers = new JCheckBox();
 		expansionUnivers.setSelected(parameters.isExpansionUnivers());
 		getContentPane().add(expansionUnivers);
 
-		getContentPane().add(new JLabel("Time multiplicator:"));
+		JLabel label_24 = new JLabel("Time multiplicator:");
+		label_24.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_24);
 		timeMultiplicator = new JFormattedTextField(dfsc);
+		timeMultiplicator.setFont(new Font("Dialog", Font.PLAIN, 10));
 		timeMultiplicator.setHorizontalAlignment(SwingConstants.RIGHT);
 		timeMultiplicator.setValue(parameters.getTimeMultiplicator());
 		getContentPane().add(timeMultiplicator);
 
-		getContentPane().add(new JLabel("Viscous Dark Matter:"));
+		JLabel label_23 = new JLabel("Viscous Dark Matter:");
+		label_23.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_23);
 		visousDarkMatter = new JCheckBox();
 		visousDarkMatter.setSelected(parameters.isViscousDarkMatter());
 		getContentPane().add(visousDarkMatter);
 
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setFont(new Font("Dialog", Font.BOLD, 10));
 		btnCancel.addActionListener(cancelAction());
 		getContentPane().add(btnCancel);
 		JButton btnOK = new JButton("OK");
+		btnOK.setFont(new Font("Dialog", Font.BOLD, 10));
 		btnOK.addActionListener(okAction());
 		getContentPane().add(btnOK);
 	}
@@ -407,6 +553,9 @@ public class GUIParam extends JDialog {
 		darkMatterZRatio.setEnabled(false);
 		timeMultiplicator.setEnabled(false);
 		visousDarkMatter.setEnabled(false);
+		matterRendererExtender.setEnabled(false);
+		gasRendererExtender.setEnabled(false);
+		darkMatterRendererExtender.setEnabled(false);
 		switch (typeOfUnivers.getSelectedIndex()) {
 		case 0:
 			// TypeOfUnivers.Planetary;
@@ -433,6 +582,9 @@ public class GUIParam extends JDialog {
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			timeMultiplicator.setEnabled(true);
+			matterRendererExtender.setEnabled(true);
+			gasRendererExtender.setEnabled(true);
+			darkMatterRendererExtender.setEnabled(true);
 			break;
 		case 2:
 			// TypeOfUnivers.Random;
@@ -453,6 +605,9 @@ public class GUIParam extends JDialog {
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			timeMultiplicator.setEnabled(true);
+			matterRendererExtender.setEnabled(true);
+			gasRendererExtender.setEnabled(true);
+			darkMatterRendererExtender.setEnabled(true);
 			break;
 		case 3:
 			// TypeOfUnivers.RandomRotateUnivers;
@@ -482,6 +637,9 @@ public class GUIParam extends JDialog {
 			darkMatterZRatio.setEnabled(true);
 			timeMultiplicator.setEnabled(true);
 			visousDarkMatter.setEnabled(true);
+			matterRendererExtender.setEnabled(true);
+			gasRendererExtender.setEnabled(true);
+			darkMatterRendererExtender.setEnabled(true);
 			break;
 		case 4:
 			// TypeOfUnivers.PlanetariesGenesis;
@@ -504,6 +662,9 @@ public class GUIParam extends JDialog {
 			darkMatterMass.setEnabled(true);
 			darkMatterDensity.setEnabled(true);
 			timeMultiplicator.setEnabled(true);
+			matterRendererExtender.setEnabled(true);
+			gasRendererExtender.setEnabled(true);
+			darkMatterRendererExtender.setEnabled(true);
 			break;
 		case 5:
 			// TypeOfUnivers.RandomRotateUniversWithoutCentralMass;
@@ -534,6 +695,9 @@ public class GUIParam extends JDialog {
 			darkMatterZRatio.setEnabled(true);
 			timeMultiplicator.setEnabled(true);
 			visousDarkMatter.setEnabled(true);
+			matterRendererExtender.setEnabled(true);
+			gasRendererExtender.setEnabled(true);
+			darkMatterRendererExtender.setEnabled(true);
 			break;
 		case 6:
 			// TypeOfUnivers.RandomStaticSphericalUnivers
@@ -564,6 +728,9 @@ public class GUIParam extends JDialog {
 			darkMatterZRatio.setEnabled(true);
 			timeMultiplicator.setEnabled(true);
 			visousDarkMatter.setEnabled(true);
+			matterRendererExtender.setEnabled(true);
+			gasRendererExtender.setEnabled(true);
+			darkMatterRendererExtender.setEnabled(true);
 			break;
 		}
 	}
@@ -605,6 +772,9 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergyRatio.setValue(1);
 					timeMultiplicator.setValue(1);
 					visousDarkMatter.setSelected(false);
+					matterRendererExtender.setValue(10);
+					gasRendererExtender.setValue(10);
+					darkMatterRendererExtender.setValue(20);
 					break;
 				case 1:
 					// TypeOfUnivers.PlanetaryRandom;
@@ -646,6 +816,9 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergyRatio.setValue(1);
 					timeMultiplicator.setValue(1);
 					visousDarkMatter.setSelected(false);
+					matterRendererExtender.setValue(3);
+					gasRendererExtender.setValue(3);
+					darkMatterRendererExtender.setValue(5);
 					break;
 				case 2:
 					parameters.setTypeOfUnivers(TypeOfUnivers.Random);
@@ -686,6 +859,9 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergyRatio.setValue(1);
 					timeMultiplicator.setValue(1);
 					visousDarkMatter.setSelected(false);
+					matterRendererExtender.setValue(1);
+					gasRendererExtender.setValue(1);
+					darkMatterRendererExtender.setValue(1);
 					break;
 				case 3:
 					parameters.setTypeOfUnivers(TypeOfUnivers.RandomRotateUnivers);
@@ -726,6 +902,9 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergyRatio.setValue(1);
 					timeMultiplicator.setValue(1);
 					visousDarkMatter.setSelected(false);
+					matterRendererExtender.setValue(1);
+					gasRendererExtender.setValue(1);
+					darkMatterRendererExtender.setValue(1);
 					break;
 				case 4: // Planetary genesis
 					parameters.setTypeOfUnivers(TypeOfUnivers.PlanetariesGenesis);
@@ -766,6 +945,9 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergyRatio.setValue(1);
 					timeMultiplicator.setValue(1);
 					visousDarkMatter.setSelected(false);
+					matterRendererExtender.setValue(1);
+					gasRendererExtender.setValue(1);
+					darkMatterRendererExtender.setValue(1);
 					break;
 				case 5:
 					parameters.setTypeOfUnivers(TypeOfUnivers.RandomRotateUniverCircular);
@@ -806,6 +988,9 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergyRatio.setValue(1);
 					timeMultiplicator.setValue(1);
 					visousDarkMatter.setSelected(false);
+					matterRendererExtender.setValue(1);
+					gasRendererExtender.setValue(3);
+					darkMatterRendererExtender.setValue(1);
 					break;
 				case 6:
 					parameters.setTypeOfUnivers(TypeOfUnivers.RandomStaticSphericalUnivers);
@@ -846,6 +1031,9 @@ public class GUIParam extends JDialog {
 					recoverFrictionEnergyRatio.setValue(1);
 					timeMultiplicator.setValue(1);
 					visousDarkMatter.setSelected(true);
+					matterRendererExtender.setValue(1);
+					gasRendererExtender.setValue(3);
+					darkMatterRendererExtender.setValue(3);
 					break;
 				}
 				enableDisableParam();
@@ -935,9 +1123,11 @@ public class GUIParam extends JDialog {
 					parameters.setRecoverFrictionEnergyRatio(
 							Double.parseDouble(me.recoverFrictionEnergyRatio.getValue().toString()));
 					parameters.setTimeMultiplicator(Double.parseDouble(me.timeMultiplicator.getValue().toString()));
-
 					parameters.setViscousDarkMatter(me.visousDarkMatter.isSelected());
-
+					parameters.setMatterRendererExtender(Double.parseDouble(me.matterRendererExtender.getValue().toString()));
+					parameters.setGasRendererExtender(Double.parseDouble(me.gasRendererExtender.getValue().toString()));
+					parameters.setDarkMatterRendererExtender(Double.parseDouble(me.darkMatterRendererExtender.getValue().toString()));
+					
 					parameters.setEyes(new Vector3d(0, 0, 900));
 					parameters.setLookAt(new Vector3d(0, 0, -900));
 					me.getMother().reset();
