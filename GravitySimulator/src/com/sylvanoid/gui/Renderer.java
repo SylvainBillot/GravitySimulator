@@ -104,18 +104,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
-		GL2 gl2 = drawable.getGL().getGL2();
-		gl2.glShadeModel(GL2.GL_SMOOTH);
-		gl2.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		gl2.glClearDepth(0.0f);
-		gl2.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glShadeModel(GL2.GL_SMOOTH);
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		gl.glClearDepth(0.0f);
+		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
 
 		// gl.glBlendFunc (GL2.GL_ONE, GL2.GL_ONE);
 
-		gl2.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
-		gl2.glBlendFuncSeparate(GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE);
+		gl.glBlendEquationSeparate(GL2.GL_FUNC_ADD, GL2.GL_FUNC_ADD);
+		gl.glBlendFuncSeparate(GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE, GL2.GL_ONE);
 
-		LoadGLTextures(gl2);
+		LoadGLTextures(gl);
 		textRenderer = new TextRenderer(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, textSize));
 		drawable.getAnimator().setUpdateFPSFrames(10, null);
 	}
@@ -162,10 +162,10 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 			parameters.getEyes().add(diffLookAt);
 		}
 
-		GL2 gl2 = drawable.getGL().getGL2();
-		gl2.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-		gl2.glMatrixMode(GL2.GL_PROJECTION);
-		gl2.glLoadIdentity();
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glLoadIdentity();
 		// Perspective.
 		float widthHeightRatio = (float) guiProgram.getWidth() / (float) guiProgram.getHeight();
 		glu.gluPerspective(45, widthHeightRatio, 1, parameters.getNebulaRadius() * 1000);
@@ -174,18 +174,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 		glu.gluLookAt(parameters.getEyes().x, parameters.getEyes().y, parameters.getEyes().z, centerOfVision.x,
 				centerOfVision.y, centerOfVision.z, 0, 1, 0);
 
-		gl2.glMatrixMode(GL2.GL_MODELVIEW);
-		gl2.glLoadIdentity();
-		gl2.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glLoadIdentity();
+		gl.glTranslated(centerOfVision.x, centerOfVision.y, centerOfVision.z);
 
 		if (parameters.isShowgrid()) {
 			// Show grid
-			drawGrid(gl2);
+			drawGrid(gl);
 		}
 
 		if (parameters.isShowAxis()) {
 			// Show Axis
-			drawAxis(gl2);
+			drawAxis(gl);
 		}
 		if (parameters.isShowInfo()) {
 			// Show info
@@ -194,18 +194,18 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 
 		if (parameters.isShowTrace()) {
 			/* Show trace */
-			drawTrace(gl2);
+			drawTrace(gl);
 		}
 
 		// drawGravitationalFields(gl);
 
 		/* Show current univers */
 		if (!parameters.isViewSimplePointOnly()) {
-			drawUnivers(gl2);
+			drawUnivers(gl);
 		} else {
-			drawUniversSimplePoint(gl2);
+			drawUniversSimplePoint(gl);
 		}
-		// drawUniversSimpleSphere(gl2, glu);
+		// drawUniversSimpleSphere(gl, glu);
 	}
 
 	private void LoadGLTextures(GL2 gl) {
