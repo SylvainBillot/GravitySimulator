@@ -146,14 +146,13 @@ public class GUIParam extends JDialog {
 		timeFactor.setValue(parameters.getTimeFactor());
 		getContentPane().add(timeFactor);
 
-		
 		JLabel label_MatterRendererExtender = new JLabel("Matter Renderer Extender:");
 		label_MatterRendererExtender.setFont(new Font("Dialog", Font.BOLD, 10));
 		getContentPane().add(label_MatterRendererExtender);
 		matterRendererExtender = new JFormattedTextField(dfsc);
 		matterRendererExtender.setFont(new Font("Dialog", Font.PLAIN, 10));
 		matterRendererExtender.setHorizontalAlignment(SwingConstants.RIGHT);
-		matterRendererExtender.setValue(parameters.getTimeFactor());
+		matterRendererExtender.setValue(parameters.getMatterRendererExtender());
 		getContentPane().add(matterRendererExtender);
 
 		JLabel label_GasRendererExtender = new JLabel("Gas Renderer Extender:");
@@ -162,7 +161,7 @@ public class GUIParam extends JDialog {
 		gasRendererExtender = new JFormattedTextField(dfsc);
 		gasRendererExtender.setFont(new Font("Dialog", Font.PLAIN, 10));
 		gasRendererExtender.setHorizontalAlignment(SwingConstants.RIGHT);
-		gasRendererExtender.setValue(parameters.getTimeFactor());
+		gasRendererExtender.setValue(parameters.getGasRendererExtender());
 		getContentPane().add(gasRendererExtender);
 
 		JLabel label_DarkMatterRendererExtender = new JLabel("Dark Matter Renderer Extender:");
@@ -171,9 +170,9 @@ public class GUIParam extends JDialog {
 		darkMatterRendererExtender = new JFormattedTextField(dfsc);
 		darkMatterRendererExtender.setFont(new Font("Dialog", Font.PLAIN, 10));
 		darkMatterRendererExtender.setHorizontalAlignment(SwingConstants.RIGHT);
-		darkMatterRendererExtender.setValue(parameters.getTimeFactor());
+		darkMatterRendererExtender.setValue(parameters.getDarkMatterRendererExtender());
 		getContentPane().add(darkMatterRendererExtender);
-		
+
 		JLabel label_NumOfObject = new JLabel("Number of object:");
 		label_NumOfObject.setFont(new Font("Dialog", Font.BOLD, 10));
 		getContentPane().add(label_NumOfObject);
@@ -1124,10 +1123,12 @@ public class GUIParam extends JDialog {
 							Double.parseDouble(me.recoverFrictionEnergyRatio.getValue().toString()));
 					parameters.setTimeMultiplicator(Double.parseDouble(me.timeMultiplicator.getValue().toString()));
 					parameters.setViscousDarkMatter(me.visousDarkMatter.isSelected());
-					parameters.setMatterRendererExtender(Double.parseDouble(me.matterRendererExtender.getValue().toString()));
+					parameters.setMatterRendererExtender(
+							Double.parseDouble(me.matterRendererExtender.getValue().toString()));
 					parameters.setGasRendererExtender(Double.parseDouble(me.gasRendererExtender.getValue().toString()));
-					parameters.setDarkMatterRendererExtender(Double.parseDouble(me.darkMatterRendererExtender.getValue().toString()));
-					
+					parameters.setDarkMatterRendererExtender(
+							Double.parseDouble(me.darkMatterRendererExtender.getValue().toString()));
+
 					parameters.setEyes(new Vector3d(0, 0, 900));
 					parameters.setLookAt(new Vector3d(0, 0, -900));
 					me.getMother().reset();
