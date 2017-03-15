@@ -245,18 +245,18 @@ public class GUIParam extends JDialog {
 		nbArms.setValue(parameters.getNbARms());
 		getContentPane().add(nbArms);
 
-		JLabel label_36 = new JLabel("Ellipses eccentricity (]0-1[):");
-		label_36.setFont(new Font("Dialog", Font.BOLD, 10));
-		getContentPane().add(label_36);
+		JLabel label_elipse_ecc = new JLabel("Ellipses eccentricity (]0-1[):");
+		label_elipse_ecc.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_elipse_ecc);
 		ellipseRatio = new JFormattedTextField(fdpc);
 		ellipseRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		ellipseRatio.setHorizontalAlignment(SwingConstants.RIGHT);
 		ellipseRatio.setValue(parameters.getEllipseRatio());
 		getContentPane().add(ellipseRatio);
 
-		JLabel label_11 = new JLabel("Ellipses shift (ratio of nebula radius):");
-		label_11.setFont(new Font("Dialog", Font.BOLD, 10));
-		getContentPane().add(label_11);
+		JLabel label_elipse_shit = new JLabel("Ellipses shift (ratio of nebula radius):");
+		label_elipse_shit.setFont(new Font("Dialog", Font.BOLD, 10));
+		getContentPane().add(label_elipse_shit);
 		ellipseShiftRatio = new JFormattedTextField(dfsc);
 		ellipseShiftRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
 		ellipseShiftRatio.setHorizontalAlignment(SwingConstants.RIGHT);

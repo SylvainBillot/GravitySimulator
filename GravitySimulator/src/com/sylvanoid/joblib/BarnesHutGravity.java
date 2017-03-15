@@ -27,6 +27,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 	protected Integer compute() {
 		if (univers.getMass() > parameters.getNegligeableMass() && !univers.sameCoordonate()) {
 			parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
+
 			double cx = univers.getMin().x
 					+ (univers.getMax().x - univers.getMin().x) / (1.5 + net.jafama.FastMath.random());
 			double cy = univers.getMin().y
