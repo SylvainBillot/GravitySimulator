@@ -403,9 +403,11 @@ public class Univers {
 		for (Matter m1 : listMatter) {
 			for (Matter m2 : listMatter) {
 				if (m1 != m2) {
-					parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute() + 1);
-					double attraction = HelperNewton.attraction(m1, m2, parameters);
-					m1.getAccel().add(HelperVector.acceleration(m1.getPoint(), m2.getPoint(), attraction));
+					if ((!parameters.isStaticDarkMatter() || !m1.isDark())) {
+						parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute() + 1);
+						double attraction = HelperNewton.attraction(m1, m2, parameters);
+						m1.getAccel().add(HelperVector.acceleration(m1.getPoint(), m2.getPoint(), attraction));
+					}
 				}
 			}
 		}
@@ -672,8 +674,8 @@ public class Univers {
 				double c = net.jafama.FastMath.pow(numberOfObjects, 1.0 / 3.0);
 
 				x = ((cpt % c) - (c / 2.0));
-				y = (((int)(cpt / c) % c) - (c / 2.0));
-				z = (((int)(cpt / (c * c)) % c) - (c / 2.0));
+				y = (((int) (cpt / c) % c) - (c / 2.0));
+				z = (((int) (cpt / (c * c)) % c) - (c / 2.0));
 
 				double dist = radiusMax * 2.0 / c;
 				x *= dist;
