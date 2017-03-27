@@ -86,6 +86,9 @@ public class Univers {
 	@XmlTransient
 	private ConcurrentHashMap<String, MatterPair> collisionPairs = new ConcurrentHashMap<String, MatterPair>();
 
+	@XmlTransient
+	private List<Matter> virtualMatterList;
+
 	@Override
 	public String toString() {
 		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y + " gz:" + gPoint.z);
@@ -258,12 +261,6 @@ public class Univers {
 					computeNNGravity();
 				}
 
-				// infinit univers
-				if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
-					// experimental
-					computeInfiniteUnivers();
-				}
-
 				// Change Speed
 				changeSpeed();
 
@@ -408,28 +405,6 @@ public class Univers {
 						double attraction = HelperNewton.attraction(m1, m2, parameters);
 						m1.getAccel().add(HelperVector.acceleration(m1.getPoint(), m2.getPoint(), attraction));
 					}
-				}
-			}
-		}
-	}
-
-	private void computeInfiniteUnivers() {
-		List<Vector3d> uPoints = new ArrayList<Vector3d>();
-		for (int x = -1; x <= 1; x++) {
-			for (int y = -1; y <= 1; y++) {
-				for (int z = -1; z <= 1; z++) {
-					if (x != 0 || y != 0 || z != 0) {
-						uPoints.add(new Vector3d(parameters.getNebulaRadius() * 2 * x,
-								parameters.getNebulaRadius() * 2 * y, parameters.getNebulaRadius() * 2 * z));
-					}
-				}
-			}
-		}
-		for (Matter m : listMatter) {
-			if (!parameters.isStaticDarkMatter() || !m.isDark()) {
-				for (Vector3d uPoint : uPoints) {
-					m.getAccel().add(HelperVector.acceleration(m.getPoint(), uPoint,
-							HelperNewton.attraction(new Point3d(m.getPoint()), new Point3d(uPoint), mass, parameters)));
 				}
 			}
 		}
@@ -673,7 +648,7 @@ public class Univers {
 			} else { // Is Cubic
 				double c = net.jafama.FastMath.pow(numberOfObjects, 1.0 / 3.0);
 
-				x = ((cpt % c) - (c / 2.0));
+				x = ((int) (cpt % c) - (c / 2.0));
 				y = (((int) (cpt / c) % c) - (c / 2.0));
 				z = (((int) (cpt / (c * c)) % c) - (c / 2.0));
 
