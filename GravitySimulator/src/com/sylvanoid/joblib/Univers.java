@@ -648,14 +648,16 @@ public class Univers {
 			} else { // Is Cubic
 				double c = net.jafama.FastMath.pow(numberOfObjects, 1.0 / 3.0);
 
-				x = ((int) (cpt % c) - (c / 2.0));
-				y = (((int) (cpt / c) % c) - (c / 2.0));
-				z = (((int) (cpt / (c * c)) % c) - (c / 2.0));
+				x = (int) (cpt % c);
+				y = ((int) (cpt / c) % c);
+				z = ((int) (cpt / (c * c)) % c);
 
-				double dist = radiusMax * 2.0 / c;
-				x *= dist;
-				y *= dist;
-				z *= dist;
+				System.out.println(x + " " + y + " " + z);
+
+				double dist = radiusMax * 2.0 / (c-1);
+				x = x * dist - radiusMax;
+				y = y * dist - radiusMax;
+				z = z * dist - radiusMax;
 
 				/*
 				 * x = radiusMin + (radiusMax - radiusMin) * 2 *

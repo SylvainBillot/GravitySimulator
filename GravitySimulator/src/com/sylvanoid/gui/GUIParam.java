@@ -997,11 +997,11 @@ public class GUIParam extends JDialog {
 					timeFactor.setValue(HelperVariable.ONEYEAR * 5E6);
 					scala.setValue(1E-23);
 					typeOfImpact.setSelectedIndex(1);
-					numberOfObjects.setValue(1000);
+					numberOfObjects.setValue(3374);
 					densiteMin.setValue(1E-22);
-					nebulaRadius.setValue(HelperVariable.PC * 5E8);
-					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 1.4E17);
-					massObjectMax.setValue(HelperVariable.MINIMALSTARMASS * 1.4E19);
+					nebulaRadius.setValue(HelperVariable.PC * 4.5E8);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 1E17);
+					massObjectMax.setValue(HelperVariable.MINIMALSTARMASS * 1E19);
 					matterDistribution.setValue(1);
 					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(0);
@@ -1017,7 +1017,7 @@ public class GUIParam extends JDialog {
 					staticDarkMatter.setSelected(false);
 					expansionUnivers.setSelected(true);
 					collisionDistanceRatio.setValue(1);
-					matterViscosity.setValue(0);
+					matterViscosity.setValue(1E-3);
 					gasViscosity.setValue(1);
 					darkMatterViscosity.setValue(1);
 					viscoElasticity.setValue(1E-5);
