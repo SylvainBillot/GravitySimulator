@@ -86,7 +86,6 @@ public class Parameters implements Serializable {
 	private double gasRendererExtender = 10;
 	private double darkMatterRendererExtender = 20;
 	private boolean viscousDarkMatter = false;
-	private boolean infiniteUnivers = false;
 	private int videoPicBy = 1;
 
 	public Parameters() {
@@ -704,21 +703,6 @@ public class Parameters implements Serializable {
 	 */
 	public void setViscousDarkMatter(boolean visousDarkMatter) {
 		this.viscousDarkMatter = visousDarkMatter;
-	}
-
-	/**
-	 * @return the infiniteUnivers
-	 */
-	public boolean isInfiniteUnivers() {
-		return infiniteUnivers;
-	}
-
-	/**
-	 * @param infiniteUnivers
-	 *            the infiniteUnivers to set
-	 */
-	public void setInfiniteUnivers(boolean infiniteUnivers) {
-		this.infiniteUnivers = infiniteUnivers;
 	}
 
 	/**

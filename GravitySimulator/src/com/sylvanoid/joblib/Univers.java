@@ -119,8 +119,8 @@ public class Univers {
 		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUniverCircular) {
 			createRandomRotateUniversCircular();
 		}
-		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomStaticSphericalUnivers) {
-			createRandomStaticSphericalUnivers();
+		if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
+			createCubicUnivers();
 		}
 		computeMassLimitsCentroidSpeed(true);
 	}
@@ -259,7 +259,7 @@ public class Univers {
 				}
 
 				// infinit univers
-				if (parameters.isInfiniteUnivers()) {
+				if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
 					// experimental
 					computeInfiniteUnivers();
 				}
@@ -355,17 +355,16 @@ public class Univers {
 			m.changeSpeed();
 		}
 	}
-	
+
 	private void move() {
 		long startTimeMove = System.currentTimeMillis();
-		
+
 		// Correction of gPoint derive because barnesHut is not perfect
-				Vector3d gDelta = new Vector3d(gPoint);
-				gDelta.sub(gPointBefore);
-				Vector3d gSpeed = new Vector3d(gDelta.x / parameters.getTimeFactor(), gDelta.y / parameters.getTimeFactor(),
-						gDelta.z / parameters.getTimeFactor());
-		
-		
+		Vector3d gDelta = new Vector3d(gPoint);
+		gDelta.sub(gPointBefore);
+		Vector3d gSpeed = new Vector3d(gDelta.x / parameters.getTimeFactor(), gDelta.y / parameters.getTimeFactor(),
+				gDelta.z / parameters.getTimeFactor());
+
 		for (Matter m : listMatter) {
 			if (maxMassElement == null || maxMassElement.getMass() < m.getMass()) {
 				maxMassElement = m;
@@ -414,14 +413,12 @@ public class Univers {
 
 	private void computeInfiniteUnivers() {
 		List<Vector3d> uPoints = new ArrayList<Vector3d>();
-
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
 				for (int z = -1; z <= 1; z++) {
 					if (x != 0 || y != 0 || z != 0) {
-						uPoints.add(new Vector3d(gPoint.x + parameters.getNebulaRadius() * 2 * x,
-								gPoint.y + parameters.getNebulaRadius() * 2 * y,
-								gPoint.z + parameters.getNebulaRadius() * 2 * z));
+						uPoints.add(new Vector3d(parameters.getNebulaRadius() * 2 * x,
+								parameters.getNebulaRadius() * 2 * y, parameters.getNebulaRadius() * 2 * z));
 					}
 				}
 			}
@@ -574,6 +571,8 @@ public class Univers {
 	}
 
 	private void expansionUnivers() {
+		parameters.setNebulaRadius(parameters.getNebulaRadius()
+				+ parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
 		for (Matter m : listMatter) {
 			m.expansionUnivers();
 		}
@@ -591,18 +590,18 @@ public class Univers {
 	 * @param gasHomogeneousDistributionPow
 	 * @return
 	 */
-	private List<Matter> createUnivers(Vector3d origine, Vector3d initialSpeed, Vector3d axisOfRing, double radiusMin,
-			double radiusMax, Vector3d ratio, double homogeneousDistributionPow, double gasHomogeneousDistributionPow,
-			double matterViscosity, double gasViscosity, double initialViscoElasticity,
-			double initialViscoElasticityNear, double initialPressureZero) {
+	private List<Matter> createUnivers(boolean spherical, Vector3d origine, Vector3d initialSpeed, Vector3d axisOfRing,
+			double radiusMin, double radiusMax, Vector3d ratio, double homogeneousDistributionPow,
+			double gasHomogeneousDistributionPow, double matterViscosity, double gasViscosity,
+			double initialViscoElasticity, double initialViscoElasticityNear, double initialPressureZero) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
-		miniListMatter.addAll(createUniversMain(origine, initialSpeed, axisOfRing, radiusMin, radiusMax, ratio,
-				parameters.getNumberOfObjects(), parameters.getMassObjectMin(), parameters.getMassObjectMax(),
+		miniListMatter.addAll(createUniversMain(spherical, origine, initialSpeed, axisOfRing, radiusMin, radiusMax,
+				ratio, parameters.getNumberOfObjects(), parameters.getMassObjectMin(), parameters.getMassObjectMax(),
 				parameters.getDensity(), new Vector3d(0, 0, 0), homogeneousDistributionPow, TypeOfObject.Matter,
 				matterViscosity, initialViscoElasticity, initialViscoElasticityNear, initialPressureZero));
 
-		miniListMatter.addAll(createUniversMain(origine, initialSpeed, axisOfRing, radiusMin, radiusMax, ratio,
-				parameters.getNumOfLowMassParticule(), 0, parameters.getLowMassParticuleMass(),
+		miniListMatter.addAll(createUniversMain(spherical, origine, initialSpeed, axisOfRing, radiusMin, radiusMax,
+				ratio, parameters.getNumOfLowMassParticule(), 0, parameters.getLowMassParticuleMass(),
 				parameters.getLowMassDensity(), new Vector3d(0.06, 0.05, 0.05), gasHomogeneousDistributionPow,
 				TypeOfObject.Gas, gasViscosity, initialViscoElasticity, initialViscoElasticityNear,
 				initialPressureZero));
@@ -628,11 +627,11 @@ public class Univers {
 	 * @param initialViscosity
 	 * @return
 	 */
-	private List<Matter> createUniversMain(Vector3d origine, Vector3d initialSpeed, Vector3d axisOfRing,
-			double radiusMin, double radiusMax, Vector3d ratio, int numberOfObjects, double minMass, double maxMass,
-			double density, Vector3d defaultColor, double homogeneousDistributionPow, TypeOfObject typeOfObject,
-			double initialViscosity, double initialViscoElasticity, double initialViscoElasticityNear,
-			double initialPressureZero) {
+	private List<Matter> createUniversMain(boolean spherical, Vector3d origine, Vector3d initialSpeed,
+			Vector3d axisOfRing, double radiusMin, double radiusMax, Vector3d ratio, int numberOfObjects,
+			double minMass, double maxMass, double density, Vector3d defaultColor, double homogeneousDistributionPow,
+			TypeOfObject typeOfObject, double initialViscosity, double initialViscoElasticity,
+			double initialViscoElasticityNear, double initialPressureZero) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
 		double miniMass = 0;
 		for (int cpt = 0; cpt < numberOfObjects; cpt++) {
@@ -640,33 +639,54 @@ public class Univers {
 			double x = 1;
 			double y = 1;
 			double z = 1;
-			boolean IsNotOK = true;
-			while (IsNotOK) {
+			if (spherical) {
+				boolean IsNotOK = true;
+				while (IsNotOK) {
 
-				double d = net.jafama.FastMath.pow(net.jafama.FastMath.random(), homogeneousDistributionPow);
+					double d = net.jafama.FastMath.pow(net.jafama.FastMath.random(), homogeneousDistributionPow);
 
-				double r = radiusMin + (radiusMax - radiusMin) * net.jafama.FastMath.pow(d, 1d / 3d);
+					double r = radiusMin + (radiusMax - radiusMin) * net.jafama.FastMath.pow(d, 1d / 3d);
 
-				double s = 2 * (net.jafama.FastMath.random() - 0.5);
-				double alpha = 2 * net.jafama.FastMath.PI * (net.jafama.FastMath.random() - 0.5);
-				double c = r * net.jafama.FastMath.sqrt(1 - net.jafama.FastMath.pow2(s));
-				x = c * net.jafama.FastMath.cos(alpha);
-				y = c * net.jafama.FastMath.sin(alpha);
-				z = r * s;
+					double s = 2 * (net.jafama.FastMath.random() - 0.5);
+					double alpha = 2 * net.jafama.FastMath.PI * (net.jafama.FastMath.random() - 0.5);
+					double c = r * net.jafama.FastMath.sqrt(1 - net.jafama.FastMath.pow2(s));
+					x = c * net.jafama.FastMath.cos(alpha);
+					y = c * net.jafama.FastMath.sin(alpha);
+					z = r * s;
 
-				IsNotOK = false;
-				if (axisOfRing.x != 0) {
-					IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(y)
-							+ net.jafama.FastMath.pow2(z) < net.jafama.FastMath.pow2(radiusMin));
+					IsNotOK = false;
+					if (axisOfRing.x != 0) {
+						IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(y)
+								+ net.jafama.FastMath.pow2(z) < net.jafama.FastMath.pow2(radiusMin));
+					}
+					if (axisOfRing.y != 0) {
+						IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(x)
+								+ net.jafama.FastMath.pow2(z) < net.jafama.FastMath.pow2(radiusMin));
+					}
+					if (axisOfRing.z != 0) {
+						IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(x)
+								+ net.jafama.FastMath.pow2(y) < net.jafama.FastMath.pow2(radiusMin));
+					}
 				}
-				if (axisOfRing.y != 0) {
-					IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(x)
-							+ net.jafama.FastMath.pow2(z) < net.jafama.FastMath.pow2(radiusMin));
-				}
-				if (axisOfRing.z != 0) {
-					IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(x)
-							+ net.jafama.FastMath.pow2(y) < net.jafama.FastMath.pow2(radiusMin));
-				}
+			} else { // Is Cubic
+				double c = net.jafama.FastMath.pow(numberOfObjects, 1.0 / 3.0);
+
+				x = ((cpt % c) - (c / 2.0));
+				y = (((int)(cpt / c) % c) - (c / 2.0));
+				z = (((int)(cpt / (c * c)) % c) - (c / 2.0));
+
+				double dist = radiusMax * 2.0 / c;
+				x *= dist;
+				y *= dist;
+				z *= dist;
+
+				/*
+				 * x = radiusMin + (radiusMax - radiusMin) * 2 *
+				 * (net.jafama.FastMath.random() - 0.5); y = radiusMin +
+				 * (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() -
+				 * 0.5); z = radiusMin + (radiusMax - radiusMin) * 2 *
+				 * (net.jafama.FastMath.random() - 0.5);
+				 */
 			}
 
 			Vector3d color = defaultColor;
@@ -704,20 +724,20 @@ public class Univers {
 	}
 
 	private void createRandomStaticUnivers() {
-		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), 0,
+		createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), 0,
 				parameters.getNebulaRadius(), new Vector3d(1, 1, 1), parameters.getMatterDistribution(),
 				parameters.getGasDistribution(), parameters.getMatterViscosity(), parameters.getGasViscosity(),
 				parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
 	}
 
 	private void createRandomRotateUnivers() {
-		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
+		createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius(), new Vector3d(1, 1, 0.25),
 				parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
 				parameters.getGasViscosity(), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
 				parameters.getPressureZero());
 
-		createUniversMain(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
+		createUniversMain(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius(), parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
 				parameters.getDarkMatterMass()
@@ -762,13 +782,13 @@ public class Univers {
 	private void createRandomRotateUniversCircular(Vector3d origin, Vector3d axisOfRing, Vector3d ratio,
 			double nebulaRadiusminRatioMatter, double nebulaRadiusminRatioDarkMatter) {
 		List<Matter> miniListMatter = new ArrayList<Matter>();
-		miniListMatter.addAll(createUnivers(origin, new Vector3d(0, 0, 0), axisOfRing,
+		miniListMatter.addAll(createUnivers(true, origin, new Vector3d(0, 0, 0), axisOfRing,
 				parameters.getNebulaRadius() * nebulaRadiusminRatioMatter, parameters.getNebulaRadius(), ratio,
 				parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
 				parameters.getGasViscosity(), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
 				parameters.getPressureZero()));
 
-		miniListMatter.addAll(createUniversMain(origin, new Vector3d(0, 0, 0), axisOfRing,
+		miniListMatter.addAll(createUniversMain(true, origin, new Vector3d(0, 0, 0), axisOfRing,
 				parameters.getNebulaRadius() * nebulaRadiusminRatioDarkMatter, parameters.getNebulaRadius(),
 				parameters.getDarkMatterXYZRatio(),
 				parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
@@ -803,23 +823,12 @@ public class Univers {
 		}
 	}
 
-	private void createRandomStaticSphericalUnivers() {
-		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
+	private void createCubicUnivers() {
+		createUnivers(false, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius(), new Vector3d(1, 1, 1),
 				parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
 				parameters.getGasViscosity(), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
 				parameters.getPressureZero());
-
-		createUniversMain(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
-				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius(), parameters.getDarkMatterXYZRatio(),
-				parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
-				parameters.getDarkMatterMass()
-						/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
-				parameters.getDarkMatterMass()
-						/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
-				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01, 0.01),
-				parameters.getDarkMatterDistribution(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(),
-				parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
 	}
 
 	private void createPlanetary() {
@@ -925,7 +934,7 @@ public class Univers {
 				parameters.getDarkMatterMass(), new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
 				parameters.getDarkMatterDensity(), TypeOfObject.Matter, parameters.getMatterViscosity(),
 				parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
-		createUnivers(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
+		createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 				m1.getRayon() * minimalDistanceCentralStarRadiusRatio, parameters.getNebulaRadius(), ratioxyz,
 				parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
 				parameters.getGasViscosity(), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
