@@ -254,6 +254,11 @@ public class Univers {
 					computeBarnesHutCollision();
 				}
 
+				// Infinite Univers
+				if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
+					computeinfinitUnivers();
+				}
+
 				// Compute accelerations
 				if (parameters.isBarnesHut()) {
 					computeBarnesHutGravity();
@@ -383,6 +388,29 @@ public class Univers {
 			return (int) pool.invoke(barnesHutCollision);
 		} else {
 			return (int) barnesHutCollision.compute();
+		}
+	}
+
+	private void computeinfinitUnivers() {
+		double coef = 2.5;
+		for (Matter m : listMatter) {
+			List<Point3d> listUPoint = new ArrayList<>();
+			listUPoint.add(new Point3d(gPoint.getX() + parameters.getNebulaRadius() * coef, m.getPoint().getY(),
+					m.getPoint().getZ()));
+			listUPoint.add(new Point3d(gPoint.getX() - parameters.getNebulaRadius() * coef, m.getPoint().getY(),
+					m.getPoint().getZ()));
+			listUPoint.add(new Point3d(m.getPoint().getX(), gPoint.getY() + parameters.getNebulaRadius() * coef,
+					m.getPoint().getZ()));
+			listUPoint.add(new Point3d(m.getPoint().getX(), gPoint.getY() - parameters.getNebulaRadius() * coef,
+					m.getPoint().getZ()));
+			listUPoint.add(new Point3d(m.getPoint().getX(), m.getPoint().getY(),
+					gPoint.getZ() + parameters.getNebulaRadius() * coef));
+			listUPoint.add(new Point3d(m.getPoint().getX(), m.getPoint().getY(),
+					gPoint.getZ() - parameters.getNebulaRadius() * coef));
+			for (Point3d uPoint : listUPoint) {
+				double attraction = HelperNewton.attraction(uPoint, new Point3d(m.getPoint()), mass, parameters);
+				m.getAccel().add(HelperVector.acceleration(m.getPoint(), new Vector3d(uPoint), attraction));
+			}
 		}
 	}
 
@@ -652,9 +680,7 @@ public class Univers {
 				y = ((int) (cpt / c) % c);
 				z = ((int) (cpt / (c * c)) % c);
 
-				System.out.println(x + " " + y + " " + z);
-
-				double dist = radiusMax * 2.0 / (c-1);
+				double dist = radiusMax * 2.0 / (c - 1);
 				x = x * dist - radiusMax;
 				y = y * dist - radiusMax;
 				z = z * dist - radiusMax;
