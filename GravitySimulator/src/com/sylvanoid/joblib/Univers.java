@@ -854,7 +854,7 @@ public class Univers {
 
 		/* Inition explosion */
 		for (Matter m : listMatter) {
-			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(), -HelperVariable.H0ms * m.getPoint().length()*10));
+			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(), -HelperVariable.H0ms * m.getPoint().length()*12));
 		}
 		
 		double coef = 2;

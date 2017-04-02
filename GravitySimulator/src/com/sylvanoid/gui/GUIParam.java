@@ -995,13 +995,13 @@ public class GUIParam extends JDialog {
 					parameters.setTypeOfUnivers(TypeOfUnivers.RandomExpensionUnivers);
 					manageImpact.setSelected(true);
 					timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
-					scala.setValue(1E-23);
+					scala.setValue(5E-24);
 					typeOfImpact.setSelectedIndex(1);
-					numberOfObjects.setValue(3374);
+					numberOfObjects.setValue(10000);
 					densiteMin.setValue(1E-22);
 					nebulaRadius.setValue(HelperVariable.PC * 1E9);
-					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 1.2E17);
-					massObjectMax.setValue(HelperVariable.MINIMALSTARMASS * 1.2E19);
+					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 5E16);
+					massObjectMax.setValue(HelperVariable.MINIMALSTARMASS * 5E18);
 					matterDistribution.setValue(1);
 					negligeableMass.setValue(0);
 					numOfLowMassParticule.setValue(0);
