@@ -60,36 +60,36 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 					if (m.getPoint().y > cy) {
 						if (m.getPoint().z > cz) {
 							suba.getListMatter().add(m);
-							suba.setVirtual(suba.isVirtual() && (m.getTypeOfObject()==TypeOfObject.Virtual));
+							suba.setVirtual(suba.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 						} else {
 							subb.getListMatter().add(m);
-							subb.setVirtual(subb.isVirtual() && (m.getTypeOfObject()==TypeOfObject.Virtual));
+							subb.setVirtual(subb.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 						}
 					} else {
 						if (m.getPoint().z > cz) {
 							subc.getListMatter().add(m);
-							subc.setVirtual(subc.isVirtual() && (m.getTypeOfObject()==TypeOfObject.Virtual));
+							subc.setVirtual(subc.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 						} else {
 							subd.getListMatter().add(m);
-							subd.setVirtual(subd.isVirtual() && (m.getTypeOfObject()==TypeOfObject.Virtual));
+							subd.setVirtual(subd.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 						}
 					}
 				} else {
 					if (m.getPoint().y > cy) {
 						if (m.getPoint().z > cz) {
 							sube.getListMatter().add(m);
-							sube.setVirtual(sube.isVirtual() && (m.getTypeOfObject()==TypeOfObject.Virtual));
+							sube.setVirtual(sube.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 						} else {
 							subf.getListMatter().add(m);
-							subf.setVirtual(subf.isVirtual() && (m.getTypeOfObject()==TypeOfObject.Virtual));
+							subf.setVirtual(subf.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 						}
 					} else {
 						if (m.getPoint().z > cz) {
 							subg.getListMatter().add(m);
-							subg.setVirtual(subg.isVirtual() && (m.getTypeOfObject()==TypeOfObject.Virtual));
+							subg.setVirtual(subg.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 						} else {
 							subh.getListMatter().add(m);
-							subh.setVirtual(subh.isVirtual() && (m.getTypeOfObject()==TypeOfObject.Virtual));
+							subh.setVirtual(subh.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 						}
 					}
 				}
@@ -160,35 +160,37 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 
 		if (univers.getListMatter().size() == 1) {
 			Matter m = univers.getListMatter().get(0);
-			if (parameters.isViscousDarkMatter() || !m.isDark()) {
-				Univers gu = new Univers();
-				if (univers.getFather() != null) {
-					gu = univers.getFather();
-					boolean detectColision = false;
-					do {
-						detectColision = false;
-						for (Matter mgu : gu.getListMatter()) {
-							if (m != mgu) {
-								if ((HelperNewton.distance(m, mgu) / (parameters.getCollisionDistanceRatio()
-										* (m.getRayon() + mgu.getRayon())) < 1)
-										&& (m.getTypeOfObject().equals(mgu.getTypeOfObject()))) {
-									valReturn++;
-									if (!m.getFusionWith().contains(mgu)) {
-										m.getFusionWith().add(mgu);
-										detectColision = true;
-									}
+			if (m.getTypeOfObject() != TypeOfObject.Virtual) {
+				if (parameters.isViscousDarkMatter() || !m.isDark()) {
+					Univers gu = new Univers();
+					if (univers.getFather() != null) {
+						gu = univers.getFather();
+						boolean detectColision = false;
+						do {
+							detectColision = false;
+							for (Matter mgu : gu.getListMatter()) {
+								if (m != mgu) {
+									if ((HelperNewton.distance(m, mgu) / (parameters.getCollisionDistanceRatio()
+											* (m.getRayon() + mgu.getRayon())) < 1)
+											&& (m.getTypeOfObject().equals(mgu.getTypeOfObject()))) {
+										valReturn++;
+										if (!m.getFusionWith().contains(mgu)) {
+											m.getFusionWith().add(mgu);
+											detectColision = true;
+										}
 
-									MatterPair toAdd = new MatterPair(m, mgu, parameters);
-									if (collisionPairs.get(m.getName() + mgu.getName()) == null
-											&& collisionPairs.get(mgu.getName() + m.getName()) == null) {
-										collisionPairs.put(m.getName() + mgu.getName(), toAdd);
+										MatterPair toAdd = new MatterPair(m, mgu, parameters);
+										if (collisionPairs.get(m.getName() + mgu.getName()) == null
+												&& collisionPairs.get(mgu.getName() + m.getName()) == null) {
+											collisionPairs.put(m.getName() + mgu.getName(), toAdd);
+										}
 									}
 								}
 							}
-						}
-						gu = gu.getFather();
-						detectColision = detectColision && (gu != null);
-					} while (detectColision);
+							gu = gu.getFather();
+							detectColision = detectColision && (gu != null);
+						} while (detectColision);
+					}
 				}
 			}
 		}

@@ -88,7 +88,7 @@ public class Univers {
 
 	@XmlTransient
 	private List<Matter> MatterMatterList = new ArrayList<Matter>();
-	
+
 	@XmlTransient
 	private boolean virtual = false;
 
@@ -138,7 +138,7 @@ public class Univers {
 		this.collisionPairs = father.getCollisionPairs();
 		this.min = new Vector3d(min);
 		this.max = new Vector3d(max);
-		this.virtual=virtual;
+		this.virtual = virtual;
 	}
 
 	public Univers(Univers father) {
@@ -354,7 +354,9 @@ public class Univers {
 
 	private void changeSpeed() {
 		for (Matter m : listMatter) {
-			m.changeSpeed();
+			if (m.getTypeOfObject() != TypeOfObject.Virtual) {
+				m.changeSpeed();
+			}
 		}
 	}
 
@@ -362,45 +364,52 @@ public class Univers {
 		long startTimeMove = System.currentTimeMillis();
 
 		// Correction of gPoint derive because barnesHut is not perfect
-		Vector3d gDelta = new Vector3d(gPoint);
-		gDelta.sub(gPointBefore);
-		Vector3d gSpeed = new Vector3d(gDelta.x / parameters.getTimeFactor(), gDelta.y / parameters.getTimeFactor(),
-				gDelta.z / parameters.getTimeFactor());
+		Vector3d gSpeed = new Vector3d();
+		if (parameters.getTypeOfUnivers() != TypeOfUnivers.RandomExpensionUnivers) {
+			Vector3d gDelta = new Vector3d(gPoint);
+			gDelta.sub(gPointBefore);
+			gSpeed = new Vector3d(gDelta.x / parameters.getTimeFactor(), gDelta.y / parameters.getTimeFactor(),
+					gDelta.z / parameters.getTimeFactor());
+		}
 
 		for (Matter m : listMatter) {
 			if (maxMassElement == null || maxMassElement.getMass() < m.getMass()) {
 				maxMassElement = m;
 			}
 			m.move();
-			/*
-			double x = m.getPoint().getX();
-			double y = m.getPoint().getY();
-			double z = m.getPoint().getZ();
-			
-			while(x>parameters.getNebulaRadius()) {
-				x-=parameters.getNebulaRadius()*2;
-			}
-			while(x<-parameters.getNebulaRadius()) {
-				x+=parameters.getNebulaRadius()*2;
-			}
-
-			while(y>parameters.getNebulaRadius()) {
-				y-=parameters.getNebulaRadius()*2;
-			}
-			while(y<-parameters.getNebulaRadius()) {
-				y+=parameters.getNebulaRadius()*2;
-			}
-
-			while(z>parameters.getNebulaRadius()) {
-				z-=parameters.getNebulaRadius()*2;
-			}
-			while(z<-parameters.getNebulaRadius()) {
-				z+=parameters.getNebulaRadius()*2;
-			}
-
-			m.setPoint(new Vector3d(x,y,z));
-*/			
 			m.getSpeed().sub(gSpeed);
+			
+			if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers
+					&& m.getTypeOfObject() != TypeOfObject.Virtual) {
+
+				double x = m.getPoint().getX();
+				double y = m.getPoint().getY();
+				double z = m.getPoint().getZ();
+
+				while (x > parameters.getNebulaRadius()) {
+					x -= parameters.getNebulaRadius() * 2;
+				}
+				while (x < -parameters.getNebulaRadius()) {
+					x += parameters.getNebulaRadius() * 2;
+				}
+
+				while (y > parameters.getNebulaRadius()) {
+					y -= parameters.getNebulaRadius() * 2;
+				}
+				while (y < -parameters.getNebulaRadius()) {
+					y += parameters.getNebulaRadius() * 2;
+				}
+
+				while (z > parameters.getNebulaRadius()) {
+					z -= parameters.getNebulaRadius() * 2;
+				}
+				while (z < -parameters.getNebulaRadius()) {
+					z += parameters.getNebulaRadius() * 2;
+				}
+
+				m.setPoint(new Vector3d(x, y, z));
+			}
+			/**/
 		}
 		parameters.setMoveComputeTime(System.currentTimeMillis() - startTimeMove);
 	}
@@ -585,7 +594,10 @@ public class Univers {
 		parameters.setNebulaRadius(parameters.getNebulaRadius()
 				+ parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
 		for (Matter m : listMatter) {
-			m.expansionUnivers();
+			if (m.getTypeOfObject() != TypeOfObject.Virtual) {
+				m.expansionUnivers();
+			}
+
 		}
 	}
 
@@ -680,25 +692,23 @@ public class Univers {
 					}
 				}
 			} else { // Is Cubic
-				double c = net.jafama.FastMath.pow(numberOfObjects, 1.0 / 3.0);
-
-				x = (int) (cpt % c);
-				y = ((int) (cpt / c) % c);
-				z = ((int) (cpt / (c * c)) % c);
-
-				// double dist = radiusMax * 2.0 / (c - 1);
-				double dist = radiusMax * 2.0 / c;
-				x = x * dist - radiusMax;
-				y = y * dist - radiusMax;
-				z = z * dist - radiusMax;
-
 				/*
-				 * x = radiusMin + (radiusMax - radiusMin) * 2 *
-				 * (net.jafama.FastMath.random() - 0.5); y = radiusMin +
-				 * (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() -
-				 * 0.5); z = radiusMin + (radiusMax - radiusMin) * 2 *
-				 * (net.jafama.FastMath.random() - 0.5);
+				 * double c = net.jafama.FastMath.pow(numberOfObjects, 1.0 /
+				 * 3.0);
+				 * 
+				 * x = (int) (cpt % c); y = ((int) (cpt / c) % c); z = ((int)
+				 * (cpt / (c * c)) % c);
+				 * 
+				 * // double dist = radiusMax * 2.0 / (c - 1); double dist =
+				 * radiusMax * 2.0 / c; x = x * dist - radiusMax + dist / 2; y =
+				 * y * dist - radiusMax + dist / 2; z = z * dist - radiusMax +
+				 * dist / 2;
 				 */
+
+				x = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
+				y = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
+				z = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
+
 			}
 
 			Vector3d color = defaultColor;
@@ -1101,7 +1111,8 @@ public class Univers {
 	}
 
 	/**
-	 * @param virtual the virtual to set
+	 * @param virtual
+	 *            the virtual to set
 	 */
 	public void setVirtual(boolean virtual) {
 		this.virtual = virtual;
