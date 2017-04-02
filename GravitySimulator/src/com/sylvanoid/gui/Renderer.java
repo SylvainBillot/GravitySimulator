@@ -206,6 +206,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 			drawUniversSimplePoint(gl);
 		}
 		// drawUniversSimpleSphere(gl, glu);
+
 	}
 
 	private void LoadGLTextures(GL2 gl) {
@@ -357,21 +358,78 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	}
 
 	private void drawAxis(GL2 gl) {
+		double gridRadius = parameters.getNebulaRadius() * parameters.getScala();
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0.3, 0, 0);
-		gl.glVertex3d(0, 0, -1E5);
-		gl.glVertex3d(0, 0, 1E5);
+		gl.glVertex3d(0, 0, -gridRadius);
+		gl.glVertex3d(0, 0, gridRadius);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0, 0.3, 0);
-		gl.glVertex3d(0, -1E5, 0);
-		gl.glVertex3d(0, 1E5, 0);
+		gl.glVertex3d(0, -gridRadius, 0);
+		gl.glVertex3d(0, gridRadius, 0);
 		gl.glEnd();
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor3d(0, 0, 0.3);
-		gl.glVertex3d(-1E5, 0, 0);
-		gl.glVertex3d(1E5, 0, 0);
+		gl.glVertex3d(-gridRadius, 0, 0);
+		gl.glVertex3d(gridRadius, 0, 0);
 		gl.glEnd();
+		
+
+		gl.glColor3d(0.1, 0.1, 0.1);
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(-gridRadius, -gridRadius, -gridRadius);
+		gl.glVertex3d(+gridRadius, -gridRadius, -gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(+gridRadius, -gridRadius, -gridRadius);
+		gl.glVertex3d(+gridRadius, +gridRadius, -gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(+gridRadius, +gridRadius, -gridRadius);
+		gl.glVertex3d(-gridRadius, +gridRadius, -gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(-gridRadius, +gridRadius, -gridRadius);
+		gl.glVertex3d(-gridRadius, -gridRadius, -gridRadius);
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(-gridRadius, -gridRadius, +gridRadius);
+		gl.glVertex3d(+gridRadius, -gridRadius, +gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(+gridRadius, -gridRadius, +gridRadius);
+		gl.glVertex3d(+gridRadius, +gridRadius, +gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(+gridRadius, +gridRadius, +gridRadius);
+		gl.glVertex3d(-gridRadius, +gridRadius, +gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(-gridRadius, +gridRadius, +gridRadius);
+		gl.glVertex3d(-gridRadius, -gridRadius, +gridRadius);
+		gl.glEnd();
+
+		
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(-gridRadius, -gridRadius, +gridRadius);
+		gl.glVertex3d(-gridRadius, -gridRadius, -gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(+gridRadius, -gridRadius, +gridRadius);
+		gl.glVertex3d(+gridRadius, -gridRadius, -gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(+gridRadius, +gridRadius, +gridRadius);
+		gl.glVertex3d(+gridRadius, +gridRadius, -gridRadius);
+		gl.glEnd();
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3d(-gridRadius, +gridRadius, +gridRadius);
+		gl.glVertex3d(-gridRadius, +gridRadius, -gridRadius);
+		gl.glEnd();
+		
+		
 	}
 
 	private void drawInfo(GLAutoDrawable drawable) {

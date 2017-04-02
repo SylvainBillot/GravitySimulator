@@ -87,7 +87,7 @@ public class Univers {
 	private ConcurrentHashMap<String, MatterPair> collisionPairs = new ConcurrentHashMap<String, MatterPair>();
 
 	@XmlTransient
-	private List<Matter> virtualMatterList;
+	private List<Matter> virtualMatterList = new ArrayList<Matter>();
 
 	@Override
 	public String toString() {
@@ -254,9 +254,16 @@ public class Univers {
 					computeBarnesHutCollision();
 				}
 
+				
 				// Infinite Univers
 				if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
-					computeinfinitUnivers();
+					//computeinfinitUniversEnding();
+				}
+				
+				
+				// Infinite Univers
+				if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
+					//computeinfinitUniversBegin();
 				}
 
 				// Compute accelerations
@@ -266,6 +273,8 @@ public class Univers {
 					computeNNGravity();
 				}
 
+				
+				
 				// Change Speed
 				changeSpeed();
 
@@ -391,27 +400,53 @@ public class Univers {
 		}
 	}
 
-	private void computeinfinitUnivers() {
-		double coef = 2.5;
+	private void computeinfinitUniversBegin() {
+		double coef = 3;
+		virtualMatterList = new ArrayList<Matter>();
 		for (Matter m : listMatter) {
-			List<Point3d> listUPoint = new ArrayList<>();
-			listUPoint.add(new Point3d(gPoint.getX() + parameters.getNebulaRadius() * coef, m.getPoint().getY(),
-					m.getPoint().getZ()));
-			listUPoint.add(new Point3d(gPoint.getX() - parameters.getNebulaRadius() * coef, m.getPoint().getY(),
-					m.getPoint().getZ()));
-			listUPoint.add(new Point3d(m.getPoint().getX(), gPoint.getY() + parameters.getNebulaRadius() * coef,
-					m.getPoint().getZ()));
-			listUPoint.add(new Point3d(m.getPoint().getX(), gPoint.getY() - parameters.getNebulaRadius() * coef,
-					m.getPoint().getZ()));
-			listUPoint.add(new Point3d(m.getPoint().getX(), m.getPoint().getY(),
-					gPoint.getZ() + parameters.getNebulaRadius() * coef));
-			listUPoint.add(new Point3d(m.getPoint().getX(), m.getPoint().getY(),
-					gPoint.getZ() - parameters.getNebulaRadius() * coef));
-			for (Point3d uPoint : listUPoint) {
-				double attraction = HelperNewton.attraction(uPoint, new Point3d(m.getPoint()), mass, parameters);
-				m.getAccel().add(HelperVector.acceleration(m.getPoint(), new Vector3d(uPoint), attraction));
-			}
+			virtualMatterList.add(new Matter(parameters,
+					new Vector3d(gPoint.getX() + m.getPoint().getX() + parameters.getNebulaRadius() * coef,
+							gPoint.getY() + m.getPoint().getY(), gPoint.getZ() + m.getPoint().getZ()),
+					m.getMass(), m.getSpeed(), m.getColor(), m.getDensity(), m.getTypeOfObject(), m.getDensity(),
+					m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure()));
+			virtualMatterList.add(new Matter(parameters,
+					new Vector3d(gPoint.getX() + m.getPoint().getX() - parameters.getNebulaRadius() * coef,
+							gPoint.getY() + m.getPoint().getY(), gPoint.getZ() + m.getPoint().getZ()),
+					m.getMass(), m.getSpeed(), m.getColor(), m.getDensity(), m.getTypeOfObject(), m.getDensity(),
+					m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure()));
+
+			virtualMatterList.add(new Matter(parameters,
+					new Vector3d(gPoint.getX() + m.getPoint().getX(),
+							gPoint.getY() + m.getPoint().getY() + parameters.getNebulaRadius() * coef,
+							gPoint.getZ() + m.getPoint().getZ()),
+					m.getMass(), m.getSpeed(), m.getColor(), m.getDensity(), m.getTypeOfObject(), m.getDensity(),
+					m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure()));
+			virtualMatterList.add(new Matter(parameters,
+					new Vector3d(gPoint.getX() + m.getPoint().getX(),
+							gPoint.getY() + m.getPoint().getY() - parameters.getNebulaRadius() * coef,
+							gPoint.getZ() + m.getPoint().getZ()),
+					m.getMass(), m.getSpeed(), m.getColor(), m.getDensity(), m.getTypeOfObject(), m.getDensity(),
+					m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure()));
+
+			virtualMatterList.add(new Matter(parameters,
+					new Vector3d(gPoint.getX() + m.getPoint().getX(), gPoint.getY() + m.getPoint().getY(),
+							gPoint.getZ() + m.getPoint().getZ() + parameters.getNebulaRadius() * coef),
+					m.getMass(), m.getSpeed(), m.getColor(), m.getDensity(), m.getTypeOfObject(), m.getDensity(),
+					m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure()));
+			virtualMatterList.add(new Matter(parameters,
+					new Vector3d(gPoint.getX() + m.getPoint().getX(), gPoint.getY() + m.getPoint().getY(),
+							gPoint.getZ() + m.getPoint().getZ() - parameters.getNebulaRadius() * coef),
+					m.getMass(), m.getSpeed(), m.getColor(), m.getDensity(), m.getTypeOfObject(), m.getDensity(),
+					m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure()));
+
 		}
+		listMatter.addAll(virtualMatterList);
+		computeMassLimitsCentroidSpeed(true);
+	}
+
+	private void computeinfinitUniversEnding() {
+		listMatter.removeAll(virtualMatterList);
+		computeMassLimitsCentroidSpeed(true);
 	}
 
 	private void computeBarnesHutGravity() {
