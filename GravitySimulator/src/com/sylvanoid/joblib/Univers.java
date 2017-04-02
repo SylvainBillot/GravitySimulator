@@ -852,6 +852,7 @@ public class Univers {
 				parameters.getGasViscosity(), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
 				parameters.getPressureZero());
 
+		/* Inition explosion */
 		for (Matter m : listMatter) {
 			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(), -HelperVariable.H0ms * m.getPoint().length()*10));
 		}
