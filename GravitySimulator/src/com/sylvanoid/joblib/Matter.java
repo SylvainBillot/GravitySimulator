@@ -398,16 +398,16 @@ public class Matter implements Serializable {
 
 			switch (linkedFace) {
 			case "W":
-				setPoint(new Vector3d(linkedTo.getPoint().getX() + parameters.getNebulaRadius() * coef,
+				setPoint(new Vector3d(linkedTo.getPoint().getX() - parameters.getNebulaRadius() * coef,
 						linkedTo.getPoint().getY(), linkedTo.getPoint().getZ()));
-				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX() + parameters.getNebulaRadius() * coef,
+				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX() - parameters.getNebulaRadius() * coef,
 						linkedTo.getPointBefore().getY(), linkedTo.getPointBefore().getZ()));
 				break;
 
 			case "E":
-				setPoint(new Vector3d(linkedTo.getPoint().getX() - parameters.getNebulaRadius() * coef,
+				setPoint(new Vector3d(linkedTo.getPoint().getX() + parameters.getNebulaRadius() * coef,
 						linkedTo.getPoint().getY(), linkedTo.getPoint().getZ()));
-				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX() - parameters.getNebulaRadius() * coef,
+				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX() + parameters.getNebulaRadius() * coef,
 						linkedTo.getPointBefore().getY(), linkedTo.getPointBefore().getZ()));
 				break;
 

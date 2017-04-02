@@ -847,21 +847,25 @@ public class Univers {
 
 	private void createCubicUnivers() {
 		createUnivers(false, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
-				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius(), new Vector3d(1, 1, 1),
+				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius()*0.2, new Vector3d(1, 1, 1),
 				parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
 				parameters.getGasViscosity(), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
 				parameters.getPressureZero());
 
+		for (Matter m : listMatter) {
+			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(), -HelperVariable.H0ms * m.getPoint().length()*10));
+		}
+		
 		double coef = 2;
 		MatterMatterList = new ArrayList<Matter>();
 		for (Matter m : listMatter) {
 			MatterMatterList.add(new Matter(parameters,
-					new Vector3d(m.getPoint().getX() + parameters.getNebulaRadius() * coef, m.getPoint().getY(),
+					new Vector3d(m.getPoint().getX() - parameters.getNebulaRadius() * coef, m.getPoint().getY(),
 							m.getPoint().getZ()),
 					m.getMass(), new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(), TypeOfObject.Virtual,
 					m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure(), m, "W"));
 			MatterMatterList.add(new Matter(parameters,
-					new Vector3d(+m.getPoint().getX() - parameters.getNebulaRadius() * coef, +m.getPoint().getY(),
+					new Vector3d(+m.getPoint().getX() + parameters.getNebulaRadius() * coef, +m.getPoint().getY(),
 							+m.getPoint().getZ()),
 					m.getMass(), new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(), TypeOfObject.Virtual,
 					m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure(), m, "E"));
