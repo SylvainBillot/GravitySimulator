@@ -201,7 +201,9 @@ public class Univers {
 			if (m.isDark()) {
 				darkMass += m.getMass();
 			} else {
-				visibleMass += m.getMass();
+				if (m.getTypeOfObject() != TypeOfObject.Virtual) {
+					visibleMass += m.getMass();
+				}
 			}
 			if (withLimit && !nanToRemove.contains(m)) {
 				if (!firstTime) {
@@ -378,7 +380,7 @@ public class Univers {
 			}
 			m.move();
 			m.getSpeed().sub(gSpeed);
-			
+
 			if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers
 					&& m.getTypeOfObject() != TypeOfObject.Virtual) {
 
@@ -846,17 +848,31 @@ public class Univers {
 	}
 
 	private void createCubicUnivers() {
+
 		createUnivers(false, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
-				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius()*0.2, new Vector3d(1, 1, 1),
+				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius() * 0.2, new Vector3d(1, 1, 1),
 				parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
 				parameters.getGasViscosity(), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
 				parameters.getPressureZero());
 
+		createUniversMain(false, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
+				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius() * 0.2,
+				parameters.getDarkMatterXYZRatio(),
+				parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
+				parameters.getDarkMatterMass()
+						/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
+				parameters.getDarkMatterMass()
+						/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
+				parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01, 0.01),
+				parameters.getDarkMatterDistribution(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(),
+				parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
+
 		/* Inition explosion */
 		for (Matter m : listMatter) {
-			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(), -HelperVariable.H0ms * m.getPoint().length()*12));
+			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(),
+					-HelperVariable.H0ms * m.getPoint().length() * 12));
 		}
-		
+
 		double coef = 2;
 		MatterMatterList = new ArrayList<Matter>();
 		for (Matter m : listMatter) {
