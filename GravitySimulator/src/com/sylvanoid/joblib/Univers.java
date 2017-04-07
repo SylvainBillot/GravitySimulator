@@ -694,7 +694,7 @@ public class Univers {
 					}
 				}
 			} else { // Is Cubic
-
+/*
 				if (typeOfObject == TypeOfObject.Dark) {
 					double c = net.jafama.FastMath.pow(numberOfObjects, 1.0 / 3.0);
 
@@ -708,10 +708,12 @@ public class Univers {
 					y = y * dist - radiusMax + dist / 2;
 					z = z * dist - radiusMax + dist / 2;
 				} else {
+					
+				*/
 					x = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
 					y = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
 					z = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
-				}
+			//	}
 
 			}
 
@@ -850,7 +852,7 @@ public class Univers {
 	}
 
 	private void createCubicUnivers() {
-		double initialRatiusRatio = 0.2;
+		double initialRatiusRatio = 1;
 		createUnivers(false, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 				parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius() * initialRatiusRatio,
 				new Vector3d(1, 1, 1), parameters.getMatterDistribution(), parameters.getGasDistribution(),
@@ -867,12 +869,12 @@ public class Univers {
 						/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
 				parameters.getDarkMatterDensity(), new Vector3d(0.00, 0.00, 0.01),
 				parameters.getDarkMatterDistribution(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(),
-				parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
+				0.0, 0.0, 0.0);
 
 		/* Inition explosion */
 		for (Matter m : listMatter) {
 			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(),
-					-HelperVariable.H0ms * m.getPoint().length() * 10));
+					-HelperVariable.H0ms * m.getPoint().length() * 1.0));
 		}
 
 		double coef = 2;
