@@ -694,26 +694,23 @@ public class Univers {
 					}
 				}
 			} else { // Is Cubic
-/*
-				if (typeOfObject == TypeOfObject.Dark) {
-					double c = net.jafama.FastMath.pow(numberOfObjects, 1.0 / 3.0);
-
-					x = (int) (cpt % c);
-					y = ((int) (cpt / c) % c);
-					z = ((int) (cpt / (c * c)) % c);
-
-					// double dist = radiusMax * 2.0 / (c - 1);
-					double dist = radiusMax * 2.0 / c;
-					x = x * dist - radiusMax + dist / 2;
-					y = y * dist - radiusMax + dist / 2;
-					z = z * dist - radiusMax + dist / 2;
-				} else {
-					
-				*/
-					x = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
-					y = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
-					z = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
-			//	}
+				/*
+				 * if (typeOfObject == TypeOfObject.Dark) { double c =
+				 * net.jafama.FastMath.pow(numberOfObjects, 1.0 / 3.0);
+				 * 
+				 * x = (int) (cpt % c); y = ((int) (cpt / c) % c); z = ((int)
+				 * (cpt / (c * c)) % c);
+				 * 
+				 * // double dist = radiusMax * 2.0 / (c - 1); double dist =
+				 * radiusMax * 2.0 / c; x = x * dist - radiusMax + dist / 2; y =
+				 * y * dist - radiusMax + dist / 2; z = z * dist - radiusMax +
+				 * dist / 2; } else {
+				 * 
+				 */
+				x = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
+				y = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
+				z = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
+				// }
 
 			}
 
@@ -868,8 +865,8 @@ public class Univers {
 				parameters.getDarkMatterMass()
 						/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
 				parameters.getDarkMatterDensity(), new Vector3d(0.00, 0.00, 0.01),
-				parameters.getDarkMatterDistribution(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(),
-				0.0, 0.0, 0.0);
+				parameters.getDarkMatterDistribution(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(), 0.0,
+				0.0, 0.0);
 
 		/* Inition explosion */
 		for (Matter m : listMatter) {
@@ -878,40 +875,47 @@ public class Univers {
 		}
 
 		double coef = 2;
+		double massCoef = 1;
 		MatterMatterList = new ArrayList<Matter>();
 		for (Matter m : listMatter) {
 			MatterMatterList.add(new Matter(parameters,
 					new Vector3d(m.getPoint().getX() - parameters.getNebulaRadius() * coef, m.getPoint().getY(),
 							m.getPoint().getZ()),
-					m.getMass(), new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(), TypeOfObject.Virtual,
-					m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure(), m, "W"));
+					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+					m.getPresure(), m, "W"));
 			MatterMatterList.add(new Matter(parameters,
 					new Vector3d(+m.getPoint().getX() + parameters.getNebulaRadius() * coef, +m.getPoint().getY(),
 							+m.getPoint().getZ()),
-					m.getMass(), new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(), TypeOfObject.Virtual,
-					m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure(), m, "E"));
+					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+					m.getPresure(), m, "E"));
 
 			MatterMatterList.add(new Matter(parameters,
 					new Vector3d(m.getPoint().getX(), m.getPoint().getY() + parameters.getNebulaRadius() * coef,
 							m.getPoint().getZ()),
-					m.getMass(), new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(), TypeOfObject.Virtual,
-					m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure(), m, "T"));
+					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+					m.getPresure(), m, "T"));
 			MatterMatterList.add(new Matter(parameters,
 					new Vector3d(m.getPoint().getX(), m.getPoint().getY() - parameters.getNebulaRadius() * coef,
 							m.getPoint().getZ()),
-					m.getMass(), new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(), TypeOfObject.Virtual,
-					m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure(), m, "B"));
+					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+					m.getPresure(), m, "B"));
 
 			MatterMatterList.add(new Matter(parameters,
 					new Vector3d(m.getPoint().getX(), m.getPoint().getY(),
 							m.getPoint().getZ() + parameters.getNebulaRadius() * coef),
-					m.getMass(), new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(), TypeOfObject.Virtual,
-					m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure(), m, "S"));
+					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+					m.getPresure(), m, "S"));
 			MatterMatterList.add(new Matter(parameters,
 					new Vector3d(m.getPoint().getX(), m.getPoint().getY(),
 							m.getPoint().getZ() - parameters.getNebulaRadius() * coef),
-					m.getMass(), new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(), TypeOfObject.Virtual,
-					m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(), m.getPresure(), m, "N"));
+					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+					m.getPresure(), m, "N"));
 		}
 		listMatter.addAll(MatterMatterList);
 	}

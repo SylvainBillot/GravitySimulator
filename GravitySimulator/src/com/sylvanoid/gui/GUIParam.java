@@ -1018,10 +1018,10 @@ public class GUIParam extends JDialog {
 					expansionUnivers.setSelected(true);
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(1E-3);
-					gasViscosity.setValue(0.1);
+					gasViscosity.setValue(0.2);
 					darkMatterViscosity.setValue(0.2);
-					viscoElasticity.setValue(1E-10);
-					viscoElasticityNear.setValue(1E-10);
+					viscoElasticity.setValue(1E-15);
+					viscoElasticityNear.setValue(1E-15);
 					pressureZero.setValue(0);
 					darkMatterXRatio.setValue(1);
 					darkMatterYRatio.setValue(1);
