@@ -869,55 +869,58 @@ public class Univers {
 				0.0, 0.0);
 
 		/* Inition explosion */
+
 		for (Matter m : listMatter) {
 			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(),
 					-HelperVariable.H0ms * m.getPoint().length() * 1.0));
 		}
 
-		double coef = 2;
-		double massCoef = 1;
-		MatterMatterList = new ArrayList<Matter>();
-		for (Matter m : listMatter) {
-			MatterMatterList.add(new Matter(parameters,
-					new Vector3d(m.getPoint().getX() - parameters.getNebulaRadius() * coef, m.getPoint().getY(),
-							m.getPoint().getZ()),
-					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-					m.getPresure(), m, "W"));
-			MatterMatterList.add(new Matter(parameters,
-					new Vector3d(+m.getPoint().getX() + parameters.getNebulaRadius() * coef, +m.getPoint().getY(),
-							+m.getPoint().getZ()),
-					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-					m.getPresure(), m, "E"));
+		if (true) {
+			double coef = 2;
+			double massCoef = 1;
+			MatterMatterList = new ArrayList<Matter>();
+			for (Matter m : listMatter) {
+				MatterMatterList.add(new Matter(parameters,
+						new Vector3d(m.getPoint().getX() - parameters.getNebulaRadius() * coef, m.getPoint().getY(),
+								m.getPoint().getZ()),
+						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+						m.getPresure(), m, "W"));
+				MatterMatterList.add(new Matter(parameters,
+						new Vector3d(+m.getPoint().getX() + parameters.getNebulaRadius() * coef, +m.getPoint().getY(),
+								+m.getPoint().getZ()),
+						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+						m.getPresure(), m, "E"));
 
-			MatterMatterList.add(new Matter(parameters,
-					new Vector3d(m.getPoint().getX(), m.getPoint().getY() + parameters.getNebulaRadius() * coef,
-							m.getPoint().getZ()),
-					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-					m.getPresure(), m, "T"));
-			MatterMatterList.add(new Matter(parameters,
-					new Vector3d(m.getPoint().getX(), m.getPoint().getY() - parameters.getNebulaRadius() * coef,
-							m.getPoint().getZ()),
-					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-					m.getPresure(), m, "B"));
+				MatterMatterList.add(new Matter(parameters,
+						new Vector3d(m.getPoint().getX(), m.getPoint().getY() + parameters.getNebulaRadius() * coef,
+								m.getPoint().getZ()),
+						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+						m.getPresure(), m, "T"));
+				MatterMatterList.add(new Matter(parameters,
+						new Vector3d(m.getPoint().getX(), m.getPoint().getY() - parameters.getNebulaRadius() * coef,
+								m.getPoint().getZ()),
+						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+						m.getPresure(), m, "B"));
 
-			MatterMatterList.add(new Matter(parameters,
-					new Vector3d(m.getPoint().getX(), m.getPoint().getY(),
-							m.getPoint().getZ() + parameters.getNebulaRadius() * coef),
-					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-					m.getPresure(), m, "S"));
-			MatterMatterList.add(new Matter(parameters,
-					new Vector3d(m.getPoint().getX(), m.getPoint().getY(),
-							m.getPoint().getZ() - parameters.getNebulaRadius() * coef),
-					m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-					TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-					m.getPresure(), m, "N"));
+				MatterMatterList.add(new Matter(parameters,
+						new Vector3d(m.getPoint().getX(), m.getPoint().getY(),
+								m.getPoint().getZ() + parameters.getNebulaRadius() * coef),
+						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+						m.getPresure(), m, "S"));
+				MatterMatterList.add(new Matter(parameters,
+						new Vector3d(m.getPoint().getX(), m.getPoint().getY(),
+								m.getPoint().getZ() - parameters.getNebulaRadius() * coef),
+						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
+						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
+						m.getPresure(), m, "N"));
+			}
+			listMatter.addAll(MatterMatterList);
 		}
-		listMatter.addAll(MatterMatterList);
 	}
 
 	private void createPlanetary() {
