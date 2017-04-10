@@ -1004,11 +1004,11 @@ public class GUIParam extends JDialog {
 					massObjectMax.setValue(HelperVariable.MINIMALSTARMASS * 5E19);
 					matterDistribution.setValue(1);
 					negligeableMass.setValue(0);
-					numOfLowMassParticule.setValue(8000);
-					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 9E19);
-					lowMassDensity.setValue(1E-25);
+					numOfLowMassParticule.setValue(10000);
+					lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 8E19);
+					lowMassDensity.setValue(3E-26);
 					gasDistribution.setValue(1);
-					darkMatterMass.setValue(HelperVariable.MINIMALSTARMASS * 2E24);
+					darkMatterMass.setValue(HelperVariable.MINIMALSTARMASS * 1.75E24);
 					darkMatterDensity.setValue(1E-25);
 					darkMatterDistribution.setValue(1);
 					ellipseRatio.setValue(0.15);
@@ -1018,8 +1018,8 @@ public class GUIParam extends JDialog {
 					expansionUnivers.setSelected(true);
 					collisionDistanceRatio.setValue(1);
 					matterViscosity.setValue(0.2);
-					gasViscosity.setValue(0.1);
-					darkMatterViscosity.setValue(0.1);
+					gasViscosity.setValue(0.2);
+					darkMatterViscosity.setValue(0.2);
 					viscoElasticity.setValue(1E-8);
 					viscoElasticityNear.setValue(1E-8);
 					pressureZero.setValue(0);

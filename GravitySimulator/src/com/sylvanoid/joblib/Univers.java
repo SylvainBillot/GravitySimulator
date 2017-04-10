@@ -89,9 +89,6 @@ public class Univers {
 	@XmlTransient
 	private List<Matter> MatterMatterList = new ArrayList<Matter>();
 
-	@XmlTransient
-	private boolean virtual = false;
-
 	@Override
 	public String toString() {
 		return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y + " gz:" + gPoint.z);
@@ -131,14 +128,13 @@ public class Univers {
 		computeMassLimitsCentroidSpeed(true);
 	}
 
-	public Univers(Univers father, Vector3d min, Vector3d max, boolean virtual) {
+	public Univers(Univers father, Vector3d min, Vector3d max) {
 		this.father = father;
 		this.parameters = father.parameters;
 		this.listMatter = new ArrayList<Matter>();
 		this.collisionPairs = father.getCollisionPairs();
 		this.min = new Vector3d(min);
 		this.max = new Vector3d(max);
-		this.virtual = virtual;
 	}
 
 	public Univers(Univers father) {
@@ -201,9 +197,7 @@ public class Univers {
 			if (m.isDark()) {
 				darkMass += m.getMass();
 			} else {
-				if (m.getTypeOfObject() != TypeOfObject.Virtual) {
-					visibleMass += m.getMass();
-				}
+				visibleMass += m.getMass();
 			}
 			if (withLimit && !nanToRemove.contains(m)) {
 				if (!firstTime) {
@@ -253,13 +247,6 @@ public class Univers {
 				computeMassLimitsCentroidSpeed(true);
 				parameters.setLimitComputeTime(System.currentTimeMillis() - startTimeCycle);
 				long startTimeBH = System.currentTimeMillis();
-
-				/*
-				 * Needed to disable acceleration with collision particle
-				 */
-				if (parameters.isManageImpact() && parameters.getTypeOfImpact() != TypeOfImpact.Viscosity) {
-					computeBarnesHutCollision();
-				}
 
 				// Compute accelerations
 				if (parameters.isBarnesHut()) {
@@ -356,9 +343,7 @@ public class Univers {
 
 	private void changeSpeed() {
 		for (Matter m : listMatter) {
-			if (m.getTypeOfObject() != TypeOfObject.Virtual) {
-				m.changeSpeed();
-			}
+			m.changeSpeed();
 		}
 	}
 
@@ -380,38 +365,6 @@ public class Univers {
 			}
 			m.move();
 			m.getSpeed().sub(gSpeed);
-
-			if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers
-					&& m.getTypeOfObject() != TypeOfObject.Virtual) {
-
-				double x = m.getPoint().getX();
-				double y = m.getPoint().getY();
-				double z = m.getPoint().getZ();
-
-				while (x > parameters.getNebulaRadius()) {
-					x -= parameters.getNebulaRadius() * 2;
-				}
-				while (x < -parameters.getNebulaRadius()) {
-					x += parameters.getNebulaRadius() * 2;
-				}
-
-				while (y > parameters.getNebulaRadius()) {
-					y -= parameters.getNebulaRadius() * 2;
-				}
-				while (y < -parameters.getNebulaRadius()) {
-					y += parameters.getNebulaRadius() * 2;
-				}
-
-				while (z > parameters.getNebulaRadius()) {
-					z -= parameters.getNebulaRadius() * 2;
-				}
-				while (z < -parameters.getNebulaRadius()) {
-					z += parameters.getNebulaRadius() * 2;
-				}
-
-				m.setPoint(new Vector3d(x, y, z));
-			}
-			/**/
 		}
 		parameters.setMoveComputeTime(System.currentTimeMillis() - startTimeMove);
 	}
@@ -444,8 +397,7 @@ public class Univers {
 		for (Matter m1 : listMatter) {
 			for (Matter m2 : listMatter) {
 				if (m1 != m2) {
-					if (m1.getTypeOfObject() != TypeOfObject.Virtual
-							&& (!parameters.isStaticDarkMatter() || !m1.isDark())) {
+					if ((!parameters.isStaticDarkMatter() || !m1.isDark())) {
 						parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute() + 1);
 						double attraction = HelperNewton.attraction(m1, m2, parameters);
 						m1.getAccel().add(HelperVector.acceleration(m1.getPoint(), m2.getPoint(), attraction));
@@ -488,8 +440,6 @@ public class Univers {
 				mp.applyViscosity();
 			}
 			changeSpeed();
-			break;
-		case NoAcell:
 			break;
 		default:
 		}
@@ -596,10 +546,7 @@ public class Univers {
 		parameters.setNebulaRadius(parameters.getNebulaRadius()
 				+ parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
 		for (Matter m : listMatter) {
-			if (m.getTypeOfObject() != TypeOfObject.Virtual) {
-				m.expansionUnivers();
-			}
-
+			m.expansionUnivers();
 		}
 	}
 
@@ -874,53 +821,6 @@ public class Univers {
 			m.getSpeed().add(HelperVector.acceleration(m.getPoint(), new Vector3d(),
 					-HelperVariable.H0ms * m.getPoint().length() * 1.0));
 		}
-
-		if (true) {
-			double coef = 2;
-			double massCoef = 1;
-			MatterMatterList = new ArrayList<Matter>();
-			for (Matter m : listMatter) {
-				MatterMatterList.add(new Matter(parameters,
-						new Vector3d(m.getPoint().getX() - parameters.getNebulaRadius() * coef, m.getPoint().getY(),
-								m.getPoint().getZ()),
-						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-						m.getPresure(), m, "W"));
-				MatterMatterList.add(new Matter(parameters,
-						new Vector3d(+m.getPoint().getX() + parameters.getNebulaRadius() * coef, +m.getPoint().getY(),
-								+m.getPoint().getZ()),
-						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-						m.getPresure(), m, "E"));
-
-				MatterMatterList.add(new Matter(parameters,
-						new Vector3d(m.getPoint().getX(), m.getPoint().getY() + parameters.getNebulaRadius() * coef,
-								m.getPoint().getZ()),
-						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-						m.getPresure(), m, "T"));
-				MatterMatterList.add(new Matter(parameters,
-						new Vector3d(m.getPoint().getX(), m.getPoint().getY() - parameters.getNebulaRadius() * coef,
-								m.getPoint().getZ()),
-						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-						m.getPresure(), m, "B"));
-
-				MatterMatterList.add(new Matter(parameters,
-						new Vector3d(m.getPoint().getX(), m.getPoint().getY(),
-								m.getPoint().getZ() + parameters.getNebulaRadius() * coef),
-						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-						m.getPresure(), m, "S"));
-				MatterMatterList.add(new Matter(parameters,
-						new Vector3d(m.getPoint().getX(), m.getPoint().getY(),
-								m.getPoint().getZ() - parameters.getNebulaRadius() * coef),
-						m.getMass() * massCoef, new Vector3d(m.getSpeed()), m.getColor(), m.getDensity(),
-						TypeOfObject.Virtual, m.getDensity(), m.getViscoElasticity(), m.getViscoElasticityNear(),
-						m.getPresure(), m, "N"));
-			}
-			listMatter.addAll(MatterMatterList);
-		}
 	}
 
 	private void createPlanetary() {
@@ -1133,21 +1033,6 @@ public class Univers {
 
 	public void setCollisionPairs(ConcurrentHashMap<String, MatterPair> collisionPairs) {
 		this.collisionPairs = collisionPairs;
-	}
-
-	/**
-	 * @return the virtual
-	 */
-	public boolean isVirtual() {
-		return virtual;
-	}
-
-	/**
-	 * @param virtual
-	 *            the virtual to set
-	 */
-	public void setVirtual(boolean virtual) {
-		this.virtual = virtual;
 	}
 
 }

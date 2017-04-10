@@ -42,9 +42,7 @@ public class Matter implements Serializable {
 	private double pressureZero;
 	private List<Matter> fusionWith = new ArrayList<Matter>();
 	private List<Matter> neighbors = new ArrayList<Matter>();
-	private Matter linkedTo;
-	private String linkedFace;
-
+	
 	@Override
 	public String toString() {
 		return name + " mass:" + mass + " x:" + point.x + " y:" + point.y + " z:" + point.z + " vx:" + speed.x + " vy:"
@@ -66,15 +64,6 @@ public class Matter implements Serializable {
 			double initialViscoElasticityNear, double initialPressureZero) {
 		init(parameters, point, mass, speed, color, density, typeOfObject, initialeViscosity, initialViscoElasticity,
 				initialViscoElasticityNear, initialPressureZero);
-	}
-
-	public Matter(Parameters parameters, Vector3d point, double mass, Vector3d speed, Vector3d color, double density,
-			TypeOfObject typeOfObject, double initialeViscosity, double initialViscoElasticity,
-			double initialViscoElasticityNear, double initialPressureZero, Matter linkedTo, String linkedFace) {
-		init(parameters, point, mass, speed, color, density, typeOfObject, initialeViscosity, initialViscoElasticity,
-				initialViscoElasticityNear, initialPressureZero);
-		this.linkedTo = linkedTo;
-		this.linkedFace = linkedFace;
 	}
 
 	private void init(Parameters parameters, Vector3d point, double mass, Vector3d speed, Vector3d color,
@@ -263,36 +252,6 @@ public class Matter implements Serializable {
 		this.pressureZero = pressureZero;
 	}
 
-	/**
-	 * @return the linkedTo
-	 */
-	public Matter getLinkedTo() {
-		return linkedTo;
-	}
-
-	/**
-	 * @param linkedTo
-	 *            the linkedTo to set
-	 */
-	public void setLinkedTo(Matter linkedTo) {
-		this.linkedTo = linkedTo;
-	}
-
-	/**
-	 * @return the linkedFace
-	 */
-	public String getLinkedFace() {
-		return linkedFace;
-	}
-
-	/**
-	 * @param linkedFace
-	 *            the linkedFace to set
-	 */
-	public void setLinkedFace(String linkedFace) {
-		this.linkedFace = linkedFace;
-	}
-
 	public boolean isDark() {
 		return typeOfObject == TypeOfObject.Dark;
 	}
@@ -381,70 +340,8 @@ public class Matter implements Serializable {
 	}
 
 	public void move() {
-		if (linkedTo == null) {
 			pointBefore = new Vector3d(point);
 			point = getPlusV();
-		} else {
-			double coef = 2;
-			setDensity(linkedTo.getDensity());
-			setMass(linkedTo.getMass());
-			setPressureZero(linkedTo.getPressureZero());
-			setPresure(linkedTo.getPresure());
-			setViscoElasticity(linkedTo.getViscoElasticity());
-			setViscoElasticityNear(linkedTo.getViscoElasticityNear());
-			setViscosity(linkedTo.getViscosity());
-			setColor(new Vector3d(linkedTo.getColor()));
-			setSpeed(new Vector3d(linkedTo.getSpeed()));
-
-			switch (linkedFace) {
-			case "W":
-				setPoint(new Vector3d(linkedTo.getPoint().getX() - parameters.getNebulaRadius() * coef,
-						linkedTo.getPoint().getY(), linkedTo.getPoint().getZ()));
-				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX() - parameters.getNebulaRadius() * coef,
-						linkedTo.getPointBefore().getY(), linkedTo.getPointBefore().getZ()));
-				break;
-
-			case "E":
-				setPoint(new Vector3d(linkedTo.getPoint().getX() + parameters.getNebulaRadius() * coef,
-						linkedTo.getPoint().getY(), linkedTo.getPoint().getZ()));
-				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX() + parameters.getNebulaRadius() * coef,
-						linkedTo.getPointBefore().getY(), linkedTo.getPointBefore().getZ()));
-				break;
-
-			case "T":
-				setPoint(new Vector3d(linkedTo.getPoint().getX(),
-						linkedTo.getPoint().getY() + parameters.getNebulaRadius() * coef, linkedTo.getPoint().getZ()));
-				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX(),
-						linkedTo.getPointBefore().getY() + parameters.getNebulaRadius() * coef,
-						linkedTo.getPointBefore().getZ()));
-				break;
-
-			case "B":
-				setPoint(new Vector3d(linkedTo.getPoint().getX(),
-						linkedTo.getPoint().getY() - parameters.getNebulaRadius() * coef, linkedTo.getPoint().getZ()));
-				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX(),
-						linkedTo.getPointBefore().getY() - parameters.getNebulaRadius() * coef,
-						linkedTo.getPointBefore().getZ()));
-				break;
-
-			case "S":
-				setPoint(new Vector3d(linkedTo.getPoint().getX(), linkedTo.getPoint().getY(),
-						linkedTo.getPoint().getZ() + parameters.getNebulaRadius() * coef));
-				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX(), linkedTo.getPointBefore().getY(),
-						linkedTo.getPointBefore().getZ() + parameters.getNebulaRadius() * coef));
-				break;
-
-			case "N":
-				setPoint(new Vector3d(linkedTo.getPoint().getX(), linkedTo.getPoint().getY(),
-						linkedTo.getPoint().getZ() - parameters.getNebulaRadius() * coef));
-				setPointBefore(new Vector3d(linkedTo.getPointBefore().getX(), linkedTo.getPointBefore().getY(),
-						linkedTo.getPointBefore().getZ() - parameters.getNebulaRadius() * coef));
-				break;
-
-			default:
-				break;
-			}
-		}
 	}
 
 	public void fusion(List<Matter> listMatter) {

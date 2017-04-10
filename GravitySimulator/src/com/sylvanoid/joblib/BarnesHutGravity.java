@@ -8,8 +8,6 @@ import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperNewton;
 import com.sylvanoid.common.HelperVector;
-import com.sylvanoid.common.TypeOfImpact;
-import com.sylvanoid.common.TypeOfObject;
 
 public class BarnesHutGravity extends RecursiveTask<Integer> {
 	/**
@@ -26,7 +24,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 
 	@Override
 	protected Integer compute() {
-		if (!univers.isVirtual() && univers.getMass() > parameters.getNegligeableMass() && !univers.sameCoordonate()) {
+		if (univers.getMass() > parameters.getNegligeableMass() && !univers.sameCoordonate()) {
 			if (univers.getListMatter().size() > 16) {
 				parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
 
@@ -38,58 +36,50 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 						+ (univers.getMax().z - univers.getMin().z) / (1.5 + net.jafama.FastMath.random());
 
 				Univers suba = new Univers(univers, new Vector3d(cx, cy, cz),
-						new Vector3d(univers.getMax().x, univers.getMax().y, univers.getMax().z), true);
+						new Vector3d(univers.getMax().x, univers.getMax().y, univers.getMax().z));
 				Univers subb = new Univers(univers, new Vector3d(cx, cy, univers.getMin().z),
-						new Vector3d(univers.getMax().x, univers.getMax().y, cz), true);
+						new Vector3d(univers.getMax().x, univers.getMax().y, cz));
 				Univers subc = new Univers(univers, new Vector3d(cx, univers.getMin().y, cz),
-						new Vector3d(univers.getMax().x, cy, univers.getMax().z), true);
+						new Vector3d(univers.getMax().x, cy, univers.getMax().z));
 				Univers subd = new Univers(univers, new Vector3d(cx, univers.getMin().y, univers.getMin().z),
-						new Vector3d(univers.getMax().x, cy, cz), true);
+						new Vector3d(univers.getMax().x, cy, cz));
 				Univers sube = new Univers(univers, new Vector3d(univers.getMin().x, cy, cz),
-						new Vector3d(cx, univers.getMax().y, univers.getMax().z), true);
+						new Vector3d(cx, univers.getMax().y, univers.getMax().z));
 				Univers subf = new Univers(univers, new Vector3d(univers.getMin().x, cy, univers.getMin().z),
-						new Vector3d(cx, univers.getMax().y, cz), true);
+						new Vector3d(cx, univers.getMax().y, cz));
 				Univers subg = new Univers(univers, new Vector3d(univers.getMin().x, univers.getMin().y, cz),
-						new Vector3d(cx, cy, univers.getMax().z), true);
+						new Vector3d(cx, cy, univers.getMax().z));
 				Univers subh = new Univers(univers,
 						new Vector3d(univers.getMin().x, univers.getMin().y, univers.getMin().z),
-						new Vector3d(cx, cy, cz), true);
+						new Vector3d(cx, cy, cz));
 
 				for (Matter m : univers.getListMatter()) {
 					if (m.getPoint().x > cx) {
 						if (m.getPoint().y > cy) {
 							if (m.getPoint().z > cz) {
 								suba.getListMatter().add(m);
-								suba.setVirtual(suba.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 							} else {
 								subb.getListMatter().add(m);
-								subb.setVirtual(subb.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 							}
 						} else {
 							if (m.getPoint().z > cz) {
 								subc.getListMatter().add(m);
-								subc.setVirtual(subc.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 							} else {
 								subd.getListMatter().add(m);
-								subd.setVirtual(subd.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 							}
 						}
 					} else {
 						if (m.getPoint().y > cy) {
 							if (m.getPoint().z > cz) {
 								sube.getListMatter().add(m);
-								sube.setVirtual(sube.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 							} else {
 								subf.getListMatter().add(m);
-								subf.setVirtual(subf.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 							}
 						} else {
 							if (m.getPoint().z > cz) {
 								subg.getListMatter().add(m);
-								subg.setVirtual(subg.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 							} else {
 								subh.getListMatter().add(m);
-								subh.setVirtual(subh.isVirtual() && (m.getTypeOfObject() == TypeOfObject.Virtual));
 							}
 						}
 					}
@@ -162,22 +152,11 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 						if (u != uvoisin && uvoisin.getListMatter().size() > 0
 								&& uvoisin.getMass() > parameters.getNegligeableMass()) {
 							for (Matter m : u.getListMatter()) {
-								if (m.getTypeOfObject() != TypeOfObject.Virtual
-										&& (!parameters.isStaticDarkMatter() || !m.isDark())) {
+								if ((!parameters.isStaticDarkMatter() || !m.isDark())) {
 									parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute() + 1);
-									if (parameters.isManageImpact()
-											&& parameters.getTypeOfImpact() != TypeOfImpact.Viscosity) {
-										Univers uAdjusted = new Univers(uvoisin);
-										if (uAdjusted.adjustMassAndCentroid(m.getFusionWith()) != 0) {
-											double attraction = HelperNewton.attraction(m, uAdjusted, parameters);
-											m.getAccel().add(HelperVector.acceleration(m.getPoint(),
-													uAdjusted.getGPoint(), attraction));
-										}
-									} else {
-										double attraction = HelperNewton.attraction(m, uvoisin, parameters);
-										m.getAccel().add(HelperVector.acceleration(m.getPoint(), uvoisin.getGPoint(),
-												attraction));
-									}
+									double attraction = HelperNewton.attraction(m, uvoisin, parameters);
+									m.getAccel().add(
+											HelperVector.acceleration(m.getPoint(), uvoisin.getGPoint(), attraction));
 								}
 							}
 						}
@@ -187,8 +166,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 				for (Matter m1 : univers.getListMatter()) {
 					for (Matter m2 : univers.getListMatter()) {
 						if (m1 != m2) {
-							if (m1.getTypeOfObject() != TypeOfObject.Virtual
-									&& (!parameters.isStaticDarkMatter() || !m1.isDark())) {
+							if ((!parameters.isStaticDarkMatter() || !m1.isDark())) {
 								parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute() + 1);
 								double attraction = HelperNewton.attraction(m1, m2, parameters);
 								m1.getAccel().add(HelperVector.acceleration(m1.getPoint(), m2.getPoint(), attraction));

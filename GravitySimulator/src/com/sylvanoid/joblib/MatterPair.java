@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.vecmath.Vector3d;
 
 import com.sylvanoid.common.HelperNewton;
+import com.sylvanoid.common.HelperVector;
 
 public class MatterPair implements Comparable<MatterPair> {
 	private Matter m1;
@@ -63,6 +64,9 @@ public class MatterPair implements Comparable<MatterPair> {
 	}
 
 	public void impact(double Cr) {
+		
+		disableAcceleration();
+		
 		Vector3d relativeSpeed = new Vector3d(m1.getSpeed());
 		relativeSpeed.sub(m2.getSpeed());
 
@@ -147,4 +151,11 @@ public class MatterPair implements Comparable<MatterPair> {
 				/ (parameters.getCollisionDistanceRatio() * (m1.getRayon() + m2.getRayon()));
 	}
 
+	
+	private void disableAcceleration() {
+		double attraction = HelperNewton.attraction(m1, m2, parameters);
+		m1.getSpeed().sub(HelperVector.acceleration(m1.getPoint(), m2.getPoint(), attraction));
+		attraction = HelperNewton.attraction(m2, m1, parameters);
+		m2.getSpeed().sub(HelperVector.acceleration(m2.getPoint(), m1.getPoint(), attraction));;
+	}
 }
