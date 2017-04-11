@@ -16,6 +16,7 @@ public abstract class HelperVariable {
 	public static final double H0 = 67.8; // mps/s-1
 	public static final double H0ms = (HelperVariable.H0 * 1E3) / (HelperVariable.PC * 1E6); // m/s-1
 
+	public static final double Z1 = 4.354E17; //s
 	public static final double OMEGAm = 0.286;
 	public static final double OMEGAy = 0.714;
 }
