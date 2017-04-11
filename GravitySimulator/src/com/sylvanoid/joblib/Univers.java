@@ -545,8 +545,25 @@ public class Univers {
 	private void expansionUnivers() {
 		parameters.setNebulaRadius(parameters.getNebulaRadius()
 				+ parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
+		double coef = 1;
 		for (Matter m : listMatter) {
 			m.expansionUnivers();
+
+			for (int x = -1; x <= 1; x++) {
+				for (int y = -1; y <= 1; y++) {
+					for (int z = -1; z <= 1; z++) {
+						if (x != 0 || y != 0 || z != 0) {
+							Vector3d virtual = new Vector3d(
+									parameters.getNebulaRadius() * 2 * x + (y == 0 || z == 0 ? m.getPoint().getX() : 0),
+									parameters.getNebulaRadius() * 2 * y + (x == 0 || z == 0 ? m.getPoint().getY() : 0),
+									parameters.getNebulaRadius() * 2 * z + (x == 0 || y == 0 ? m.getPoint().getZ() : 0));
+							double attraction = -HelperNewton.attraction(m.getPoint(), virtual, mass*coef, parameters);
+							m.getAccel().add(HelperVector.acceleration(m.getPoint(), virtual, attraction));
+						}
+					}
+				}
+			}
+
 		}
 	}
 
@@ -647,17 +664,16 @@ public class Univers {
 				y = ((int) (cpt / c) % c);
 				z = ((int) (cpt / (c * c)) % c);
 				double dist = radiusMax * 2.0 / c;
-				
-				double coefalea = 4;
-				double aleax = (0.5-net.jafama.FastMath.random())*dist/coefalea; 
-				double aleay = (0.5-net.jafama.FastMath.random())*dist/coefalea; 
-				double aleaz = (0.5-net.jafama.FastMath.random())*dist/coefalea; 
 
-				
+				double coefalea = 4;
+				double aleax = (0.5 - net.jafama.FastMath.random()) * dist / coefalea;
+				double aleay = (0.5 - net.jafama.FastMath.random()) * dist / coefalea;
+				double aleaz = (0.5 - net.jafama.FastMath.random()) * dist / coefalea;
+
 				if (typeOfObject == TypeOfObject.Dark) {
-					x = x * dist - radiusMax + dist / 2 + aleax;
-					y = y * dist - radiusMax + dist / 2 + aleay;
-					z = z * dist - radiusMax + dist / 2 + aleaz;
+					x = x * dist - radiusMax + dist / 2 - dist / 4 + aleax;
+					y = y * dist - radiusMax + dist / 2 - dist / 4 + aleay;
+					z = z * dist - radiusMax + dist / 2 - dist / 4 + aleaz;
 				} else {
 					/*
 					 * x = radiusMin + (radiusMax - radiusMin) * 2 *
@@ -667,9 +683,9 @@ public class Univers {
 					 * (radiusMax - radiusMin) * 2 *
 					 * (net.jafama.FastMath.random() - 0.5);
 					 */
-					x = x * dist - radiusMax + dist / 2 + dist / 2 + aleax;
-					y = y * dist - radiusMax + dist / 2 + dist / 2 + aleay;
-					z = z * dist - radiusMax + dist / 2 + dist / 2 +aleaz;
+					x = x * dist - radiusMax + dist / 2 + dist / 4 + aleax;
+					y = y * dist - radiusMax + dist / 2 + dist / 4 + aleay;
+					z = z * dist - radiusMax + dist / 2 + dist / 4 + aleaz;
 				}
 
 			}
@@ -830,12 +846,12 @@ public class Univers {
 				TypeOfObject.Dark, parameters.getDarkMatterViscosity(), 0.0, 0.0, 0.0);
 
 		// initial speed
-		
+
 		for (Matter m : listMatter) {
 			m.getSpeed().add(HelperVector.acceleration(new Vector3d(), m.getPoint(),
 					HelperVariable.H0ms * m.getPoint().length()));
 		}
-		
+
 	}
 
 	private void createPlanetary() {

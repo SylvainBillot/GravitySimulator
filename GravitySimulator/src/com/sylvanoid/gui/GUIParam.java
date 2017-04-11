@@ -999,7 +999,7 @@ public class GUIParam extends JDialog {
 					typeOfImpact.setSelectedIndex(1);
 					numberOfObjects.setValue(0);
 					densiteMin.setValue(5E-23);
-					nebulaRadius.setValue(HelperVariable.PC * 2.2E10);
+					nebulaRadius.setValue(HelperVariable.PC * 2E10);
 					massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 5E20);
 					massObjectMax.setValue(HelperVariable.MINIMALSTARMASS * 5E21);
 					matterDistribution.setValue(1);
