@@ -1006,7 +1006,7 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(10000);
 		    lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1.75E23);
-		    lowMassDensity.setValue(1E-24);
+		    lowMassDensity.setValue(1E-23);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(HelperVariable.MINIMALSTARMASS * 1.75E27);
 		    darkMatterDensity.setValue(1E-25);

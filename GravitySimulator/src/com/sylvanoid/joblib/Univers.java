@@ -485,20 +485,20 @@ public class Univers {
 		    && m.getFusionWith().size() > 0) {
 		// compute density and near-density
 		for (Matter m1 : m.getFusionWith()) {
-		    Vector3d relativeSpeed = new Vector3d(m.getSpeed());
-		    relativeSpeed.sub(m1.getSpeed());
-		    Vector3d radialSpeed = new Vector3d(m1.getPoint());
-		    radialSpeed.sub(m.getPoint());
-		    radialSpeed.normalize();
-		    double u = relativeSpeed.dot(radialSpeed);
-		    if (u > 0) {
-			double q = HelperNewton.distance(m, m1)
-				/ (parameters.getCollisionDistanceRatio() * (m.getRayon() + m1.getRayon()));
-			p += net.jafama.FastMath.pow2(1 - q);
-			pn += net.jafama.FastMath.pow3(1 - q);
-		    } else {
-			// ???
-		    }
+		    // Vector3d relativeSpeed = new Vector3d(m.getSpeed());
+		    // relativeSpeed.sub(m1.getSpeed());
+		    // Vector3d radialSpeed = new Vector3d(m1.getPoint());
+		    // radialSpeed.sub(m.getPoint());
+		    // radialSpeed.normalize();
+		    // double u = relativeSpeed.dot(radialSpeed);
+		    // if (u > 0) {
+		    double q = HelperNewton.distance(m, m1)
+			    / (parameters.getCollisionDistanceRatio() * (m.getRayon() + m1.getRayon()));
+		    p += net.jafama.FastMath.pow2(1 - q);
+		    pn += net.jafama.FastMath.pow3(1 - q);
+		    // } else {
+		    // ???
+		    // }
 		}
 		// compute pressure and near-pressure
 		k = m.globalViscoElasticity();

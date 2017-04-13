@@ -114,7 +114,7 @@ public class MatterPair implements Comparable<MatterPair> {
 	m1.getAccel().sub(radialSpeedM1);
 	m2.getAccel().add(radialSpeedM2);
 
-	if (parameters.isRecoverFrictionEnegy()) {
+	if (parameters.isRecoverFrictionEnegy() && !m1.isDark() && !m2.isDark()) {
 	    // try to recover energy
 	    relativeSpeed = new Vector3d(m1.getSpeed());
 	    relativeSpeed.sub(m2.getSpeed());
