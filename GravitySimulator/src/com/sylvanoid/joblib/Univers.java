@@ -638,34 +638,17 @@ public class Univers {
 	    double y = 1;
 	    double z = 1;
 	    if (spherical) {
-		boolean IsNotOK = true;
-		while (IsNotOK) {
+		double d = net.jafama.FastMath.pow(net.jafama.FastMath.random(), homogeneousDistributionPow);
 
-		    double d = net.jafama.FastMath.pow(net.jafama.FastMath.random(), homogeneousDistributionPow);
+		double r = radiusMin + (radiusMax - radiusMin) * net.jafama.FastMath.pow(d, 1d / 3d);
 
-		    double r = radiusMin + (radiusMax - radiusMin) * net.jafama.FastMath.pow(d, 1d / 3d);
+		double s = 2 * (net.jafama.FastMath.random() - 0.5);
+		double alpha = 2 * net.jafama.FastMath.PI * (net.jafama.FastMath.random() - 0.5);
+		double c = r * net.jafama.FastMath.sqrt(1 - net.jafama.FastMath.pow2(s));
+		x = c * net.jafama.FastMath.cos(alpha);
+		y = c * net.jafama.FastMath.sin(alpha);
+		z = r * s;
 
-		    double s = 2 * (net.jafama.FastMath.random() - 0.5);
-		    double alpha = 2 * net.jafama.FastMath.PI * (net.jafama.FastMath.random() - 0.5);
-		    double c = r * net.jafama.FastMath.sqrt(1 - net.jafama.FastMath.pow2(s));
-		    x = c * net.jafama.FastMath.cos(alpha);
-		    y = c * net.jafama.FastMath.sin(alpha);
-		    z = r * s;
-
-		    IsNotOK = false;
-		    if (axisOfRing.x != 0) {
-			IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(y)
-				+ net.jafama.FastMath.pow2(z) < net.jafama.FastMath.pow2(radiusMin));
-		    }
-		    if (axisOfRing.y != 0) {
-			IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(x)
-				+ net.jafama.FastMath.pow2(z) < net.jafama.FastMath.pow2(radiusMin));
-		    }
-		    if (axisOfRing.z != 0) {
-			IsNotOK = IsNotOK || (net.jafama.FastMath.pow2(x)
-				+ net.jafama.FastMath.pow2(y) < net.jafama.FastMath.pow2(radiusMin));
-		    }
-		}
 	    } else {
 		// Is Cubic
 		/*
@@ -689,9 +672,17 @@ public class Univers {
 		 * - radiusMax + dist / 2 + dist / 4 + aleay; z = z * dist -
 		 * radiusMax + dist / 2 + dist / 4 + aleaz; }
 		 */
-		x = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
-		y = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
-		z = radiusMin + (radiusMax - radiusMin) * 2 * (net.jafama.FastMath.random() - 0.5);
+
+		double dx = net.jafama.FastMath.pow(net.jafama.FastMath.random(), homogeneousDistributionPow);
+		double dy = net.jafama.FastMath.pow(net.jafama.FastMath.random(), homogeneousDistributionPow);
+		double dz = net.jafama.FastMath.pow(net.jafama.FastMath.random(), homogeneousDistributionPow);
+		double sx = net.jafama.FastMath.signum(net.jafama.FastMath.random() - 0.5);
+		double sy = net.jafama.FastMath.signum(net.jafama.FastMath.random() - 0.5);
+		double sz = net.jafama.FastMath.signum(net.jafama.FastMath.random() - 0.5);
+
+		x = sx * (radiusMin + (radiusMax - radiusMin) * dx);
+		y = sy * (radiusMin + (radiusMax - radiusMin) * dy);
+		z = sz * (radiusMin + (radiusMax - radiusMin) * dz);
 
 	    }
 
