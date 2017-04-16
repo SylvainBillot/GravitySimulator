@@ -547,7 +547,7 @@ public class Univers {
 		+ parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
 
 	int deep = 1;
-	double distance = 100;
+	double distance = 1;
 	double massCoef = net.jafama.FastMath.pow2(distance);
 	double radiusCoef = 1 + distance;
 	for (Matter m : listMatter) {
