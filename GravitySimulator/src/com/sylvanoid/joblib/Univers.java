@@ -548,7 +548,7 @@ public class Univers {
 
 	int deep = 1;
 	double distance = 1;
-	double massCoef = net.jafama.FastMath.pow2(distance);
+	
 	double radiusCoef = 1 + distance;
 	for (Matter m : listMatter) {
 	    m.expansionUnivers();
@@ -564,7 +564,11 @@ public class Univers {
 					    + (x == 0 || z == 0 ? m.getPoint().getY() : 0),
 				    parameters.getNebulaRadius() * radiusCoef * z
 					    + (x == 0 || y == 0 ? m.getPoint().getZ() : 0));
-			    double attraction = -HelperNewton.attraction(m.getPoint(), virtual, mass * massCoef,
+			    double massCoef = net.jafama.FastMath.pow2(distance);
+			    if(y!=0){
+				massCoef *= 50;
+			    }
+			    double attraction = HelperNewton.attraction(m.getPoint(), virtual, mass * massCoef,
 				    parameters);
 			    m.getAccel().add(HelperVector.acceleration(m.getPoint(), virtual, attraction));
 			}
