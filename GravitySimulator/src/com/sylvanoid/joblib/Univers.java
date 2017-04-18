@@ -548,7 +548,7 @@ public class Univers {
 
 	int deep = 1;
 	double distance = 1;
-	
+
 	double radiusCoef = 1 + distance;
 	for (Matter m : listMatter) {
 	    m.expansionUnivers();
@@ -565,7 +565,7 @@ public class Univers {
 				    parameters.getNebulaRadius() * radiusCoef * z
 					    + (x == 0 || y == 0 ? m.getPoint().getZ() : 0));
 			    double massCoef = net.jafama.FastMath.pow2(distance);
-			    if(y!=0){
+			    if (y != 0) {
 				massCoef *= 50;
 			    }
 			    double attraction = HelperNewton.attraction(m.getPoint(), virtual, mass * massCoef,
@@ -820,8 +820,10 @@ public class Univers {
 	}
 
 	for (Matter m : miniListMatter) {
-	    double distance = new Point3d(m.getPoint()).distance(new Point3d(origin));
-	    m.orbitalCircularSpeed(origin, distance, innerMassTreeMapCumul.get(distance), axisOfRing);
+	    if (!m.isDark()) {
+		double distance = new Point3d(m.getPoint()).distance(new Point3d(origin));
+		m.orbitalCircularSpeed(origin, distance, innerMassTreeMapCumul.get(distance), axisOfRing);
+	    }
 	}
     }
 
@@ -843,8 +845,9 @@ public class Univers {
 			/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
 		parameters.getDarkMatterMass()
 			/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
-		parameters.getDarkMatterDensity(), new Vector3d(0.0, 0.0, 0.2), parameters.getDarkMatterDistribution(),
-		TypeOfObject.Dark, parameters.getDarkMatterViscosity(), 0.0, 0.0, 0.0);
+		parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.0, 0.01),
+		parameters.getDarkMatterDistribution(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(), 0.0,
+		0.0, 0.0);
 
 	// initial speed
 
