@@ -794,7 +794,7 @@ public class Univers {
 			/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
 		parameters.getDarkMatterMass()
 			/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
-		parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.01, 0.01),
+		parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.0, 0.01),
 		parameters.getDarkMatterDistribution(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(),
 		parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero()));
 
