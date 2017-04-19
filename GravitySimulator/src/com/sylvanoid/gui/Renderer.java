@@ -475,7 +475,11 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 				drawable.getSurfaceHeight() - textSize * 6);
 		textRenderer.draw("Univers dark mass (M): " + dfsc.format(univers.getDarkMass() / HelperVariable.M), 10,
 				drawable.getSurfaceHeight() - textSize * 7);
+		textRenderer.draw("Univers total mass (M): " + dfsc.format(univers.getMass() / HelperVariable.M), 10,
+			drawable.getSurfaceHeight() - textSize * 8);
 
+		
+		
 		textRenderer.draw("Num of recursive Barnes Hut computed: " + parameters.getNumOfCompute(), 10,
 				drawable.getSurfaceHeight() - textSize * 10);
 		textRenderer.draw("Num of acceleration computed: " + parameters.getNumOfAccelCompute(), 10,

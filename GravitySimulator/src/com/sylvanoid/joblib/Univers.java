@@ -336,11 +336,6 @@ public class Univers {
 	return valReturn;
     }
 
-    public void resetGpoint() {
-	computeMassLimitsCentroidSpeed(false);
-	gPointBefore = new Vector3d(gPoint);
-    }
-
     private void changeSpeed() {
 	for (Matter m : listMatter) {
 	    m.changeSpeed();
@@ -605,7 +600,7 @@ public class Univers {
 		initialViscoElasticity, initialViscoElasticityNear, initialPressureZero));
 
 	miniListMatter.addAll(createUniversMain(spherical, origine, initialSpeed, axisOfRing, radiusMin, radiusMax,
-		ratio, parameters.getNumOfLowMassParticule(), 0, parameters.getLowMassParticuleMass(),
+		ratio, parameters.getNumOfLowMassParticule(),  parameters.getLowMassParticuleMass(), parameters.getLowMassParticuleMass(),
 		parameters.getLowMassDensity(), gasColor, gasHomogeneousDistributionPow, TypeOfObject.Gas, gasViscosity,
 		initialViscoElasticity, initialViscoElasticityNear, initialPressureZero));
 
@@ -834,7 +829,7 @@ public class Univers {
 	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 		parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius() * initialRatiusRatio,
 		new Vector3d(1, 1, 1), parameters.getMatterDistribution(), parameters.getGasDistribution(),
-		parameters.getMatterViscosity(), parameters.getGasViscosity(), new Vector3d(),
+		parameters.getGasViscosity(), parameters.getGasViscosity(), new Vector3d(),
 		new Vector3d(0.2, 0.2, 0.2), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
 		parameters.getPressureZero());
 
@@ -971,7 +966,6 @@ public class Univers {
 	mass += m1.getMass();
 	visibleMass += m1.getMass();
 
-	resetGpoint();
 	TreeMap<Double, Double> innerMassTreeMap = new TreeMap<Double, Double>();
 	for (Matter m : listMatter) {
 	    double distance = new Point3d(m.getPoint()).distance(new Point3d(getGPoint()));

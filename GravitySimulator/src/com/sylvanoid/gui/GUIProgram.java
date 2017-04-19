@@ -410,7 +410,6 @@ public class GUIProgram extends JFrame {
 								m.getSpeed().add(guiAddUnivers.getSpeed());
 								univers.getListMatter().add(m);
 							}
-							univers.resetGpoint();
 							renderer.reload(me);
 						}
 					}
