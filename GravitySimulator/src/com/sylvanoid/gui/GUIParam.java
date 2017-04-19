@@ -756,7 +756,7 @@ public class GUIParam extends JDialog {
 		    ellipseShiftRatio.setValue(-0.25);
 		    nbArms.setValue(3);
 		    staticDarkMatter.setSelected(true);
-		    expansionUnivers.setEnabled(false);
+		    expansionUnivers.setSelected(false);
 		    collisionDistanceRatio.setValue(1);
 		    matterViscosity.setValue(1);
 		    gasViscosity.setValue(1);
@@ -800,7 +800,7 @@ public class GUIParam extends JDialog {
 		    ellipseShiftRatio.setValue(-0.25);
 		    nbArms.setValue(3);
 		    staticDarkMatter.setSelected(true);
-		    expansionUnivers.setEnabled(false);
+		    expansionUnivers.setSelected(false);
 		    collisionDistanceRatio.setValue(1);
 		    matterViscosity.setValue(1);
 		    gasViscosity.setValue(1);
@@ -843,7 +843,7 @@ public class GUIParam extends JDialog {
 		    ellipseShiftRatio.setValue(-0.25);
 		    nbArms.setValue(3);
 		    staticDarkMatter.setSelected(true);
-		    expansionUnivers.setEnabled(false);
+		    expansionUnivers.setSelected(false);
 		    collisionDistanceRatio.setValue(1);
 		    matterViscosity.setValue(1);
 		    gasViscosity.setValue(1);
@@ -886,7 +886,7 @@ public class GUIParam extends JDialog {
 		    ellipseShiftRatio.setValue(-1.25);
 		    nbArms.setValue(2);
 		    staticDarkMatter.setSelected(true);
-		    expansionUnivers.setEnabled(false);
+		    expansionUnivers.setSelected(false);
 		    collisionDistanceRatio.setValue(1);
 		    matterViscosity.setValue(1);
 		    gasViscosity.setValue(1);
@@ -929,7 +929,7 @@ public class GUIParam extends JDialog {
 		    ellipseShiftRatio.setValue(1);
 		    nbArms.setValue(3);
 		    staticDarkMatter.setSelected(true);
-		    expansionUnivers.setEnabled(false);
+		    expansionUnivers.setSelected(false);
 		    collisionDistanceRatio.setValue(1);
 		    matterViscosity.setValue(1);
 		    gasViscosity.setValue(1);
@@ -972,7 +972,7 @@ public class GUIParam extends JDialog {
 		    ellipseShiftRatio.setValue(1);
 		    nbArms.setValue(3);
 		    staticDarkMatter.setSelected(true);
-		    expansionUnivers.setEnabled(false);
+		    expansionUnivers.setSelected(false);
 		    collisionDistanceRatio.setValue(1);
 		    matterViscosity.setValue(1);
 		    gasViscosity.setValue(1);

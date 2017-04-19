@@ -558,7 +558,7 @@ public class Univers {
 					    + (x == 0 || y == 0 ? m.getPoint().getZ() : 0));
 			    double massCoef = net.jafama.FastMath.pow2(distance);
 			    if (y != 0) {
-				 massCoef = net.jafama.FastMath.pow2(distance*12);
+				massCoef = net.jafama.FastMath.pow2(distance*12);
 			    }
 			    double attraction = HelperNewton.attraction(m.getPoint(), virtual, mass * massCoef,
 				    parameters);
