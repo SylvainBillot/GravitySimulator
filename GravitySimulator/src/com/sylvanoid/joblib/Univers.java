@@ -566,7 +566,7 @@ public class Univers {
 					    + (x == 0 || y == 0 ? m.getPoint().getZ() : 0));
 			    double massCoef = net.jafama.FastMath.pow2(distance);
 			    if (y != 0) {
-				massCoef *= 50;
+				 massCoef = net.jafama.FastMath.pow2(distance*10);
 			    }
 			    double attraction = HelperNewton.attraction(m.getPoint(), virtual, mass * massCoef,
 				    parameters);
@@ -830,14 +830,14 @@ public class Univers {
     private void createCubicUnivers() {
 	double initialRatiusRatio = 1;
 
-	createUnivers(false, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
+	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 		parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius() * initialRatiusRatio,
 		new Vector3d(1, 1, 1), parameters.getMatterDistribution(), parameters.getGasDistribution(),
 		parameters.getMatterViscosity(), parameters.getGasViscosity(), new Vector3d(),
 		new Vector3d(0.2, 0.2, 0.2), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
 		parameters.getPressureZero());
 
-	createUniversMain(false, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
+	createUniversMain(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 		parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius() * initialRatiusRatio,
 		parameters.getDarkMatterXYZRatio(),
 		parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
