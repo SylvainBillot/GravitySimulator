@@ -1023,9 +1023,9 @@ public class GUIParam extends JDialog {
 		    viscoElasticity.setValue(0);
 		    viscoElasticityNear.setValue(0);
 		    pressureZero.setValue(0);
-		    darkMatterXRatio.setValue(1);
-		    darkMatterYRatio.setValue(1);
-		    darkMatterZRatio.setValue(1);
+		    darkMatterXRatio.setValue(1.5);
+		    darkMatterYRatio.setValue(0.15);
+		    darkMatterZRatio.setValue(0.15);
 		    recoverFrictionEnergy.setSelected(false);
 		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
