@@ -757,18 +757,17 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	public void mouseDragged(MouseEvent e) {
 		double dx = (double) (mousePoint.x - e.getX()) / 3;
 		double dy = (double) (mousePoint.y - e.getY()) / 3;
-		if (dx != 0) {
-			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(0, 1, 0), theta * dx));
-			diffLookAt.sub(parameters.getLookAt());
-			parameters.getEyes().add(diffLookAt);
-		}
-		if (dy != 0) {
-			Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
-			parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), new Vector3d(1, 0, 0), theta * dy));
-			diffLookAt.sub(parameters.getLookAt());
-			parameters.getEyes().add(diffLookAt);
-		}
+		
+		Vector3d axis1 = new Vector3d(0,1,0);
+		Vector3d axis2 = new Vector3d(0,1,0);
+		axis2.cross(parameters.getLookAt(),axis2);
+		
+		Vector3d diffLookAt = new Vector3d(parameters.getLookAt());
+		parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), axis1, theta * dx));
+		parameters.setLookAt(HelperVector.rotate(parameters.getLookAt(), axis2, theta * dy));
+		diffLookAt.sub(parameters.getLookAt());
+		parameters.getEyes().add(diffLookAt);
+		
 		mousePoint = new Point(e.getX(), e.getY());
 	}
 
