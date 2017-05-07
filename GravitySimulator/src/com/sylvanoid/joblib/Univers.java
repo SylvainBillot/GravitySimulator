@@ -78,7 +78,7 @@ public class Univers {
     private Vector3d p = new Vector3d(0, 0, 0);
 
     @XmlTransient
-    private Matter maxMassElement = null;
+    private Matter maxMassElement = new Matter();
 
     @XmlTransient
     private Univers father;
