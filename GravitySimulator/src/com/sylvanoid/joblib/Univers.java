@@ -821,29 +821,9 @@ public class Univers {
     }
 
     private void createCubicUnivers() {
+	createRandomStaticUnivers();
+
 	double initialRatiusRatio = 1;
-
-	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
-		parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius() * initialRatiusRatio,
-		parameters.getDarkMatterXYZRatio(), parameters.getMatterDistribution(), parameters.getGasDistribution(),
-		parameters.getGasViscosity(), parameters.getGasViscosity(), new Vector3d(),
-		new Vector3d(0.2, 0.2, 0.2), parameters.getViscoElasticity(), parameters.getViscoElasticityNear(),
-		parameters.getPressureZero());
-
-	createUniversMain(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
-		parameters.getNebulaRadius() * 0.01, parameters.getNebulaRadius() * initialRatiusRatio,
-		parameters.getDarkMatterXYZRatio(),
-		parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule(),
-		parameters.getDarkMatterMass()
-			/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
-		parameters.getDarkMatterMass()
-			/ (parameters.getNumberOfObjects() + parameters.getNumOfLowMassParticule()),
-		parameters.getDarkMatterDensity(), new Vector3d(0.01, 0.0, 0.01),
-		parameters.getDarkMatterDistribution(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(), 0.0,
-		0.0, 0.0);
-
-	// initial speed
-
 	for (Matter m : listMatter) {
 	    m.getSpeed().add(HelperVector.acceleration(new Vector3d(), m.getPoint(),
 		    HelperVariable.H0ms * m.getPoint().length() * 1 / initialRatiusRatio));
