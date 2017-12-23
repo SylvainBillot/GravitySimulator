@@ -51,6 +51,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 
     private int cptImg = 0;
 
+    private Thread thread;
+
     public Renderer(GUIProgram guiProgram) {
 	reload(guiProgram);
     }
@@ -61,12 +63,21 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	this.forTrace = guiProgram.getForTrace();
 	this.parameters = guiProgram.getParameters();
 	this.out = guiProgram.getOut();
+	try {
+	    thread.interrupt();
+	    while (thread.isAlive()) {
+		// nothing
+	    }
+	} catch (Exception e) {
+	    // nothing
+	}
+	thread = new Thread(univers);
+	thread.start();
     }
 
     @Override
     public void display(GLAutoDrawable drawable) {
-	univers.process(guiProgram.getDatafile(), guiProgram.getDataInputfile());
-
+	// univers.process();
 	if (parameters.isShowTrace()) {
 	    List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();
 	    for (Matter m : univers.getListMatter()) {
@@ -437,31 +448,42 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	textRenderer.draw("Scala: 1/" + dfsc.format(1 / parameters.getScala()), 10,
 		drawable.getSurfaceHeight() - textSize * 1);
 
-	if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525) {
+	if (parameters.getElapsedTime() < HelperVariable.ONEYEAR) {
 	    textRenderer.draw("Elapsed time (day): " + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEDAY),
 		    10, drawable.getSurfaceHeight() - textSize * 2);
-	} else if (parameters.getElapsedTime() < HelperVariable.ONEDAY * 36525 * 1E3) {
+	} else if (parameters.getElapsedTime() < HelperVariable.ONEYEAR * 1E6) {
 	    textRenderer.draw(
 		    "Elapsed time (year): " + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEYEAR), 10,
 		    drawable.getSurfaceHeight() - textSize * 2);
-	} else {
+	} else if (parameters.getElapsedTime() < HelperVariable.ONEYEAR * 1E9) {
 	    textRenderer.draw(
 		    "Elapsed time (millions of year): "
 			    + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEYEAR / 1E6),
 		    10, drawable.getSurfaceHeight() - textSize * 2);
+	} else {
+	    textRenderer.draw(
+		    "Elapsed time (billions of year): "
+			    + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEYEAR / 1E9),
+		    10, drawable.getSurfaceHeight() - textSize * 2);
+
 	}
-	if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525) {
+	if (parameters.getTimeFactor() < HelperVariable.ONEYEAR) {
 	    textRenderer.draw("Time Step (day): " + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEDAY), 10,
 		    drawable.getSurfaceHeight() - textSize * 3);
-	} else if (parameters.getTimeFactor() < HelperVariable.ONEDAY * 36525 * 1E3) {
+	} else if (parameters.getTimeFactor() < HelperVariable.ONEYEAR * 1E6) {
 	    textRenderer.draw("Time Step (year): " + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEYEAR),
 		    10, drawable.getSurfaceHeight() - textSize * 3);
-	} else {
+	} else if (parameters.getTimeFactor() < HelperVariable.ONEYEAR * 1E9) {
 	    textRenderer.draw(
 		    "Time Step (millions of year): "
 			    + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEYEAR / 1E6),
 		    10, drawable.getSurfaceHeight() - textSize * 3);
 
+	} else {
+	    textRenderer.draw(
+		    "Time Step (billions of year): "
+			    + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEYEAR / 1E9),
+		    10, drawable.getSurfaceHeight() - textSize * 3);
 	}
 	textRenderer.draw("Num of Object: " + univers.getListMatter().size(), 10,
 		drawable.getSurfaceHeight() - textSize * 4);
@@ -725,8 +747,8 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 
     @Override
     public void mouseClicked(MouseEvent e) {
-	//TODO Select an object and center on
-	
+	// TODO Select an object and center on
+
     }
 
     @Override

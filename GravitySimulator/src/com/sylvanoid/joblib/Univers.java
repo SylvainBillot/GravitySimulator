@@ -1,6 +1,5 @@
 package com.sylvanoid.joblib;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,9 +25,10 @@ import com.sylvanoid.common.TypeOfImpact;
 import com.sylvanoid.common.TypeOfObject;
 import com.sylvanoid.common.TypeOfUnivers;
 import com.sylvanoid.common.Vector3dAdapter;
+import com.sylvanoid.gui.GUIProgram;
 
 @XmlRootElement
-public class Univers {
+public class Univers implements Runnable {
     @XmlElement
     private Parameters parameters;
 
@@ -89,47 +89,63 @@ public class Univers {
     @XmlTransient
     private List<Matter> MatterMatterList = new ArrayList<Matter>();
 
+    @XmlTransient
+    private GUIProgram guiProgram;
+
     @Override
     public String toString() {
 	return ("m:" + mass + " gx:" + gPoint.y + " gy:" + gPoint.y + " gz:" + gPoint.z);
     }
 
-    public Univers() {
-
+    @Override
+    public void run() {
+	while (true) {
+	    process();
+	    if (Thread.interrupted()) {
+		System.out.println("plop");
+		return;
+	    }
+	}
     }
 
-    public Univers(Parameters parameters) {
-	this.parameters = parameters;
-	listMatter = new ArrayList<Matter>();
-	mass = 0;
-	visibleMass = 0;
-	darkMass = 0;
-	if (parameters.getTypeOfUnivers() == TypeOfUnivers.Random) {
-	    createRandomStaticUnivers();
+    public Univers(GUIProgram guiProgram, boolean justCreated) {
+	this.guiProgram = guiProgram;
+	if (justCreated) {
+	    this.guiProgram = guiProgram;
+	    this.parameters = guiProgram.getParameters();
+	    listMatter = new ArrayList<Matter>();
+	    mass = 0;
+	    visibleMass = 0;
+	    darkMass = 0;
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.Random) {
+		createRandomStaticUnivers();
+	    }
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUnivers) {
+		createRandomRotateUnivers();
+	    }
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.Planetary) {
+		createPlanetary();
+	    }
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetaryRandom) {
+		createPlanetaryRandom();
+	    }
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesis) {
+		createPlanetaryGenesisRandom();
+	    }
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUniverCircular) {
+		createRandomRotateUniversCircular();
+	    }
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
+		createCubicUnivers();
+	    }
+	    computeMassLimitsCentroidSpeed(true);
 	}
-	if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUnivers) {
-	    createRandomRotateUnivers();
-	}
-	if (parameters.getTypeOfUnivers() == TypeOfUnivers.Planetary) {
-	    createPlanetary();
-	}
-	if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetaryRandom) {
-	    createPlanetaryRandom();
-	}
-	if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesis) {
-	    createPlanetaryGenesisRandom();
-	}
-	if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomRotateUniverCircular) {
-	    createRandomRotateUniversCircular();
-	}
-	if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
-	    createCubicUnivers();
-	}
-	computeMassLimitsCentroidSpeed(true);
+
     }
 
     public Univers(Univers father, Vector3d min, Vector3d max) {
 	this.father = father;
+	this.guiProgram = father.getGuiProgram();
 	this.parameters = father.parameters;
 	this.listMatter = new ArrayList<Matter>();
 	this.collisionPairs = father.getCollisionPairs();
@@ -139,6 +155,7 @@ public class Univers {
 
     public Univers(Univers father) {
 	this.father = father;
+	this.guiProgram = father.getGuiProgram();
 	this.parameters = father.parameters;
 	this.listMatter = new ArrayList<Matter>(father.getListMatter());
 	this.mass = father.mass;
@@ -237,7 +254,7 @@ public class Univers {
     }
 
     @SuppressWarnings("unchecked")
-    public void process(BufferedWriter bufferedWriter, BufferedReader bufferedReader) {
+    private void process() {
 	if (!parameters.isFrozen()) {
 	    if (!parameters.isPlayData()) {
 		parameters.setLimitComputeTime(0);
@@ -277,7 +294,7 @@ public class Univers {
 		parameters.setTimeFactor(parameters.getTimeFactor() * parameters.getTimeMultiplicator());
 
 		parameters.setBarnesHuttComputeTime(System.currentTimeMillis() - startTimeBH);
-		moveEnd(bufferedWriter);
+		moveEnd(guiProgram.getDatafile());
 		parameters.setCycleComputeTime(System.currentTimeMillis() - startTimeCycle);
 		parameters.setKlength(k);
 		parameters.setPlength(p.length());
@@ -286,7 +303,7 @@ public class Univers {
 		parameters.setNumOfAccelCompute(-9999);
 		long startTimeCycle = System.currentTimeMillis();
 		try {
-		    String s = bufferedReader.readLine();
+		    String s = guiProgram.getDataInputfile().readLine();
 		    if (s != null) {
 			listMatter = new ArrayList<Matter>((List<Matter>) HelperTools.fromString(s));
 		    } else {
@@ -538,39 +555,13 @@ public class Univers {
     }
 
     private void expansionUnivers() {
-	int deep = 1;
-	double distance = 1;
-
-	double radiusCoef = 1 + distance;
 	for (Matter m : listMatter) {
 	    m.expansionUnivers();
-
-	    for (int x = -deep; x <= deep; x++) {
-		for (int y = -deep; y <= deep; y++) {
-		    for (int z = -deep; z <= deep; z++) {
-			if (x != 0 || y != 0 || z != 0) {
-			    Vector3d virtual = new Vector3d(
-				    parameters.getNebulaRadius() * radiusCoef * x
-					    + (y == 0 || z == 0 ? m.getPoint().getX() : 0),
-				    parameters.getNebulaRadius() * radiusCoef * y
-					    + (x == 0 || z == 0 ? m.getPoint().getY() : 0),
-				    parameters.getNebulaRadius() * radiusCoef * z
-					    + (x == 0 || y == 0 ? m.getPoint().getZ() : 0));
-			    double massCoef = net.jafama.FastMath.pow2(distance);
-			    double attraction = HelperNewton.attraction(m.getPoint(), virtual, mass * massCoef,
-				    parameters);
-			    m.getAccel().add(HelperVector.acceleration(m.getPoint(), virtual, attraction));
-			}
-		    }
-		}
-	    }
-
 	}
 
 	parameters.setNebulaRadius(parameters.getNebulaRadius()
 		+ parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
 
-	
     }
 
     /**
@@ -597,9 +588,10 @@ public class Univers {
 		initialViscoElasticity, initialViscoElasticityNear, initialPressureZero));
 
 	miniListMatter.addAll(createUniversMain(spherical, origine, initialSpeed, axisOfRing, radiusMin, radiusMax,
-		ratio, parameters.getNumOfLowMassParticule(),  parameters.getLowMassParticuleMass(), parameters.getLowMassParticuleMass(),
-		parameters.getLowMassDensity(), gasColor, gasHomogeneousDistributionPow, TypeOfObject.Gas, gasViscosity,
-		initialViscoElasticity, initialViscoElasticityNear, initialPressureZero));
+		ratio, parameters.getNumOfLowMassParticule(), parameters.getLowMassParticuleMass(),
+		parameters.getLowMassParticuleMass(), parameters.getLowMassDensity(), gasColor,
+		gasHomogeneousDistributionPow, TypeOfObject.Gas, gasViscosity, initialViscoElasticity,
+		initialViscoElasticityNear, initialPressureZero));
 
 	return miniListMatter;
     }
@@ -1040,6 +1032,21 @@ public class Univers {
 
     public void setCollisionPairs(ConcurrentHashMap<String, MatterPair> collisionPairs) {
 	this.collisionPairs = collisionPairs;
+    }
+
+    /**
+     * @return the guiProgram
+     */
+    public GUIProgram getGuiProgram() {
+	return guiProgram;
+    }
+
+    /**
+     * @param guiProgram
+     *            the guiProgram to set
+     */
+    public void setGuiProgram(GUIProgram guiProgram) {
+	this.guiProgram = guiProgram;
     }
 
 }

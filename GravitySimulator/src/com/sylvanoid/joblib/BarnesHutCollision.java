@@ -151,7 +151,7 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 	if (univers.getListMatter().size() == 1) {
 	    Matter m = univers.getListMatter().get(0);
 	    if (parameters.isViscousDarkMatter() || !m.isDark()) {
-		Univers gu = new Univers();
+		Univers gu = new Univers(univers.getGuiProgram(), false);
 		if (univers.getFather() != null) {
 		    gu = univers.getFather();
 		    boolean detectColision = false;
