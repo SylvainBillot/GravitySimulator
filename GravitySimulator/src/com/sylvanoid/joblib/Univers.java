@@ -102,7 +102,6 @@ public class Univers implements Runnable {
 	while (true) {
 	    process();
 	    if (Thread.interrupted()) {
-		System.out.println("plop");
 		return;
 	    }
 	}
