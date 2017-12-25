@@ -553,6 +553,9 @@ public class Matter implements Serializable {
 	double length = point.length() + point.length() * HelperVariable.H0ms * parameters.getTimeFactor();
 	point.normalize();
 	point.scale(length);
+
+	//rayon = rayon + rayon *  HelperVariable.H0ms * parameters.getTimeFactor();
+	//density = mass /(4 * net.jafama.FastMath.PI * net.jafama.FastMath.pow(rayon,(double) 3)); 
     }
 
     public void orbitalCircularSpeed(Matter m, Vector3d axis) {

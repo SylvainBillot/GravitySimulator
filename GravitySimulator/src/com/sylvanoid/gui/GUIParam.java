@@ -742,7 +742,7 @@ public class GUIParam extends JDialog {
 		    // TypeOfUnivers.Planetary;
 		    parameters.setTypeOfUnivers(TypeOfUnivers.Planetary);
 		    manageImpact.setSelected(false);
-		    timeFactor.setValue(6E3);
+		    timeFactor.setValue(6);
 		    scala.setValue(1E-9);
 		    typeOfImpact.setSelectedIndex(0);
 		    nebulaRadius.setValue(HelperVariable.UA * 10);
@@ -779,7 +779,7 @@ public class GUIParam extends JDialog {
 		    // TypeOfUnivers.PlanetaryRandom;
 		    parameters.setTypeOfUnivers(TypeOfUnivers.PlanetaryRandom);
 		    manageImpact.setSelected(true);
-		    timeFactor.setValue(HelperVariable.ONEDAY);
+		    timeFactor.setValue(6E2);
 		    scala.setValue(1E-9);
 		    numberOfObjects.setValue(20);
 		    typeOfImpact.setSelectedIndex(0);
@@ -994,19 +994,19 @@ public class GUIParam extends JDialog {
 		case 6:
 		    parameters.setTypeOfUnivers(TypeOfUnivers.RandomExpensionUnivers);
 		    manageImpact.setSelected(true);
-		    timeFactor.setValue(HelperVariable.ONEYEAR * 1E7);
+		    timeFactor.setValue(HelperVariable.ONEYEAR * 1E6);
 		    scala.setValue(1 / (7E27));
 		    typeOfImpact.setSelectedIndex(1);
 		    numberOfObjects.setValue(5000);
-		    densiteMin.setValue(1E-25);
-		    nebulaRadius.setValue(HelperVariable.PC * 3.7E13);
+		    densiteMin.setValue(1E-23);
+		    nebulaRadius.setValue(HelperVariable.PC * 4E13);
 		    massObjectMin.setValue(HelperVariable.M * 1E30);
 		    massObjectMax.setValue(HelperVariable.M * 1E32);
-		    matterDistribution.setValue(1);
+		    matterDistribution.setValue(1.4);
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(HelperVariable.M * 1E31);
-		    lowMassDensity.setValue(1E-24);
+		    lowMassDensity.setValue(1E-23);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(HelperVariable.M * 2E35);
 		    darkMatterDensity.setValue(1E-23);
@@ -1017,11 +1017,11 @@ public class GUIParam extends JDialog {
 		    staticDarkMatter.setSelected(false);
 		    expansionUnivers.setSelected(true);
 		    collisionDistanceRatio.setValue(1);
-		    matterViscosity.setValue(1);
+		    matterViscosity.setValue(0.2);
 		    gasViscosity.setValue(1);
 		    darkMatterViscosity.setValue(1);
-		    viscoElasticity.setValue(0);
-		    viscoElasticityNear.setValue(0);
+		    viscoElasticity.setValue(0.1);
+		    viscoElasticityNear.setValue(0.1);
 		    pressureZero.setValue(0);
 		    darkMatterXRatio.setValue(1);
 		    darkMatterYRatio.setValue(1);

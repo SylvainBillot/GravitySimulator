@@ -21,7 +21,7 @@ public class Parameters implements Serializable {
     private boolean frozen = false;
     private TypeOfUnivers typeOfUnivers = TypeOfUnivers.Planetary;
     private double elapsedTime = 0;
-    private double timeFactor = 6000;
+    private double timeFactor = 6;
     private double darkMatterMass = 1E12;
     private double darkMatterDensity = 1E10;
     private boolean manageImpact = false;
@@ -38,6 +38,7 @@ public class Parameters implements Serializable {
     private boolean followCentroid = false;
     private boolean permanentRotationy = false;
     private boolean viewSimplePointOnly = false;
+    private boolean showViscosityRelationShip = false;
     private double scala = 1E-9;
     private boolean showAxis = true;
     private boolean showgrid = false;
@@ -268,6 +269,14 @@ public class Parameters implements Serializable {
      */
     public void setViewSimplePointOnly(boolean viewSimplePointOnly) {
 	this.viewSimplePointOnly = viewSimplePointOnly;
+    }
+
+    public boolean isShowViscosityRelationShip() {
+	return showViscosityRelationShip;
+    }
+
+    public void setShowViscosityRelationShip(boolean showViscosityRelationShip) {
+	this.showViscosityRelationShip = showViscosityRelationShip;
     }
 
     public double getScala() {

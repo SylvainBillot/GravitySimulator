@@ -561,6 +561,9 @@ public class Univers implements Runnable {
 	parameters.setNebulaRadius(parameters.getNebulaRadius()
 		+ parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
 
+	parameters.setScala(
+		parameters.getScala() - parameters.getScala() * HelperVariable.H0ms * parameters.getTimeFactor());
+
     }
 
     /**

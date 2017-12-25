@@ -172,7 +172,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	    diffLookAt.sub(parameters.getLookAt());
 	    parameters.getEyes().add(diffLookAt);
 	}
-
+	
 	GL2 gl = drawable.getGL().getGL2();
 	gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 	gl.glMatrixMode(GL2.GL_PROJECTION);
@@ -208,6 +208,13 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	    drawTrace(gl);
 	}
 
+	if (parameters.isShowViscosityRelationShip()) {
+	    /* Show trace */
+	    drawViscosityRelationShip(gl);
+	    
+	}
+
+	
 	// drawGravitationalFields(gl);
 
 	/* Show current univers */
@@ -535,6 +542,24 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	    }
 	}
 	gl.glPopMatrix();
+    }
+
+    private void drawViscosityRelationShip(GL2 gl) {
+	gl.glPushMatrix();
+	Vector3d color = new Vector3d(0, 0.4, 0);
+	for (Matter m : univers.getListMatter()) {
+	    for (Matter m1 : m.getFusionWith()) {
+		gl.glBegin(GL2.GL_LINES);
+		gl.glColor3d(color.x, color.y, color.z);
+		gl.glVertex3d(parameters.getScala() * m.getPoint().x, parameters.getScala() * m.getPoint().y,
+			parameters.getScala() * m.getPoint().z);
+		gl.glVertex3d(parameters.getScala() * m1.getPoint().x, parameters.getScala() * m1.getPoint().y,
+			parameters.getScala() * m1.getPoint().z);
+		gl.glEnd();
+	    }
+	}
+	gl.glPopMatrix();
+
     }
 
     private void drawUniversSimplePoint(GL2 gl) {

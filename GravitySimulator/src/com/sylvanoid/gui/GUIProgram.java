@@ -217,6 +217,8 @@ public class GUIProgram extends JFrame {
 	menuItemShowGas.addActionListener(menuShowGas());
 	JCheckBoxMenuItem menuItemShowDM = new JCheckBoxMenuItem("Show dark matter", parameters.isShowDarkMatter());
 	menuItemShowDM.addActionListener(menuShowDarkMatter());
+	JCheckBoxMenuItem menuItemShowVRS = new JCheckBoxMenuItem("Show viscosity relationship", parameters.isShowViscosityRelationShip());
+	menuItemShowVRS.addActionListener(menuViscosityRelationShip());
 
 	menuVisu.add(menuViewSimplePoint);
 	menuVisu.add(menuItemShowTrace);
@@ -233,6 +235,7 @@ public class GUIProgram extends JFrame {
 	menuVisu.add(menuItemShowMatter);
 	menuVisu.add(menuItemShowGas);
 	menuVisu.add(menuItemShowDM);
+	menuVisu.add(menuItemShowVRS);
 
 	JMenu menuData = new JMenu("Data (Experimental)");
 	final JCheckBoxMenuItem menuItemExportData = new JCheckBoxMenuItem("Export to ...", parameters.isExportData());
@@ -648,6 +651,17 @@ public class GUIProgram extends JFrame {
 	};
     }
 
+    private ActionListener menuViscosityRelationShip() {
+	return new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		parameters.setShowViscosityRelationShip(!parameters.isShowViscosityRelationShip());
+	    }
+	};
+    }
+
+    
     private ActionListener menuShowGas() {
 	return new ActionListener() {
 
