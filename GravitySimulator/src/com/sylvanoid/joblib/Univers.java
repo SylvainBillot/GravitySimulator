@@ -87,6 +87,9 @@ public class Univers implements Runnable {
     private ConcurrentHashMap<String, MatterPair> collisionPairs = new ConcurrentHashMap<String, MatterPair>();
 
     @XmlTransient
+    private List<MatterPair> collisionPairsRenderer = new ArrayList<MatterPair>();
+
+    @XmlTransient
     private List<Matter> MatterMatterList = new ArrayList<Matter>();
 
     @XmlTransient
@@ -252,6 +255,38 @@ public class Univers implements Runnable {
 		.setLimitComputeTime(parameters.getLimitComputeTime() + (System.currentTimeMillis() - startTimeCycle));
     }
 
+    public boolean sameCoordonate() {
+	for (Matter m : listMatter) {
+	    for (Matter m1 : listMatter) {
+		if (m.getPoint().x != m1.getPoint().x || m.getPoint().y != m1.getPoint().y
+			|| m.getPoint().z != m1.getPoint().z) {
+		    return false;
+		}
+	    }
+	}
+	return true;
+    }
+
+    public boolean containtSameTypeAs(Matter m) {
+	boolean valReturn = false;
+	for (Matter m1 : listMatter) {
+	    if (m1.getTypeOfObject() == m.getTypeOfObject()) {
+		return true;
+	    }
+	}
+	return valReturn;
+    }
+
+    public List<Matter> listOfSameTypeAs(Matter m) {
+	List<Matter> valReturn = new ArrayList<Matter>();
+	for (Matter m1 : listMatter) {
+	    if (m1.getTypeOfObject() == m.getTypeOfObject()) {
+		valReturn.add(m1);
+	    }
+	}
+	return valReturn;
+    }
+
     @SuppressWarnings("unchecked")
     private void process() {
 	if (!parameters.isFrozen()) {
@@ -280,6 +315,8 @@ public class Univers implements Runnable {
 
 		if (parameters.isManageImpact()) {
 		    computeBarnesHutCollision();
+		    collisionPairsRenderer.clear();
+		    collisionPairsRenderer = new ArrayList<MatterPair>(collisionPairs.values());
 		    speedsAfterImpact(parameters.getTypeOfImpact());
 		}
 
@@ -318,38 +355,6 @@ public class Univers implements Runnable {
 	    }
 	    parameters.setElapsedTime(parameters.getElapsedTime() + parameters.getTimeFactor());
 	}
-    }
-
-    public boolean sameCoordonate() {
-	for (Matter m : listMatter) {
-	    for (Matter m1 : listMatter) {
-		if (m.getPoint().x != m1.getPoint().x || m.getPoint().y != m1.getPoint().y
-			|| m.getPoint().z != m1.getPoint().z) {
-		    return false;
-		}
-	    }
-	}
-	return true;
-    }
-
-    public boolean containtSameTypeAs(Matter m) {
-	boolean valReturn = false;
-	for (Matter m1 : listMatter) {
-	    if (m1.getTypeOfObject() == m.getTypeOfObject()) {
-		return true;
-	    }
-	}
-	return valReturn;
-    }
-
-    public List<Matter> listOfSameTypeAs(Matter m) {
-	List<Matter> valReturn = new ArrayList<Matter>();
-	for (Matter m1 : listMatter) {
-	    if (m1.getTypeOfObject() == m.getTypeOfObject()) {
-		valReturn.add(m1);
-	    }
-	}
-	return valReturn;
     }
 
     private void changeSpeed() {
@@ -1034,6 +1039,21 @@ public class Univers implements Runnable {
 
     public void setCollisionPairs(ConcurrentHashMap<String, MatterPair> collisionPairs) {
 	this.collisionPairs = collisionPairs;
+    }
+
+    /**
+     * @return the collisionPairsRenderer
+     */
+    public List<MatterPair> getCollisionPairsRenderer() {
+	return collisionPairsRenderer;
+    }
+
+    /**
+     * @param collisionPairsRenderer
+     *            the collisionPairsRenderer to set
+     */
+    public void setCollisionPairsRenderer(List<MatterPair> collisionPairsRenderer) {
+	this.collisionPairsRenderer = collisionPairsRenderer;
     }
 
     /**

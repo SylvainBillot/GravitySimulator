@@ -86,8 +86,6 @@ public class MatterPair implements Comparable<MatterPair> {
 
     public void applyViscosity() {
 
-	disableAcceleration();
-
 	double theta = (m1.getViscosity() * m1.getMass() + m2.getViscosity() * m2.getMass())
 		/ (m1.getMass() + m2.getMass());
 	double beta = 0;

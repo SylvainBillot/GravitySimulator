@@ -343,7 +343,7 @@ public class Matter implements Serializable {
 	pointBefore = new Vector3d(point);
 	point = getPlusV();
     }
-
+    
     public void fusion(List<Matter> listMatter) {
 	if (listMatter.contains(this)) {
 	    Vector3d newPoint = globalCentroid();
