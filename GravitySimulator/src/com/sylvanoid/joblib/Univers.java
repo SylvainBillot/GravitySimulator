@@ -115,8 +115,7 @@ public class Univers implements Runnable {
 	if (justCreated) {
 	    this.guiProgram = guiProgram;
 	    this.parameters = guiProgram.getParameters();
-	    listMatter = new ArrayList<Matter>();
-	    mass = 0;
+	    listMatter = new ArrayList<>();
 	    visibleMass = 0;
 	    darkMass = 0;
 	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.Random) {
@@ -315,14 +314,13 @@ public class Univers implements Runnable {
 
 		if (parameters.isManageImpact()) {
 		    computeBarnesHutCollision();
-		    collisionPairsRenderer.clear();
 		    collisionPairsRenderer = new ArrayList<MatterPair>(collisionPairs.values());
 		    speedsAfterImpact(parameters.getTypeOfImpact());
 		}
 
 		move();
 
-		if (parameters.isManageImpact() && parameters.getTypeOfImpact() == TypeOfImpact.Viscosity) {
+		if (parameters.isManageImpact() ) {
 		    computeBarnesHutCollision();
 		    doubleDensityRelaxation();
 		}
@@ -386,17 +384,20 @@ public class Univers implements Runnable {
     }
 
     private int computeBarnesHutCollision() {
+	int valReturn = 0;
 	for (Matter m : listMatter) {
 	    m.getFusionWith().clear();
+	    m.setMySolid(null);
 	}
 	collisionPairs.clear();
 	BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
 	if (parameters.isParallelization()) {
 	    ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
-	    return (int) pool.invoke(barnesHutCollision);
+	    valReturn = (int) pool.invoke(barnesHutCollision);
 	} else {
-	    return (int) barnesHutCollision.compute();
+	    valReturn = (int) barnesHutCollision.compute();
 	}
+	return valReturn;
     }
 
     private void computeBarnesHutGravity() {
@@ -454,6 +455,21 @@ public class Univers implements Runnable {
 	case Viscosity:
 	    for (MatterPair mp : collisionPairs.values()) {
 		mp.applyViscosity();
+	    }
+	    changeSpeed();
+	    break;
+	case Solid:
+	    List<Solid> listSolid = new ArrayList<>();
+
+	    for (Matter m : listMatter) {
+		if (m.getMySolid() != null && !listSolid.contains(m.getMySolid())) {
+		    listSolid.add(m.getMySolid());
+		}
+	    }
+	    for (Solid s : listSolid) {
+		if (s.getListMatter().size() > 1) {
+		    s.changeSpeed();
+		}
 	    }
 	    changeSpeed();
 	    break;
@@ -931,7 +947,7 @@ public class Univers implements Runnable {
 	Matter m1 = new Matter(parameters,
 		new Vector3d(net.jafama.FastMath.random(), net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 		parameters.getDarkMatterMass(), new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
-		parameters.getDarkMatterDensity(), TypeOfObject.Matter, parameters.getMatterViscosity(),
+		parameters.getDarkMatterDensity(), TypeOfObject.Gas, parameters.getMatterViscosity(),
 		parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
 	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 		m1.getRayon() * minimalDistanceCentralStarRadiusRatio, parameters.getNebulaRadius(), ratioxyz,

@@ -1,7 +1,7 @@
 package com.sylvanoid.common;
 
 public enum TypeOfImpact {
-    Fusion("Fusion"), Viscosity("Viscosity"), SoftImpact("Soft Impact"), HardImpact("Hard Impact");
+    Fusion("Fusion"), Viscosity("Viscosity"), SoftImpact("Soft Impact"), HardImpact("Hard Impact"), Solid("Solid (experimental)");
 
     private final String label;
 

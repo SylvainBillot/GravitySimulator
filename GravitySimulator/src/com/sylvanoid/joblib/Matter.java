@@ -42,6 +42,7 @@ public class Matter implements Serializable {
     private double pressureZero;
     private List<Matter> fusionWith = new ArrayList<Matter>();
     private List<Matter> neighbors = new ArrayList<Matter>();
+    private Solid mySolid = null;
 
     @Override
     public String toString() {
@@ -207,51 +208,38 @@ public class Matter implements Serializable {
 	this.presure = presure;
     }
 
-    /**
-     * @return the viscoElasticity
-     */
     public double getViscoElasticity() {
 	return viscoElasticity;
     }
 
-    /**
-     * @param viscoElasticity
-     *            the viscoElasticity to set
-     */
     public void setViscoElasticity(double viscoElasticity) {
 	this.viscoElasticity = viscoElasticity;
     }
 
-    /**
-     * @return the viscoElasticityNear
-     */
     public double getViscoElasticityNear() {
 	return viscoElasticityNear;
     }
 
-    /**
-     * @param viscoElasticityNear
-     *            the viscoElasticityNear to set
-     */
     public void setViscoElasticityNear(double viscoElasticityNear) {
 	this.viscoElasticityNear = viscoElasticityNear;
     }
 
-    /**
-     * @return the pressureZero
-     */
     public double getPressureZero() {
 	return pressureZero;
     }
 
-    /**
-     * @param pressureZero
-     *            the pressureZero to set
-     */
     public void setPressureZero(double pressureZero) {
 	this.pressureZero = pressureZero;
     }
 
+    public Solid getMySolid() {
+	return mySolid;
+    }
+
+    public void setMySolid(Solid mySolid) {
+	this.mySolid = mySolid;
+    }
+    
     public boolean isDark() {
 	return typeOfObject == TypeOfObject.Dark;
     }
@@ -543,6 +531,19 @@ public class Matter implements Serializable {
 	    speed = new Vector3d(newSpeed);
 	}
     }
+    
+    public Vector3d deltaSpeedFromPositions() {
+	if (!parameters.isStaticDarkMatter() || typeOfObject != TypeOfObject.Dark) {
+	    double distance = HelperNewton.distance(pointBefore, point);
+	    double speedLength = distance / parameters.getTimeFactor();
+	    Vector3d newSpeed = new Vector3d(point);
+	    newSpeed.sub(pointBefore);
+	    newSpeed.normalize();
+	    newSpeed.scale(speedLength);
+	    return new Vector3d(newSpeed);
+	}
+	return new Vector3d(0,0,0);
+    }
 
     public Vector3d accelerationWith(Matter m) {
 	double attraction = HelperNewton.attraction(this, m, parameters);
@@ -668,4 +669,5 @@ public class Matter implements Serializable {
 	}
 	return f;
     }
+
 }

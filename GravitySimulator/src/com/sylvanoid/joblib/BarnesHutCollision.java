@@ -150,6 +150,10 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 
 	if (univers.getListMatter().size() == 1) {
 	    Matter m = univers.getListMatter().get(0);
+	    if (m.getMySolid() == null) {
+		@SuppressWarnings("unused")
+		Solid s = new Solid(m);
+	    }
 	    if (parameters.isViscousDarkMatter() || !m.isDark()) {
 		Univers gu = new Univers(univers.getGuiProgram(), false);
 		if (univers.getFather() != null) {
@@ -172,6 +176,17 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 				    if (collisionPairs.get(m.getName() + mgu.getName()) == null
 					    && collisionPairs.get(mgu.getName() + m.getName()) == null) {
 					collisionPairs.put(m.getName() + mgu.getName(), toAdd);
+				    }
+
+				    if (mgu.getMySolid() == null) {
+					m.getMySolid().add(mgu);
+				    } else if (mgu.getMySolid() != m.getMySolid()) {
+					if (m.getMySolid().getListMatter().size() > mgu.getMySolid().getListMatter()
+						.size()) {
+					    m.getMySolid().transfertAll(mgu);
+					} else {
+					    mgu.getMySolid().transfertAll(m);
+					}
 				    }
 				}
 			    }
