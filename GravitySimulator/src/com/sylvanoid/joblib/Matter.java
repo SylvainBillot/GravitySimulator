@@ -31,6 +31,7 @@ public class Matter implements Serializable {
     private Vector3d point = new Vector3d(0, 0, 0);
     private Vector3d angles = new Vector3d(0, 0, 0);
     private Vector3d speed = new Vector3d(0, 0, 0);
+    private Vector3d lossspeed = new Vector3d(0, 0, 0);
     private Vector3d accel = new Vector3d(0, 0, 0);
     private Vector3d color = new Vector3d(1, 1, 1);
     private double density;
@@ -160,6 +161,16 @@ public class Matter implements Serializable {
 
     public void setSpeed(Vector3d speed) {
 	this.speed = speed;
+    }
+
+    @XmlJavaTypeAdapter(Vector3dAdapter.class)
+    @XmlElement
+    public Vector3d getLossspeed() {
+	return lossspeed;
+    }
+
+    public void setLossspeed(Vector3d lossspeed) {
+	this.lossspeed = lossspeed;
     }
 
     @XmlJavaTypeAdapter(Vector3dAdapter.class)

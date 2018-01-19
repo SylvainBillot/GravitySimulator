@@ -76,7 +76,11 @@ public class Univers implements Runnable {
     @XmlJavaTypeAdapter(Vector3dAdapter.class)
     @XmlElement
     private Vector3d p = new Vector3d(0, 0, 0);
-
+    
+    @XmlJavaTypeAdapter(Vector3dAdapter.class)
+    @XmlElement
+    private Vector3d lossSpeed = new Vector3d(0, 0, 0);
+    
     @XmlTransient
     private Matter maxMassElement = new Matter();
 
@@ -562,6 +566,7 @@ public class Univers implements Runnable {
 		    rijm2.scale(m.getMass() * delta / (m.getMass() + m1.getMass()));
 
 		    m1.getSpeed().add(rijm2);
+		    m1.getLossspeed().sub(rijm2);
 		    dm.add(rijm1);
 
 		    /* Try to get pseudo presure */
@@ -570,6 +575,7 @@ public class Univers implements Runnable {
 
 		}
 		m.getSpeed().sub(dm);
+		m.getLossspeed().add(dm);
 	    }
 	}
     }
@@ -947,7 +953,7 @@ public class Univers implements Runnable {
 	Matter m1 = new Matter(parameters,
 		new Vector3d(net.jafama.FastMath.random(), net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 		parameters.getDarkMatterMass(), new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
-		parameters.getDarkMatterDensity(), TypeOfObject.Gas, parameters.getMatterViscosity(),
+		parameters.getDarkMatterDensity(), TypeOfObject.Matter, parameters.getMatterViscosity(),
 		parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
 	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 		m1.getRayon() * minimalDistanceCentralStarRadiusRatio, parameters.getNebulaRadius(), ratioxyz,
@@ -1047,6 +1053,20 @@ public class Univers implements Runnable {
 
     public Vector3d getP() {
 	return p;
+    }
+
+    /**
+     * @return the lossSpeed
+     */
+    public Vector3d getLossSpeed() {
+	return lossSpeed;
+    }
+
+    /**
+     * @param lossSpeed the lossSpeed to set
+     */
+    public void setLossSpeed(Vector3d lossSpeed) {
+	this.lossSpeed = lossSpeed;
     }
 
     public ConcurrentHashMap<String, MatterPair> getCollisionPairs() {

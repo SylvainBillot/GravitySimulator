@@ -89,6 +89,7 @@ public class MatterPair implements Comparable<MatterPair> {
 	double theta = (m1.getViscosity() * m1.getMass() + m2.getViscosity() * m2.getMass())
 		/ (m1.getMass() + m2.getMass());
 	double beta = 0;
+	
 	Vector3d relativeSpeed = new Vector3d(m1.getSpeed());
 	relativeSpeed.sub(m2.getSpeed());
 
@@ -137,6 +138,9 @@ public class MatterPair implements Comparable<MatterPair> {
 
 	    m1.getAccel().sub(transversalSpeedM1);
 	    m2.getAccel().add(transversalSpeedM2);
+	    
+	    m1.getLossspeed().add(transversalSpeedM1);
+	    m2.getLossspeed().sub(transversalSpeedM2);
 	}
 	// } else {
 	// ???

@@ -83,10 +83,15 @@ public class Solid {
 	    radialSpeed.sub(centroid);
 	    radialSpeed.normalize();
 	    double u = relativeSpeed.dot(radialSpeed);
-	    radialSpeed.scale(u * newViscosity);
-	    m.getAccel().sub(radialSpeed);
 
-	    
+	    double p = HelperNewton.distance(centroid, m)
+		    / ((newRadius + m.getRayon()) * m.getParameters().getCollisionDistanceRatio());
+
+	    radialSpeed.scale((1 - p) * u * newViscosity);
+	    m.getAccel().sub(radialSpeed);
+	    m.getLossspeed().add(radialSpeed);
+
+/*	    
 	    // pseudo presure
 	    
 	    double p = HelperNewton.distance(centroid, m)
@@ -98,7 +103,7 @@ public class Solid {
 	    radialSpeed.scale(delta);
 	    m.getAccel().sub(radialSpeed);
 
-  
+*/  
 /*	    
 	    // move to border
 	    m.getPoint().sub(centroid);
