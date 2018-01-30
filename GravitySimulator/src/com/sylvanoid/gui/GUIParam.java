@@ -731,6 +731,31 @@ public class GUIParam extends JDialog {
 	    gasRendererExtender.setEnabled(true);
 	    darkMatterRendererExtender.setEnabled(true);
 	    break;
+	case 7:
+	    // TypeOfUnivers.PlanetariesGenesis V2;
+	    manageImpact.setEnabled(true);
+	    timeFactor.setEnabled(true);
+	    scala.setEnabled(true);
+	    numberOfObjects.setEnabled(true);
+	    densiteMin.setEnabled(true);
+	    nebulaRadius.setEnabled(true);
+	    massObjectMin.setEnabled(true);
+	    massObjectMax.setEnabled(true);
+	    matterDistribution.setEnabled(true);
+	    negligeableMass.setEnabled(true);
+	    numOfLowMassParticule.setEnabled(true);
+	    lowMassParticuleMass.setEnabled(true);
+	    lowMassDensity.setEnabled(true);
+	    gasDistribution.setEnabled(true);
+	    darkMatterMass.setEnabled(true);
+	    darkMatterDensity.setEnabled(true);
+	    darkMatterMass.setEnabled(true);
+	    darkMatterDensity.setEnabled(true);
+	    timeMultiplicator.setEnabled(true);
+	    matterRendererExtender.setEnabled(true);
+	    gasRendererExtender.setEnabled(true);
+	    darkMatterRendererExtender.setEnabled(true);
+	    break;	    
 	}
     }
 
@@ -912,10 +937,10 @@ public class GUIParam extends JDialog {
 		    scala.setValue(5E-10);
 		    typeOfImpact.setSelectedIndex(0);
 		    numberOfObjects.setValue(10000);
-		    densiteMin.setValue(1E-2);
+		    densiteMin.setValue(1E-3);
 		    nebulaRadius.setValue(HelperVariable.UA * 3);
-		    massObjectMin.setValue(HelperVariable.M / 1000000);
-		    massObjectMax.setValue(HelperVariable.M / 100000);
+		    massObjectMin.setValue(HelperVariable.M / 1E10);
+		    massObjectMax.setValue(HelperVariable.M / 1E5);
 		    matterDistribution.setValue(1);
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
@@ -1034,6 +1059,49 @@ public class GUIParam extends JDialog {
 		    gasRendererExtender.setValue(1);
 		    darkMatterRendererExtender.setValue(1);
 		    break;
+		case 7: // Planetary genesis V2
+		    parameters.setTypeOfUnivers(TypeOfUnivers.PlanetariesGenesisv2);
+		    manageImpact.setSelected(true);
+		    timeFactor.setValue(HelperVariable.ONEDAY*10);
+		    scala.setValue(5E-10);
+		    typeOfImpact.setSelectedIndex(0);
+		    numberOfObjects.setValue(1000);
+		    densiteMin.setValue(1E-4);
+		    nebulaRadius.setValue(HelperVariable.UA * 100);
+		    massObjectMin.setValue(HelperVariable.M / 1E7);
+		    massObjectMax.setValue(HelperVariable.M / 1E2);
+		    matterDistribution.setValue(3);
+		    negligeableMass.setValue(0);
+		    numOfLowMassParticule.setValue(0);
+		    lowMassParticuleMass.setValue(1);
+		    lowMassDensity.setValue(1);
+		    gasDistribution.setValue(1);
+		    darkMatterMass.setValue(HelperVariable.M);
+		    darkMatterDensity.setValue(1);
+		    darkMatterDistribution.setValue(5);
+		    ellipseRatio.setValue(0.95);
+		    ellipseShiftRatio.setValue(1);
+		    nbArms.setValue(3);
+		    staticDarkMatter.setSelected(true);
+		    expansionUnivers.setSelected(false);
+		    collisionDistanceRatio.setValue(1);
+		    matterViscosity.setValue(1);
+		    gasViscosity.setValue(1);
+		    darkMatterViscosity.setValue(1);
+		    viscoElasticity.setValue(0.01);
+		    viscoElasticityNear.setValue(0.01);
+		    pressureZero.setValue(0);
+		    darkMatterXRatio.setValue(5);
+		    darkMatterYRatio.setValue(5);
+		    darkMatterZRatio.setValue(5);
+		    recoverFrictionEnergy.setSelected(false);
+		    recoverFrictionEnergyRatio.setValue(1);
+		    timeMultiplicator.setValue(1);
+		    visousDarkMatter.setSelected(false);
+		    matterRendererExtender.setValue(1);
+		    gasRendererExtender.setValue(1);
+		    darkMatterRendererExtender.setValue(1);
+		    break;		    
 		}
 		enableDisableParam();
 	    }

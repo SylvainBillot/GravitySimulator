@@ -89,7 +89,7 @@ public class MatterPair implements Comparable<MatterPair> {
 	double theta = (m1.getViscosity() * m1.getMass() + m2.getViscosity() * m2.getMass())
 		/ (m1.getMass() + m2.getMass());
 	double beta = 0;
-	
+
 	Vector3d relativeSpeed = new Vector3d(m1.getSpeed());
 	relativeSpeed.sub(m2.getSpeed());
 
@@ -97,54 +97,58 @@ public class MatterPair implements Comparable<MatterPair> {
 	radialSpeed.sub(m1.getPoint());
 	radialSpeed.normalize();
 	double u = relativeSpeed.dot(radialSpeed);
-	// if (u > 0) {
-	/*
-	 * double delta = parameters.getTimeFactor() (1 - distanceByradius())
-	 * (theta * u + beta * net.jafama.FastMath.pow2(u));
-	 */
+	//if (u > 0) {
+	    /*
+	     * double delta = parameters.getTimeFactor() (1 -
+	     * distanceByradius()) (theta * u + beta *
+	     * net.jafama.FastMath.pow2(u));
+	     */
 
-	double delta = (1 - distanceByradius()) * (theta * u + beta * net.jafama.FastMath.pow2(u));
+	    double delta = (1 - distanceByradius()) * (theta * u + beta * net.jafama.FastMath.pow2(u));
 
-	Vector3d radialSpeedM1 = new Vector3d(radialSpeed);
-	radialSpeedM1.scale(delta * m2.getMass() / (m1.getMass() + m2.getMass()));
-	Vector3d radialSpeedM2 = new Vector3d(radialSpeed);
-	radialSpeedM2.scale(delta * m1.getMass() / (m1.getMass() + m2.getMass()));
+	    Vector3d radialSpeedM1 = new Vector3d(radialSpeed);
+	    radialSpeedM1.scale(delta * m2.getMass() / (m1.getMass() + m2.getMass()));
+	    Vector3d radialSpeedM2 = new Vector3d(radialSpeed);
+	    radialSpeedM2.scale(delta * m1.getMass() / (m1.getMass() + m2.getMass()));
 
-	m1.getAccel().sub(radialSpeedM1);
-	m2.getAccel().add(radialSpeedM2);
+	    m1.getAccel().sub(radialSpeedM1);
+	    m2.getAccel().add(radialSpeedM2);
 
-	if (parameters.isRecoverFrictionEnegy() && !m1.isDark() && !m2.isDark()) {
-	    // try to recover energy
-	    relativeSpeed = new Vector3d(m1.getSpeed());
-	    relativeSpeed.sub(m2.getSpeed());
+		if (parameters.isRecoverFrictionEnegy() && !m1.isDark() && !m2.isDark()) {
+		    // try to recover energy
+		    relativeSpeed = new Vector3d(m1.getSpeed());
+		    relativeSpeed.sub(m2.getSpeed());
 
-	    radialSpeed = new Vector3d(m2.getPoint());
-	    radialSpeed.sub(m1.getPoint());
-	    radialSpeed.normalize();
+		    radialSpeed = new Vector3d(m2.getPoint());
+		    radialSpeed.sub(m1.getPoint());
+		    radialSpeed.normalize();
 
-	    double angle = relativeSpeed.angle(radialSpeed);
-	    radialSpeed.scale(net.jafama.FastMath.cos(angle) * relativeSpeed.length());
+		    double angle = relativeSpeed.angle(radialSpeed);
+		    radialSpeed.scale(net.jafama.FastMath.cos(angle) * relativeSpeed.length());
 
-	    Vector3d transversalSpeed = new Vector3d(relativeSpeed);
-	    transversalSpeed.sub(radialSpeed);
+		    Vector3d transversalSpeed = new Vector3d(relativeSpeed);
+		    transversalSpeed.sub(radialSpeed);
 
-	    delta = parameters.getRecoverFrictionEnergyRatio() * transversalSpeed.length() * delta
-		    / radialSpeed.length();
-	    transversalSpeed.normalize();
-	    Vector3d transversalSpeedM1 = new Vector3d(transversalSpeed);
-	    transversalSpeedM1.scale(delta * m2.getMass() / (m1.getMass() + m2.getMass()));
-	    Vector3d transversalSpeedM2 = new Vector3d(transversalSpeed);
-	    transversalSpeedM2.scale(delta * m1.getMass() / (m1.getMass() + m2.getMass()));
+		    delta = parameters.getRecoverFrictionEnergyRatio() * transversalSpeed.length() * delta
+			    / radialSpeed.length();
+		    transversalSpeed.normalize();
+		    Vector3d transversalSpeedM1 = new Vector3d(transversalSpeed);
+		    transversalSpeedM1.scale(delta * m2.getMass() / (m1.getMass() + m2.getMass()));
+		    Vector3d transversalSpeedM2 = new Vector3d(transversalSpeed);
+		    transversalSpeedM2.scale(delta * m1.getMass() / (m1.getMass() + m2.getMass()));
 
-	    m1.getAccel().sub(transversalSpeedM1);
-	    m2.getAccel().add(transversalSpeedM2);
+		    m1.getAccel().sub(transversalSpeedM1);
+		    m2.getAccel().add(transversalSpeedM2);
+
+		    m1.getLossspeed().add(transversalSpeedM1);
+		    m2.getLossspeed().sub(transversalSpeedM2);
+		}
 	    
-	    m1.getLossspeed().add(transversalSpeedM1);
-	    m2.getLossspeed().sub(transversalSpeedM2);
-	}
-	// } else {
-	// ???
-	// }
+	//} else {
+	    // ???
+	//}
+
+
     }
 
     public double distance() {

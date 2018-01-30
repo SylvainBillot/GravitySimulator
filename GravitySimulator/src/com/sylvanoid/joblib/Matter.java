@@ -570,20 +570,20 @@ public class Matter implements Serializable {
 	//density = mass /(4 * net.jafama.FastMath.PI * net.jafama.FastMath.pow(rayon,(double) 3)); 
     }
 
-    public void orbitalCircularSpeed(Matter m, Vector3d axis) {
-	orbitalCircularSpeed(m.getMass(), m.getPoint(), axis);
+    public void orbitalCircularSpeed(Matter m, Vector3d axis, double speedRation) {
+	orbitalCircularSpeed(m.getMass(), m.getPoint(), axis, speedRation);
     }
 
-    private void orbitalCircularSpeed(double otherMass, Vector3d gPoint, Vector3d axis) {
+    private void orbitalCircularSpeed(double otherMass, Vector3d gPoint, Vector3d axis, double speedRation) {
 	if (!parameters.isStaticDarkMatter() || !isDark()) {
 	    double distance = new Point3d(point).distance(new Point3d(gPoint));
-	    orbitalCircularSpeed(gPoint, distance, otherMass, axis);
+	    orbitalCircularSpeed(gPoint, distance, otherMass, axis,speedRation);
 	}
     }
 
-    public void orbitalCircularSpeed(Vector3d gPoint, double distance, double otherMass, Vector3d axis) {
+    public void orbitalCircularSpeed(Vector3d gPoint, double distance, double otherMass, Vector3d axis, double speedRatio) {
 	if (!parameters.isStaticDarkMatter() || !isDark()) {
-	    double orbitalSpeedValue = net.jafama.FastMath.sqrt((HelperVariable.G * otherMass) / distance);
+	    double orbitalSpeedValue = net.jafama.FastMath.sqrt((HelperVariable.G * otherMass) / distance) * speedRatio;
 	    orbitalCircularSpeed(gPoint, axis, orbitalSpeedValue);
 	}
     }

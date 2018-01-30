@@ -76,11 +76,11 @@ public class Univers implements Runnable {
     @XmlJavaTypeAdapter(Vector3dAdapter.class)
     @XmlElement
     private Vector3d p = new Vector3d(0, 0, 0);
-    
+
     @XmlJavaTypeAdapter(Vector3dAdapter.class)
     @XmlElement
     private Vector3d lossSpeed = new Vector3d(0, 0, 0);
-    
+
     @XmlTransient
     private Matter maxMassElement = new Matter();
 
@@ -142,6 +142,9 @@ public class Univers implements Runnable {
 	    }
 	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
 		createCubicUnivers();
+	    }
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesisv2) {
+		createPlanetaryGenesisRandomV2();
 	    }
 	    computeMassLimitsCentroidSpeed(true);
 	}
@@ -320,15 +323,11 @@ public class Univers implements Runnable {
 		    computeBarnesHutCollision();
 		    collisionPairsRenderer = new ArrayList<MatterPair>(collisionPairs.values());
 		    speedsAfterImpact(parameters.getTypeOfImpact());
-		}
-
-		move();
-
-		if (parameters.isManageImpact() ) {
-		    computeBarnesHutCollision();
 		    doubleDensityRelaxation();
 		}
-
+		
+		move();
+		
 		parameters.setTimeFactor(parameters.getTimeFactor() * parameters.getTimeMultiplicator());
 
 		parameters.setBarnesHuttComputeTime(System.currentTimeMillis() - startTimeBH);
@@ -836,7 +835,7 @@ public class Univers implements Runnable {
 	for (Matter m : miniListMatter) {
 	    if (!m.isDark()) {
 		double distance = new Point3d(m.getPoint()).distance(new Point3d(origin));
-		m.orbitalCircularSpeed(origin, distance, innerMassTreeMapCumul.get(distance), axisOfRing);
+		m.orbitalCircularSpeed(origin, distance, innerMassTreeMapCumul.get(distance), axisOfRing, 1);
 	    }
 	}
     }
@@ -926,7 +925,7 @@ public class Univers implements Runnable {
 
 	for (Matter m : listMatter) {
 	    if (m != sun) {
-		m.orbitalCircularSpeed(sun, new Vector3d(0, 1, 0));
+		m.orbitalCircularSpeed(sun, new Vector3d(0, 1, 0), 1);
 	    }
 	}
 
@@ -938,18 +937,23 @@ public class Univers implements Runnable {
 		HelperVector.rotate(jupiter.getPoint(), new Vector3d(0, 0, 1), 1.3 * net.jafama.FastMath.PI / 180));
 	saturn.setPoint(
 		HelperVector.rotate(saturn.getPoint(), new Vector3d(0, 0, 1), 2.48 * net.jafama.FastMath.PI / 180));
-	moon.orbitalCircularSpeed(earth, new Vector3d(0, 1, 0));
+	moon.orbitalCircularSpeed(earth, new Vector3d(0, 1, 0), 1);
     }
 
     private void createPlanetaryRandom() {
-	createPlanetaryRandom(parameters.getMatterRendererExtender(), new Vector3d(1, 1, 0.25));
+	createPlanetaryRandom(parameters.getMatterRendererExtender(), new Vector3d(1, 1, 0.25), 1);
     }
 
     private void createPlanetaryGenesisRandom() {
-	createPlanetaryRandom(parameters.getMatterRendererExtender() * 10, new Vector3d(1, 1, 0.05));
+	createPlanetaryRandom(parameters.getMatterRendererExtender() * 10, new Vector3d(1, 1, 0.05), 0.75);
     }
 
-    private void createPlanetaryRandom(double minimalDistanceCentralStarRadiusRatio, Vector3d ratioxyz) {
+    private void createPlanetaryGenesisRandomV2() {
+	createPlanetaryGenesisV2(new Vector3d(1, 1, 0.2), 0.75);
+    }
+
+    private void createPlanetaryRandom(double minimalDistanceCentralStarRadiusRatio, Vector3d ratioxyz,
+	    double speedRatio) {
 	Matter m1 = new Matter(parameters,
 		new Vector3d(net.jafama.FastMath.random(), net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 		parameters.getDarkMatterMass(), new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
@@ -985,8 +989,40 @@ public class Univers implements Runnable {
 	    if (m != m1) {
 		double distance = new Point3d(m.getPoint()).distance(new Point3d(getGPoint()));
 		m.orbitalCircularSpeed(getGPoint(), distance, innerMassTreeMapCumul.get(distance),
-			new Vector3d(0, 0, 1));
+			new Vector3d(0, 0, 1), speedRatio);
 	    }
+	}
+
+    }
+
+    private void createPlanetaryGenesisV2(Vector3d ratioxyz, double speedRatio) {
+	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
+		parameters.getNebulaRadius() * 0.001, parameters.getNebulaRadius(), ratioxyz,
+		parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
+		parameters.getGasViscosity(), new Vector3d(), new Vector3d(0.06, 0.05, 0.05),
+		parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
+
+	TreeMap<Double, Double> innerMassTreeMap = new TreeMap<Double, Double>();
+	for (Matter m : listMatter) {
+	    double distance = new Point3d(m.getPoint()).distance(new Point3d(getGPoint()));
+	    if (innerMassTreeMap.get(distance) == null) {
+		innerMassTreeMap.put(distance, m.getMass());
+	    } else {
+		innerMassTreeMap.put(distance, m.getMass() + innerMassTreeMap.get(distance));
+	    }
+	}
+
+	TreeMap<Double, Double> innerMassTreeMapCumul = new TreeMap<Double, Double>();
+	double innerMass = 0;
+	for (Map.Entry<Double, Double> entry : innerMassTreeMap.entrySet()) {
+	    innerMass += entry.getValue();
+	    innerMassTreeMapCumul.put(entry.getKey(), innerMass);
+	}
+
+	for (Matter m : listMatter) {
+	    double distance = new Point3d(m.getPoint()).distance(new Point3d(getGPoint()));
+	    m.orbitalCircularSpeed(getGPoint(), distance, innerMassTreeMapCumul.get(distance), new Vector3d(0, 0, 1),
+		    speedRatio);
 	}
 
     }
@@ -1063,7 +1099,8 @@ public class Univers implements Runnable {
     }
 
     /**
-     * @param lossSpeed the lossSpeed to set
+     * @param lossSpeed
+     *            the lossSpeed to set
      */
     public void setLossSpeed(Vector3d lossSpeed) {
 	this.lossSpeed = lossSpeed;
