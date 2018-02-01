@@ -35,7 +35,7 @@ public class Matter implements Serializable {
     private Vector3d accel = new Vector3d(0, 0, 0);
     private Vector3d color = new Vector3d(1, 1, 1);
     private double density;
-    private double rayon;
+    private double radius;
     private double viscosity;
     private double presure;
     private double viscoElasticity;
@@ -84,7 +84,7 @@ public class Matter implements Serializable {
 	this.pressureZero = initialPressureZero;
 	this.presure = 0;
 	this.name = "id: " + this.hashCode();
-	this.rayon = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+	this.radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
     }
 
@@ -188,7 +188,7 @@ public class Matter implements Serializable {
     }
 
     public void setMass(double mass) {
-	rayon = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+	radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
 	this.mass = mass;
     }
@@ -198,7 +198,7 @@ public class Matter implements Serializable {
     }
 
     public void setDensity(double density) {
-	rayon = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+	radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
 	this.density = density;
     }
@@ -255,8 +255,8 @@ public class Matter implements Serializable {
 	return typeOfObject == TypeOfObject.Dark;
     }
 
-    public double getRayon() {
-	return rayon;
+    public double getRadius() {
+	return radius;
     }
 
     @XmlTransient
@@ -294,15 +294,15 @@ public class Matter implements Serializable {
     }
 
     public Vector3d maxWithR() {
-	return new Vector3d((point.x > getPlusV().x) ? (point.x + rayon) : (getPlusV().x + rayon),
-		(point.y > getPlusV().y) ? (point.y + rayon) : (getPlusV().y + rayon),
-		(point.z > getPlusV().z) ? (point.z + rayon) : (getPlusV().z + rayon));
+	return new Vector3d((point.x > getPlusV().x) ? (point.x + radius) : (getPlusV().x + radius),
+		(point.y > getPlusV().y) ? (point.y + radius) : (getPlusV().y + radius),
+		(point.z > getPlusV().z) ? (point.z + radius) : (getPlusV().z + radius));
     }
 
     public Vector3d minWithR() {
-	return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x - rayon) : (point.x - rayon),
-		(point.y > getPlusV().y) ? (getPlusV().y - rayon) : (point.y - rayon),
-		(point.z > getPlusV().z) ? (getPlusV().z - rayon) : (point.z - rayon));
+	return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x - radius) : (point.x - radius),
+		(point.y > getPlusV().y) ? (getPlusV().y - radius) : (point.y - radius),
+		(point.z > getPlusV().z) ? (getPlusV().z - radius) : (point.z - radius));
     }
 
     public Vector3d max() {
@@ -390,7 +390,7 @@ public class Matter implements Serializable {
 		+ net.jafama.FastMath.pow2(deltaSpeed.z);
 	double b = deltaPoint.x * deltaSpeed.x + deltaPoint.y * deltaSpeed.y + deltaPoint.z * deltaSpeed.z;
 	double c = (net.jafama.FastMath.pow2(deltaPoint.x) + net.jafama.FastMath.pow2(deltaPoint.y)
-		+ net.jafama.FastMath.pow2(deltaPoint.z)) - net.jafama.FastMath.pow2(rayon + m.getRayon());
+		+ net.jafama.FastMath.pow2(deltaPoint.z)) - net.jafama.FastMath.pow2(radius + m.getRadius());
 	double delta = net.jafama.FastMath.pow2(b) - a * c;
 	if (delta > 0 && a != 0) {
 	    double rd = net.jafama.FastMath.sqrt(delta);
@@ -406,8 +406,8 @@ public class Matter implements Serializable {
     }
 
     public Vector3d positionAfterRepulsionWith(Matter m) {
-	double ratio = rayon / (rayon + m.getRayon());
-	double lengthToMove = rayon - ratio * HelperNewton.distance(point, m.getPoint());
+	double ratio = radius / (radius + m.getRadius());
+	double lengthToMove = radius - ratio * HelperNewton.distance(point, m.getPoint());
 	Vector3d toMove = new Vector3d(point);
 	toMove.sub(m.getPoint());
 	toMove.normalize();
@@ -565,9 +565,6 @@ public class Matter implements Serializable {
 	double length = point.length() + point.length() * HelperVariable.H0ms * parameters.getTimeFactor();
 	point.normalize();
 	point.scale(length);
-
-	//rayon = rayon + rayon *  HelperVariable.H0ms * parameters.getTimeFactor();
-	//density = mass /(4 * net.jafama.FastMath.PI * net.jafama.FastMath.pow(rayon,(double) 3)); 
     }
 
     public void orbitalCircularSpeed(Matter m, Vector3d axis, double speedRation) {

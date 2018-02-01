@@ -586,7 +586,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 		    || m.getTypeOfObject().equals(TypeOfObject.Dark) && parameters.isShowDarkMatter()) {
 		gl.glLoadIdentity();
 		double r = 0;
-		r = (m.getRayon() * parameters.getScala() < 1 ? 1 : m.getRayon() * parameters.getScala());
+		r = (m.getRadius() * parameters.getScala() < 1 ? 1 : m.getRadius() * parameters.getScala());
 
 		gl.glTranslated(parameters.getScala() * m.getPoint().x, parameters.getScala() * m.getPoint().y,
 			parameters.getScala() * m.getPoint().z);
@@ -619,19 +619,19 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 		switch (m.getTypeOfObject()) {
 		case Matter:
 		    gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-		    r = (parameters.getMatterRendererExtender() * m.getRayon() * parameters.getScala() < 1 ? 1
-			    : parameters.getMatterRendererExtender() * m.getRayon() * parameters.getScala());
+		    r = (parameters.getMatterRendererExtender() * m.getRadius() * parameters.getScala() < 1 ? 1
+			    : parameters.getMatterRendererExtender() * m.getRadius() * parameters.getScala());
 		    break;
 
 		case Gas:
 		    gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[2]);
-		    r = (parameters.getGasRendererExtender() * m.getRayon() * parameters.getScala() < 1 ? 1
-			    : parameters.getGasRendererExtender() * m.getRayon() * parameters.getScala());
+		    r = (parameters.getGasRendererExtender() * m.getRadius() * parameters.getScala() < 1 ? 1
+			    : parameters.getGasRendererExtender() * m.getRadius() * parameters.getScala());
 		    break;
 
 		case Dark:
 		    gl.glBindTexture(GL2.GL_TEXTURE_2D, textures[0]);
-		    r = parameters.getDarkMatterRendererExtender() * m.getRayon() * parameters.getScala();
+		    r = parameters.getDarkMatterRendererExtender() * m.getRadius() * parameters.getScala();
 		    break;
 
 		default:

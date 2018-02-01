@@ -85,7 +85,7 @@ public class Solid {
 	    double u = relativeSpeed.dot(radialSpeed);
 
 	    double p = HelperNewton.distance(centroid, m)
-		    / ((newRadius + m.getRayon()) * m.getParameters().getCollisionDistanceRatio());
+		    / ((newRadius + m.getRadius()) * m.getParameters().getCollisionDistanceRatio());
 
 	    radialSpeed.scale((1 - p) * u * newViscosity);
 	    m.getAccel().sub(radialSpeed);
