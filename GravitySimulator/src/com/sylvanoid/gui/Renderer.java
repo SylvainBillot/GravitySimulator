@@ -58,12 +58,12 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	reload(guiProgram);
     }
 
-    public void reload(GUIProgram guiProgram) {
-	this.guiProgram = guiProgram;
-	this.univers = guiProgram.getUnivers();
-	this.forTrace = guiProgram.getForTrace();
-	this.parameters = guiProgram.getParameters();
-	this.out = guiProgram.getOut();
+    private void restartUnivers() {
+	stopUnivers();
+	startUnivers();
+    }
+    
+    private void stopUnivers() {
 	try {
 	    thread.interrupt();
 	    while (thread.isAlive()) {
@@ -72,13 +72,28 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	} catch (Exception e) {
 	    // nothing
 	}
+    }
+    
+    private void startUnivers() {
 	thread = new Thread(univers);
 	thread.start();
     }
+    
+    public void reload(GUIProgram guiProgram) {
+	this.guiProgram = guiProgram;
+	this.univers = guiProgram.getUnivers();
+	this.forTrace = guiProgram.getForTrace();
+	this.parameters = guiProgram.getParameters();
+	this.out = guiProgram.getOut();
+
+	restartUnivers();
+    }
+    
+    
+    
 
     @Override
     public void display(GLAutoDrawable drawable) {
-	
 	// univers.process();
 	if (parameters.isShowTrace()) {
 	    List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();

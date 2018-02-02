@@ -368,7 +368,7 @@ public class Univers implements Runnable {
 	long startTimeMove = System.currentTimeMillis();
 
 	// Correction of gPoint derive because barnesHut is not perfect
-/*
+
 	Vector3d gSpeed = new Vector3d();
 	if (parameters.getTypeOfUnivers() != TypeOfUnivers.RandomExpensionUnivers) {
 	    Vector3d gDelta = new Vector3d(gPoint);
@@ -376,13 +376,13 @@ public class Univers implements Runnable {
 	    gSpeed = new Vector3d(gDelta.x / parameters.getTimeFactor(), gDelta.y / parameters.getTimeFactor(),
 		    gDelta.z / parameters.getTimeFactor());
 	}
-*/
+
 	for (Matter m : listMatter) {
 	    if (maxMassElement == null || maxMassElement.getMass() < m.getMass()) {
 		maxMassElement = m;
 	    }
 	    m.move();
-//	    m.getSpeed().sub(gSpeed);
+	    m.getSpeed().sub(gSpeed);
 	}
 	parameters.setMoveComputeTime(System.currentTimeMillis() - startTimeMove);
     }
