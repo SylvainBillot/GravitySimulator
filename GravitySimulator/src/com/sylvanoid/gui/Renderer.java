@@ -78,6 +78,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 
     @Override
     public void display(GLAutoDrawable drawable) {
+	
 	// univers.process();
 	if (parameters.isShowTrace()) {
 	    List<Vector3d[]> tmpList = new ArrayList<Vector3d[]>();

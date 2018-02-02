@@ -84,7 +84,7 @@ public class Matter implements Serializable {
 	this.pressureZero = initialPressureZero;
 	this.presure = 0;
 	this.name = "id: " + this.hashCode();
-	this.radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+	this.radius = net.jafama.FastMath.pow(3 * (mass / getDensityPondered()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
     }
 
@@ -188,7 +188,7 @@ public class Matter implements Serializable {
     }
 
     public void setMass(double mass) {
-	radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+	radius = net.jafama.FastMath.pow(3 * (mass / getDensityPondered()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
 	this.mass = mass;
     }
@@ -198,7 +198,7 @@ public class Matter implements Serializable {
     }
 
     public void setDensity(double density) {
-	radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
+	radius = net.jafama.FastMath.pow(3 * (mass / getDensityPondered()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
 	this.density = density;
     }
@@ -250,13 +250,19 @@ public class Matter implements Serializable {
     public void setMySolid(Solid mySolid) {
 	this.mySolid = mySolid;
     }
-    
+
     public boolean isDark() {
 	return typeOfObject == TypeOfObject.Dark;
     }
 
     public double getRadius() {
+	radius = net.jafama.FastMath.pow(3 * (mass / getDensityPondered()) / (4 * net.jafama.FastMath.PI),
+		(double) 1 / (double) 3);
 	return radius;
+    }
+
+    public double getDensityPondered() {
+	return density;
     }
 
     @XmlTransient
@@ -342,7 +348,7 @@ public class Matter implements Serializable {
 	pointBefore = new Vector3d(point);
 	point = getPlusV();
     }
-    
+
     public void fusion(List<Matter> listMatter) {
 	if (listMatter.contains(this)) {
 	    Vector3d newPoint = globalCentroid();
@@ -461,7 +467,7 @@ public class Matter implements Serializable {
 	double newDensity = density * mass;
 	double newMass = mass;
 	for (Matter m : fusionWith) {
-	    newDensity += m.getDensity() * m.getMass();
+	    newDensity += m.getDensityPondered() * m.getMass();
 	    newMass += m.getMass();
 	}
 	return newDensity / newMass;
@@ -542,7 +548,7 @@ public class Matter implements Serializable {
 	    speed = new Vector3d(newSpeed);
 	}
     }
-    
+
     public Vector3d deltaSpeedFromPositions() {
 	if (!parameters.isStaticDarkMatter() || typeOfObject != TypeOfObject.Dark) {
 	    double distance = HelperNewton.distance(pointBefore, point);
@@ -553,7 +559,7 @@ public class Matter implements Serializable {
 	    newSpeed.scale(speedLength);
 	    return new Vector3d(newSpeed);
 	}
-	return new Vector3d(0,0,0);
+	return new Vector3d(0, 0, 0);
     }
 
     public Vector3d accelerationWith(Matter m) {
@@ -574,11 +580,12 @@ public class Matter implements Serializable {
     private void orbitalCircularSpeed(double otherMass, Vector3d gPoint, Vector3d axis, double speedRation) {
 	if (!parameters.isStaticDarkMatter() || !isDark()) {
 	    double distance = new Point3d(point).distance(new Point3d(gPoint));
-	    orbitalCircularSpeed(gPoint, distance, otherMass, axis,speedRation);
+	    orbitalCircularSpeed(gPoint, distance, otherMass, axis, speedRation);
 	}
     }
 
-    public void orbitalCircularSpeed(Vector3d gPoint, double distance, double otherMass, Vector3d axis, double speedRatio) {
+    public void orbitalCircularSpeed(Vector3d gPoint, double distance, double otherMass, Vector3d axis,
+	    double speedRatio) {
 	if (!parameters.isStaticDarkMatter() || !isDark()) {
 	    double orbitalSpeedValue = net.jafama.FastMath.sqrt((HelperVariable.G * otherMass) / distance) * speedRatio;
 	    orbitalCircularSpeed(gPoint, axis, orbitalSpeedValue);
@@ -637,8 +644,10 @@ public class Matter implements Serializable {
 	    accel = HelperVector.rotate(accel, gPoint, axis, angle);
 	    point = HelperVector.rotate(point, gPoint, axis, angle);
 
-	    accel = axis.x != 0 ? HelperVector.rotate(accel, new Vector3d(net.jafama.FastMath.signum(axis.x), 0, 0),
-		    net.jafama.FastMath.PI / 2) : accel;
+	    accel = axis.x != 0
+		    ? HelperVector.rotate(accel, new Vector3d(net.jafama.FastMath.signum(axis.x), 0, 0),
+			    net.jafama.FastMath.PI / 2)
+		    : accel;
 	    accel = axis.y != 0 ? HelperVector.rotate(accel, new Vector3d(0, net.jafama.FastMath.signum(axis.y), 0),
 		    net.jafama.FastMath.signum(axis.y) * net.jafama.FastMath.PI / 2) : accel;
 	    accel = axis.z != 0 ? HelperVector.rotate(accel, new Vector3d(0, 0, net.jafama.FastMath.signum(axis.z)),

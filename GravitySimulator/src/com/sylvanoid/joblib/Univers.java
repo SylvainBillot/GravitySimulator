@@ -368,6 +368,7 @@ public class Univers implements Runnable {
 	long startTimeMove = System.currentTimeMillis();
 
 	// Correction of gPoint derive because barnesHut is not perfect
+/*
 	Vector3d gSpeed = new Vector3d();
 	if (parameters.getTypeOfUnivers() != TypeOfUnivers.RandomExpensionUnivers) {
 	    Vector3d gDelta = new Vector3d(gPoint);
@@ -375,13 +376,13 @@ public class Univers implements Runnable {
 	    gSpeed = new Vector3d(gDelta.x / parameters.getTimeFactor(), gDelta.y / parameters.getTimeFactor(),
 		    gDelta.z / parameters.getTimeFactor());
 	}
-
+*/
 	for (Matter m : listMatter) {
 	    if (maxMassElement == null || maxMassElement.getMass() < m.getMass()) {
 		maxMassElement = m;
 	    }
 	    m.move();
-	    m.getSpeed().sub(gSpeed);
+//	    m.getSpeed().sub(gSpeed);
 	}
 	parameters.setMoveComputeTime(System.currentTimeMillis() - startTimeMove);
     }
@@ -516,6 +517,7 @@ public class Univers implements Runnable {
 	    double P = 0;
 	    double Pn = 0;
 	    double pre = 0;
+	    m.setPresure(0);
 	    if ((!parameters.isStaticDarkMatter() || m.getTypeOfObject() != TypeOfObject.Dark)
 		    && m.getFusionWith().size() > 0) {
 		// compute density and near-density
@@ -542,7 +544,6 @@ public class Univers implements Runnable {
 		P = k * (p - p0);
 		Pn = kn * pn;
 		Vector3d dm = new Vector3d(0, 0, 0);
-		m.setPresure(0); // try
 		for (Matter m1 : m.getFusionWith()) {
 		    // Vector3d relativeSpeed = new Vector3d(m.getSpeed());
 		    // relativeSpeed.sub(m1.getSpeed());
@@ -575,6 +576,8 @@ public class Univers implements Runnable {
 		}
 		m.getSpeed().sub(dm);
 		m.getLossspeed().add(dm);
+		
+		
 	    }
 	}
     }
@@ -819,18 +822,18 @@ public class Univers implements Runnable {
     }
 
     private void createCubicUnivers() {
-	createUnivers(false, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), 0,
+	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), 0,
 		parameters.getNebulaRadius(), new Vector3d(1, 1, 1), parameters.getMatterDistribution(),
 		parameters.getGasDistribution(), parameters.getMatterViscosity(), parameters.getGasViscosity(),
 		new Vector3d(), new Vector3d(0.06, 0.05, 0.05), parameters.getViscoElasticity(),
 		parameters.getViscoElasticityNear(), parameters.getPressureZero());
-/*
+
 	double initialRatiusRatio = 1;
 	for (Matter m : listMatter) {
 	    m.getSpeed().add(HelperVector.acceleration(new Vector3d(), m.getPoint(),
 		    HelperVariable.H0ms * m.getPoint().length() * 1 / initialRatiusRatio));
 	}
-*/
+
     }
 
     private void createPlanetary() {
@@ -927,11 +930,11 @@ public class Univers implements Runnable {
     }
 
     private void createPlanetaryGenesisRandom() {
-	createPlanetaryRandom(parameters.getMatterRendererExtender() * 10, new Vector3d(1, 1, 0.05), 0.75);
+	createPlanetaryRandom(10, new Vector3d(1, 1, 0.05), 1);
     }
 
     private void createPlanetaryGenesisRandomV2() {
-	createPlanetaryGenesisV2(new Vector3d(1, 1, 0.2), 1);
+	createPlanetaryGenesisV2(new Vector3d(1, 1, 0.2), 0.5);
     }
 
     private void createPlanetaryRandom(double minimalDistanceCentralStarRadiusRatio, Vector3d ratioxyz,

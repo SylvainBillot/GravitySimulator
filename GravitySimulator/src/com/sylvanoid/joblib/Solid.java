@@ -64,7 +64,7 @@ public class Solid {
 	    centroid.y += m.getPoint().y * m.getMass();
 	    centroid.z += m.getPoint().z * m.getMass();
 	    newMass += m.getMass();
-	    newDensity += m.getDensity() * m.getMass();
+	    newDensity += m.getDensityPondered() * m.getMass();
 	    newViscosity += m.getViscosity() * m.getMass();
 	}
 	newSpeed.scale(1 / newMass);
