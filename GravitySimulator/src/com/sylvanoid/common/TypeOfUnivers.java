@@ -5,7 +5,7 @@ public enum TypeOfUnivers {
 	    "Random Static Univers"), RandomRotateUnivers("Random Rotate Univers Eliptic"), PlanetariesGenesis(
 		    "Planetaries Genenesis"), RandomRotateUniverCircular(
 			    "Random Rotate Univers Circular"), RandomExpensionUnivers(
-				    "Random Expension Univers"), PlanetariesGenesisv2("Planetaries Genenesis V2");
+				    "Random Expension Univers"), ProtoStars("Proto stars");
 
     private final String label;
 

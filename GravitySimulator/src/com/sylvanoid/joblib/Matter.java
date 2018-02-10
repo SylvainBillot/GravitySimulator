@@ -262,7 +262,7 @@ public class Matter implements Serializable {
     }
 
     public double getDensityPondered() {
-	return density;
+	return density * ((1 + presure) / (1 - presure));
     }
 
     @XmlTransient
@@ -594,9 +594,13 @@ public class Matter implements Serializable {
 
     private void orbitalCircularSpeed(Vector3d gPoint, Vector3d axis, double orbitalSpeedValue) {
 	Vector3d accel = HelperVector.acceleration(point, gPoint, 1);
+	accel.normalize();
 	Vector3d cross = new Vector3d();
 	cross.cross(axis, accel);
 	cross.normalize();
+
+	
+	
 	cross.scale(orbitalSpeedValue);
 	speed.add(cross);
     }

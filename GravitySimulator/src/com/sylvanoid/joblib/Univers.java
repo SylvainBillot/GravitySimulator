@@ -143,8 +143,8 @@ public class Univers implements Runnable {
 	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.RandomExpensionUnivers) {
 		createCubicUnivers();
 	    }
-	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.PlanetariesGenesisv2) {
-		createPlanetaryGenesisRandomV2();
+	    if (parameters.getTypeOfUnivers() == TypeOfUnivers.ProtoStars) {
+		createProtoStarsRandom();
 	    }
 	    computeMassLimitsCentroidSpeed(true);
 	}
@@ -517,17 +517,11 @@ public class Univers implements Runnable {
 	    double P = 0;
 	    double Pn = 0;
 	    double pre = 0;
-	    m.setPresure(0);
+	    double preRatio = 0;
 	    if ((!parameters.isStaticDarkMatter() || m.getTypeOfObject() != TypeOfObject.Dark)
 		    && m.getFusionWith().size() > 0) {
 		// compute density and near-density
 		for (Matter m1 : m.getFusionWith()) {
-		    // Vector3d relativeSpeed = new Vector3d(m.getSpeed());
-		    // relativeSpeed.sub(m1.getSpeed());
-		    // Vector3d radialSpeed = new Vector3d(m1.getPoint());
-		    // radialSpeed.sub(m.getPoint());
-		    // radialSpeed.normalize();
-		    // double u = relativeSpeed.dot(radialSpeed);
 		    // if (u > 0) {
 		    double q = HelperNewton.distance(m, m1)
 			    / (parameters.getCollisionDistanceRatio() * (m.getRadius() + m1.getRadius()));
@@ -543,14 +537,9 @@ public class Univers implements Runnable {
 		p0 = m.globalPressureZero();
 		P = k * (p - p0);
 		Pn = kn * pn;
+
 		Vector3d dm = new Vector3d(0, 0, 0);
 		for (Matter m1 : m.getFusionWith()) {
-		    // Vector3d relativeSpeed = new Vector3d(m.getSpeed());
-		    // relativeSpeed.sub(m1.getSpeed());
-		    // Vector3d radialSpeed = new Vector3d(m1.getPoint());
-		    // radialSpeed.sub(m.getPoint());
-		    // radialSpeed.normalize();
-		    // double u = relativeSpeed.dot(radialSpeed);
 		    // if (u > 0) {
 		    double q = HelperNewton.distance(m, m1)
 			    / (parameters.getCollisionDistanceRatio() * (m.getRadius() + m1.getRadius()));
@@ -570,15 +559,14 @@ public class Univers implements Runnable {
 		    dm.add(rijm1);
 
 		    /* Try to get pseudo presure */
-		    m.setPresure(m.getPresure() + pre);
+		    preRatio += pre / (2 * m.getFusionWith().size() * m.getFusionWith().size());
 		    // }
 
 		}
 		m.getSpeed().sub(dm);
 		m.getLossspeed().add(dm);
-		
-		
 	    }
+	    m.setPresure(preRatio);
 	}
     }
 
@@ -933,8 +921,8 @@ public class Univers implements Runnable {
 	createPlanetaryRandom(10, new Vector3d(1, 1, 0.05), 1);
     }
 
-    private void createPlanetaryGenesisRandomV2() {
-	createPlanetaryGenesisV2(new Vector3d(1, 1, 0.2), 0.5);
+    private void createProtoStarsRandom() {
+	createProtoStars(new Vector3d(1, 1, 1),0.1);
     }
 
     private void createPlanetaryRandom(double minimalDistanceCentralStarRadiusRatio, Vector3d ratioxyz,
@@ -942,8 +930,9 @@ public class Univers implements Runnable {
 	Matter m1 = new Matter(parameters,
 		new Vector3d(net.jafama.FastMath.random(), net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 		parameters.getDarkMatterMass(), new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
-		parameters.getDarkMatterDensity(), TypeOfObject.Matter, parameters.getMatterViscosity(),
+		parameters.getDarkMatterDensity(), TypeOfObject.Dark, parameters.getMatterViscosity(),
 		parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
+	m1.setColor(new Vector3d(1,1,1));
 	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 		m1.getRadius() * minimalDistanceCentralStarRadiusRatio, parameters.getNebulaRadius(), ratioxyz,
 		parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
@@ -957,15 +946,14 @@ public class Univers implements Runnable {
 
     }
 
-    private void createPlanetaryGenesisV2(Vector3d ratioxyz, double speedRatio) {
+    private void createProtoStars(Vector3d ratioxyz, double speedRatio) {
 	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
-		parameters.getNebulaRadius() * 0.001, parameters.getNebulaRadius(), ratioxyz,
+		net.jafama.FastMath.random(), parameters.getNebulaRadius(), ratioxyz,
 		parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
 		parameters.getGasViscosity(), new Vector3d(), new Vector3d(0.06, 0.05, 0.05),
 		parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
 
 	orbitalCircularSpeed(speedRatio, null);
-
     }
 
     private void orbitalCircularSpeed(double speedRatio, Matter m1) {
@@ -990,7 +978,7 @@ public class Univers implements Runnable {
 	    if (m != m1 && (!parameters.isStaticDarkMatter() || !m.isDark())) {
 		double distance = new Point3d(m.getPoint()).distance(new Point3d(getGPoint()));
 		m.orbitalCircularSpeed(getGPoint(), distance, innerMassTreeMapCumul.get(distance),
-			new Vector3d(0, 0, 1), speedRatio);
+			new Vector3d(0,0,1), speedRatio);
 	    }
 	}
     }

@@ -87,6 +87,7 @@ public class Parameters implements Serializable {
     private double gasRendererExtender = 10;
     private double darkMatterRendererExtender = 20;
     private boolean viscousDarkMatter = false;
+    
     private int videoPicBy = 1;
 
     public Parameters() {

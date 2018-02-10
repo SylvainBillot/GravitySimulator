@@ -1059,18 +1059,18 @@ public class GUIParam extends JDialog {
 		    gasRendererExtender.setValue(1);
 		    darkMatterRendererExtender.setValue(1);
 		    break;
-		case 7: // Planetary genesis V2
-		    parameters.setTypeOfUnivers(TypeOfUnivers.PlanetariesGenesisv2);
+		case 7: // Proto Stars
+		    parameters.setTypeOfUnivers(TypeOfUnivers.ProtoStars);
 		    manageImpact.setSelected(true);
 		    timeFactor.setValue(HelperVariable.ONEDAY*10);
 		    scala.setValue(5E-10);
-		    typeOfImpact.setSelectedIndex(0);
+		    typeOfImpact.setSelectedIndex(1);
 		    numberOfObjects.setValue(1000);
 		    densiteMin.setValue(1E-4);
 		    nebulaRadius.setValue(HelperVariable.UA * 100);
 		    massObjectMin.setValue(HelperVariable.M / 1E7);
 		    massObjectMax.setValue(HelperVariable.M / 1E2);
-		    matterDistribution.setValue(3);
+		    matterDistribution.setValue(1);
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(1);
