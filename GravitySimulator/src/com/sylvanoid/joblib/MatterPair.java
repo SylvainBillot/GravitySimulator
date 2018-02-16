@@ -149,6 +149,30 @@ public class MatterPair implements Comparable<MatterPair> {
 
     }
 
+    public void moveForAvoidCollision() {
+	double q = HelperNewton.distance(m1, m2)
+		/ (parameters.getCollisionDistanceRatio() * (m1.getRadius() + m2.getRadius()));
+	if (q < 1) {
+	    double mass = m1.getMass() + m2.getMass();
+	    Vector3d centroid = new Vector3d((m1.getPoint().x * m1.getMass() + m2.getPoint().x * m2.getMass()) / mass,
+		    (m1.getPoint().y * m1.getMass() + m2.getPoint().y * m2.getMass()) / mass,
+		    (m1.getPoint().z * m1.getMass() + m2.getPoint().z * m2.getMass()) / mass);
+	    m1.getPoint().sub(centroid);
+	    m2.getPoint().sub(centroid);
+
+	    double nl1 = m1.getPoint().length() / (q / 1.01);
+	    double nl2 = m2.getPoint().length() / (q / 1.01);
+
+	    m1.getPoint().normalize();
+	    m2.getPoint().normalize();
+	    m1.getPoint().scale(nl1);
+	    m2.getPoint().scale(nl2);
+
+	    m1.getPoint().add(centroid);
+	    m2.getPoint().add(centroid);
+	}
+    }
+
     public double distance() {
 	return HelperNewton.distance(m1, m2);
     }

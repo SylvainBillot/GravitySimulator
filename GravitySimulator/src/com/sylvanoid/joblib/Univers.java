@@ -358,6 +358,16 @@ public class Univers implements Runnable {
 	}
     }
 
+    private void avoidCollisionAfterCreation() {
+	computeMassLimitsCentroidSpeed(true);
+	while (computeBarnesHutCollision() > 0) {
+	    for (MatterPair mp : collisionPairs.values()) {
+		mp.moveForAvoidCollision();
+	    }
+	    computeMassLimitsCentroidSpeed(true);
+	}
+    }
+
     private void changeSpeed() {
 	for (Matter m : listMatter) {
 	    m.changeSpeed();
@@ -646,16 +656,20 @@ public class Univers implements Runnable {
 	    double y = 1;
 	    double z = 1;
 	    if (spherical) {
+
+		do {
 		double d = net.jafama.FastMath.pow(net.jafama.FastMath.random(), homogeneousDistributionPow);
 
-		double r = radiusMin + (radiusMax - radiusMin) * net.jafama.FastMath.pow(d, 1d / 3d);
+		//double r = radiusMin + (radiusMax - radiusMin) * net.jafama.FastMath.pow(d, 1d / 3d);
+		double r = radiusMax * net.jafama.FastMath.pow(d, 1d / 3d);
 
 		double s = 2 * (net.jafama.FastMath.random() - 0.5);
 		double alpha = 2 * net.jafama.FastMath.PI * (net.jafama.FastMath.random() - 0.5);
 		double c = r * net.jafama.FastMath.sqrt(1 - net.jafama.FastMath.pow2(s));
-		x = c * net.jafama.FastMath.cos(alpha);
-		y = c * net.jafama.FastMath.sin(alpha);
-		z = r * s;
+		x = c * net.jafama.FastMath.cos(alpha) * ratio.x;
+		y = c * net.jafama.FastMath.sin(alpha) * ratio.y;
+		z = r * s * ratio.z;
+		}while(new Vector3d(x,y,z).length()<radiusMin);
 
 	    } else {
 		// Is Cubic
@@ -688,9 +702,9 @@ public class Univers implements Runnable {
 		double sy = net.jafama.FastMath.signum(net.jafama.FastMath.random() - 0.5);
 		double sz = net.jafama.FastMath.signum(net.jafama.FastMath.random() - 0.5);
 
-		x = sx * (radiusMin + (radiusMax - radiusMin) * dx);
-		y = sy * (radiusMin + (radiusMax - radiusMin) * dy);
-		z = sz * (radiusMin + (radiusMax - radiusMin) * dz);
+		x = sx * (radiusMin + (radiusMax - radiusMin) * dx) * ratio.x;
+		y = sy * (radiusMin + (radiusMax - radiusMin) * dy) * ratio.y;
+		z = sz * (radiusMin + (radiusMax - radiusMin) * dz) * ratio.z;
 
 	    }
 
@@ -708,8 +722,7 @@ public class Univers implements Runnable {
 			    0.45 + net.jafama.FastMath.random() * 0.05, 0.55 + net.jafama.FastMath.random() * 0.05));
 		}
 	    }
-	    m = new Matter(parameters,
-		    new Vector3d(origine.x + x * ratio.x, origine.y + y * ratio.y, origine.z + z * ratio.z),
+	    m = new Matter(parameters, new Vector3d(origine.x + x, origine.y + y, origine.z + z),
 		    minMass + net.jafama.FastMath.random() * (maxMass - minMass)
 			    + 1E-100 * net.jafama.FastMath.random(),
 		    new Vector3d(0, 0, 0), color, density, typeOfObject, initialViscosity, initialViscoElasticity,
@@ -734,6 +747,7 @@ public class Univers implements Runnable {
 		parameters.getGasDistribution(), parameters.getMatterViscosity(), parameters.getGasViscosity(),
 		new Vector3d(), new Vector3d(0.06, 0.05, 0.05), parameters.getViscoElasticity(),
 		parameters.getViscoElasticityNear(), parameters.getPressureZero());
+	avoidCollisionAfterCreation();
     }
 
     private void createRandomRotateUnivers() {
@@ -815,6 +829,8 @@ public class Univers implements Runnable {
 		parameters.getGasDistribution(), parameters.getMatterViscosity(), parameters.getGasViscosity(),
 		new Vector3d(), new Vector3d(0.06, 0.05, 0.05), parameters.getViscoElasticity(),
 		parameters.getViscoElasticityNear(), parameters.getPressureZero());
+
+	avoidCollisionAfterCreation();
 
 	double initialRatiusRatio = 1;
 	for (Matter m : listMatter) {
@@ -918,11 +934,11 @@ public class Univers implements Runnable {
     }
 
     private void createPlanetaryGenesisRandom() {
-	createPlanetaryRandom(10, new Vector3d(1, 1, 0.05), 1);
+	createPlanetaryRandom(2, new Vector3d(1, 1, 0.5), 1);
     }
 
     private void createProtoStarsRandom() {
-	createProtoStars(new Vector3d(1, 1, 1),0.1);
+	createProtoStars(new Vector3d(1, 1, 1), 0.25);
     }
 
     private void createPlanetaryRandom(double minimalDistanceCentralStarRadiusRatio, Vector3d ratioxyz,
@@ -930,9 +946,9 @@ public class Univers implements Runnable {
 	Matter m1 = new Matter(parameters,
 		new Vector3d(net.jafama.FastMath.random(), net.jafama.FastMath.random(), net.jafama.FastMath.random()),
 		parameters.getDarkMatterMass(), new Vector3d(0, 0, 0), new Vector3d(1, 1, 1),
-		parameters.getDarkMatterDensity(), TypeOfObject.Dark, parameters.getMatterViscosity(),
+		parameters.getDarkMatterDensity(), TypeOfObject.Dark, parameters.getDarkMatterViscosity(),
 		parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
-	m1.setColor(new Vector3d(1,1,1));
+	m1.setColor(new Vector3d(1, 1, 1));
 	createUnivers(true, new Vector3d(0, 0, 0), new Vector3d(0, 0, 0), new Vector3d(0, 0, 1),
 		m1.getRadius() * minimalDistanceCentralStarRadiusRatio, parameters.getNebulaRadius(), ratioxyz,
 		parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
@@ -941,7 +957,7 @@ public class Univers implements Runnable {
 	listMatter.add(m1);
 	mass += m1.getMass();
 	visibleMass += m1.getMass();
-
+	avoidCollisionAfterCreation();
 	orbitalCircularSpeed(speedRatio, m1);
 
     }
@@ -952,7 +968,7 @@ public class Univers implements Runnable {
 		parameters.getMatterDistribution(), parameters.getGasDistribution(), parameters.getMatterViscosity(),
 		parameters.getGasViscosity(), new Vector3d(), new Vector3d(0.06, 0.05, 0.05),
 		parameters.getViscoElasticity(), parameters.getViscoElasticityNear(), parameters.getPressureZero());
-
+	avoidCollisionAfterCreation();
 	orbitalCircularSpeed(speedRatio, null);
     }
 
@@ -978,7 +994,7 @@ public class Univers implements Runnable {
 	    if (m != m1 && (!parameters.isStaticDarkMatter() || !m.isDark())) {
 		double distance = new Point3d(m.getPoint()).distance(new Point3d(getGPoint()));
 		m.orbitalCircularSpeed(getGPoint(), distance, innerMassTreeMapCumul.get(distance),
-			new Vector3d(0,0,1), speedRatio);
+			new Vector3d(0, 0, 1), speedRatio);
 	    }
 	}
     }

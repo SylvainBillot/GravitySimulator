@@ -84,7 +84,7 @@ public class Matter implements Serializable {
 	this.pressureZero = initialPressureZero;
 	this.presure = 0;
 	this.name = "id: " + this.hashCode();
-	this.radius = net.jafama.FastMath.pow(3 * (mass / getDensityPondered()) / (4 * net.jafama.FastMath.PI),
+	this.radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
     }
 
@@ -188,7 +188,7 @@ public class Matter implements Serializable {
     }
 
     public void setMass(double mass) {
-	radius = net.jafama.FastMath.pow(3 * (mass / getDensityPondered()) / (4 * net.jafama.FastMath.PI),
+	radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
 	this.mass = mass;
     }
@@ -198,7 +198,7 @@ public class Matter implements Serializable {
     }
 
     public void setDensity(double density) {
-	radius = net.jafama.FastMath.pow(3 * (mass / getDensityPondered()) / (4 * net.jafama.FastMath.PI),
+	radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
 	this.density = density;
     }
@@ -256,13 +256,9 @@ public class Matter implements Serializable {
     }
 
     public double getRadius() {
-	radius = net.jafama.FastMath.pow(3 * (mass / getDensityPondered()) / (4 * net.jafama.FastMath.PI),
+	radius = net.jafama.FastMath.pow(3 * (mass / getDensity()) / (4 * net.jafama.FastMath.PI),
 		(double) 1 / (double) 3);
 	return radius;
-    }
-
-    public double getDensityPondered() {
-	return density * ((1 + presure) / (1 - presure));
     }
 
     @XmlTransient
@@ -467,7 +463,7 @@ public class Matter implements Serializable {
 	double newDensity = density * mass;
 	double newMass = mass;
 	for (Matter m : fusionWith) {
-	    newDensity += m.getDensityPondered() * m.getMass();
+	    newDensity += m.getDensity() * m.getMass();
 	    newMass += m.getMass();
 	}
 	return newDensity / newMass;
