@@ -88,7 +88,8 @@ public class Parameters implements Serializable {
     private double darkMatterRendererExtender = 20;
     private boolean viscousDarkMatter = false;
     
-    private int videoPicBy = 1;
+    private double videoPicEveryCycle = 1; // pic by timefactor
+    
 
     public Parameters() {
 
@@ -716,18 +717,17 @@ public class Parameters implements Serializable {
     }
 
     /**
-     * @return the videoPicBy
+     * @return the videoPicEveryCycle
      */
-    public int getVideoPicBy() {
-	return videoPicBy;
+    public double getVideoPicEveryCycle() {
+	return videoPicEveryCycle;
     }
 
     /**
-     * @param videoPicBy
-     *            the videoPicBy to set
+     * @param videoPicEveryCycle the videoPicEveryCycle to set
      */
-    public void setVideoPicBy(int videoPicBy) {
-	this.videoPicBy = videoPicBy;
+    public void setVideoPicEveryCycle(double videoPicEveryCycle) {
+	this.videoPicEveryCycle = videoPicEveryCycle;
     }
 
 }

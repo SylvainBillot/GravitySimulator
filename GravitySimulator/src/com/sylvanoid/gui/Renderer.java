@@ -50,7 +50,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
     private TextRenderer textRenderer;
     private java.awt.Point mousePoint = new Point(-1, -1);
 
-    private int cptImg = 0;
+    private double elapsedTimeOld = 0;
 
     private Thread thread;
 
@@ -62,7 +62,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	stopUnivers();
 	startUnivers();
     }
-    
+
     private void stopUnivers() {
 	try {
 	    thread.interrupt();
@@ -73,12 +73,12 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	    // nothing
 	}
     }
-    
+
     private void startUnivers() {
 	thread = new Thread(univers);
 	thread.start();
     }
-    
+
     public void reload(GUIProgram guiProgram) {
 	this.guiProgram = guiProgram;
 	this.univers = guiProgram.getUnivers();
@@ -88,9 +88,6 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 
 	restartUnivers();
     }
-    
-    
-    
 
     @Override
     public void display(GLAutoDrawable drawable) {
@@ -113,15 +110,17 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 
 	if (parameters.isExportToVideo()) {
 	    try {
-		cptImg++;
-		cptImg %= parameters.getVideoPicBy();
-		if (cptImg == 0) {
+		if (parameters.getElapsedTime() >= elapsedTimeOld
+			+ parameters.getTimeFactor() * (1.0 / parameters.getVideoPicEveryCycle())) {
 		    out.encodeImage((new Robot()).createScreenCapture(guiProgram.getBounds()));
+		    elapsedTimeOld = parameters.getElapsedTime();
 		}
 	    } catch (IOException | AWTException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	    }
+	} else if (elapsedTimeOld != 0) {
+	    elapsedTimeOld = 0;
 	}
     }
 
@@ -613,6 +612,7 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 		glu.gluQuadricNormals(quad, GLU.GLU_FLAT);
 		glu.gluQuadricOrientation(quad, GLU.GLU_OUTSIDE);
 		glu.gluSphere(quad, r, 16, 16);
+		glu.gluSphere(quad, r, 4, 4);
 		glu.gluDeleteQuadric(quad);
 
 		gl.glEnd();

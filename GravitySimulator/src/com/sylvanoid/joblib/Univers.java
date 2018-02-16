@@ -934,7 +934,7 @@ public class Univers implements Runnable {
     }
 
     private void createPlanetaryGenesisRandom() {
-	createPlanetaryRandom(2, new Vector3d(1, 1, 0.5), 1);
+	createPlanetaryRandom(2, new Vector3d(1, 1, 0.1), 1);
     }
 
     private void createProtoStarsRandom() {
