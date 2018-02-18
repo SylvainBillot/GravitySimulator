@@ -264,6 +264,7 @@ public class GUIProgram extends JFrame {
 	GLProfile glp = GLProfile.getDefault();
 	GLCapabilities caps = new GLCapabilities(glp);
 	gljpanel = new GLJPanel(caps);
+	
 	renderer = new Renderer(this);
 	gljpanel.addGLEventListener(renderer);
 	gljpanel.addKeyListener(renderer);

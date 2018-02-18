@@ -23,11 +23,13 @@ public class Parameters implements Serializable {
     private double elapsedTime = 0;
     private double timeFactor = 6;
     private double darkMatterMass = 1E12;
-    private double darkMatterDensity = 1E10;
+    private double darkMatterDensityMin = 1E10;
+    private double darkMatterDensityMax = 1E10;
     private boolean manageImpact = false;
     private boolean exportToVideo = false;
     private TypeOfImpact typeOfImpact = TypeOfImpact.Fusion;
-    private double density = 100;
+    private double densityMin = 100;
+    private double densityMax = 100;
     private int numberOfObjects = 1000;
     private double nebulaRadius = HelperVariable.UA * 10;
     private double massObjectMin = 10000;
@@ -61,7 +63,8 @@ public class Parameters implements Serializable {
     private double negligeableMass = 0;
     private int numOfLowMassParticule = 0;
     private double lowMassParticuleMass = 1;
-    private double lowMassDensity = 1;
+    private double lowMassDensityMin = 1;
+    private double lowMassDensityMax = 1;
     private int nbARms = 3;
     private boolean exportData = false;
     private boolean playData = false;
@@ -126,14 +129,23 @@ public class Parameters implements Serializable {
 	this.timeFactor = timeFactor;
     }
 
-    public double getDarkMatterDensity() {
-	return darkMatterDensity;
+    public double getDarkMatterDensityMin() {
+	return darkMatterDensityMin;
     }
 
-    public void setDarkMatterDensity(double darkMatterDensity) {
-	this.darkMatterDensity = darkMatterDensity;
+    public void setDarkMatterDensityMin(double darkMatterDensityMin) {
+	this.darkMatterDensityMin = darkMatterDensityMin;
     }
 
+    public double getDarkMatterDensityMax() {
+	return darkMatterDensityMax;
+    }
+
+    public void setDarkMatterDensityMax(double darkMatterDensityMax) {
+	this.darkMatterDensityMax = darkMatterDensityMax;
+    }
+
+    
     public double getDarkMatterMass() {
 	return darkMatterMass;
     }
@@ -174,14 +186,23 @@ public class Parameters implements Serializable {
 	this.exportToVideo = exportToVideo;
     }
 
-    public double getDensity() {
-	return density;
+    public double getDensityMin() {
+	return densityMin;
     }
 
-    public void setDensity(double density) {
-	this.density = density;
+    public void setDensityMin(double densityMin) {
+	this.densityMin = densityMin;
     }
 
+    public double getDensityMax() {
+	return densityMax;
+    }
+
+    public void setDensityMax(double densityMax) {
+	this.densityMax = densityMax;
+    }
+
+    
     public int getNumberOfObjects() {
 	return numberOfObjects;
     }
@@ -441,14 +462,22 @@ public class Parameters implements Serializable {
 	this.lowMassParticuleMass = lowMassParticuleMass;
     }
 
-    public double getLowMassDensity() {
-	return lowMassDensity;
+    public double getLowMassDensityMin() {
+	return lowMassDensityMin;
     }
 
-    public void setLowMassDensity(double lowMassDensity) {
-	this.lowMassDensity = lowMassDensity;
+    public void setLowMassDensityMin(double lowMassDensityMin) {
+	this.lowMassDensityMin = lowMassDensityMin;
     }
 
+    public double getLowMassDensityMax() {
+	return lowMassDensityMax;
+    }
+
+    public void setLowMassDensityMax(double lowMassDensityMax) {
+	this.lowMassDensityMax = lowMassDensityMax;
+    }
+    
     public double getEllipseShiftRatio() {
 	return ellipseShiftRatio;
     }

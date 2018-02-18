@@ -42,6 +42,7 @@ public class GUIParam extends JDialog {
     private JFormattedTextField numberOfObjects;
     private JFormattedTextField nebulaRadius;
     private JFormattedTextField densiteMin;
+    private JFormattedTextField densiteMax;
     private JFormattedTextField massObjectMin;
     private JFormattedTextField massObjectMax;
     private JFormattedTextField negligeableMass;
@@ -51,7 +52,8 @@ public class GUIParam extends JDialog {
     private JFormattedTextField ellipseRatio;
     private JFormattedTextField ellipseShiftRatio;
     private JFormattedTextField lowMassParticuleMass;
-    private JFormattedTextField lowMassDensity;
+    private JFormattedTextField lowMassDensityMin;
+    private JFormattedTextField lowMassDensityMax;
     private JFormattedTextField gasDistribution;
     private JFormattedTextField darkMatterDistribution;
     private JFormattedTextField darkMatterXRatio;
@@ -59,7 +61,8 @@ public class GUIParam extends JDialog {
     private JFormattedTextField darkMatterZRatio;
     private JComboBox<String> typeOfImpact;
     private JFormattedTextField darkMatterMass;
-    private JFormattedTextField darkMatterDensity;
+    private JFormattedTextField darkMatterDensityMin;
+    private JFormattedTextField darkMatterDensityMax;
     private JFormattedTextField collisionDistanceRatio;
     private JFormattedTextField matterViscosity;
     private JFormattedTextField gasViscosity;
@@ -194,11 +197,38 @@ public class GUIParam extends JDialog {
 	JLabel label_DensityObject = new JLabel("Density of objects:");
 	label_DensityObject.setFont(new Font("Dialog", Font.BOLD, 10));
 	getContentPane().add(label_DensityObject);
+	
+	JPanel panel = new JPanel();
+	getContentPane().add(panel);
+	panel.setLayout(null);
+	
+	densiteMax = new JFormattedTextField(dfsc);
+	densiteMax.setHorizontalAlignment(SwingConstants.RIGHT);
+	densiteMax.setFont(new Font("Dialog", Font.PLAIN, 10));
+	densiteMax.setEnabled(false);
+	densiteMax.setBounds(162, 0, 87, 27);
+	densiteMax.setValue(parameters.getDensityMax());
+	panel.add(densiteMax);
+	
+	JLabel label = new JLabel("Max:");
+	label.setFont(new Font("Dialog", Font.BOLD, 10));
+	label.setBounds(129, -1, 39, 29);
+	panel.add(label);
+	
+	JLabel label_1 = new JLabel("Min:");
+	label_1.setFont(new Font("Dialog", Font.BOLD, 10));
+	label_1.setBounds(6, -1, 46, 29);
+	panel.add(label_1);
+	
+	
 	densiteMin = new JFormattedTextField(dfsc);
-	densiteMin.setFont(new Font("Dialog", Font.PLAIN, 10));
 	densiteMin.setHorizontalAlignment(SwingConstants.RIGHT);
-	densiteMin.setValue(parameters.getDensity());
-	getContentPane().add(densiteMin);
+	densiteMin.setFont(new Font("Dialog", Font.PLAIN, 10));
+	densiteMin.setEnabled(false);
+	densiteMin.setBounds(34, -1, 87, 27);
+	densiteMin.setValue(parameters.getDensityMin());
+	panel.add(densiteMin);
+	
 
 	JLabel label_MassObject = new JLabel("Mass object:");
 	label_MassObject.setFont(new Font("Dialog", Font.BOLD, 10));
@@ -293,11 +323,37 @@ public class GUIParam extends JDialog {
 	JLabel label_13 = new JLabel("Gas particle density:");
 	label_13.setFont(new Font("Dialog", Font.BOLD, 10));
 	getContentPane().add(label_13);
-	lowMassDensity = new JFormattedTextField(dfsc);
-	lowMassDensity.setFont(new Font("Dialog", Font.PLAIN, 10));
-	lowMassDensity.setHorizontalAlignment(SwingConstants.RIGHT);
-	lowMassDensity.setValue(parameters.getLowMassDensity());
-	getContentPane().add(lowMassDensity);
+	
+	JPanel panel_1 = new JPanel();
+	getContentPane().add(panel_1);
+	panel_1.setLayout(null);
+	
+	lowMassDensityMax = new JFormattedTextField(dfsc);
+	lowMassDensityMax.setHorizontalAlignment(SwingConstants.RIGHT);
+	lowMassDensityMax.setFont(new Font("Dialog", Font.PLAIN, 10));
+	lowMassDensityMax.setEnabled(false);
+	lowMassDensityMax.setBounds(171, 0, 78, 27);
+	lowMassDensityMax.setValue(parameters.getLowMassDensityMax());
+	panel_1.add(lowMassDensityMax);
+	
+	
+	JLabel label_5 = new JLabel("Max:");
+	label_5.setFont(new Font("Dialog", Font.BOLD, 10));
+	label_5.setBounds(133, -1, 39, 29);
+	panel_1.add(label_5);
+	
+	JLabel label_6 = new JLabel("Min:");
+	label_6.setFont(new Font("Dialog", Font.BOLD, 10));
+	label_6.setBounds(0, 0, 46, 29);
+	panel_1.add(label_6);
+	
+	lowMassDensityMin = new JFormattedTextField(dfsc);
+	lowMassDensityMin.setHorizontalAlignment(SwingConstants.RIGHT);
+	lowMassDensityMin.setFont(new Font("Dialog", Font.PLAIN, 10));
+	lowMassDensityMin.setEnabled(false);
+	lowMassDensityMin.setBounds(34, 0, 85, 27);
+	lowMassDensityMin.setValue(parameters.getLowMassDensityMin());
+	panel_1.add(lowMassDensityMin);
 
 	JLabel label_33 = new JLabel("Gas distribution:");
 	label_33.setFont(new Font("Dialog", Font.BOLD, 10));
@@ -320,11 +376,38 @@ public class GUIParam extends JDialog {
 	JLabel label_32 = new JLabel("Dark Matter or central star Density:");
 	label_32.setFont(new Font("Dialog", Font.BOLD, 10));
 	getContentPane().add(label_32);
-	darkMatterDensity = new JFormattedTextField(dfsc);
-	darkMatterDensity.setFont(new Font("Dialog", Font.PLAIN, 10));
-	darkMatterDensity.setHorizontalAlignment(SwingConstants.RIGHT);
-	darkMatterDensity.setValue(parameters.getDarkMatterDensity());
-	getContentPane().add(darkMatterDensity);
+	
+	JPanel panel_2 = new JPanel();
+	getContentPane().add(panel_2);
+	panel_2.setLayout(null);
+
+	darkMatterDensityMax = new JFormattedTextField(dfsc);
+	darkMatterDensityMax.setHorizontalAlignment(SwingConstants.RIGHT);
+	darkMatterDensityMax.setFont(new Font("Dialog", Font.PLAIN, 10));
+	darkMatterDensityMax.setEnabled(false);
+	darkMatterDensityMax.setBounds(172, 0, 83, 27);
+	darkMatterDensityMax.setValue(parameters.getDarkMatterDensityMax());
+	panel_2.add(darkMatterDensityMax);
+
+	
+	
+	JLabel label_7 = new JLabel("Max:");
+	label_7.setFont(new Font("Dialog", Font.BOLD, 10));
+	label_7.setBounds(140, 0, 39, 29);
+	panel_2.add(label_7);
+	
+	JLabel label_8 = new JLabel("Min:");
+	label_8.setFont(new Font("Dialog", Font.BOLD, 10));
+	label_8.setBounds(6, -2, 46, 29);
+	panel_2.add(label_8);
+	
+	darkMatterDensityMin = new JFormattedTextField(dfsc);
+	darkMatterDensityMin.setHorizontalAlignment(SwingConstants.RIGHT);
+	darkMatterDensityMin.setFont(new Font("Dialog", Font.PLAIN, 10));
+	darkMatterDensityMin.setEnabled(false);
+	darkMatterDensityMin.setBounds(32, -1, 83, 27);
+	darkMatterDensityMin.setValue(parameters.getDarkMatterDensityMin());
+	panel_2.add(darkMatterDensityMin);
 
 	JLabel label_15 = new JLabel("Dark Matterdistribution:");
 	label_15.setFont(new Font("Dialog", Font.BOLD, 10));
@@ -520,14 +603,12 @@ public class GUIParam extends JDialog {
 	manageImpact.setEnabled(false);
 	numberOfObjects.setEnabled(false);
 	nebulaRadius.setEnabled(false);
-	densiteMin.setEnabled(false);
 	massObjectMin.setEnabled(false);
 	massObjectMax.setEnabled(false);
 	matterDistribution.setEnabled(false);
 	negligeableMass.setEnabled(false);
 	numOfLowMassParticule.setEnabled(false);
 	lowMassParticuleMass.setEnabled(false);
-	lowMassDensity.setEnabled(false);
 	gasDistribution.setEnabled(false);
 	typeOfImpact.setEnabled(manageImpact.isSelected());
 	collisionDistanceRatio.setEnabled(manageImpact.isSelected());
@@ -540,7 +621,6 @@ public class GUIParam extends JDialog {
 	recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
 	recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected() && recoverFrictionEnergy.isSelected());
 	darkMatterMass.setEnabled(false);
-	darkMatterDensity.setEnabled(false);
 	darkMatterDistribution.setEnabled(false);
 	ellipseRatio.setEnabled(false);
 	ellipseShiftRatio.setEnabled(false);
@@ -569,6 +649,7 @@ public class GUIParam extends JDialog {
 	    scala.setEnabled(true);
 	    numberOfObjects.setEnabled(true);
 	    densiteMin.setEnabled(true);
+	    densiteMax.setEnabled(true);
 	    nebulaRadius.setEnabled(true);
 	    massObjectMin.setEnabled(true);
 	    massObjectMax.setEnabled(true);
@@ -576,10 +657,12 @@ public class GUIParam extends JDialog {
 	    negligeableMass.setEnabled(true);
 	    numOfLowMassParticule.setEnabled(true);
 	    lowMassParticuleMass.setEnabled(true);
-	    lowMassDensity.setEnabled(true);
+	    lowMassDensityMin.setEnabled(true);
+	    lowMassDensityMax.setEnabled(true);
 	    gasDistribution.setEnabled(true);
 	    darkMatterMass.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
+	    darkMatterDensityMin.setEnabled(true);
+	    darkMatterDensityMax.setEnabled(true);
 	    timeMultiplicator.setEnabled(true);
 	    matterRendererExtender.setEnabled(true);
 	    gasRendererExtender.setEnabled(true);
@@ -592,6 +675,7 @@ public class GUIParam extends JDialog {
 	    scala.setEnabled(true);
 	    numberOfObjects.setEnabled(true);
 	    densiteMin.setEnabled(true);
+	    densiteMax.setEnabled(true);
 	    nebulaRadius.setEnabled(true);
 	    massObjectMin.setEnabled(true);
 	    massObjectMax.setEnabled(true);
@@ -599,10 +683,12 @@ public class GUIParam extends JDialog {
 	    negligeableMass.setEnabled(true);
 	    numOfLowMassParticule.setEnabled(true);
 	    lowMassParticuleMass.setEnabled(true);
-	    lowMassDensity.setEnabled(true);
+	    lowMassDensityMin.setEnabled(true);
+	    lowMassDensityMax.setEnabled(true);
 	    gasDistribution.setEnabled(true);
 	    darkMatterMass.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
+	    darkMatterDensityMin.setEnabled(true);
+	    darkMatterDensityMax.setEnabled(true);
 	    timeMultiplicator.setEnabled(true);
 	    matterRendererExtender.setEnabled(true);
 	    gasRendererExtender.setEnabled(true);
@@ -615,6 +701,7 @@ public class GUIParam extends JDialog {
 	    scala.setEnabled(true);
 	    numberOfObjects.setEnabled(true);
 	    densiteMin.setEnabled(true);
+	    densiteMax.setEnabled(true);
 	    nebulaRadius.setEnabled(true);
 	    massObjectMin.setEnabled(true);
 	    massObjectMax.setEnabled(true);
@@ -623,9 +710,11 @@ public class GUIParam extends JDialog {
 	    negligeableMass.setEnabled(true);
 	    numOfLowMassParticule.setEnabled(true);
 	    lowMassParticuleMass.setEnabled(true);
-	    lowMassDensity.setEnabled(true);
+	    lowMassDensityMin.setEnabled(true);
+	    lowMassDensityMax.setEnabled(true);
 	    gasDistribution.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
+	    darkMatterDensityMin.setEnabled(true);
+	    darkMatterDensityMax.setEnabled(true);
 	    darkMatterDistribution.setEnabled(true);
 	    ellipseRatio.setEnabled(true);
 	    ellipseShiftRatio.setEnabled(true);
@@ -647,6 +736,7 @@ public class GUIParam extends JDialog {
 	    scala.setEnabled(true);
 	    numberOfObjects.setEnabled(true);
 	    densiteMin.setEnabled(true);
+	    densiteMax.setEnabled(true);
 	    nebulaRadius.setEnabled(true);
 	    massObjectMin.setEnabled(true);
 	    massObjectMax.setEnabled(true);
@@ -654,12 +744,13 @@ public class GUIParam extends JDialog {
 	    negligeableMass.setEnabled(true);
 	    numOfLowMassParticule.setEnabled(true);
 	    lowMassParticuleMass.setEnabled(true);
-	    lowMassDensity.setEnabled(true);
+	    lowMassDensityMin.setEnabled(true);
+	    lowMassDensityMax.setEnabled(true);
 	    gasDistribution.setEnabled(true);
 	    darkMatterMass.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
+	    darkMatterDensityMin.setEnabled(true);
+	    darkMatterDensityMax.setEnabled(true);
 	    darkMatterMass.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
 	    timeMultiplicator.setEnabled(true);
 	    matterRendererExtender.setEnabled(true);
 	    gasRendererExtender.setEnabled(true);
@@ -672,6 +763,7 @@ public class GUIParam extends JDialog {
 	    scala.setEnabled(true);
 	    numberOfObjects.setEnabled(true);
 	    densiteMin.setEnabled(true);
+	    densiteMax.setEnabled(true);
 	    nebulaRadius.setEnabled(true);
 	    massObjectMin.setEnabled(true);
 	    massObjectMax.setEnabled(true);
@@ -680,9 +772,11 @@ public class GUIParam extends JDialog {
 	    negligeableMass.setEnabled(true);
 	    numOfLowMassParticule.setEnabled(true);
 	    lowMassParticuleMass.setEnabled(true);
-	    lowMassDensity.setEnabled(true);
+	    lowMassDensityMin.setEnabled(true);
+	    lowMassDensityMax.setEnabled(true);
 	    gasDistribution.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
+	    darkMatterDensityMin.setEnabled(true);
+	    darkMatterDensityMax.setEnabled(true);
 	    darkMatterDistribution.setEnabled(true);
 	    ellipseRatio.setEnabled(false);
 	    ellipseShiftRatio.setEnabled(false);
@@ -705,6 +799,7 @@ public class GUIParam extends JDialog {
 	    scala.setEnabled(true);
 	    numberOfObjects.setEnabled(true);
 	    densiteMin.setEnabled(true);
+	    densiteMax.setEnabled(true);
 	    nebulaRadius.setEnabled(true);
 	    massObjectMin.setEnabled(true);
 	    massObjectMax.setEnabled(true);
@@ -713,9 +808,11 @@ public class GUIParam extends JDialog {
 	    negligeableMass.setEnabled(true);
 	    numOfLowMassParticule.setEnabled(true);
 	    lowMassParticuleMass.setEnabled(true);
-	    lowMassDensity.setEnabled(true);
+	    lowMassDensityMin.setEnabled(true);
+	    lowMassDensityMax.setEnabled(true);
 	    gasDistribution.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
+	    darkMatterDensityMin.setEnabled(true);
+	    darkMatterDensityMax.setEnabled(true);
 	    darkMatterDistribution.setEnabled(true);
 	    ellipseRatio.setEnabled(false);
 	    ellipseShiftRatio.setEnabled(false);
@@ -738,6 +835,7 @@ public class GUIParam extends JDialog {
 	    scala.setEnabled(true);
 	    numberOfObjects.setEnabled(true);
 	    densiteMin.setEnabled(true);
+	    densiteMax.setEnabled(true);
 	    nebulaRadius.setEnabled(true);
 	    massObjectMin.setEnabled(true);
 	    massObjectMax.setEnabled(true);
@@ -745,12 +843,13 @@ public class GUIParam extends JDialog {
 	    negligeableMass.setEnabled(true);
 	    numOfLowMassParticule.setEnabled(true);
 	    lowMassParticuleMass.setEnabled(true);
-	    lowMassDensity.setEnabled(true);
+	    lowMassDensityMin.setEnabled(true);
+	    lowMassDensityMax.setEnabled(true);
 	    gasDistribution.setEnabled(true);
 	    darkMatterMass.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
+	    darkMatterDensityMin.setEnabled(true);
+	    darkMatterDensityMax.setEnabled(true);
 	    darkMatterMass.setEnabled(true);
-	    darkMatterDensity.setEnabled(true);
 	    timeMultiplicator.setEnabled(true);
 	    matterRendererExtender.setEnabled(true);
 	    gasRendererExtender.setEnabled(true);
@@ -775,7 +874,6 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(0);
-		    lowMassDensity.setValue(0);
 		    gasDistribution.setValue(1);
 		    ellipseRatio.setValue(0.5);
 		    ellipseShiftRatio.setValue(-0.25);
@@ -809,6 +907,7 @@ public class GUIParam extends JDialog {
 		    numberOfObjects.setValue(20);
 		    typeOfImpact.setSelectedIndex(0);
 		    densiteMin.setValue(1E-2);
+		    densiteMax.setValue(1E-2);
 		    nebulaRadius.setValue(HelperVariable.UA * 5);
 		    massObjectMin.setValue(HelperVariable.M / 2E3);
 		    massObjectMax.setValue(HelperVariable.M / 1E3);
@@ -816,10 +915,12 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(1);
-		    lowMassDensity.setValue(1);
+		    lowMassDensityMin.setValue(1);
+		    lowMassDensityMax.setValue(1);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(HelperVariable.M);
-		    darkMatterDensity.setValue(1);
+		    darkMatterDensityMin.setValue(1);
+		    darkMatterDensityMax.setValue(1);
 		    darkMatterDistribution.setValue(5);
 		    ellipseRatio.setValue(0.15);
 		    ellipseShiftRatio.setValue(-0.25);
@@ -852,6 +953,7 @@ public class GUIParam extends JDialog {
 		    typeOfImpact.setSelectedIndex(0);
 		    numberOfObjects.setValue(1000);
 		    densiteMin.setValue(0.1);
+		    densiteMax.setValue(0.1);
 		    nebulaRadius.setValue(HelperVariable.UA * 5);
 		    massObjectMin.setValue(HelperVariable.M / 1E3);
 		    massObjectMax.setValue(HelperVariable.M / 1E2);
@@ -859,10 +961,12 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(1);
-		    lowMassDensity.setValue(1);
+		    lowMassDensityMin.setValue(1);
+		    lowMassDensityMax.setValue(1);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(0);
-		    darkMatterDensity.setValue(1E-12);
+		    darkMatterDensityMin.setValue(1E-12);
+		    darkMatterDensityMax.setValue(1E-12);
 		    darkMatterDistribution.setValue(5);
 		    ellipseRatio.setValue(0.15);
 		    ellipseShiftRatio.setValue(-0.25);
@@ -895,6 +999,7 @@ public class GUIParam extends JDialog {
 		    typeOfImpact.setSelectedIndex(0);
 		    numberOfObjects.setValue(10000);
 		    densiteMin.setValue(1E-20);
+		    densiteMax.setValue(1E-20);
 		    nebulaRadius.setValue(HelperVariable.PC * 3E4);
 		    massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 1E3);
 		    massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
@@ -902,10 +1007,12 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 1E2);
-		    lowMassDensity.setValue(1E-27);
+		    lowMassDensityMin.setValue(1E-27);
+		    lowMassDensityMax.setValue(1E-27);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(1E40);
-		    darkMatterDensity.setValue(1E-23);
+		    darkMatterDensityMin.setValue(1E-23);
+		    darkMatterDensityMax.setValue(1E-23);
 		    darkMatterDistribution.setValue(5);
 		    ellipseRatio.setValue(0.25);
 		    ellipseShiftRatio.setValue(-1.25);
@@ -938,6 +1045,7 @@ public class GUIParam extends JDialog {
 		    typeOfImpact.setSelectedIndex(1);
 		    numberOfObjects.setValue(1000);
 		    densiteMin.setValue(1E-3);
+		    densiteMax.setValue(1E-3);
 		    nebulaRadius.setValue(HelperVariable.UA * 3);
 		    massObjectMin.setValue(HelperVariable.M / 1E9);
 		    massObjectMax.setValue(HelperVariable.M / 1E4);
@@ -945,10 +1053,12 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(HelperVariable.M / 1E3);
-		    lowMassDensity.setValue(1E-3);
+		    lowMassDensityMin.setValue(1E-3);
+		    lowMassDensityMax.setValue(1E-3);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(HelperVariable.M);
-		    darkMatterDensity.setValue(1E-3);
+		    darkMatterDensityMin.setValue(1E-3);
+		    darkMatterDensityMax.setValue(1E-3);
 		    darkMatterDistribution.setValue(5);
 		    ellipseRatio.setValue(0.95);
 		    ellipseShiftRatio.setValue(1);
@@ -981,6 +1091,7 @@ public class GUIParam extends JDialog {
 		    typeOfImpact.setSelectedIndex(1);
 		    numberOfObjects.setValue(10000);
 		    densiteMin.setValue(1E-19);
+		    densiteMax.setValue(1E-19);
 		    nebulaRadius.setValue(HelperVariable.PC * 4E4);
 		    massObjectMin.setValue(HelperVariable.MINIMALSTARMASS * 1E4);
 		    massObjectMax.setValue(HelperVariable.MAXIMALSTARMASS * 1E3);
@@ -988,10 +1099,12 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(10000);
 		    lowMassParticuleMass.setValue(HelperVariable.MINIMALSTARMASS * 2.6E5);
-		    lowMassDensity.setValue(2E-24);
+		    lowMassDensityMin.setValue(2E-24);
+		    lowMassDensityMax.setValue(2E-24);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(1E40);
-		    darkMatterDensity.setValue(1E-26);
+		    darkMatterDensityMin.setValue(1E-26);
+		    darkMatterDensityMax.setValue(1E-26);
 		    darkMatterDistribution.setValue(5);
 		    ellipseRatio.setValue(0.15);
 		    ellipseShiftRatio.setValue(1);
@@ -1024,6 +1137,7 @@ public class GUIParam extends JDialog {
 		    typeOfImpact.setSelectedIndex(1);
 		    numberOfObjects.setValue(5000);
 		    densiteMin.setValue(1E-21);
+		    densiteMax.setValue(1E-21);
 		    nebulaRadius.setValue(HelperVariable.PC * 4E13);
 		    massObjectMin.setValue(HelperVariable.M * 2E30);
 		    massObjectMax.setValue(HelperVariable.M * 2E32);
@@ -1031,10 +1145,12 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(HelperVariable.M * 1E31);
-		    lowMassDensity.setValue(1E-23);
+		    lowMassDensityMin.setValue(1E-23);
+		    lowMassDensityMax.setValue(1E-23);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(HelperVariable.M * 2E35);
-		    darkMatterDensity.setValue(1E-23);
+		    darkMatterDensityMin.setValue(1E-23);
+		    darkMatterDensityMax.setValue(1E-23);
 		    darkMatterDistribution.setValue(1);
 		    ellipseRatio.setValue(0.15);
 		    ellipseShiftRatio.setValue(1);
@@ -1067,6 +1183,7 @@ public class GUIParam extends JDialog {
 		    typeOfImpact.setSelectedIndex(1);
 		    numberOfObjects.setValue(1000);
 		    densiteMin.setValue(1E-10);
+		    densiteMax.setValue(1E-14);
 		    nebulaRadius.setValue(HelperVariable.UA * 10000);
 		    massObjectMin.setValue(HelperVariable.M / 1E4);
 		    massObjectMax.setValue(HelperVariable.M / 1E1);
@@ -1074,10 +1191,12 @@ public class GUIParam extends JDialog {
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
 		    lowMassParticuleMass.setValue(1);
-		    lowMassDensity.setValue(1);
+		    lowMassDensityMin.setValue(1);
+		    lowMassDensityMax.setValue(1);
 		    gasDistribution.setValue(1);
 		    darkMatterMass.setValue(HelperVariable.M);
-		    darkMatterDensity.setValue(1);
+		    darkMatterDensityMin.setValue(1);
+		    darkMatterDensityMax.setValue(1);
 		    darkMatterDistribution.setValue(5);
 		    ellipseRatio.setValue(0.95);
 		    ellipseShiftRatio.setValue(1);
@@ -1152,7 +1271,8 @@ public class GUIParam extends JDialog {
 		    parameters.setScala(Double.parseDouble(me.scala.getValue().toString()));
 		    parameters.setNumberOfObjects(Integer.parseInt(me.numberOfObjects.getValue().toString()));
 		    parameters.setNebulaRadius(Double.parseDouble(me.nebulaRadius.getValue().toString()));
-		    parameters.setDensity(Double.parseDouble(me.densiteMin.getValue().toString()));
+		    parameters.setDensityMin(Double.parseDouble(me.densiteMin.getValue().toString()));
+		    parameters.setDensityMax(Double.parseDouble(me.densiteMax.getValue().toString()));
 		    parameters.setMassObjectMin(Double.parseDouble(me.massObjectMin.getValue().toString()));
 		    parameters.setMassObjectMax(Double.parseDouble(me.massObjectMax.getValue().toString()));
 		    parameters.setMatterDistribution(Double.parseDouble(me.matterDistribution.getValue().toString()));
@@ -1164,7 +1284,8 @@ public class GUIParam extends JDialog {
 			    .setNumOfLowMassParticule(Integer.parseInt(me.numOfLowMassParticule.getValue().toString()));
 		    parameters
 			    .setLowMassParticuleMass(Double.parseDouble(me.lowMassParticuleMass.getValue().toString()));
-		    parameters.setLowMassDensity(Double.parseDouble(me.lowMassDensity.getValue().toString()));
+		    parameters.setLowMassDensityMin(Double.parseDouble(me.lowMassDensityMin.getValue().toString()));
+		    parameters.setLowMassDensityMax(Double.parseDouble(me.lowMassDensityMax.getValue().toString()));
 		    parameters.setGasDistribution(Double.parseDouble(me.gasDistribution.getValue().toString()));
 		    parameters.setManageImpact(me.manageImpact.isSelected());
 		    parameters.setTypeOfImpact(TypeOfImpact.values()[me.typeOfImpact.getSelectedIndex()]);
@@ -1177,7 +1298,8 @@ public class GUIParam extends JDialog {
 		    parameters.setViscoElasticityNear(Double.parseDouble(me.viscoElasticityNear.getValue().toString()));
 		    parameters.setPressureZero(Double.parseDouble(me.pressureZero.getValue().toString()));
 		    parameters.setDarkMatterMass(Double.parseDouble(me.darkMatterMass.getValue().toString()));
-		    parameters.setDarkMatterDensity(Double.parseDouble(me.darkMatterDensity.getValue().toString()));
+		    parameters.setDarkMatterDensityMin(Double.parseDouble(me.darkMatterDensityMin.getValue().toString()));
+		    parameters.setDarkMatterDensityMax(Double.parseDouble(me.darkMatterDensityMax.getValue().toString()));
 		    parameters.setDarkMatterDistribution(
 			    Double.parseDouble(me.darkMatterDistribution.getValue().toString()));
 		    parameters.setDarkMatterXYZRatio(
