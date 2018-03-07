@@ -1043,12 +1043,12 @@ public class GUIParam extends JDialog {
 		    timeFactor.setValue(HelperVariable.ONEDAY);
 		    scala.setValue(5E-10);
 		    typeOfImpact.setSelectedIndex(1);
-		    numberOfObjects.setValue(1000);
+		    numberOfObjects.setValue(10000);
 		    densiteMin.setValue(1E-3);
-		    densiteMax.setValue(1E-3);
-		    nebulaRadius.setValue(HelperVariable.UA * 3);
+		    densiteMax.setValue(1E-9);
+		    nebulaRadius.setValue(HelperVariable.UA * 5);
 		    massObjectMin.setValue(HelperVariable.M / 1E9);
-		    massObjectMax.setValue(HelperVariable.M / 1E4);
+		    massObjectMax.setValue(HelperVariable.M / 1E5);
 		    matterDistribution.setValue(1);
 		    negligeableMass.setValue(0);
 		    numOfLowMassParticule.setValue(0);
