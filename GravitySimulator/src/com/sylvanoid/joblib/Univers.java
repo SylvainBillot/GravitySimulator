@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ForkJoinPool;
 
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -309,15 +308,8 @@ public class Univers implements Runnable {
 		    expansionUnivers();
 		}
 
-		// Compute accelerations
-		if (parameters.isBarnesHut()) {
-		    computeBarnesHutGravity();
-		} else {
-		    computeNNGravity();
-		}
-
-		// Change Speed
-		changeSpeed();
+		// Compute accelerations and Change Speed
+		computeBarnesHutGravity();
 
 		if (parameters.isManageImpact()) {
 		    computeBarnesHutCollision();
@@ -401,41 +393,16 @@ public class Univers implements Runnable {
 	int valReturn = 0;
 	for (Matter m : listMatter) {
 	    m.getFusionWith().clear();
-	    m.setMySolid(null);
 	}
 	collisionPairs.clear();
 	BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
-	if (parameters.isParallelization()) {
-	    ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
-	    valReturn = (int) pool.invoke(barnesHutCollision);
-	} else {
-	    valReturn = (int) barnesHutCollision.compute();
-	}
+        valReturn = (int) barnesHutCollision.compute();
 	return valReturn;
     }
 
     private void computeBarnesHutGravity() {
 	BarnesHutGravity barnesHutGravity = new BarnesHutGravity(this);
-	if (parameters.isParallelization()) {
-	    ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
-	    pool.invoke(barnesHutGravity);
-	} else {
-	    barnesHutGravity.compute();
-	}
-    }
-
-    private void computeNNGravity() {
-	for (Matter m1 : listMatter) {
-	    for (Matter m2 : listMatter) {
-		if (m1 != m2) {
-		    if ((!parameters.isStaticDarkMatter() || !m1.isDark())) {
-			parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute() + 1);
-			double attraction = HelperNewton.attraction(m1, m2, parameters);
-			m1.getAccel().add(HelperVector.acceleration(m1.getPoint(), m2.getPoint(), attraction));
-		    }
-		}
-	    }
-	}
+	barnesHutGravity.compute();
     }
 
     private void recusiveImpact() {
@@ -469,21 +436,6 @@ public class Univers implements Runnable {
 	case Viscosity:
 	    for (MatterPair mp : collisionPairs.values()) {
 		mp.applyViscosity();
-	    }
-	    changeSpeed();
-	    break;
-	case Solid:
-	    List<Solid> listSolid = new ArrayList<>();
-
-	    for (Matter m : listMatter) {
-		if (m.getMySolid() != null && !listSolid.contains(m.getMySolid())) {
-		    listSolid.add(m.getMySolid());
-		}
-	    }
-	    for (Solid s : listSolid) {
-		if (s.getListMatter().size() > 1) {
-		    s.changeSpeed();
-		}
 	    }
 	    changeSpeed();
 	    break;
@@ -980,7 +932,7 @@ public class Univers implements Runnable {
 	listMatter.add(m1);
 	mass += m1.getMass();
 	visibleMass += m1.getMass();
-	avoidCollisionAfterCreation();
+	//avoidCollisionAfterCreation();
 	orbitalCircularSpeed(speedRatio, m1);
 
     }

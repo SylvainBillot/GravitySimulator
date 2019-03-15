@@ -67,7 +67,6 @@ public class GUIProgram extends JFrame {
     private Renderer renderer;
 
     public static void main(String[] args) {
-
 	EventQueue.invokeLater(onStart());
     }
 

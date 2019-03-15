@@ -30,8 +30,6 @@ public class GUIParam extends JDialog {
     private static final long serialVersionUID = 1L;
     private GUIParam me;
     private GUIProgram mother;
-    private JCheckBox parallelization;
-    private JCheckBox barnessHut;
     private JComboBox<String> typeOfUnivers;
     private JFormattedTextField timeFactor;
     private JFormattedTextField scala;
@@ -70,8 +68,6 @@ public class GUIParam extends JDialog {
     private JFormattedTextField viscoElasticity;
     private JFormattedTextField viscoElasticityNear;
     private JFormattedTextField pressureZero;
-    private JCheckBox recoverFrictionEnergy;
-    private JFormattedTextField recoverFrictionEnergyRatio;
     private JCheckBox staticDarkMatter;
     private JCheckBox expansionUnivers;
     private JFormattedTextField timeMultiplicator;
@@ -116,20 +112,6 @@ public class GUIParam extends JDialog {
 	typeOfUnivers.setSelectedItem(parameters.getTypeOfUnivers().getLabel());
 	typeOfUnivers.addActionListener(chooseTypeOfUnivers());
 	getContentPane().add(typeOfUnivers);
-
-	JLabel label_Parallelization = new JLabel("Parallelization:");
-	label_Parallelization.setFont(new Font("Dialog", Font.BOLD, 10));
-	getContentPane().add(label_Parallelization);
-	parallelization = new JCheckBox();
-	parallelization.setSelected(parameters.isParallelization());
-	getContentPane().add(parallelization);
-
-	JLabel label_BarnesHut = new JLabel("BarneHut/NN:");
-	label_BarnesHut.setFont(new Font("Dialog", Font.BOLD, 10));
-	getContentPane().add(label_BarnesHut);
-	barnessHut = new JCheckBox();
-	barnessHut.setSelected(parameters.isBarnesHut());
-	getContentPane().add(barnessHut);
 
 	JLabel label_Scala = new JLabel("Scala 1/x:");
 	label_Scala.setFont(new Font("Dialog", Font.BOLD, 10));
@@ -539,24 +521,6 @@ public class GUIParam extends JDialog {
 	pressureZero.setValue(parameters.getPressureZero());
 	getContentPane().add(pressureZero);
 
-	JLabel label_26 = new JLabel("Recover Friction Energy (Experimental):");
-	label_26.setFont(new Font("Dialog", Font.BOLD, 10));
-	getContentPane().add(label_26);
-	recoverFrictionEnergy = new JCheckBox();
-	recoverFrictionEnergy.setSelected(parameters.isRecoverFrictionEnegy());
-	recoverFrictionEnergy.addActionListener(chooseRecoverEnergy());
-
-	getContentPane().add(recoverFrictionEnergy);
-
-	JLabel label_21 = new JLabel("Recover Friction Energy Ratio:");
-	label_21.setFont(new Font("Dialog", Font.BOLD, 10));
-	getContentPane().add(label_21);
-	recoverFrictionEnergyRatio = new JFormattedTextField(dfsc);
-	recoverFrictionEnergyRatio.setFont(new Font("Dialog", Font.PLAIN, 10));
-	recoverFrictionEnergyRatio.setHorizontalAlignment(SwingConstants.RIGHT);
-	recoverFrictionEnergyRatio.setValue(parameters.getRecoverFrictionEnergyRatio());
-	getContentPane().add(recoverFrictionEnergyRatio);
-
 	JLabel label_25 = new JLabel("Static Dark Matter:");
 	label_25.setFont(new Font("Dialog", Font.BOLD, 10));
 	getContentPane().add(label_25);
@@ -618,8 +582,6 @@ public class GUIParam extends JDialog {
 	viscoElasticity.setEnabled(manageImpact.isSelected());
 	viscoElasticityNear.setEnabled(manageImpact.isSelected());
 	pressureZero.setEnabled(manageImpact.isSelected());
-	recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
-	recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected() && recoverFrictionEnergy.isSelected());
 	darkMatterMass.setEnabled(false);
 	darkMatterDistribution.setEnabled(false);
 	ellipseRatio.setEnabled(false);
@@ -890,8 +852,6 @@ public class GUIParam extends JDialog {
 		    darkMatterXRatio.setValue(5);
 		    darkMatterYRatio.setValue(5);
 		    darkMatterZRatio.setValue(5);
-		    recoverFrictionEnergy.setSelected(false);
-		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
 		    visousDarkMatter.setSelected(false);
 		    matterRendererExtender.setValue(10);
@@ -937,8 +897,6 @@ public class GUIParam extends JDialog {
 		    darkMatterXRatio.setValue(5);
 		    darkMatterYRatio.setValue(5);
 		    darkMatterZRatio.setValue(5);
-		    recoverFrictionEnergy.setSelected(false);
-		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
 		    visousDarkMatter.setSelected(false);
 		    matterRendererExtender.setValue(3);
@@ -983,8 +941,6 @@ public class GUIParam extends JDialog {
 		    darkMatterXRatio.setValue(5);
 		    darkMatterYRatio.setValue(5);
 		    darkMatterZRatio.setValue(5);
-		    recoverFrictionEnergy.setSelected(false);
-		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
 		    visousDarkMatter.setSelected(false);
 		    matterRendererExtender.setValue(1);
@@ -1029,8 +985,6 @@ public class GUIParam extends JDialog {
 		    darkMatterXRatio.setValue(5);
 		    darkMatterYRatio.setValue(5);
 		    darkMatterZRatio.setValue(5);
-		    recoverFrictionEnergy.setSelected(false);
-		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
 		    visousDarkMatter.setSelected(false);
 		    matterRendererExtender.setValue(1);
@@ -1075,8 +1029,6 @@ public class GUIParam extends JDialog {
 		    darkMatterXRatio.setValue(5);
 		    darkMatterYRatio.setValue(5);
 		    darkMatterZRatio.setValue(5);
-		    recoverFrictionEnergy.setSelected(false);
-		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
 		    visousDarkMatter.setSelected(false);
 		    matterRendererExtender.setValue(1);
@@ -1121,8 +1073,6 @@ public class GUIParam extends JDialog {
 		    darkMatterXRatio.setValue(5);
 		    darkMatterYRatio.setValue(5);
 		    darkMatterZRatio.setValue(5);
-		    recoverFrictionEnergy.setSelected(false);
-		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
 		    visousDarkMatter.setSelected(false);
 		    matterRendererExtender.setValue(1);
@@ -1167,8 +1117,6 @@ public class GUIParam extends JDialog {
 		    darkMatterXRatio.setValue(1);
 		    darkMatterYRatio.setValue(1);
 		    darkMatterZRatio.setValue(1);
-		    recoverFrictionEnergy.setSelected(false);
-		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
 		    visousDarkMatter.setSelected(true);
 		    matterRendererExtender.setValue(1);
@@ -1213,8 +1161,6 @@ public class GUIParam extends JDialog {
 		    darkMatterXRatio.setValue(5);
 		    darkMatterYRatio.setValue(5);
 		    darkMatterZRatio.setValue(5);
-		    recoverFrictionEnergy.setSelected(false);
-		    recoverFrictionEnergyRatio.setValue(1);
 		    timeMultiplicator.setValue(1);
 		    visousDarkMatter.setSelected(false);
 		    matterRendererExtender.setValue(1);
@@ -1237,16 +1183,6 @@ public class GUIParam extends JDialog {
 		viscoElasticity.setEnabled(manageImpact.isSelected());
 		viscoElasticityNear.setEnabled(manageImpact.isSelected());
 		pressureZero.setEnabled(manageImpact.isSelected());
-		recoverFrictionEnergy.setEnabled(manageImpact.isSelected());
-		recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected() && recoverFrictionEnergy.isSelected());
-	    }
-	};
-    }
-
-    private ActionListener chooseRecoverEnergy() {
-	return new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		recoverFrictionEnergyRatio.setEnabled(manageImpact.isSelected() && recoverFrictionEnergy.isSelected());
 	    }
 	};
     }
@@ -1265,8 +1201,6 @@ public class GUIParam extends JDialog {
 	return new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
 		try {
-		    parameters.setParallelization(me.parallelization.isSelected());
-		    parameters.setBarnesHut(me.barnessHut.isSelected());
 		    parameters.setTimeFactor(Double.parseDouble(me.timeFactor.getValue().toString()));
 		    parameters.setScala(Double.parseDouble(me.scala.getValue().toString()));
 		    parameters.setNumberOfObjects(Integer.parseInt(me.numberOfObjects.getValue().toString()));
@@ -1308,9 +1242,6 @@ public class GUIParam extends JDialog {
 				    Double.parseDouble(me.darkMatterZRatio.getValue().toString())));
 		    parameters.setStaticDarkMatter(me.staticDarkMatter.isSelected());
 		    parameters.setExpansionUnivers(me.expansionUnivers.isSelected());
-		    parameters.setRecoverFrictionEnegy(me.recoverFrictionEnergy.isSelected());
-		    parameters.setRecoverFrictionEnergyRatio(
-			    Double.parseDouble(me.recoverFrictionEnergyRatio.getValue().toString()));
 		    parameters.setTimeMultiplicator(Double.parseDouble(me.timeMultiplicator.getValue().toString()));
 		    parameters.setViscousDarkMatter(me.visousDarkMatter.isSelected());
 		    parameters.setMatterRendererExtender(

@@ -114,35 +114,14 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 	    BarnesHutCollision bhh = new BarnesHutCollision(subh);
 
 	    try {
-		// Parallelization
-		if (parameters.isParallelization()) {
-		    bha.fork();
-		    bhb.fork();
-		    bhc.fork();
-		    bhd.fork();
-		    bhe.fork();
-		    bhf.fork();
-		    bhg.fork();
-		    bhh.fork();
-
-		    valReturn += bha.join();
-		    valReturn += bhb.join();
-		    valReturn += bhc.join();
-		    valReturn += bhd.join();
-		    valReturn += bhe.join();
-		    valReturn += bhf.join();
-		    valReturn += bhg.join();
-		    valReturn += bhh.join();
-		} else {
-		    valReturn += bha.compute();
-		    valReturn += bhb.compute();
-		    valReturn += bhc.compute();
-		    valReturn += bhd.compute();
-		    valReturn += bhe.compute();
-		    valReturn += bhf.compute();
-		    valReturn += bhg.compute();
-		    valReturn += bhh.compute();
-		}
+		valReturn += bha.compute();
+		valReturn += bhb.compute();
+		valReturn += bhc.compute();
+		valReturn += bhd.compute();
+		valReturn += bhe.compute();
+		valReturn += bhf.compute();
+		valReturn += bhg.compute();
+		valReturn += bhh.compute();
 	    } catch (StackOverflowError e) {
 		e.printStackTrace();
 	    }
@@ -150,10 +129,6 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 
 	if (univers.getListMatter().size() == 1) {
 	    Matter m = univers.getListMatter().get(0);
-	    if (m.getMySolid() == null) {
-		@SuppressWarnings("unused")
-		Solid s = new Solid(m);
-	    }
 	    if (parameters.isViscousDarkMatter() || !m.isDark()) {
 		Univers gu = new Univers(univers.getGuiProgram(), false);
 		if (univers.getFather() != null) {
@@ -163,11 +138,12 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 			detectColision = false;
 			for (Matter mgu : gu.getListMatter()) {
 			    if (m != mgu) {
-				
-				boolean isCollision = (HelperNewton.distance(m, mgu) / (parameters.getCollisionDistanceRatio()
-					* (m.getRadius() + mgu.getRadius())) < 1)
-					&& (m.getTypeOfObject().equals(mgu.getTypeOfObject())); 
-				
+
+				boolean isCollision = (HelperNewton.distance(m, mgu)
+					/ (parameters.getCollisionDistanceRatio()
+						* (m.getRadius() + mgu.getRadius())) < 1)
+					&& (m.getTypeOfObject().equals(mgu.getTypeOfObject()));
+
 				if (isCollision) {
 				    valReturn++;
 				    if (!m.getFusionWith().contains(mgu)) {
@@ -179,17 +155,6 @@ public class BarnesHutCollision extends RecursiveTask<Integer> {
 				    if (collisionPairs.get(m.getName() + mgu.getName()) == null
 					    && collisionPairs.get(mgu.getName() + m.getName()) == null) {
 					collisionPairs.put(m.getName() + mgu.getName(), toAdd);
-				    }
-
-				    if (mgu.getMySolid() == null) {
-					m.getMySolid().add(mgu);
-				    } else if (mgu.getMySolid() != m.getMySolid()) {
-					if (m.getMySolid().getListMatter().size() > mgu.getMySolid().getListMatter()
-						.size()) {
-					    m.getMySolid().transfertAll(mgu);
-					} else {
-					    mgu.getMySolid().transfertAll(m);
-					}
 				    }
 				}
 			    }

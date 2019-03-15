@@ -68,8 +68,6 @@ public class Parameters implements Serializable {
     private int nbARms = 3;
     private boolean exportData = false;
     private boolean playData = false;
-    private boolean parallelization = false;
-    private boolean barnesHut = true;
     private boolean staticDarkMatter = true;
     private double matterDistribution = 5;
     private double gasDistribution = 1;
@@ -82,8 +80,6 @@ public class Parameters implements Serializable {
     private double viscoElasticity = 1;
     private double viscoElasticityNear = 1;
     private double pressureZero = 0;
-    private boolean recoverFrictionEnegy = false;
-    private double recoverFrictionEnergyRatio = 0.5;
     private boolean expansionUnivers = false;
     private double timeMultiplicator = 1.000;
     private double matterRendererExtender = 10;
@@ -91,6 +87,7 @@ public class Parameters implements Serializable {
     private double darkMatterRendererExtender = 20;
     private boolean viscousDarkMatter = false;
     
+    private int boxSizeBarnesHut = 128; // 
     private double videoPicEveryCycle = 1; // pic by timefactor
     
 
@@ -518,29 +515,6 @@ public class Parameters implements Serializable {
 	this.playData = playData;
     }
 
-    public boolean isParallelization() {
-	return parallelization;
-    }
-
-    public void setParallelization(boolean parallelization) {
-	this.parallelization = parallelization;
-    }
-
-    /**
-     * @return the barnesHut
-     */
-    public boolean isBarnesHut() {
-	return barnesHut;
-    }
-
-    /**
-     * @param barnesHut
-     *            the barnesHut to set
-     */
-    public void setBarnesHut(boolean barnesHut) {
-	this.barnesHut = barnesHut;
-    }
-
     public boolean isStaticDarkMatter() {
 	return staticDarkMatter;
     }
@@ -639,22 +613,6 @@ public class Parameters implements Serializable {
 	this.darkMatterXYZRatio = darkMatterXYZRatio;
     }
 
-    public boolean isRecoverFrictionEnegy() {
-	return recoverFrictionEnegy;
-    }
-
-    public void setRecoverFrictionEnegy(boolean recoverFrictionEnegy) {
-	this.recoverFrictionEnegy = recoverFrictionEnegy;
-    }
-
-    public double getRecoverFrictionEnergyRatio() {
-	return recoverFrictionEnergyRatio;
-    }
-
-    public void setRecoverFrictionEnergyRatio(double recoverFrictionEnergyRatio) {
-	this.recoverFrictionEnergyRatio = recoverFrictionEnergyRatio;
-    }
-
     /**
      * @return the expansionUnivers
      */
@@ -743,6 +701,20 @@ public class Parameters implements Serializable {
      */
     public void setViscousDarkMatter(boolean visousDarkMatter) {
 	this.viscousDarkMatter = visousDarkMatter;
+    }
+
+    /**
+     * @return the boxSizeBarnesHut
+     */
+    public int getBoxSizeBarnesHut() {
+	return boxSizeBarnesHut;
+    }
+
+    /**
+     * @param boxSizeBarnesHut the boxSizeBarnesHut to set
+     */
+    public void setBoxSizeBarnesHut(int boxSizeBarnesHut) {
+	this.boxSizeBarnesHut = boxSizeBarnesHut;
     }
 
     /**

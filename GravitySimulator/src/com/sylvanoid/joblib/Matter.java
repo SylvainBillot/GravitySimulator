@@ -43,7 +43,6 @@ public class Matter implements Serializable {
     private double pressureZero;
     private List<Matter> fusionWith = new ArrayList<Matter>();
     private List<Matter> neighbors = new ArrayList<Matter>();
-    private Solid mySolid = null;
 
     @Override
     public String toString() {
@@ -241,14 +240,6 @@ public class Matter implements Serializable {
 
     public void setPressureZero(double pressureZero) {
 	this.pressureZero = pressureZero;
-    }
-
-    public Solid getMySolid() {
-	return mySolid;
-    }
-
-    public void setMySolid(Solid mySolid) {
-	this.mySolid = mySolid;
     }
 
     public boolean isDark() {

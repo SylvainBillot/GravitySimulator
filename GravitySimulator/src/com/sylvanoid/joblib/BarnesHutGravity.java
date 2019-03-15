@@ -25,7 +25,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
 	if (univers.getMass() > parameters.getNegligeableMass() && !univers.sameCoordonate()) {
-	    if (univers.getListMatter().size() > 16) {
+	    if (univers.getListMatter().size() > parameters.getBoxSizeBarnesHut()) {
 		parameters.setNumOfCompute(parameters.getNumOfCompute() + 1);
 
 		double cx = univers.getMin().x
@@ -114,35 +114,14 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 		BarnesHutGravity bhh = new BarnesHutGravity(subh);
 
 		try {
-		    // Parallelization
-		    if (parameters.isParallelization()) {
-			bha.fork();
-			bhb.fork();
-			bhc.fork();
-			bhd.fork();
-			bhe.fork();
-			bhf.fork();
-			bhg.fork();
-			bhh.fork();
-
-			bha.join();
-			bhb.join();
-			bhc.join();
-			bhd.join();
-			bhe.join();
-			bhf.join();
-			bhg.join();
-			bhh.join();
-		    } else {
-			bha.compute();
-			bhb.compute();
-			bhc.compute();
-			bhd.compute();
-			bhe.compute();
-			bhf.compute();
-			bhg.compute();
-			bhh.compute();
-		    }
+		    bha.compute();
+		    bhb.compute();
+		    bhc.compute();
+		    bhd.compute();
+		    bhe.compute();
+		    bhf.compute();
+		    bhg.compute();
+		    bhh.compute();
 		} catch (StackOverflowError e) {
 		    e.printStackTrace();
 		}
@@ -157,6 +136,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 				    double attraction = HelperNewton.attraction(m, uvoisin, parameters);
 				    m.getAccel().add(
 					    HelperVector.acceleration(m.getPoint(), uvoisin.getGPoint(), attraction));
+				    m.changeSpeed();
 				}
 			    }
 			}
@@ -170,6 +150,7 @@ public class BarnesHutGravity extends RecursiveTask<Integer> {
 				parameters.setNumOfAccelCompute(parameters.getNumOfAccelCompute() + 1);
 				double attraction = HelperNewton.attraction(m1, m2, parameters);
 				m1.getAccel().add(HelperVector.acceleration(m1.getPoint(), m2.getPoint(), attraction));
+				m1.changeSpeed();
 			    }
 			}
 		    }
