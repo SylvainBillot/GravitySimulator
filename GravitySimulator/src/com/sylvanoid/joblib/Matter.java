@@ -270,44 +270,14 @@ public class Matter implements Serializable {
 	this.neighbors = neighbors;
     }
 
-    public Vector3d getPlusV() {
-	return new Vector3d(point.x + speed.x * parameters.getTimeFactor(),
-		point.y + speed.y * parameters.getTimeFactor(), point.z + speed.z * parameters.getTimeFactor());
-    }
-
-    public Vector3d getPlusV(double timeRatio) {
-	return new Vector3d(point.x + speed.x * parameters.getTimeFactor() * timeRatio,
-		point.y + speed.y * parameters.getTimeFactor() * timeRatio,
-		point.z + speed.z * parameters.getTimeFactor() * timeRatio);
-    }
-
-    public Vector3d getMinusV() {
-	return new Vector3d(point.x - speed.x * parameters.getTimeFactor(),
-		point.y - speed.y * parameters.getTimeFactor(), point.z - speed.z * parameters.getTimeFactor());
-    }
-
-    public Vector3d maxWithR() {
-	return new Vector3d((point.x > getPlusV().x) ? (point.x + radius) : (getPlusV().x + radius),
-		(point.y > getPlusV().y) ? (point.y + radius) : (getPlusV().y + radius),
-		(point.z > getPlusV().z) ? (point.z + radius) : (getPlusV().z + radius));
-    }
-
-    public Vector3d minWithR() {
-	return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x - radius) : (point.x - radius),
-		(point.y > getPlusV().y) ? (getPlusV().y - radius) : (point.y - radius),
-		(point.z > getPlusV().z) ? (getPlusV().z - radius) : (point.z - radius));
-    }
-
-    public Vector3d max() {
-	return new Vector3d((point.x > getPlusV().x) ? (point.x) : (getPlusV().x),
-		(point.y > getPlusV().y) ? (point.y) : (getPlusV().y),
-		(point.z > getPlusV().z) ? (point.z) : (getPlusV().z));
-    }
-
-    public Vector3d min() {
-	return new Vector3d((point.x > getPlusV().x) ? (getPlusV().x) : (point.x),
-		(point.y > getPlusV().y) ? (getPlusV().y) : (point.y),
-		(point.z > getPlusV().z) ? (getPlusV().z) : (point.z));
+    public Vector3d getDeltaMove() {
+	Vector3d delta = new Vector3d();
+	if (speed.length() != 0.0) {
+	    delta = new Vector3d(speed);
+	    delta.normalize();
+	    delta.scale(speed.length() * parameters.getTimeFactor());
+	}
+	return delta;
     }
 
     /**
@@ -333,7 +303,7 @@ public class Matter implements Serializable {
 
     public void move() {
 	pointBefore = new Vector3d(point);
-	point = getPlusV();
+	point.add(getDeltaMove());
     }
 
     public void fusion(List<Matter> listMatter) {
@@ -586,8 +556,6 @@ public class Matter implements Serializable {
 	cross.cross(axis, accel);
 	cross.normalize();
 
-	
-	
 	cross.scale(orbitalSpeedValue);
 	speed.add(cross);
     }

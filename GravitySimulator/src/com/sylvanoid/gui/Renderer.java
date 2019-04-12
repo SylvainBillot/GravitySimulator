@@ -470,7 +470,13 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 	textRenderer.draw("Scala: 1/" + dfsc.format(1 / parameters.getScala()), 10,
 		drawable.getSurfaceHeight() - textSize * 1);
 
-	if (parameters.getElapsedTime() < HelperVariable.ONEYEAR) {
+	if (parameters.getElapsedTime() < HelperVariable.ONEHOUR) {
+	    textRenderer.draw("Elapsed time (M): " + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEMINUTE),
+		    10, drawable.getSurfaceHeight() - textSize * 2);
+	} else if (parameters.getElapsedTime() < HelperVariable.ONEDAY) {
+	    textRenderer.draw("Elapsed time (H): " + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEHOUR),
+		    10, drawable.getSurfaceHeight() - textSize * 2);
+    	} else if (parameters.getElapsedTime() < HelperVariable.ONEYEAR) {
 	    textRenderer.draw("Elapsed time (day): " + df2d.format(parameters.getElapsedTime() / HelperVariable.ONEDAY),
 		    10, drawable.getSurfaceHeight() - textSize * 2);
 	} else if (parameters.getElapsedTime() < HelperVariable.ONEYEAR * 1E6) {
@@ -489,7 +495,13 @@ public class Renderer implements GLEventListener, KeyListener, MouseListener, Mo
 		    10, drawable.getSurfaceHeight() - textSize * 2);
 
 	}
-	if (parameters.getTimeFactor() < HelperVariable.ONEYEAR) {
+	if (parameters.getTimeFactor() < HelperVariable.ONEHOUR) {
+	    textRenderer.draw("Time Step (M): " + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEMINUTE), 10,
+		    drawable.getSurfaceHeight() - textSize * 3);
+	} else if (parameters.getTimeFactor() < HelperVariable.ONEDAY) {
+	    textRenderer.draw("Time Step (H): " + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEHOUR), 10,
+		    drawable.getSurfaceHeight() - textSize * 3);
+	} else if (parameters.getTimeFactor() < HelperVariable.ONEYEAR) {
 	    textRenderer.draw("Time Step (day): " + df2d.format(parameters.getTimeFactor() / HelperVariable.ONEDAY), 10,
 		    drawable.getSurfaceHeight() - textSize * 3);
 	} else if (parameters.getTimeFactor() < HelperVariable.ONEYEAR * 1E6) {

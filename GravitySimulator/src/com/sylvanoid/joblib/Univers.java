@@ -304,24 +304,12 @@ public class Univers implements Runnable {
 		parameters.setLimitComputeTime(System.currentTimeMillis() - startTimeCycle);
 		long startTimeBH = System.currentTimeMillis();
 
-		if (parameters.isExpansionUnivers()) {
-		    expansionUnivers();
-		}
-
-		// Compute accelerations and Change Speed
-		computeBarnesHutGravity();
-
-		if (parameters.isManageImpact()) {
-		    computeBarnesHutCollision();
-		    collisionPairsRenderer = new ArrayList<MatterPair>(collisionPairs.values());
-		    speedsAfterImpact(parameters.getTypeOfImpact());
-		    doubleDensityRelaxation();
-		}
-
+		expansionUnivers(parameters.isExpansionUnivers());
+		computeSpeeds(parameters.isManageImpact());
+		adjustTimefactor(false,false);
 		move();
 
 		parameters.setTimeFactor(parameters.getTimeFactor() * parameters.getTimeMultiplicator());
-
 		parameters.setBarnesHuttComputeTime(System.currentTimeMillis() - startTimeBH);
 		moveEnd(guiProgram.getDatafile());
 		parameters.setCycleComputeTime(System.currentTimeMillis() - startTimeCycle);
@@ -347,6 +335,38 @@ public class Univers implements Runnable {
 		parameters.setCycleComputeTime(System.currentTimeMillis() - startTimeCycle);
 	    }
 	    parameters.setElapsedTime(parameters.getElapsedTime() + parameters.getTimeFactor());
+	}
+
+    }
+
+    private void computeSpeeds(boolean isManageImpact) {
+	// Compute accelerations and Change Speed
+	computeBarnesHutGravity();
+
+	if (isManageImpact) {
+	    computeBarnesHutCollision();
+	    collisionPairsRenderer = new ArrayList<MatterPair>(collisionPairs.values());
+	    speedsAfterImpact(parameters.getTypeOfImpact());
+	    doubleDensityRelaxation();
+	}
+    }
+
+    private void adjustTimefactor(boolean isAdjustTimeFactor, boolean onlyIfIsFusionWith) {
+	if (isAdjustTimeFactor) {
+	    double ratioLimitor = 0.1;
+	    double minTimeFactor = Double.POSITIVE_INFINITY;
+	    for (Matter m : listMatter) {
+		if (!onlyIfIsFusionWith || m.getFusionWith().size() > 0) {
+		    if (((m.getRadius() * parameters.getCollisionDistanceRatio() * ratioLimitor)
+			    / m.getSpeed().length()) < minTimeFactor) {
+			minTimeFactor = (m.getRadius() * parameters.getCollisionDistanceRatio() * ratioLimitor)
+				/ m.getSpeed().length();
+		    }
+		}
+	    }
+	    if (minTimeFactor != Double.POSITIVE_INFINITY) {
+		parameters.setTimeFactor(minTimeFactor);
+	    }
 	}
     }
 
@@ -383,8 +403,8 @@ public class Univers implements Runnable {
 	    if (maxMassElement == null || maxMassElement.getMass() < m.getMass()) {
 		maxMassElement = m;
 	    }
-	    m.move();
 	    m.getSpeed().sub(gSpeed);
+	    m.move();
 	}
 	parameters.setMoveComputeTime(System.currentTimeMillis() - startTimeMove);
     }
@@ -396,7 +416,7 @@ public class Univers implements Runnable {
 	}
 	collisionPairs.clear();
 	BarnesHutCollision barnesHutCollision = new BarnesHutCollision(this);
-        valReturn = (int) barnesHutCollision.compute();
+	valReturn = (int) barnesHutCollision.compute();
 	return valReturn;
     }
 
@@ -532,16 +552,18 @@ public class Univers implements Runnable {
 	}
     }
 
-    private void expansionUnivers() {
-	for (Matter m : listMatter) {
-	    m.expansionUnivers();
+    private void expansionUnivers(boolean isExpensionUnivers) {
+	if (isExpensionUnivers) {
+	    for (Matter m : listMatter) {
+		m.expansionUnivers();
+	    }
+
+	    parameters.setNebulaRadius(parameters.getNebulaRadius()
+		    + parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
+
+	    parameters.setScala(
+		    parameters.getScala() - parameters.getScala() * HelperVariable.H0ms * parameters.getTimeFactor());
 	}
-
-	parameters.setNebulaRadius(parameters.getNebulaRadius()
-		+ parameters.getNebulaRadius() * HelperVariable.H0ms * parameters.getTimeFactor());
-
-	parameters.setScala(
-		parameters.getScala() - parameters.getScala() * HelperVariable.H0ms * parameters.getTimeFactor());
 
     }
 
@@ -932,7 +954,7 @@ public class Univers implements Runnable {
 	listMatter.add(m1);
 	mass += m1.getMass();
 	visibleMass += m1.getMass();
-	//avoidCollisionAfterCreation();
+	// avoidCollisionAfterCreation();
 	orbitalCircularSpeed(speedRatio, m1);
 
     }
